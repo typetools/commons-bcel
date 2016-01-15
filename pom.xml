@@ -57,6 +57,9 @@
     <commons.jira.pid>12314220</commons.jira.pid>
     <findbugs.plugin.version>2.5.5</findbugs.plugin.version>
     <checkstyle.plugin.version>2.16</checkstyle.plugin.version>
+    <!-- These properties will be set by the Maven Dependency plugin -->
+    <annotatedJdk>${org.checkerframework:jdk7:jar}</annotatedJdk>
+    <typeAnnotationsJavac>${org.checkerframework:compiler:jar}</typeAnnotationsJavac>
   </properties>
 
   <!-- Cannot be added to Commons Parent, see https://issues.apache.org/jira/browse/COMMONSSITE-26 -->
@@ -201,7 +204,22 @@
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
         <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+          <fork>true</fork>
+          <annotationProcessors>
+            <annotationProcessor>org.checkerframework.checker.interning.InterningChecker</annotationProcessor>
+            <annotationProcessor>org.checkerframework.checker.nullness.NullnessChecker</annotationProcessor>
+            <annotationProcessor>org.checkerframework.checker.signature.SignatureChecker</annotationProcessor>
+          </annotationProcessors>
+          <compilerArgs>
+            <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
+            <arg>-J-Xbootclasspath/p:${typeAnnotationsJavac}</arg>
+            <arg>-AuseDefaultsForUncheckedCode=source</arg>
+            <arg>-Awarns</arg>
+          </compilerArgs>
           <testExcludes>
             <testExclude>**/*Benchmark*</testExclude>
           </testExcludes>
@@ -258,6 +276,18 @@
           <propertyExpansion>config_loc=${basedir}</propertyExpansion>
           <enableRulesSummary>false</enableRulesSummary>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.3</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>properties</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
@@ -369,6 +399,26 @@
       <artifactId>junit</artifactId>
       <version>4.12</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.checkerframework</groupId>
+      <artifactId>checker-qual</artifactId>
+      <version>1.9.10</version>
+    </dependency>
+    <dependency>
+      <groupId>org.checkerframework</groupId>
+      <artifactId>checker</artifactId>
+      <version>1.9.10</version>
+    </dependency>
+    <dependency>
+      <groupId>org.checkerframework</groupId>
+      <artifactId>compiler</artifactId>
+      <version>1.9.10</version>
+    </dependency>
+    <dependency>
+      <groupId>org.checkerframework</groupId>
+      <artifactId>jdk7</artifactId>
+      <version>1.9.10</version>
     </dependency>
   </dependencies>
 
