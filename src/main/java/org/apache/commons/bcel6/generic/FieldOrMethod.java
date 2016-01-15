@@ -23,12 +23,18 @@ import org.apache.commons.bcel6.classfile.ConstantNameAndType;
 import org.apache.commons.bcel6.classfile.ConstantPool;
 import org.apache.commons.bcel6.classfile.ConstantUtf8;
 
+/*>>>
+import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
+import org.checkerframework.framework.qual.AnnotatedFor;
+*/
+
 /**
  * Super class for InvokeInstruction and FieldInstruction, since they have
  * some methods in common!
  *
  * @version $Id$
  */
+/*@AnnotatedFor({"signature"})*/
 public abstract class FieldOrMethod extends CPInstruction implements LoadClass {
 
     /**
@@ -79,7 +85,7 @@ public abstract class FieldOrMethod extends CPInstruction implements LoadClass {
      *  
      */
     @Deprecated
-    public String getClassName( ConstantPoolGen cpg ) {
+    public /*@BinaryNameForNonArray*/ String getClassName( ConstantPoolGen cpg ) {
         ConstantPool cp = cpg.getConstantPool();
         ConstantCP cmr = (ConstantCP) cp.getConstant(super.getIndex());
         String className = cp.getConstantString(cmr.getClassIndex(), Const.CONSTANT_Class);

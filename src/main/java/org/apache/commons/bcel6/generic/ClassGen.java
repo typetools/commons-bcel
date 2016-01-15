@@ -34,6 +34,13 @@ import org.apache.commons.bcel6.classfile.RuntimeVisibleAnnotations;
 import org.apache.commons.bcel6.classfile.SourceFile;
 import org.apache.commons.bcel6.util.BCELComparator;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signature.qual.BinaryName;
+import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
+import org.checkerframework.framework.qual.AnnotatedFor;
+*/
+
 /** 
  * Template class for building up a java class. May be initialized with an
  * existing java class (file).
@@ -41,6 +48,7 @@ import org.apache.commons.bcel6.util.BCELComparator;
  * @see JavaClass
  * @version $Id$
  */
+/*@AnnotatedFor({"nullness","signature"})*/
 public class ClassGen extends AccessFlags implements Cloneable {
 
     /* Corresponds to the fields found in a JavaClass object.
@@ -87,7 +95,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
      * @param interfaces implemented interfaces
      * @param cp constant pool to use
      */
-    public ClassGen(String class_name, String super_class_name, String file_name, int access_flags,
+    public ClassGen(/*@BinaryName*/ String class_name, /*@BinaryName*/ String super_class_name, String file_name, int access_flags,
             String[] interfaces, ConstantPoolGen cp) {
         super(access_flags);
         this.class_name = class_name;
@@ -117,7 +125,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
      * @param access_flags access qualifiers
      * @param interfaces implemented interfaces
      */
-    public ClassGen(String class_name, String super_class_name, String file_name, int access_flags,
+    public ClassGen(/*@BinaryNameForNonArray*/ String class_name, /*@BinaryNameForNonArray*/ String super_class_name, String file_name, int access_flags,
             String[] interfaces) {
         this(class_name, super_class_name, file_name, access_flags, interfaces,
                 new ConstantPoolGen());
@@ -323,7 +331,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
 
     /** @return field object with given name, or null
      */
-    public Field containsField( String name ) {
+    public /*@Nullable*/ Field containsField( String name ) {
         for (Field f : field_vec) {
             if (f.getName().equals(name)) {
                 return f;
@@ -335,7 +343,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
 
     /** @return method object with given name and signature, or null
      */
-    public Method containsMethod( String name, String signature ) {
+    public /*@Nullable*/ Method containsMethod( String name, String signature ) {
         for (Method m : method_vec) {
             if (m.getName().equals(name) && m.getSignature().equals(signature)) {
                 return m;
@@ -404,12 +412,12 @@ public class ClassGen extends AccessFlags implements Cloneable {
     }
 
 
-    public String getClassName() {
+    public /*@BinaryNameForNonArray*/ String getClassName() {
         return class_name;
     }
 
 
-    public String getSuperclassName() {
+    public /*@BinaryNameForNonArray*/ String getSuperclassName() {
         return super_class_name;
     }
 
@@ -419,13 +427,13 @@ public class ClassGen extends AccessFlags implements Cloneable {
     }
 
 
-    public void setClassName( String name ) {
+    public void setClassName( /*@BinaryNameForNonArray*/ String name ) {
         class_name = name.replace('/', '.');
         class_name_index = cp.addClass(name);
     }
 
 
-    public void setSuperclassName( String name ) {
+    public void setSuperclassName( /*@BinaryNameForNonArray*/ String name ) {
         super_class_name = name.replace('/', '.');
         superclass_name_index = cp.addClass(name);
     }
@@ -520,7 +528,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
         return class_name_index;
     }
 
-    private List<ClassObserver> observers;
+    private /*@Nullable*/ List<ClassObserver> observers;
 
 
     /** Add observer for this object.
@@ -589,7 +597,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( Object obj ) {
+    public boolean equals( /*@Nullable*/ Object obj ) {
         return _cmp.equals(this, obj);
     }
 

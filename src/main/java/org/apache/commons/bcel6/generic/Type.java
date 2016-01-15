@@ -24,12 +24,21 @@ import org.apache.commons.bcel6.Const;
 import org.apache.commons.bcel6.classfile.ClassFormatException;
 import org.apache.commons.bcel6.classfile.Utility;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signature.qual.BinaryName;
+import org.checkerframework.framework.qual.AnnotatedFor;
+*/
+
 /**
  * Abstract super class for all possible java types, namely basic types
  * such as int, object types like String and array types, e.g. int[]
  *
  * @version $Id$
+ * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
+/*@AnnotatedFor({"nullness","signature"})*/
 public abstract class Type {
 
     /**
@@ -85,7 +94,7 @@ public abstract class Type {
      * @return whether the Types are equal
      */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(/*@Nullable*/ Object o) {
           if (o instanceof Type) {
               Type t = (Type)o;
               return (type == t.type) && signature.equals(t.signature);
@@ -144,7 +153,7 @@ public abstract class Type {
      * @return Type string, e.g. `int[]'
      */
     @Override
-    public String toString() {
+    public /*@BinaryName*/ String toString() {
         return ((this.equals(Type.NULL) || (type >= Const.T_UNKNOWN))) ? signature : Utility
                 .signatureToString(signature, false);
     }
@@ -195,7 +204,7 @@ public abstract class Type {
      * @return type object
      */
     // @since 6.0 no longer final
-    public static Type getType( String signature ) throws StringIndexOutOfBoundsException {
+    public static /*@NonNull*/ Type getType( String signature ) throws StringIndexOutOfBoundsException {
         byte type = Utility.typeOfSignature(signature);
         if (type <= Const.T_VOID) {
             //corrected concurrent private static field acess

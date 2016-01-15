@@ -24,6 +24,11 @@ import org.apache.commons.bcel6.Const;
 import org.apache.commons.bcel6.generic.Type;
 import org.apache.commons.bcel6.util.BCELComparator;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.framework.qual.AnnotatedFor;
+*/
+
 /**
  * This class represents the method info structure, i.e., the representation 
  * for a method in the class. See JVM specification for details.
@@ -31,6 +36,7 @@ import org.apache.commons.bcel6.util.BCELComparator;
  *
  * @version $Id$
  */
+/*@AnnotatedFor({"nullness"})*/
 public final class Method extends FieldOrMethod {
 
     private static BCELComparator _cmp = new BCELComparator() {
@@ -112,7 +118,7 @@ public final class Method extends FieldOrMethod {
     /**
      * @return Code attribute of method, if any
      */
-    public final Code getCode() {
+    public final /*@Nullable*/ Code getCode() {
         for (Attribute attribute : super.getAttributes()) {
             if (attribute instanceof Code) {
                 return (Code) attribute;
@@ -126,7 +132,7 @@ public final class Method extends FieldOrMethod {
      * @return ExceptionTable attribute of method, if any, i.e., list all
      * exceptions the method may throw not exception handlers!
      */
-    public final ExceptionTable getExceptionTable() {
+    public final /*@Nullable*/ ExceptionTable getExceptionTable() {
         for (Attribute attribute : super.getAttributes()) {
             if (attribute instanceof ExceptionTable) {
                 return (ExceptionTable) attribute;
@@ -139,7 +145,7 @@ public final class Method extends FieldOrMethod {
     /** @return LocalVariableTable of code attribute if any, i.e. the call is forwarded
      * to the Code atribute.
      */
-    public final LocalVariableTable getLocalVariableTable() {
+    public final /*@Nullable*/ LocalVariableTable getLocalVariableTable() {
         Code code = getCode();
         if (code == null) {
             return null;
@@ -151,7 +157,7 @@ public final class Method extends FieldOrMethod {
     /** @return LineNumberTable of code attribute if any, i.e. the call is forwarded
      * to the Code atribute.
      */
-    public final LineNumberTable getLineNumberTable() {
+    public final /*@Nullable*/ LineNumberTable getLineNumberTable() {
         Code code = getCode();
         if (code == null) {
             return null;
@@ -241,7 +247,7 @@ public final class Method extends FieldOrMethod {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( Object obj ) {
+    public boolean equals( /*@Nullable*/ Object obj ) {
         return _cmp.equals(this, obj);
     }
 

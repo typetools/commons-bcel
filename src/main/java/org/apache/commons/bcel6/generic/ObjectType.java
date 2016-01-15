@@ -21,11 +21,17 @@ import org.apache.commons.bcel6.Const;
 import org.apache.commons.bcel6.Repository;
 import org.apache.commons.bcel6.classfile.JavaClass;
 
+/*>>>
+import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
+import org.checkerframework.framework.qual.AnnotatedFor;
+*/
+
 /** 
  * Denotes reference such as java.lang.String.
  *
  * @version $Id$
  */
+/*@AnnotatedFor({"signature"})*/
 public class ObjectType extends ReferenceType {
 
     private final String class_name; // Class name of type
@@ -48,7 +54,7 @@ public class ObjectType extends ReferenceType {
 
     /** @return name of referenced class
      */
-    public String getClassName() {
+    public /*@BinaryNameForNonArray*/ String getClassName() {
         return class_name;
     }
 
