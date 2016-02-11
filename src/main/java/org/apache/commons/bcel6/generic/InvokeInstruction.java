@@ -24,6 +24,10 @@ import org.apache.commons.bcel6.classfile.Constant;
 import org.apache.commons.bcel6.classfile.ConstantCP;
 import org.apache.commons.bcel6.classfile.ConstantPool;
 
+/*>>>
+import org.checkerframework.checker.signature.qual.ClassGetName;
+*/
+
 /**
  * Super class for the INVOKExxx family of instructions.
  *
@@ -127,7 +131,7 @@ public abstract class InvokeInstruction extends FieldOrMethod implements Excepti
      * @throws IllegalArgumentException if the referenced class is an array (this should not happen)
      */
     @Override
-    public String getClassName( ConstantPoolGen cpg ) {
+    public /*@ClassGetName*/ String getClassName( ConstantPoolGen cpg ) {
         ConstantPool cp = cpg.getConstantPool();
         ConstantCP cmr = (ConstantCP) cp.getConstant(super.getIndex());
         String className = cp.getConstantString(cmr.getClassIndex(), Const.CONSTANT_Class);
