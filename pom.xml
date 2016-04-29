@@ -423,6 +423,41 @@
   </dependencies>
 
   <profiles>
+    <!-- Profile to use the version of Checker Framework installed locally-->
+    <profile>
+      <id>checkerframework-local</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.checkerframework</groupId>
+          <artifactId>checker-qual</artifactId>
+          <version>0.0.0</version>
+          <scope>system</scope>
+          <systemPath>${CHECKERFRAMEWORK}/checker/dist/checker-qual.jar</systemPath>
+        </dependency>
+        <dependency>
+          <groupId>org.checkerframework</groupId>
+          <artifactId>checker</artifactId>
+          <version>0.0.0</version>
+          <scope>system</scope>
+          <systemPath>${CHECKERFRAMEWORK}/checker/dist/checker.jar</systemPath>
+        </dependency>
+        <dependency>
+          <groupId>org.checkerframework</groupId>
+          <artifactId>compiler</artifactId>
+          <version>0.0.0</version>
+          <scope>system</scope>
+          <systemPath>${CHECKERFRAMEWORK}/checker/dist/javac.jar</systemPath>
+        </dependency>
+        <dependency>
+          <groupId>org.checkerframework</groupId>
+          <artifactId>jdk7</artifactId>
+          <version>0.0.0</version>
+          <scope>system</scope>
+          <systemPath>${CHECKERFRAMEWORK}/checker/dist/jdk7.jar</systemPath>
+        </dependency>
+      </dependencies>
+    </profile>
+
     <profile>
       <id>jdk7</id>
       <activation>
