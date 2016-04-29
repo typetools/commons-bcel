@@ -275,7 +275,7 @@ public class ConstantPool implements Cloneable, Node {
      * @return Array of constants.
      * @see    Constant
      */
-    public Constant [] getConstantPool() {
+    public Constant[] getConstantPool() {
         return constant_pool;
     }
 
