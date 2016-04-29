@@ -217,7 +217,9 @@
           <compilerArgs>
             <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
             <arg>-J-Xbootclasspath/p:${typeAnnotationsJavac}</arg>
-            <arg>-AuseDefaultsForUncheckedCode=source</arg>
+            <!-- -AuseDefaultsForUncheckedCode=source causes compilation errors in
+                 any library that uses an unannotated part of BCEL. -->
+            <!-- <arg>-AuseDefaultsForUncheckedCode=source</arg> -->
             <arg>-Awarns</arg>
           </compilerArgs>
           <testExcludes>
