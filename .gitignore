@@ -1,5 +1,7 @@
-syntax: glob
-
-# Ignore target subdirectory
-target
-
+/.externalToolBuilders/
+/.settings/
+/bin/
+/target/
+/.classpath
+/.project
+/maven-eclipse.xml
