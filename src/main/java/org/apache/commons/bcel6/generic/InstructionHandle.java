@@ -25,6 +25,10 @@ import java.util.Set;
 
 import org.apache.commons.bcel6.classfile.Utility;
 
+/*>>>
+import org.checkerframework.checker.interning.qual.*;
+*/
+
 /**
  * Instances of this class give users a handle to the instructions contained in
  * an InstructionList. Instruction objects may be used more than once within a
@@ -42,7 +46,7 @@ import org.apache.commons.bcel6.classfile.Utility;
  * @see BranchHandle
  * @see InstructionList 
  */
-public class InstructionHandle {
+public /*@UsesObjectEquals*/ class InstructionHandle {
 
     private InstructionHandle next;
     private InstructionHandle prev;

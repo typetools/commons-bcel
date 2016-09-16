@@ -22,6 +22,10 @@ import java.util.ArrayList;
 
 import org.apache.commons.bcel6.generic.InstructionHandle;
 
+/*>>>
+import org.checkerframework.checker.interning.qual.*;
+*/
+
 /**
  * An InstructionContext offers convenient access
  * to information like control flow successors and
@@ -29,7 +33,7 @@ import org.apache.commons.bcel6.generic.InstructionHandle;
  *
  * @version $Id$
  */
-public interface InstructionContext{
+public /*@UsesObjectEquals*/ interface InstructionContext{
 
     /**
      * The getTag and setTag methods may be used for
