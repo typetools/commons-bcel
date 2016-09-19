@@ -26,6 +26,10 @@ import org.apache.bcel.generic.InstructionHandle;
 import org.checkerframework.checker.interning.qual.*;
 */
 
+/*>>>
+import org.checkerframework.checker.interning.qual.*;
+*/
+
 /**
  * An InstructionContext offers convenient access
  * to information like control flow successors and
