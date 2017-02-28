@@ -29,7 +29,13 @@ public class UtilityTestCase extends TestCase {
                 "java.util.Set<? extends java.nio.file.OpenOption>"
                 , Utility.signatureToString("Ljava/util/Set<+Ljava/nio/file/OpenOption;>;"));
         assertEquals("generic signature",
-                "java.nio.file.attribute.FileAttribute<?>...[]",
+                "java.nio.file.attribute.FileAttribute<?>[]",
                 Utility.signatureToString("[Ljava/nio/file/attribute/FileAttribute<*>;"));
+        assertEquals("generic signature",
+                "boofcv.alg.tracker.tld.TldTracker<boofcv.struct.image.ImageGray<boofcv.struct.image.GrayU8>, boofcv.struct.image.GrayI<boofcv.struct.image.GrayU8>>",
+                Utility.signatureToString("Lboofcv/alg/tracker/tld/TldTracker<Lboofcv/struct/image/ImageGray<Lboofcv/struct/image/GrayU8;>;Lboofcv/struct/image/GrayI<Lboofcv/struct/image/GrayU8;>;>;"));
+        assertEquals("generic signature",
+                "java.util.Map<?, ?>",
+                Utility.signatureToString("Ljava/util/Map<**>;"));
     }
 }

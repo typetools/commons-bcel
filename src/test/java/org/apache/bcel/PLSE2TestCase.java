@@ -17,12 +17,17 @@ public class PLSE2TestCase extends AbstractTestCase {
         assertEquals("generic signature", expectedValue, actualValue);
         //System.out.printf("U: %s%nS: %s%n", actualValue, Signature.translate("Ljava/util/Map<TX;Ljava/util/List<TY;>;>;"));
 
+        expectedValue = "boofcv.alg.tracker.tld.TldTracker<boofcv.struct.image.ImageGray<boofcv.struct.image.GrayU8>, boofcv.struct.image.GrayI<boofcv.struct.image.GrayU8>>";
+        actualValue = Utility.signatureToString("Lboofcv/alg/tracker/tld/TldTracker<Lboofcv/struct/image/ImageGray<Lboofcv/struct/image/GrayU8;>;Lboofcv/struct/image/GrayI<Lboofcv/struct/image/GrayU8;>;>;");
+        assertEquals("generic signature", expectedValue, actualValue);
+        //System.out.printf("A: %s%nE: %s%nS: %s%n", actualValue, expectedValue, Signature.translate("Lboofcv/alg/tracker/tld/TldTracker<Lboofcv/struct/image/ImageGray<Lboofcv/struct/image/GrayU8;>;Lboofcv/struct/image/GrayI<Lboofcv/struct/image/GrayU8;>;>;"));
+
         expectedValue = "java.util.Set<? extends java.nio.file.OpenOption>";
         actualValue = Utility.signatureToString("Ljava/util/Set<+Ljava/nio/file/OpenOption;>;");
         assertEquals("generic signature", expectedValue, actualValue);
         //System.out.printf("U: %s%nS: %s%n", actualValue, Signature.translate("Ljava/util/Set<+Ljava/nio/file/OpenOption;>;"));
 
-        expectedValue = "java.nio.file.attribute.FileAttribute<?>...[]";
+        expectedValue = "java.nio.file.attribute.FileAttribute<?>[]";
         actualValue = Utility.signatureToString("[Ljava/nio/file/attribute/FileAttribute<*>;");
         assertEquals("generic signature", expectedValue, actualValue);
         //System.out.printf("U: %s%nS: %s%n", actualValue, Signature.translate("[Ljava/nio/file/attribute/FileAttribute<*>;"));
