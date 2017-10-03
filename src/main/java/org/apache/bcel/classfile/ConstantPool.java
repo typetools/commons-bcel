@@ -74,7 +74,7 @@ public class ConstantPool implements Cloneable, Node {
              * "All eight byte constants take up two spots in the constant pool.
              * If this is the n'th byte in the constant pool, then the next item
              * will be numbered n+2"
-             * 
+             *
              * Thus we have to increment the index counter.
              */
             tag = constant_pool[i].getTag();
@@ -137,7 +137,7 @@ public class ConstantPool implements Cloneable, Node {
             case Const.CONSTANT_NameAndType:
                 str = constantToString(((ConstantNameAndType) c).getNameIndex(),
                         Const.CONSTANT_Utf8)
-                        + ":" + constantToString(((ConstantNameAndType) c).getSignatureIndex(),
+                        + " " + constantToString(((ConstantNameAndType) c).getSignatureIndex(),
                         Const.CONSTANT_Utf8);
                 break;
             case Const.CONSTANT_InterfaceMethodref:
@@ -154,7 +154,7 @@ public class ConstantPool implements Cloneable, Node {
                 str = Const.getMethodHandleName(cmh.getReferenceKind())
                         + " " + constantToString(cmh.getReferenceIndex(),
                         getConstant(cmh.getReferenceIndex()).getTag());
-                break;            
+                break;
             case Const.CONSTANT_MethodType:
                 final ConstantMethodType cmt = (ConstantMethodType) c;
                 str = constantToString(cmt.getDescriptorIndex(), Const.CONSTANT_Utf8);
@@ -215,7 +215,7 @@ public class ConstantPool implements Cloneable, Node {
     }
 
 
-    /** 
+    /**
      * Dump constant pool to file stream in binary format.
      *
      * @param file Output file stream
@@ -281,7 +281,7 @@ public class ConstantPool implements Cloneable, Node {
 
 
     /**
-     * Get string from constant pool and bypass the indirection of 
+     * Get string from constant pool and bypass the indirection of
      * `ConstantClass' and `ConstantString' objects. I.e. these classes have
      * an index field that points to another entry of the constant pool of
      * type `ConstantUtf8' which contains the real data.

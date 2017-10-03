@@ -48,7 +48,7 @@ import org.checkerframework.checker.interning.qual.*;
  * @version $Id$
  * @see Instruction
  * @see BranchHandle
- * @see InstructionList 
+ * @see InstructionList
  */
 public /*@UsesObjectEquals*/ class InstructionHandle {
 
@@ -241,14 +241,14 @@ public /*@UsesObjectEquals*/ class InstructionHandle {
     }
 
 
-    /** @return a (verbose) string representation of the contained instruction. 
+    /** @return a (verbose) string representation of the contained instruction.
      */
     public String toString( final boolean verbose ) {
         return Utility.format(i_position, 4, false, ' ') + ": " + instruction.toString(verbose);
     }
 
 
-    /** @return a string representation of the contained instruction. 
+    /** @return a string representation of the contained instruction.
      */
     @Override
     public String toString() {
