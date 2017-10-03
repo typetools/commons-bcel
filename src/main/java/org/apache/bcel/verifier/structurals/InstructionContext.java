@@ -14,7 +14,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *
- */ 
+ */
 package org.apache.bcel.verifier.structurals;
 
 
@@ -44,7 +44,7 @@ public /*@UsesObjectEquals*/ interface InstructionContext{
      * temporary flagging, such as graph colouring.
      * Nothing in the InstructionContext object depends
      * on the value of the tag. JustIce does not use it.
-     * 
+     *
      * @see #setTag(int tag)
      */
     int getTag();
@@ -54,7 +54,7 @@ public /*@UsesObjectEquals*/ interface InstructionContext{
      * temporary flagging, such as graph colouring.
      * Nothing in the InstructionContext object depends
      * on the value of the tag. JustIce does not use it.
-     * 
+     *
      * @see #getTag()
      */
     void setTag(int tag);
@@ -72,7 +72,7 @@ public /*@UsesObjectEquals*/ interface InstructionContext{
      * no sense for users of the ControlFlowGraph class.
      * They should use getInstruction().accept(Visitor),
      * possibly in conjunction with the ExecutionVisitor.
-     * 
+     *
      *
      * @see ControlFlowGraph
      * @see ExecutionVisitor

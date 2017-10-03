@@ -73,7 +73,7 @@ public abstract class FieldOrMethod extends CPInstruction implements LoadClass {
     }
 
 
-    /** 
+    /**
      * @return name of the referenced class/interface
      * @deprecated If the instruction references an array class,
      *    this method will return "java.lang.Object".
@@ -82,7 +82,7 @@ public abstract class FieldOrMethod extends CPInstruction implements LoadClass {
      *    called on an array).  A better idea is to use
      *    the {@link #getReferenceType(ConstantPoolGen)} method, which correctly distinguishes
      *    between class types and array types.
-     *  
+     *
      */
     @Deprecated
     public /*@BinaryNameForNonArray*/ String getClassName( final ConstantPoolGen cpg ) {
@@ -128,11 +128,11 @@ public abstract class FieldOrMethod extends CPInstruction implements LoadClass {
     }
 
 
-    /** 
+    /**
      * Get the ObjectType of the method return or field.
-     * 
+     *
      * @return type of the referenced class/interface
-     * @throws ClassGenException when the field is (or method returns) an array, 
+     * @throws ClassGenException when the field is (or method returns) an array,
      */
     @Override
     public ObjectType getLoadClassType( final ConstantPoolGen cpg ) {

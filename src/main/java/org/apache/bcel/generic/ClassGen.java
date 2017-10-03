@@ -219,7 +219,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
             final Attribute[] annAttributes  = AnnotationEntryGen.getAnnotationAttributes(cp, getAnnotationEntries());
             attributes = new Attribute[attribute_vec.size()+annAttributes.length];
             attribute_vec.toArray(attributes);
-            System.arraycopy(annAttributes,0,attributes,attribute_vec.size(),annAttributes.length);       
+            System.arraycopy(annAttributes,0,attributes,attribute_vec.size(),annAttributes.length);
         }
         // Must be last since the above calls may still add something to it
         final ConstantPool _cp = this.cp.getFinalConstantPool();
@@ -285,8 +285,8 @@ public class ClassGen extends AccessFlags implements Cloneable {
         attribute_vec.add(a);
     }
 
-    public void addAnnotationEntry(final AnnotationEntryGen a) { 
-        annotation_vec.add(a); 
+    public void addAnnotationEntry(final AnnotationEntryGen a) {
+        annotation_vec.add(a);
     }
 
 
@@ -595,7 +595,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
      * Return value as defined by given BCELComparator strategy.
      * By default two ClassGen objects are said to be equal when
      * their class names are equal.
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -607,7 +607,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
     /**
      * Return value as defined by given BCELComparator strategy.
      * By default return the hashcode of the class name.
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override

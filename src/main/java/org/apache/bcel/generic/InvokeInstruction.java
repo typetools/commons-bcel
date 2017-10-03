@@ -101,7 +101,7 @@ public abstract class InvokeInstruction extends FieldOrMethod implements Excepti
      *
      * @return name of the referenced class/interface
      * @throws IllegalArgumentException if the referenced class is an array (this should not happen)
-     */ 
+     */
     @Override
     public /*@ClassGetName*/ String getClassName( final ConstantPoolGen cpg ) {
         final ConstantPool cp = cpg.getConstantPool();
