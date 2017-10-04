@@ -19,5 +19,5 @@ sudo: false
 jdk:
   - oraclejdk8
 
-install: true
+install: mvn process-resources
 script: mvn verify
