@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.interning.qual.Interned;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  *
  * @version $Id$
  */
+@SuppressWarnings("interning")  // sets constants
 /*@AnnotatedFor({"nullness","signature"})*/
 public abstract class Type {
 
@@ -50,31 +52,31 @@ public abstract class Type {
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
      */
     @Deprecated
-    protected String signature; // signature for the type TODO should be private
+    protected @BinaryName String signature; // signature for the type TODO should be private
     /** Predefined constants
      */
-    public static final BasicType VOID = new BasicType(Const.T_VOID);
-    public static final BasicType BOOLEAN = new BasicType(Const.T_BOOLEAN);
-    public static final BasicType INT = new BasicType(Const.T_INT);
-    public static final BasicType SHORT = new BasicType(Const.T_SHORT);
-    public static final BasicType BYTE = new BasicType(Const.T_BYTE);
-    public static final BasicType LONG = new BasicType(Const.T_LONG);
-    public static final BasicType DOUBLE = new BasicType(Const.T_DOUBLE);
-    public static final BasicType FLOAT = new BasicType(Const.T_FLOAT);
-    public static final BasicType CHAR = new BasicType(Const.T_CHAR);
-    public static final ObjectType OBJECT = new ObjectType("java.lang.Object");
-    public static final ObjectType CLASS = new ObjectType("java.lang.Class");
-    public static final ObjectType STRING = new ObjectType("java.lang.String");
-    public static final ObjectType STRINGBUFFER = new ObjectType("java.lang.StringBuffer");
-    public static final ObjectType THROWABLE = new ObjectType("java.lang.Throwable");
-    public static final Type[] NO_ARGS = new Type[0]; // EMPTY, so immutable
-    public static final ReferenceType NULL = new ReferenceType() {
+    public static final @Interned BasicType VOID = new BasicType(Const.T_VOID);
+    public static final @Interned BasicType BOOLEAN = new BasicType(Const.T_BOOLEAN);
+    public static final @Interned BasicType INT = new BasicType(Const.T_INT);
+    public static final @Interned BasicType SHORT = new BasicType(Const.T_SHORT);
+    public static final @Interned BasicType BYTE = new BasicType(Const.T_BYTE);
+    public static final @Interned BasicType LONG = new BasicType(Const.T_LONG);
+    public static final @Interned BasicType DOUBLE = new BasicType(Const.T_DOUBLE);
+    public static final @Interned BasicType FLOAT = new BasicType(Const.T_FLOAT);
+    public static final @Interned BasicType CHAR = new BasicType(Const.T_CHAR);
+    public static final @Interned ObjectType OBJECT = new ObjectType("java.lang.Object");
+    public static final @Interned ObjectType CLASS = new ObjectType("java.lang.Class");
+    public static final @Interned ObjectType STRING = new ObjectType("java.lang.String");
+    public static final @Interned ObjectType STRINGBUFFER = new ObjectType("java.lang.StringBuffer");
+    public static final @Interned ObjectType THROWABLE = new ObjectType("java.lang.Throwable");
+    public static final @Interned Type[] NO_ARGS = new Type[0]; // EMPTY, so immutable
+    public static final @Interned ReferenceType NULL = new ReferenceType() {
     };
-    public static final Type UNKNOWN = new Type(Const.T_UNKNOWN, "<unknown object>") {
+    public static final @Interned Type UNKNOWN = new Type(Const.T_UNKNOWN, "<unknown object>") {
     };
 
 
-    protected Type(final byte t, final String s) {
+    protected Type(final byte t, final @BinaryName String s) {
         type = t;
         signature = s;
     }
@@ -123,6 +125,7 @@ public abstract class Type {
      * returns the given type.
      * @since 6.0
      */
+    @SuppressWarnings("interned") // primitive types are interned
     public Type normalizeForStackOrLocal() {
         if (this == Type.BOOLEAN || this == Type.BYTE || this == Type.SHORT || this == Type.CHAR) {
             return Type.INT;
@@ -176,6 +179,7 @@ public abstract class Type {
         return buf.toString();
     }
 
+    @SuppressWarnings("nullness:type.argument.type.incompatible") // initalValue returns non-null
     private static final ThreadLocal<Integer> consumed_chars = new ThreadLocal<Integer>() {
 
         @Override
@@ -185,6 +189,7 @@ public abstract class Type {
     };//int consumed_chars=0; // Remember position in string, see getArgumentTypes
 
 
+    @SuppressWarnings("nullness:type.argument.type.incompatible") // ThreadLocal workaround
     private static int unwrap( final ThreadLocal<Integer> tl ) {
         return tl.get().intValue();
     }
@@ -406,7 +411,7 @@ public abstract class Type {
      * The signature has a complicated dependency on other parameter
      * so it's tricky to do it in a call to the super ctor.
      */
-    void setSignature(final String signature) {
+    void setSignature(final @BinaryName String signature) {
         this.signature = signature;
     }
 }

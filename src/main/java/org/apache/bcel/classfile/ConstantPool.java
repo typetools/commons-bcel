@@ -360,7 +360,7 @@ public class ConstantPool implements Cloneable, Node {
     /**
      * @return deep copy of this constant pool
      */
-    public ConstantPool copy() {
+    public @Nullable ConstantPool copy() {
         ConstantPool c = null;
         try {
             c = (ConstantPool) clone();

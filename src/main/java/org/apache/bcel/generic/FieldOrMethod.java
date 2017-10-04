@@ -85,6 +85,7 @@ public abstract class FieldOrMethod extends CPInstruction implements LoadClass {
      *
      */
     @Deprecated
+    @SuppressWarnings("signature") // string manipulation
     public /*@BinaryNameForNonArray*/ String getClassName( final ConstantPoolGen cpg ) {
         final ConstantPool cp = cpg.getConstantPool();
         final ConstantCP cmr = (ConstantCP) cp.getConstant(super.getIndex());

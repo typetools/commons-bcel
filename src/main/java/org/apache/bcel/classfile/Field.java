@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.classfile;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.DataInput;
 import java.io.IOException;
 
@@ -181,7 +182,7 @@ public final class Field extends FieldOrMethod {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( final Object obj ) {
+    public boolean equals( final @Nullable Object obj ) {
         return bcelComparator.equals(this, obj);
     }
 

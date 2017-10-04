@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -128,7 +129,7 @@ public abstract class CPInstruction extends Instruction implements TypedInstruct
      * @param index in  constant pool.
      */
     @Override
-    public void setIndex( final int index ) { // TODO could be package-protected?
+    public void setIndex( @UnknownInitialization CPInstruction this, final int index ) { // TODO could be package-protected?
         if (index < 0) {
             throw new ClassGenException("Negative index value: " + index);
         }

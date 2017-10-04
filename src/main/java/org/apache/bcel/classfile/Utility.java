@@ -17,6 +17,7 @@
 
 package org.apache.bcel.classfile;
 
+import org.checkerframework.checker.signature.qual.BinaryName;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.CharArrayReader;
@@ -768,7 +769,7 @@ public abstract class Utility {
      * @param signature to convert
      * @return Human readable signature
      */
-    public static String signatureToString( final String signature ) {
+    public static @BinaryName String signatureToString( final String signature ) {
         return signatureToString(signature, true);
     }
 

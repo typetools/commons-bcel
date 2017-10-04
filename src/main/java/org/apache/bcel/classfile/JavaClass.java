@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.classfile;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -900,7 +901,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( final Object obj ) {
+    public boolean equals( final @Nullable Object obj ) {
         return bcelComparator.equals(this, obj);
     }
 

@@ -18,6 +18,7 @@
 package org.apache.bcel.verifier.structurals;
 
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.apache.bcel.generic.ReferenceType;
 import org.apache.bcel.generic.Type;
 import org.apache.bcel.verifier.exc.AssertionViolatedException;
@@ -99,7 +100,7 @@ public class LocalVariables implements Cloneable {
      * Fulfills the general contract of Object.equals().
      */
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(final @Nullable Object o) {
         if (!(o instanceof LocalVariables)) {
             return false;
         }

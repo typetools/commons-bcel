@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -118,7 +119,7 @@ public abstract class Instruction implements Cloneable {
      * @see BranchInstruction
      * @return (shallow) copy of an instruction
      */
-    public Instruction copy() {
+    public @Nullable Instruction copy() {
         Instruction i = null;
         // "Constant" instruction, no need to duplicate
         if (InstructionConst.getInstruction(this.getOpcode()) != null) {
@@ -574,7 +575,7 @@ public abstract class Instruction implements Cloneable {
      * @return true if that is an Instruction and has the same opcode
      */
     @Override
-    public boolean equals( final Object that ) {
+    public boolean equals( final @Nullable Object that ) {
         return (that instanceof Instruction) ? cmp.equals(this, (Instruction) that) : false;
     }
 

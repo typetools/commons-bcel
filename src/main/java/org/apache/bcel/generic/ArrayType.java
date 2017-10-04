@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.apache.bcel.Const;
 
 /**
@@ -119,7 +120,7 @@ public final class ArrayType extends ReferenceType {
     /** @return true if both type objects refer to the same array type.
      */
     @Override
-    public boolean equals( final Object _type ) {
+    public boolean equals( final @Nullable Object _type ) {
         if (_type instanceof ArrayType) {
             final ArrayType array = (ArrayType) _type;
             return (array.dimensions == dimensions) && array.basic_type.equals(basic_type);

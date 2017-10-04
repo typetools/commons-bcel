@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.apache.bcel.Const;
 
 /**
@@ -63,7 +64,7 @@ public class ReturnaddressType extends Type {
      * Returns if the two Returnaddresses refer to the same target.
      */
     @Override
-    public boolean equals( final Object rat ) {
+    public boolean equals( final @Nullable Object rat ) {
         if (!(rat instanceof ReturnaddressType)) {
             return false;
         }

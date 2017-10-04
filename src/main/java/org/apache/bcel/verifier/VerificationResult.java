@@ -17,6 +17,8 @@
  */
 package org.apache.bcel.verifier;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 /**
  * A VerificationResult is what a PassVerifier returns
  * after verifying.
@@ -97,7 +99,7 @@ public class VerificationResult {
      * Returns if two VerificationResult instances are equal.
      */
     @Override
-    public boolean equals( final Object o ) {
+    public boolean equals( final @Nullable Object o ) {
         if (!(o instanceof VerificationResult)) {
             return false;
         }

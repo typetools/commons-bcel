@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.apache.bcel.Const;
 import org.apache.bcel.Repository;
 import org.apache.bcel.classfile.JavaClass;
@@ -34,7 +35,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 /*@AnnotatedFor({"signature"})*/
 public class ObjectType extends ReferenceType {
 
-    private final String class_name; // Class name of type
+    private final @BinaryNameForNonArray String class_name; // Class name of type
 
     /**
      * @since 6.0
@@ -70,7 +71,7 @@ public class ObjectType extends ReferenceType {
     /** @return true if both type objects refer to the same class.
      */
     @Override
-    public boolean equals( final Object type ) {
+    public boolean equals( final @Nullable Object type ) {
         return (type instanceof ObjectType)
                 ? ((ObjectType) type).class_name.equals(class_name)
                 : false;

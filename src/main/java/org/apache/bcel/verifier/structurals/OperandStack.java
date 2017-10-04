@@ -18,6 +18,7 @@
 package org.apache.bcel.verifier.structurals;
 
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.ArrayList;
 
 import org.apache.bcel.generic.ObjectType;
@@ -88,7 +89,7 @@ public class OperandStack implements Cloneable {
      * objects on the stacks.
      */
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(final @Nullable Object o) {
         if (!(o instanceof OperandStack)) {
             return false;
         }
