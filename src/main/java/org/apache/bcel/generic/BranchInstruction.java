@@ -42,7 +42,7 @@ public abstract class BranchInstruction extends Instruction implements Instructi
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
      */
     @Deprecated
-    protected InstructionHandle target; // Target object in instruction list
+    protected @Nullable InstructionHandle target; // Target object in instruction list
 
     /**
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
@@ -55,6 +55,7 @@ public abstract class BranchInstruction extends Instruction implements Instructi
      * Empty constructor needed for the Class.newInstance() statement in
      * Instruction.readInstruction(). Not to be used otherwise.
      */
+    @SuppressWarnings("initialization.fields.uninitialized") // constructor should be removed
     BranchInstruction() {
     }
 
@@ -201,6 +202,7 @@ public abstract class BranchInstruction extends Instruction implements Instructi
      * Set branch target
      * @param target branch target
      */
+    @EnsuresNonNull("target")
     public void setTarget( final InstructionHandle target ) {
         notifyTarget(this.target, target, this);
         this.target = target;
