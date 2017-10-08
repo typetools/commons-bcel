@@ -119,7 +119,8 @@ public abstract class Instruction implements Cloneable {
      * @see BranchInstruction
      * @return (shallow) copy of an instruction
      */
-    public @Nullable Instruction copy() {
+    @SuppressWarnings("nullness") // BCEL bug: ignored exception
+    public Instruction copy() {
         Instruction i = null;
         // "Constant" instruction, no need to duplicate
         if (InstructionConst.getInstruction(this.getOpcode()) != null) {
@@ -575,7 +576,14 @@ public abstract class Instruction implements Cloneable {
      * @return true if that is an Instruction and has the same opcode
      */
     @Override
+<<<<<<< HEAD
     public boolean equals( final @Nullable Object that ) {
+||||||| merged common ancestors
+    public boolean equals( final Object that ) {
+=======
+    @SuppressWarnings("nullness") // BCEL bug: equals does not handle null
+    public boolean equals( final Object that ) {
+>>>>>>> trunk
         return (that instanceof Instruction) ? cmp.equals(this, (Instruction) that) : false;
     }
 
