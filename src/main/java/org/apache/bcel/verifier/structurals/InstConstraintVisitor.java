@@ -2756,7 +2756,9 @@ public class InstConstraintVisitor extends EmptyVisitor{
             }
         }
         else{
-            if (shouldbe != value) {
+            @SuppressWarnings("interning") // Type is interned if not of reference type
+            boolean bad = (shouldbe != value);
+            if (bad) {
                 constraintViolated(o, "The stack top type '"+value+"' is not of type '"+shouldbe+"' as expected.");
             }
         }
@@ -2848,7 +2850,9 @@ public class InstConstraintVisitor extends EmptyVisitor{
             }
         }
         else{
-            if (shouldbe != value) {
+            @SuppressWarnings("interning") // Type is interned if not of reference type
+            boolean bad = (shouldbe != value);
+            if (bad) {
                 constraintViolated(o, "The stack top type '"+value+"' is not of type '"+shouldbe+"' as expected.");
             }
         }

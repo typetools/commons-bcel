@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,7 +51,7 @@ import org.apache.bcel.classfile.ConstantUtf8;
  * @version $Id$
  * @see Constant
  */
-public class ConstantPoolGen {
+public @UsesObjectEquals class ConstantPoolGen {
 
     private static final int DEFAULT_BUFFER_SIZE = 256;
 

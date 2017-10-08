@@ -17,6 +17,9 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.interning.qual.UsesObjectEquals;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -30,7 +33,8 @@ import org.apache.bcel.util.ByteSequence;
  * @see InstructionList
  * @version $Id$
  */
-public abstract class BranchInstruction extends Instruction implements InstructionTargeter {
+@SuppressWarnings("superclass.notannotated") // @UsesObjectEquals because InstructionComparator returns false for BranchInstruction comparisons.
+public abstract @UsesObjectEquals class BranchInstruction extends Instruction implements InstructionTargeter {
 
     /**
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
@@ -139,6 +143,7 @@ public abstract class BranchInstruction extends Instruction implements Instructi
      * @return mnemonic for instruction
      */
     @Override
+    @SuppressWarnings("interning") // test against this for printing
     public String toString( final boolean verbose ) {
         final String s = super.toString(verbose);
         String t = "null";

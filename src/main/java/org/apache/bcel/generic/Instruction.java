@@ -576,14 +576,8 @@ public abstract class Instruction implements Cloneable {
      * @return true if that is an Instruction and has the same opcode
      */
     @Override
-<<<<<<< HEAD
-    public boolean equals( final @Nullable Object that ) {
-||||||| merged common ancestors
-    public boolean equals( final Object that ) {
-=======
     @SuppressWarnings("nullness") // BCEL bug: equals does not handle null
     public boolean equals( final Object that ) {
->>>>>>> trunk
         return (that instanceof Instruction) ? cmp.equals(this, (Instruction) that) : false;
     }
 

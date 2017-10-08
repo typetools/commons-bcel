@@ -17,12 +17,15 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.interning.qual.UsesObjectEquals;
+
 /**
  * Super class for JSR - Jump to subroutine
  *
  * @version $Id$
  */
-public abstract class JsrInstruction extends BranchInstruction implements UnconditionalBranch,
+// @UsesObjectEquals like its superclass BranchInstruction is.
+public abstract @UsesObjectEquals class JsrInstruction extends BranchInstruction implements UnconditionalBranch,
         TypedInstruction, StackProducer {
 
     JsrInstruction(final short opcode, final InstructionHandle target) {
@@ -57,6 +60,7 @@ public abstract class JsrInstruction extends BranchInstruction implements Uncond
      * @return an InstructionHandle to the "next" instruction that
      * will be executed when RETurned from a subroutine.
      */
+    @SuppressWarnings("interning") // list membership of this
     public InstructionHandle physicalSuccessor() {
         InstructionHandle ih = super.getTarget();
         // Rewind!

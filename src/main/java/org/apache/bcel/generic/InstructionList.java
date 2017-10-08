@@ -798,6 +798,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
      *            instruction to search for
      * @return instruction found on success, null otherwise
      */
+    @SuppressWarnings("interning") // equality test for searching in list
     private InstructionHandle findInstruction1(final Instruction i) {
         for (InstructionHandle ih = start; ih != null; ih = ih.getNext()) {
             if (ih.getInstruction() == i) {
@@ -814,6 +815,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
      *            instruction to search for
      * @return instruction found on success, null otherwise
      */
+    @SuppressWarnings("interning") // equality test for searching in list
     private InstructionHandle findInstruction2(final Instruction i) {
         for (InstructionHandle ih = end; ih != null; ih = ih.getPrev()) {
             if (ih.getInstruction() == i) {
