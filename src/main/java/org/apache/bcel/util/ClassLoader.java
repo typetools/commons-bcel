@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.util;
 
+import org.checkerframework.checker.signature.qual.BinaryName;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Hashtable;
@@ -103,7 +104,7 @@ public class ClassLoader extends java.lang.ClassLoader {
     }
 
     @Override
-    protected Class<?> loadClass( final String class_name, final boolean resolve ) throws ClassNotFoundException {
+    protected Class<?> loadClass( final @BinaryName String class_name, final boolean resolve ) throws ClassNotFoundException {
         Class<?> cl = null;
         /* First try: lookup hash table.
          */

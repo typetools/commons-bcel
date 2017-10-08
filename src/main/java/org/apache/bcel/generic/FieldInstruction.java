@@ -69,6 +69,7 @@ public abstract class FieldInstruction extends FieldOrMethod {
 
     /** @return type of field
      */
+    @SuppressWarnings("signature") // FieldInstruction.getSignature returns @FieldDescriptor
     public Type getFieldType( final ConstantPoolGen cpg ) {
         return Type.getType(getSignature(cpg));
     }

@@ -17,6 +17,8 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.signature.qual.FieldDescriptor;
+import org.checkerframework.checker.signature.qual.FullyQualifiedName;
 import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 import java.util.HashMap;
 import java.util.Map;
@@ -697,7 +699,7 @@ public @UsesObjectEquals class ConstantPoolGen {
      * @param signature signature string to add
      * @return index of entry
      */
-    public int addFieldref( final String class_name, final String field_name, final String signature ) {
+    public int addFieldref( final @FullyQualifiedName String class_name, final String field_name, final @FieldDescriptor String signature ) {
         int ret;
         int class_index;
         int name_and_type_index;
@@ -814,11 +816,13 @@ public @UsesObjectEquals class ConstantPoolGen {
                 final ConstantClass clazz = (ConstantClass) constants[m.getClassIndex()];
                 final ConstantNameAndType n = (ConstantNameAndType) constants[m.getNameAndTypeIndex()];
                 ConstantUtf8 u8 = (ConstantUtf8) constants[clazz.getNameIndex()];
-                final String class_name = u8.getBytes().replace('/', '.');
+                @SuppressWarnings("signature") // string conversion
+                final @FullyQualifiedName String class_name = u8.getBytes().replace('/', '.');
                 u8 = (ConstantUtf8) constants[n.getNameIndex()];
                 final String name = u8.getBytes();
                 u8 = (ConstantUtf8) constants[n.getSignatureIndex()];
-                final String signature = u8.getBytes();
+                @SuppressWarnings("signature") // string read from classfile
+                final @FieldDescriptor String signature = u8.getBytes();
                 switch (c.getTag()) {
                     case Const.CONSTANT_InterfaceMethodref:
                         return addInterfaceMethodref(class_name, name, signature);

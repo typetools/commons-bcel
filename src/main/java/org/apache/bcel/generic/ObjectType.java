@@ -17,6 +17,8 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.signature.qual.ClassGetName;
+import org.checkerframework.checker.signature.qual.FullyQualifiedName;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.apache.bcel.Const;
 import org.apache.bcel.Repository;
@@ -40,15 +42,26 @@ public class ObjectType extends ReferenceType {
     /**
      * @since 6.0
      */
-    public static ObjectType getInstance(final String class_name) {
+    // TODO: actualy type is @BinaryNameForNonArray =
+    // @ClassGetName-for-nonarray, but that type requires warning
+    // suppressions at call sites, so just use @ClassGetName.
+    public static ObjectType getInstance(final /*@ BinaryNameForNonArray*/ @ClassGetName String class_name) {
         return new ObjectType(class_name);
     }
 
     /**
      * @param class_name fully qualified class name, e.g. java.lang.String
      */
-    public ObjectType(final String class_name) {
+    // TODO: buggy documentation, is a @BinaryNameForNonArray (differs from @FullyQualifiedName for inner classes)..
+    // TODO: actualy type is @BinaryNameForNonArray =
+    // @ClassGetName-for-nonarray, but that type requires warning
+    // suppressions at call sites, so just use @ClassGetName.
+    @SuppressWarnings("signature") // string manipulation
+    public ObjectType(final /*@ BinaryNameForNonArray*/ @ClassGetName String class_name) {
+        // second argument to super is a @FieldDescriptor
         super(Const.T_REFERENCE, "L" + class_name.replace('.', '/') + ";");
+        // TODO: Javadoc says argument is like "java.lang.String", but then why does this line replace slashes??
+        // Is this sometimes called with a non-@BinaryNameForNonArray argument, namely a @FieldDescriptor or @InternalForm (those are the only two representations that contain "/")?
         this.class_name = class_name.replace('/', '.');
     }
 

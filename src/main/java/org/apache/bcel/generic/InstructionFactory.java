@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.signature.qual.ClassGetName;
 import org.apache.bcel.Const;
 
 /**
@@ -592,7 +593,8 @@ public class InstructionFactory implements InstructionConstants {
                     && (src == Const.T_CHAR || src == Const.T_BYTE || src == Const.T_SHORT)) {
                 src = Const.T_INT;
             }
-            final String name = "org.apache.bcel.generic." + short_names[src - Const.T_CHAR] + "2"
+            @SuppressWarnings("signature") // string manipulation
+            final @ClassGetName String name = "org.apache.bcel.generic." + short_names[src - Const.T_CHAR] + "2"
                     + short_names[dest - Const.T_CHAR];
             Instruction i = null;
             try {

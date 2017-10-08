@@ -38,6 +38,7 @@ public abstract class NativeVerifier {
     /**
      * Works only on the first argument.
      */
+    @SuppressWarnings("signature") // exception is caught if illegal signature string
     public static void main( final String[] args ) {
         if (args.length != 1) {
             System.out.println("Verifier front-end: need exactly one argument.");

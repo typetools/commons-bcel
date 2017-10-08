@@ -139,6 +139,7 @@ public class INVOKEDYNAMIC extends InvokeInstruction {
      * @since 6.1
      */
     @Override
+    @SuppressWarnings("signature") // TODO: argument here is "java.lang.Object", so call is OK
     public ReferenceType getReferenceType(final ConstantPoolGen cpg) {
         return new ObjectType(Object.class.getName());
     }

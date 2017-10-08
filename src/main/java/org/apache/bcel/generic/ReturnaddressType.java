@@ -36,6 +36,7 @@ public class ReturnaddressType extends Type {
     /**
      * A Returnaddress [that doesn't know where to return to].
      */
+    @SuppressWarnings("signature") // special-case object
     private ReturnaddressType() {
         super(Const.T_ADDRESS, "<return address>");
     }
@@ -44,6 +45,7 @@ public class ReturnaddressType extends Type {
     /**
      * Creates a ReturnaddressType object with a target.
      */
+    @SuppressWarnings("signature") // special-case object
     public ReturnaddressType(final InstructionHandle returnTarget) {
         super(Const.T_ADDRESS, "<return address targeting " + returnTarget + ">");
         this.returnTarget = returnTarget;

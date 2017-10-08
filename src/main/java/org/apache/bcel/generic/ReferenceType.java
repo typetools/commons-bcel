@@ -17,6 +17,8 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.signature.qual.FieldDescriptor;
+import org.checkerframework.checker.signature.qual.BinaryName;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.apache.bcel.Const;
 import org.apache.bcel.Repository;
@@ -29,13 +31,18 @@ import org.apache.bcel.classfile.JavaClass;
  */
 public abstract class ReferenceType extends Type {
 
-    protected ReferenceType(final byte t, final String s) {
+    // There are three subtypes:
+    //  * For ObjectType, the string s is a @FieldDescriptor.
+    //  * For ArrayType, the string s is a @FieldDescriptor.
+    //  * For UninitializedObjectType, s is a string "<UNINITIALIZED OBJECT OF TYPE ...>"
+    protected ReferenceType(final byte t, final @FieldDescriptor String s) {
         super(t, s);
     }
 
 
     /** Class is non-abstract but not instantiable from the outside
      */
+    @SuppressWarnings("signature") // special case for null object
     ReferenceType() {
         super(Const.T_OBJECT, "<null object>");
     }
