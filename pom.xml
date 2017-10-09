@@ -259,8 +259,9 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.6.1</version>
         <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
+          <!-- 1.8 needed for pluggable type-checking -->
+          <source>1.8</source>
+          <target>1.8</target>
           <!-- Uncomment the following line to use the type annotations compiler. -->
           <fork>true</fork>
           <compilerArguments>
