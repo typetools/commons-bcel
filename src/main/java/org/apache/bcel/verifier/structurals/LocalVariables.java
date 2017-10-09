@@ -209,6 +209,7 @@ public class LocalVariables implements Cloneable {
      * Replaces all occurences of u in this local variables set
      * with an "initialized" ObjectType.
      */
+    @SuppressWarnings("interning") // membership test
     public void initializeObject(final UninitializedObjectType u) {
         for (int i=0; i<locals.length; i++) {
             if (locals[i] == u) {

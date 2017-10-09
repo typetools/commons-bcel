@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.util;
 
+import org.checkerframework.checker.signature.qual.BinaryName;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
@@ -39,6 +40,7 @@ public class JavaWrapper {
     private final java.lang.ClassLoader loader;
 
 
+    @SuppressWarnings("signature") // if bcel.classloader isn't a @ClassGetName, error is thrown
     private static java.lang.ClassLoader getClassLoader() {
         final String s = System.getProperty("bcel.classloader");
         if ((s == null) || "".equals(s)) {
@@ -67,7 +69,7 @@ public class JavaWrapper {
      * @param class_name the fully qualified class name
      * @param argv the arguments just as you would pass them directly
      */
-    public void runMain( final String class_name, final String[] argv ) throws ClassNotFoundException {
+    public void runMain( final @BinaryName String class_name, final String[] argv ) throws ClassNotFoundException {
         final Class<?> cl = loader.loadClass(class_name);
         Method method = null;
         try {

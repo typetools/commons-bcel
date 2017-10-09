@@ -18,6 +18,7 @@
 package org.apache.bcel.verifier;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.interning.qual.InternedDistinct;
 
 /**
  * A VerificationResult is what a PassVerifier returns
@@ -52,10 +53,10 @@ public class VerificationResult {
      * Canonical VerificationResult for not-yet-tried verifications.
      * This happens if some earlier verification pass did not return {@link #VERIFIED_OK}.
      */
-    public static final VerificationResult VR_NOTYET = new VerificationResult(VERIFIED_NOTYET, VERIFIED_NOTYET_MSG);
+    public static final @InternedDistinct VerificationResult VR_NOTYET = new @InternedDistinct VerificationResult(VERIFIED_NOTYET, VERIFIED_NOTYET_MSG);
 
     /** Canonical VerificationResult for passed verifications. */
-    public static final VerificationResult VR_OK = new VerificationResult(VERIFIED_OK, VERIFIED_OK_MSG);
+    public static final @InternedDistinct VerificationResult VR_OK = new @InternedDistinct VerificationResult(VERIFIED_OK, VERIFIED_OK_MSG);
 
     /** The numeric status. */
     private final int numeric;

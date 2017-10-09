@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.verifier.structurals;
 
+import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -68,7 +69,7 @@ public class Subroutines{
     /**
      * This inner class implements the Subroutine interface.
      */
-    private class SubroutineImpl implements Subroutine{
+    private @UsesObjectEquals class SubroutineImpl implements Subroutine{
         /**
          * UNSET, a symbol for an uninitialized localVariable
          * field. This is used for the "top-level" Subroutine;

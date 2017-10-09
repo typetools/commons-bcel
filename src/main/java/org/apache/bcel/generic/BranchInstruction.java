@@ -17,8 +17,11 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.initialization.qual.UnknownInitialization;
+import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.RequiresNonNull;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -32,7 +35,8 @@ import org.apache.bcel.util.ByteSequence;
  * @see InstructionList
  * @version $Id$
  */
-public abstract class BranchInstruction extends Instruction implements InstructionTargeter {
+@SuppressWarnings("superclass.notannotated") // @UsesObjectEquals because InstructionComparator returns false for BranchInstruction comparisons.
+public abstract @UsesObjectEquals class BranchInstruction extends Instruction implements InstructionTargeter {
 
     /**
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
@@ -66,7 +70,7 @@ public abstract class BranchInstruction extends Instruction implements Instructi
      * @param opcode Instruction opcode
      * @param target instruction to branch to
      */
-    protected BranchInstruction(final short opcode, final InstructionHandle target) {
+    protected BranchInstruction(final short opcode, final @Nullable InstructionHandle target) {
         super(opcode, (short) 3);
         setTarget(target);
     }
@@ -108,6 +112,7 @@ public abstract class BranchInstruction extends Instruction implements Instructi
     /**
      * @return the offset to this instruction's target
      */
+    /*@RequiresNonNull("target")*/
     protected int getTargetOffset() {
         return getTargetOffset(target);
     }
@@ -141,6 +146,7 @@ public abstract class BranchInstruction extends Instruction implements Instructi
      * @return mnemonic for instruction
      */
     @Override
+    @SuppressWarnings("interning") // test against this for printing
     public String toString( final boolean verbose ) {
         final String s = super.toString(verbose);
         String t = "null";
@@ -195,7 +201,7 @@ public abstract class BranchInstruction extends Instruction implements Instructi
     /**
      * @return target of branch instruction
      */
-    public InstructionHandle getTarget() {
+    public @Nullable InstructionHandle getTarget() {
         return target;
     }
 
@@ -204,8 +210,8 @@ public abstract class BranchInstruction extends Instruction implements Instructi
      * Set branch target
      * @param target branch target
      */
-    @EnsuresNonNull("target")
-    public void setTarget( final InstructionHandle target ) {
+    @EnsuresNonNull("this.target")
+    public void setTarget( /*>>>@UnknownInitialization(BranchInstruction.class) BranchInstruction this,*/ final InstructionHandle target ) {
         notifyTarget(this.target, target, this);
         this.target = target;
     }
@@ -214,7 +220,7 @@ public abstract class BranchInstruction extends Instruction implements Instructi
     /**
      * Used by BranchInstruction, LocalVariableGen, CodeExceptionGen, LineNumberGen
      */
-    static void notifyTarget( final InstructionHandle old_ih, final InstructionHandle new_ih,
+    static void notifyTarget( final @Nullable InstructionHandle old_ih, final @Nullable InstructionHandle new_ih,
             final InstructionTargeter t ) {
         if (old_ih != null) {
             old_ih.removeTargeter(t);

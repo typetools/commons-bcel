@@ -271,17 +271,17 @@
           <annotationProcessors>
 <!-- TODO: re-enable all.  It's easier to enable one at a time while getting the class to type-check, though. -->
             <!-- Add all the checkers you want to enable here -->
-            <annotationProcessor>org.checkerframework.checker.interning.InterningChecker</annotationProcessor>
-<!--            <annotationProcessor>org.checkerframework.checker.nullness.NullnessChecker</annotationProcessor> -->
-            <!-- <annotationProcessor>org.checkerframework.checker.signature.SignatureChecker</annotationProcessor> -->
+<!--            <annotationProcessor>org.checkerframework.checker.interning.InterningChecker</annotationProcessor> -->
+            <annotationProcessor>org.checkerframework.checker.nullness.NullnessChecker</annotationProcessor>
+<!--            <annotationProcessor>org.checkerframework.checker.signature.SignatureChecker</annotationProcessor> -->
           </annotationProcessors>
           <compilerArgs>
-            <arg>-Awarns</arg>
             <arg>-AprintErrorStack</arg>
             <!-- location of the annotated JDK, which comes from a Maven dependency -->
             <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
             <!-- Uncomment the following line to use the type annotations compiler. -->
             <arg>-J-Xbootclasspath/p:${typeAnnotationsJavac}</arg>
+            <arg>-Awarns</arg>
           </compilerArgs>
         </configuration>
       </plugin>
@@ -484,27 +484,35 @@
       <version>3.6</version>
       <scope>test</scope>
     </dependency>
-    <!-- annotations from the Checker Framework: nullness, interning, locking, ... -->
+    <!-- Annotations from the Checker Framework: nullness, interning, locking, ... -->
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker-qual</artifactId>
       <version>${checkerframework.version}</version>
+      <scope>system</scope>
+      <systemPath>${env.CHECKERFRAMEWORK}/checker/dist/checker-qual.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker</artifactId>
       <version>${checkerframework.version}</version>
+      <scope>system</scope>
+      <systemPath>${env.CHECKERFRAMEWORK}/checker/dist/checker.jar</systemPath>
     </dependency>
     <!-- The Type Annotations compiler. Uncomment if using annotations in comments. -->
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>compiler</artifactId>
       <version>${checkerframework.version}</version>
+      <scope>system</scope>
+      <systemPath>${env.CHECKERFRAMEWORK}/checker/dist/javac.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>jdk8</artifactId>
       <version>${checkerframework.version}</version>
+      <scope>system</scope>
+      <systemPath>${env.CHECKERFRAMEWORK}/checker/dist/jdk8.jar</systemPath>
     </dependency>
   </dependencies>
 

@@ -55,6 +55,7 @@ public abstract class FieldOrMethod extends CPInstruction implements LoadClass {
 
     /** @return signature of referenced method/field.
      */
+    // TODO: for a Field, probably is @FieldDescriptor
     public String getSignature( final ConstantPoolGen cpg ) {
         final ConstantPool cp = cpg.getConstantPool();
         final ConstantCP cmr = (ConstantCP) cp.getConstant(super.getIndex());

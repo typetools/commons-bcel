@@ -17,7 +17,7 @@
 
 package org.apache.bcel.classfile;
 
-import org.checkerframework.checker.signature.qual.BinaryName;
+import org.checkerframework.checker.signature.qual.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.CharArrayReader;
@@ -455,13 +455,16 @@ public abstract class Utility {
 
 
     /**
-     * Shorten long class names, <em>java/lang/String</em> becomes
+     * Shorten long class names in the java.lang package, <em>java/lang/String</em> becomes
      * <em>String</em>.
+     * Slashes <em>/</em> are converted to dots <em>.</em>.
      *
      * @param str The long class name
      * @return Compacted class name
      */
-    public static String compactClassName( final String str ) {
+    // TODO: This is also called on the result of cp.getConstantString(catch_type, Const.CONSTANT_Class)
+    // which I thought was @ClassGetName.
+    public static @BinaryName String compactClassName( final @InternalForm String str ) {
         return compactClassName(str, true);
     }
 
@@ -472,14 +475,14 @@ public abstract class Utility {
      * class name starts with this string and the flag <em>chopit</em> is true.
      * Slashes <em>/</em> are converted to dots <em>.</em>.
      *
-     * @param str The long class name
+     * @param strIn The long class name
      * @param prefix The prefix the get rid off
      * @param chopit Flag that determines whether chopping is executed or not
      * @return Compacted class name
      */
-    public static String compactClassName( String str, final String prefix, final boolean chopit ) {
+    public static @BinaryName String compactClassName( @InternalForm String strIn, final String prefix, final boolean chopit ) {
         final int len = prefix.length();
-        str = str.replace('/', '.'); // Is `/' on all systems, even DOS
+        String str = strIn.replace('/', '.'); // Is `/' on all systems, even DOS
         if (chopit) {
             // If string starts with `prefix' and contains no further dots
             if (str.startsWith(prefix) && (str.substring(len).indexOf('.') == -1)) {
@@ -491,16 +494,15 @@ public abstract class Utility {
 
 
     /**
-     * Shorten long class names, <em>java/lang/String</em> becomes
-     * <em>java.lang.String</em>,
-     * e.g.. If <em>chopit</em> is <em>true</em> the prefix <em>java.lang</em>
+     * Slashes <em>/</em> are converted to dots <em>.</em>.
+     * e.g.. If <em>chopit</em> is <em>true</em> the prefix <em>java.lang.</em>
      * is also removed.
      *
      * @param str The long class name
      * @param chopit Flag that determines whether chopping is executed or not
      * @return Compacted class name
      */
-    public static String compactClassName( final String str, final boolean chopit ) {
+    public static @BinaryName String compactClassName( final @InternalForm String str, final boolean chopit ) {
         return compactClassName(str, "java.lang.", chopit);
     }
 
@@ -769,7 +771,16 @@ public abstract class Utility {
      * @param signature to convert
      * @return Human readable signature
      */
-    public static @BinaryName String signatureToString( final String signature ) {
+    // Can take an argument such as
+    // "Ljava/util/Map<TX;Ljava/util/List<TY;>;>;" or
+    // "Ljava/util/Set<+Ljava/nio/file/OpenOption;>;" or
+    // "[Ljava/nio/file/attribute/FileAttribute<*>;" or
+    // "Ljava/util/Map<**>;" or
+    // "Lcom/jme3/util/IntMap<TT;>.IntMapIterator;"
+    // TODO: Type.getType(String) passes to this method a ClassGetName rather than a FieldDescriptor.
+    // That violates the specification of signatureToString(String, boolean).
+    // TODO: result can contain generic type parameters, so it isn't a type in the Signature Checker.
+    public static String signatureToString( final String signature ) {
         return signatureToString(signature, true);
     }
 
@@ -808,7 +819,10 @@ public abstract class Utility {
      * @return Java type declaration
      * @throws ClassFormatException
      */
-    public static String signatureToString( final String signature, final boolean chopit ) {
+    // TODO: what BCEL calls "field signature" is @FieldDescriptor
+    // TODO: result is one of fully-qualified name, binary name, Class.getName, internal form, Class.getSimpleName
+    // TODO: result can contain generic type parameters, so it isn't a type in the Signature Checker.
+    public static String signatureToString( final @FieldDescriptor String signature, final boolean chopit ) {
         //corrected concurrent private static field acess
         wrap(consumed_chars, 1); // This is the default, read just one char like `B'
         try {
@@ -979,7 +993,7 @@ public abstract class Utility {
      * @param  type Java type
      * @return byte code signature
      */
-    public static String getSignature( String type ) {
+    public static @FieldDescriptor String getSignature( @FullyQualifiedName String type ) {
         final StringBuilder buf = new StringBuilder();
         final char[] chars = type.toCharArray();
         boolean char_found = false;

@@ -835,6 +835,7 @@ public class ExecutionVisitor extends EmptyVisitor{
     }
     /** Symbolically executes the corresponding Java Virtual Machine instruction. */
     @Override
+    @SuppressWarnings("interning") // is getThis the same as the last stack element?
     public void visitINVOKESPECIAL(final INVOKESPECIAL o) {
         if (o.getMethodName(cpg).equals(Const.CONSTRUCTOR_NAME)) {
             final UninitializedObjectType t = (UninitializedObjectType) stack().peek(o.getArgumentTypes(cpg).length);

@@ -17,6 +17,9 @@
  */
 package org.apache.bcel;
 
+import org.checkerframework.checker.signature.qual.SourceNameForNonArrayNonInner;
+import org.checkerframework.checker.signature.qual.FullyQualifiedName;
+import org.checkerframework.checker.signature.qual.FieldDescriptor;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -430,12 +433,12 @@ public final class Const {
   /**
    * The names of the interfaces implemented by arrays
    */
-  private static final String[] INTERFACES_IMPLEMENTED_BY_ARRAYS = {"java.lang.Cloneable", "java.io.Serializable"};
+  private static final @SourceNameForNonArrayNonInner String[] INTERFACES_IMPLEMENTED_BY_ARRAYS = {"java.lang.Cloneable", "java.io.Serializable"};
 
   /**
    * @since 6.0
    */
-  public static Iterable<String> getInterfacesImplementedByArrays() {
+  public static Iterable<@SourceNameForNonArrayNonInner String> getInterfacesImplementedByArrays() {
       return Collections.unmodifiableList(Arrays.asList(INTERFACES_IMPLEMENTED_BY_ARRAYS));
   }
 
@@ -1824,7 +1827,7 @@ public final class Const {
   /** The signature characters corresponding to primitive types,
    * e.g., SHORT_TYPE_NAMES[T_INT] = "I"
    */
-  private static final String[] SHORT_TYPE_NAMES = {
+  private static final @FieldDescriptor String[] SHORT_TYPE_NAMES = {
     ILLEGAL_TYPE, ILLEGAL_TYPE,  ILLEGAL_TYPE, ILLEGAL_TYPE,
     "Z", "C", "F", "D", "B", "S", "I", "J",
     "V", ILLEGAL_TYPE, ILLEGAL_TYPE, ILLEGAL_TYPE
@@ -1836,7 +1839,7 @@ public final class Const {
    * @return the short type name
    * @since 6.0
    */
-  public static String getShortTypeName(final int index) {
+  public static @FieldDescriptor String getShortTypeName(final int index) {
       return SHORT_TYPE_NAMES[index];
   }
 

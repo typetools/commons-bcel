@@ -18,6 +18,7 @@
 package org.apache.bcel.verifier.statics;
 
 
+import org.checkerframework.checker.interning.qual.InternedDistinct;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
@@ -189,6 +190,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
      *
      * @throws ClassConstraintException otherwise.
      */
+    @SuppressWarnings("interned") // looking up same string in Repository
     private void every_class_has_an_accessible_superclass() {
         try {
         final Set<String> hs = new HashSet<>(); // save class names to detect circular inheritance
@@ -1006,8 +1008,10 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                     // We cannot safely trust any other "instanceof" mechanism. We need to transitively verify
                     // the ancestor hierarchy.
                     JavaClass e = Repository.lookupClass(cname);
-                    final JavaClass t = Repository.lookupClass(Type.THROWABLE.getClassName());
-                    final JavaClass o = Repository.lookupClass(Type.OBJECT.getClassName());
+                    @SuppressWarnings("interning") // lookupClass is deterministic
+                    final @InternedDistinct JavaClass t = Repository.lookupClass(Type.THROWABLE.getClassName());
+                    @SuppressWarnings("interning") // lookupClass is deterministic
+                    final @InternedDistinct JavaClass o = Repository.lookupClass(Type.OBJECT.getClassName());
                     while (e != o) {
                         if (e == t) {
                             break; // It's a subclass of Throwable, OKAY, leave.
@@ -1037,7 +1041,9 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
             int method_number = -1;
             final Method[] ms = Repository.lookupClass(myOwner.getClassName()).getMethods();
             for (int mn=0; mn<ms.length; mn++) {
-                if (m == ms[mn]) {
+                @SuppressWarnings("interning") // not sure why this is OK
+                boolean found = (m == ms[mn]);
+                if (found) {
                     method_number = mn;
                     break;
                 }
@@ -1169,8 +1175,10 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                 // We cannot safely trust any other "instanceof" mechanism. We need to transitively verify
                 // the ancestor hierarchy.
                 JavaClass e = Repository.lookupClass(cname);
-                final JavaClass t = Repository.lookupClass(Type.THROWABLE.getClassName());
-                final JavaClass o = Repository.lookupClass(Type.OBJECT.getClassName());
+                @SuppressWarnings("interning") // lookupClass is deterministic
+                final @InternedDistinct JavaClass t = Repository.lookupClass(Type.THROWABLE.getClassName());
+                @SuppressWarnings("interning") // lookupClass is deterministic
+                final @InternedDistinct JavaClass o = Repository.lookupClass(Type.OBJECT.getClassName());
                 while (e != o) {
                     if (e == t) {
                         break; // It's a subclass of Throwable, OKAY, leave.

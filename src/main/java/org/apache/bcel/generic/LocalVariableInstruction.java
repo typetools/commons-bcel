@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.interning.qual.InternedDistinct;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -42,7 +43,7 @@ public abstract class LocalVariableInstruction extends Instruction implements Ty
     private short canon_tag = -1; // canonical tag such as ILOAD
 
 
-    private boolean wide() {
+    private boolean wide(/*>>>@UnknownInitialization(LocalVariableInstruction.class) LocalVariableInstruction this*/) {
         return n > Const.MAX_BYTE;
     }
 
@@ -200,7 +201,7 @@ public abstract class LocalVariableInstruction extends Instruction implements Ty
      * @return type associated with the instruction
      */
     @Override
-    public Type getType( final ConstantPoolGen cp ) {
+    public @InternedDistinct Type getType( final ConstantPoolGen cp ) {
         switch (canon_tag) {
             case Const.ILOAD:
             case Const.ISTORE:

@@ -71,6 +71,7 @@ public class VerifyDialog extends javax.swing.JDialog {
     class IvjEventHandler implements java.awt.event.ActionListener {
 
         @Override
+        @SuppressWarnings("interning") // machine-generated GUI code
         public void actionPerformed( final java.awt.event.ActionEvent e ) {
             if (e.getSource() == VerifyDialog.this.getPass1Button()) {
                 connEtoC1(e);

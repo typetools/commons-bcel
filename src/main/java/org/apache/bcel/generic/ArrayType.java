@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.signature.qual.ClassGetName;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.apache.bcel.Const;
 
@@ -46,7 +47,7 @@ public final class ArrayType extends ReferenceType {
      *
      * @param class_name complete name of class (java.lang.String, e.g.)
      */
-    public ArrayType(final String class_name, final int dimensions) {
+    public ArrayType(final @ClassGetName String class_name, final int dimensions) {
         this(ObjectType.getInstance(class_name), dimensions);
     }
 
@@ -56,8 +57,10 @@ public final class ArrayType extends ReferenceType {
      *
      * @param type type of array (may be an array itself)
      */
+    @SuppressWarnings("signature") // string concatenation
     public ArrayType(final Type type, final int dimensions) {
-        super(Const.T_ARRAY, "<dummy>");
+        // <dummy> will be overridden by setSignature below!
+        super(Const.T_ARRAY, "<dummy, will be replaced before end of constructor>");
         if ((dimensions < 1) || (dimensions > Const.MAX_BYTE)) {
             throw new ClassGenException("Invalid number of dimensions: " + dimensions);
         }
