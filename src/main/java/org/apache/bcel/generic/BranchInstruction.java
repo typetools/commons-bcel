@@ -48,7 +48,9 @@ public abstract @UsesObjectEquals class BranchInstruction extends Instruction im
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
      */
     @Deprecated
-    protected @Nullable InstructionHandle target; // Target object in instruction list
+    // TODO: This variable can sometimes be non-null; when?  toString() handles it being null.
+    // dispose() sets it to null, but maybe that is called only before all references to it are released.
+    protected InstructionHandle target; // Target object in instruction list
 
     /**
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
@@ -70,7 +72,7 @@ public abstract @UsesObjectEquals class BranchInstruction extends Instruction im
      * @param opcode Instruction opcode
      * @param target instruction to branch to
      */
-    protected BranchInstruction(final short opcode, final @Nullable InstructionHandle target) {
+    protected BranchInstruction(final short opcode, final InstructionHandle target) {
         super(opcode, (short) 3);
         setTarget(target);
     }
@@ -81,6 +83,7 @@ public abstract @UsesObjectEquals class BranchInstruction extends Instruction im
      * @param out Output stream
      */
     @Override
+    /*@RequiresNonNull("target")*/
     public void dump( final DataOutputStream out ) throws IOException {
         out.writeByte(super.getOpcode());
         index = getTargetOffset();
@@ -201,7 +204,7 @@ public abstract @UsesObjectEquals class BranchInstruction extends Instruction im
     /**
      * @return target of branch instruction
      */
-    public @Nullable InstructionHandle getTarget() {
+    public InstructionHandle getTarget() {
         return target;
     }
 
@@ -221,7 +224,7 @@ public abstract @UsesObjectEquals class BranchInstruction extends Instruction im
      * Used by BranchInstruction, LocalVariableGen, CodeExceptionGen, LineNumberGen
      */
     static void notifyTarget( final @Nullable InstructionHandle old_ih, final @Nullable InstructionHandle new_ih,
-            final InstructionTargeter t ) {
+            final /*@UnknownInitialization(InstructionTargeter.class)*/ InstructionTargeter t ) {
         if (old_ih != null) {
             old_ih.removeTargeter(t);
         }
@@ -258,6 +261,7 @@ public abstract @UsesObjectEquals class BranchInstruction extends Instruction im
      * Inform target that it's not targeted anymore.
      */
     @Override
+    @SuppressWarnings("nullness") // setting target to null, but instruction won't be used any more
     void dispose() {
         setTarget(null);
         index = -1;
