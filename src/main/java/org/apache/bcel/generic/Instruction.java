@@ -577,7 +577,7 @@ public abstract class Instruction implements Cloneable {
      */
     @Override
     @SuppressWarnings("nullness") // BCEL bug: equals does not handle null
-    public boolean equals( final Object that ) {
+    public boolean equals( final @Nullable Object that ) {
         return (that instanceof Instruction) ? cmp.equals(this, (Instruction) that) : false;
     }
 

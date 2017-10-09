@@ -43,7 +43,7 @@ public abstract class LocalVariableInstruction extends Instruction implements Ty
     private short canon_tag = -1; // canonical tag such as ILOAD
 
 
-    private boolean wide() {
+    private boolean wide(/*>>>@UnknownInitialization(LocalVariableInstruction.class) LocalVariableInstruction this*/) {
         return n > Const.MAX_BYTE;
     }
 

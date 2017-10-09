@@ -76,6 +76,7 @@ public abstract class Select extends BranchInstruction implements VariableLength
      * Empty constructor needed for the Class.newInstance() statement in
      * Instruction.readInstruction(). Not to be used otherwise.
      */
+    @SuppressWarnings("nullness") // used only in special case
     Select() {
     }
 
