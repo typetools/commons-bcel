@@ -17,8 +17,11 @@
  */
 package org.apache.bcel.generic;
 
-import org.checkerframework.checker.signature.qual.ClassGetName;
+/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signature.qual.ClassGetName;
+*/
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -120,8 +123,8 @@ public class MethodGen extends FieldGenOrMethodGen {
      * abstract or native methods
      * @param cp constant pool
      */
-    public MethodGen(final int access_flags, final Type return_type, final Type[] arg_types, String @Nullable [] arg_names,
-            final String method_name, final @Nullable @ClassGetName String class_name, final InstructionList il, final ConstantPoolGen cp) {
+    public MethodGen(final int access_flags, final Type return_type, final Type[] arg_types, String /*@Nullable*/ [] arg_names,
+            final String method_name, final /*@Nullable*/ @ClassGetName String class_name, final InstructionList il, final ConstantPoolGen cp) {
         super(access_flags);
         setType(return_type);
         setArgumentTypes(arg_types);
@@ -1266,7 +1269,7 @@ public class MethodGen extends FieldGenOrMethodGen {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( final @Nullable Object obj ) {
+    public boolean equals( final /*@Nullable*/ Object obj ) {
         return bcelComparator.equals(this, obj);
     }
 

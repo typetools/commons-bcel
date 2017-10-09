@@ -17,7 +17,10 @@
  */
 package org.apache.bcel.generic;
 
+/*>>>
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
+*/
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 

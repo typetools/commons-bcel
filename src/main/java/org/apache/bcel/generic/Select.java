@@ -17,7 +17,10 @@
  */
 package org.apache.bcel.generic;
 
+/*>>>
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
+*/
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 

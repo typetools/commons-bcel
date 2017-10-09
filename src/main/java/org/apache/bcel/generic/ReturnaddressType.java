@@ -17,8 +17,11 @@
  */
 package org.apache.bcel.generic;
 
+/*>>>
 import org.checkerframework.checker.interning.qual.InternedDistinct;
 import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 import org.apache.bcel.Const;
 
 /**
@@ -29,7 +32,7 @@ import org.apache.bcel.Const;
  */
 public class ReturnaddressType extends Type {
 
-    public static final @InternedDistinct ReturnaddressType NO_TARGET = new @InternedDistinct ReturnaddressType();
+    public static final /*@InternedDistinct*/ ReturnaddressType NO_TARGET = new /*@InternedDistinct*/ ReturnaddressType();
     private InstructionHandle returnTarget;
 
 
@@ -67,7 +70,7 @@ public class ReturnaddressType extends Type {
      * Returns if the two Returnaddresses refer to the same target.
      */
     @Override
-    public boolean equals( final @Nullable Object rat ) {
+    public boolean equals( final /*@Nullable*/ Object rat ) {
         if (!(rat instanceof ReturnaddressType)) {
             return false;
         }

@@ -17,7 +17,10 @@
  */
 package org.apache.bcel.util;
 
+/*>>>
 import org.checkerframework.checker.signature.qual.BinaryName;
+*/
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Hashtable;

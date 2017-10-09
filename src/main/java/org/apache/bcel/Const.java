@@ -17,9 +17,12 @@
  */
 package org.apache.bcel;
 
-import org.checkerframework.checker.signature.qual.SourceNameForNonArrayNonInner;
-import org.checkerframework.checker.signature.qual.FullyQualifiedName;
+/*>>>
 import org.checkerframework.checker.signature.qual.FieldDescriptor;
+import org.checkerframework.checker.signature.qual.FullyQualifiedName;
+import org.checkerframework.checker.signature.qual.SourceNameForNonArrayNonInner;
+*/
+
 import java.util.Arrays;
 import java.util.Collections;
 

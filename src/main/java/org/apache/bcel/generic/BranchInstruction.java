@@ -17,11 +17,14 @@
  */
 package org.apache.bcel.generic;
 
+/*>>>
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
+*/
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -36,7 +39,7 @@ import org.apache.bcel.util.ByteSequence;
  * @version $Id$
  */
 @SuppressWarnings("superclass.notannotated") // @UsesObjectEquals because InstructionComparator returns false for BranchInstruction comparisons.
-public abstract @UsesObjectEquals class BranchInstruction extends Instruction implements InstructionTargeter {
+public abstract /*@UsesObjectEquals*/ class BranchInstruction extends Instruction implements InstructionTargeter {
 
     /**
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
@@ -223,7 +226,7 @@ public abstract @UsesObjectEquals class BranchInstruction extends Instruction im
     /**
      * Used by BranchInstruction, LocalVariableGen, CodeExceptionGen, LineNumberGen
      */
-    static void notifyTarget( final @Nullable InstructionHandle old_ih, final @Nullable InstructionHandle new_ih,
+    static void notifyTarget( final /*@Nullable*/ InstructionHandle old_ih, final /*@Nullable*/ InstructionHandle new_ih,
             final /*@UnknownInitialization(InstructionTargeter.class)*/ InstructionTargeter t ) {
         if (old_ih != null) {
             old_ih.removeTargeter(t);

@@ -17,7 +17,10 @@
  */
 package org.apache.bcel.generic;
 
+/*>>>
 import org.checkerframework.checker.signature.qual.ClassGetName;
+*/
+
 import org.apache.bcel.Const;
 
 /**

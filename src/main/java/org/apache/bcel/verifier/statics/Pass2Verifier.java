@@ -18,7 +18,10 @@
 package org.apache.bcel.verifier.statics;
 
 
+/*>>>
 import org.checkerframework.checker.interning.qual.InternedDistinct;
+*/
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
@@ -1009,9 +1012,9 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                     // the ancestor hierarchy.
                     JavaClass e = Repository.lookupClass(cname);
                     @SuppressWarnings("interning") // lookupClass is deterministic
-                    final @InternedDistinct JavaClass t = Repository.lookupClass(Type.THROWABLE.getClassName());
+                    final /*@InternedDistinct*/ JavaClass t = Repository.lookupClass(Type.THROWABLE.getClassName());
                     @SuppressWarnings("interning") // lookupClass is deterministic
-                    final @InternedDistinct JavaClass o = Repository.lookupClass(Type.OBJECT.getClassName());
+                    final /*@InternedDistinct*/ JavaClass o = Repository.lookupClass(Type.OBJECT.getClassName());
                     while (e != o) {
                         if (e == t) {
                             break; // It's a subclass of Throwable, OKAY, leave.
@@ -1176,9 +1179,9 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                 // the ancestor hierarchy.
                 JavaClass e = Repository.lookupClass(cname);
                 @SuppressWarnings("interning") // lookupClass is deterministic
-                final @InternedDistinct JavaClass t = Repository.lookupClass(Type.THROWABLE.getClassName());
+                final /*@InternedDistinct*/ JavaClass t = Repository.lookupClass(Type.THROWABLE.getClassName());
                 @SuppressWarnings("interning") // lookupClass is deterministic
-                final @InternedDistinct JavaClass o = Repository.lookupClass(Type.OBJECT.getClassName());
+                final /*@InternedDistinct*/ JavaClass o = Repository.lookupClass(Type.OBJECT.getClassName());
                 while (e != o) {
                     if (e == t) {
                         break; // It's a subclass of Throwable, OKAY, leave.

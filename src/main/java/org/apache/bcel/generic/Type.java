@@ -17,23 +17,23 @@
  */
 package org.apache.bcel.generic;
 
+/*>>>
+import org.checkerframework.checker.interning.qual.*;
+import org.checkerframework.checker.interning.qual.Interned;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signature.qual.BinaryName;
 import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
 import org.checkerframework.checker.signature.qual.FieldDescriptor;
-import org.checkerframework.checker.interning.qual.Interned;
+import org.checkerframework.framework.qual.AnnotatedFor;
+*/
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.bcel.Const;
 import org.apache.bcel.classfile.ClassFormatException;
 import org.apache.bcel.classfile.Utility;
-
-/*>>>
-import org.checkerframework.checker.interning.qual.*;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.signature.qual.BinaryName;
-import org.checkerframework.framework.qual.AnnotatedFor;
-*/
 
 /**
  * Abstract super class for all possible java types, namely basic types
@@ -68,25 +68,25 @@ public abstract class Type {
     protected @FieldDescriptor String signature; // signature for the type TODO should be private
     /** Predefined constants
      */
-    public static final @InternedDistinct BasicType VOID = new BasicType(Const.T_VOID);
-    public static final @InternedDistinct BasicType BOOLEAN = new BasicType(Const.T_BOOLEAN);
-    public static final @InternedDistinct BasicType INT = new BasicType(Const.T_INT);
-    public static final @InternedDistinct BasicType SHORT = new BasicType(Const.T_SHORT);
-    public static final @InternedDistinct BasicType BYTE = new BasicType(Const.T_BYTE);
-    public static final @InternedDistinct BasicType LONG = new BasicType(Const.T_LONG);
-    public static final @InternedDistinct BasicType DOUBLE = new BasicType(Const.T_DOUBLE);
-    public static final @InternedDistinct BasicType FLOAT = new BasicType(Const.T_FLOAT);
-    public static final @InternedDistinct BasicType CHAR = new BasicType(Const.T_CHAR);
-    public static final @InternedDistinct ObjectType OBJECT = new ObjectType("java.lang.Object");
-    public static final @InternedDistinct ObjectType CLASS = new ObjectType("java.lang.Class");
-    public static final @InternedDistinct ObjectType STRING = new ObjectType("java.lang.String");
-    public static final @InternedDistinct ObjectType STRINGBUFFER = new ObjectType("java.lang.StringBuffer");
-    public static final @InternedDistinct ObjectType THROWABLE = new ObjectType("java.lang.Throwable");
+    public static final /*@InternedDistinct*/ BasicType VOID = new BasicType(Const.T_VOID);
+    public static final /*@InternedDistinct*/ BasicType BOOLEAN = new BasicType(Const.T_BOOLEAN);
+    public static final /*@InternedDistinct*/ BasicType INT = new BasicType(Const.T_INT);
+    public static final /*@InternedDistinct*/ BasicType SHORT = new BasicType(Const.T_SHORT);
+    public static final /*@InternedDistinct*/ BasicType BYTE = new BasicType(Const.T_BYTE);
+    public static final /*@InternedDistinct*/ BasicType LONG = new BasicType(Const.T_LONG);
+    public static final /*@InternedDistinct*/ BasicType DOUBLE = new BasicType(Const.T_DOUBLE);
+    public static final /*@InternedDistinct*/ BasicType FLOAT = new BasicType(Const.T_FLOAT);
+    public static final /*@InternedDistinct*/ BasicType CHAR = new BasicType(Const.T_CHAR);
+    public static final /*@InternedDistinct*/ ObjectType OBJECT = new ObjectType("java.lang.Object");
+    public static final /*@InternedDistinct*/ ObjectType CLASS = new ObjectType("java.lang.Class");
+    public static final /*@InternedDistinct*/ ObjectType STRING = new ObjectType("java.lang.String");
+    public static final /*@InternedDistinct*/ ObjectType STRINGBUFFER = new ObjectType("java.lang.StringBuffer");
+    public static final /*@InternedDistinct*/ ObjectType THROWABLE = new ObjectType("java.lang.Throwable");
     public static final Type[] NO_ARGS = new Type[0]; // EMPTY, so immutable
-    public static final @InternedDistinct ReferenceType NULL = new ReferenceType() {
+    public static final /*@InternedDistinct*/ ReferenceType NULL = new ReferenceType() {
     };
     @SuppressWarnings("signature") // illegal object
-    public static final @InternedDistinct Type UNKNOWN = new Type(Const.T_UNKNOWN, "<unknown object>") {
+    public static final /*@InternedDistinct*/ Type UNKNOWN = new Type(Const.T_UNKNOWN, "<unknown object>") {
     };
 
 

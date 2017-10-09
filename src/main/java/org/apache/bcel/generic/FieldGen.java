@@ -17,7 +17,10 @@
  */
 package org.apache.bcel.generic;
 
+/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -364,7 +367,7 @@ public class FieldGen extends FieldGenOrMethodGen {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( final @Nullable Object obj ) {
+    public boolean equals( final /*@Nullable*/ Object obj ) {
         return bcelComparator.equals(this, obj);
     }
 

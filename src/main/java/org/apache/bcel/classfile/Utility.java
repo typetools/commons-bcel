@@ -17,7 +17,10 @@
 
 package org.apache.bcel.classfile;
 
+/*>>>
 import org.checkerframework.checker.signature.qual.*;
+*/
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.CharArrayReader;

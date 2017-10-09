@@ -17,8 +17,11 @@
  */
 package org.apache.bcel.generic;
 
-import org.checkerframework.checker.interning.qual.InternedDistinct;
+/*>>>
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
+import org.checkerframework.checker.interning.qual.InternedDistinct;
+*/
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -201,7 +204,7 @@ public abstract class LocalVariableInstruction extends Instruction implements Ty
      * @return type associated with the instruction
      */
     @Override
-    public @InternedDistinct Type getType( final ConstantPoolGen cp ) {
+    public /*@InternedDistinct*/ Type getType( final ConstantPoolGen cp ) {
         switch (canon_tag) {
             case Const.ILOAD:
             case Const.ISTORE:

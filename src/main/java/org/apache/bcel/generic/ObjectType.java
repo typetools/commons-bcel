@@ -17,17 +17,17 @@
  */
 package org.apache.bcel.generic;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
 import org.checkerframework.checker.signature.qual.ClassGetName;
 import org.checkerframework.checker.signature.qual.FullyQualifiedName;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.framework.qual.AnnotatedFor;
+*/
+
 import org.apache.bcel.Const;
 import org.apache.bcel.Repository;
 import org.apache.bcel.classfile.JavaClass;
-
-/*>>>
-import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
-import org.checkerframework.framework.qual.AnnotatedFor;
-*/
 
 /** 
  * Denotes reference such as java.lang.String.
@@ -84,7 +84,7 @@ public class ObjectType extends ReferenceType {
     /** @return true if both type objects refer to the same class.
      */
     @Override
-    public boolean equals( final @Nullable Object type ) {
+    public boolean equals( final /*@Nullable*/ Object type ) {
         return (type instanceof ObjectType)
                 ? ((ObjectType) type).class_name.equals(class_name)
                 : false;

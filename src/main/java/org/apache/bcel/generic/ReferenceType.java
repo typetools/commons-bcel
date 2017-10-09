@@ -17,9 +17,12 @@
  */
 package org.apache.bcel.generic;
 
-import org.checkerframework.checker.signature.qual.FieldDescriptor;
-import org.checkerframework.checker.signature.qual.BinaryName;
+/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signature.qual.BinaryName;
+import org.checkerframework.checker.signature.qual.FieldDescriptor;
+*/
+
 import org.apache.bcel.Const;
 import org.apache.bcel.Repository;
 import org.apache.bcel.classfile.JavaClass;
@@ -198,7 +201,7 @@ public abstract class ReferenceType extends Type {
      * @throws ClassNotFoundException on failure to find superclasses of this
      *  type, or the type passed as a parameter
      */
-    public @Nullable ReferenceType getFirstCommonSuperclass( final ReferenceType t ) throws ClassNotFoundException {
+    public /*@Nullable*/ ReferenceType getFirstCommonSuperclass( final ReferenceType t ) throws ClassNotFoundException {
         if (this.equals(Type.NULL)) {
             return t;
         }
@@ -283,7 +286,7 @@ public abstract class ReferenceType extends Type {
      *  type, or the type passed as a parameter
      */
     @Deprecated
-    public @Nullable ReferenceType firstCommonSuperclass( final ReferenceType t ) throws ClassNotFoundException {
+    public /*@Nullable*/ ReferenceType firstCommonSuperclass( final ReferenceType t ) throws ClassNotFoundException {
         if (this.equals(Type.NULL)) {
             return t;
         }

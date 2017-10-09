@@ -17,7 +17,10 @@
  */
 package org.apache.bcel.generic;
 
+/*>>>
 import org.checkerframework.checker.interning.qual.InternedDistinct;
+*/
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -150,7 +153,7 @@ public class IINC extends LocalVariableInstruction {
     /** @return int type
      */
     @Override
-    public @InternedDistinct Type getType( final ConstantPoolGen cp ) {
+    public /*@InternedDistinct*/ Type getType( final ConstantPoolGen cp ) {
         return Type.INT;
     }
 

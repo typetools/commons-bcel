@@ -17,7 +17,10 @@
  */
 package org.apache.bcel.util;
 
+/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -123,7 +126,7 @@ public class ClassPath {
 
 
     @Override
-    public boolean equals( final @Nullable Object o ) {
+    public boolean equals( final /*@Nullable*/ Object o ) {
         if (o instanceof ClassPath) {
             final ClassPath cp = (ClassPath)o;
             return class_path.equals(cp.toString());

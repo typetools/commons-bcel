@@ -18,7 +18,9 @@
 package org.apache.bcel.verifier.structurals;
 
 
+/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
+*/
 
 /**
  * This class represents a JVM execution frame; that means,
@@ -105,7 +107,7 @@ public class Frame{
      *
      */
     @Override
-    public boolean equals(final @Nullable Object o) {
+    public boolean equals(final /*@Nullable*/ Object o) {
         if (!(o instanceof Frame)) {
             return false; // implies "null" is non-equal.
         }

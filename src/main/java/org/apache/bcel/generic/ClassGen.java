@@ -17,6 +17,13 @@
  */
 package org.apache.bcel.generic;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signature.qual.BinaryName;
+import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
+import org.checkerframework.framework.qual.AnnotatedFor;
+*/
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,13 +40,6 @@ import org.apache.bcel.classfile.RuntimeInvisibleAnnotations;
 import org.apache.bcel.classfile.RuntimeVisibleAnnotations;
 import org.apache.bcel.classfile.SourceFile;
 import org.apache.bcel.util.BCELComparator;
-
-/*>>>
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.signature.qual.BinaryName;
-import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
-import org.checkerframework.framework.qual.AnnotatedFor;
-*/
 
 /** 
  * Template class for building up a java class. May be initialized with an

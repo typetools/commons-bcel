@@ -17,8 +17,10 @@
  */
 package org.apache.bcel.verifier.structurals;
 
-
+/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 import org.apache.bcel.Const;
 import org.apache.bcel.Constants;
 import org.apache.bcel.generic.ObjectType;
@@ -62,7 +64,7 @@ public class UninitializedObjectType extends ReferenceType implements Constants 
      *
      */
     @Override
-    public boolean equals(final @Nullable Object o) {
+    public boolean equals(final /*@Nullable*/ Object o) {
         if (! (o instanceof UninitializedObjectType)) {
             return false;
         }

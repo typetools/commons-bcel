@@ -17,7 +17,10 @@
  */
 package org.apache.bcel.classfile;
 
+/*>>>
 import org.checkerframework.checker.signature.qual.FieldDescriptor;
+*/
+
 import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;

@@ -18,7 +18,10 @@
 package org.apache.bcel.verifier.structurals;
 
 
+/*>>>
 import org.checkerframework.checker.interning.qual.UsesObjectEquals;
+*/
+
 import org.apache.bcel.generic.InstructionHandle;
 
 /**
@@ -28,7 +31,7 @@ import org.apache.bcel.generic.InstructionHandle;
  *
  * @version $Id$
  */
-public @UsesObjectEquals interface Subroutine{
+public /*@UsesObjectEquals*/ interface Subroutine{
     /**
      * Returns all the JsrInstructions that have the
      * first instruction of this subroutine as their target.

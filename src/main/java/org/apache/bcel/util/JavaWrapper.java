@@ -17,7 +17,10 @@
  */
 package org.apache.bcel.util;
 
+/*>>>
 import org.checkerframework.checker.signature.qual.BinaryName;
+*/
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
