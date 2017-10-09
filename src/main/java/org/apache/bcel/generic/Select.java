@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.nullness.qual.RequiresNonNull;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -89,6 +90,7 @@ public abstract class Select extends BranchInstruction implements VariableLength
      * @param targets instruction targets
      * @param defaultTarget default instruction target
      */
+    @SuppressWarnings("nullness") // target is temporarily set to null
     Select(final short opcode, final int[] match, final InstructionHandle[] targets, final InstructionHandle defaultTarget) {
         // don't set default target before instuction is built
         super(opcode, null);
@@ -137,6 +139,7 @@ public abstract class Select extends BranchInstruction implements VariableLength
      * @param out Output stream
      */
     @Override
+    @RequiresNonNull("target")
     public void dump( final DataOutputStream out ) throws IOException {
         out.writeByte(super.getOpcode());
         for (int i = 0; i < padding; i++) {
