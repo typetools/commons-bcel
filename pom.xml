@@ -282,6 +282,9 @@
             <arg>-J-Xbootclasspath/p:${typeAnnotationsJavac}</arg>
             <arg>-Awarns</arg>
           </compilerArgs>
+          <testExcludes>
+            <testExclude>**/*Benchmark*</testExclude>
+          </testExcludes>
         </configuration>
       </plugin>
       <plugin>
