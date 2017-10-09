@@ -360,7 +360,6 @@ public class ConstantPool implements Cloneable, Node {
     /**
      * @return deep copy of this constant pool
      */
-    @SuppressWarnings("nullness") // BCEL bug: ignored exception
     public ConstantPool copy() {
         ConstantPool c = null;
         try {
