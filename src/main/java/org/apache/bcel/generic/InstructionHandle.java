@@ -54,9 +54,9 @@ import org.checkerframework.checker.interning.qual.*;
  */
 public /*@UsesObjectEquals*/ class InstructionHandle {
 
-    private @Nullable InstructionHandle next;
-    private @Nullable InstructionHandle prev;
-    private @Nullable Instruction instruction;
+    private InstructionHandle next;
+    private InstructionHandle prev;
+    private Instruction instruction;
 
     /**
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
@@ -65,7 +65,7 @@ public /*@UsesObjectEquals*/ class InstructionHandle {
     protected int i_position = -1; // byte code offset of instruction
 
     private Set<InstructionTargeter> targeters;
-    private @Nullable Map<Object, Object> attributes;
+    private Map<Object, Object> attributes;
 
 
     public final InstructionHandle getNext() {
@@ -183,6 +183,7 @@ public /*@UsesObjectEquals*/ class InstructionHandle {
     /**
      * Delete contents, i.e., remove user access and make handle reusable.
      */
+    @SuppressWarnings("nullness") // object won't be used after calling dispose()
     void dispose() {
         next = prev = null;
         instruction.dispose();
