@@ -441,7 +441,7 @@ public final class Const {
   /**
    * @since 6.0
    */
-  public static Iterable<@SourceNameForNonArrayNonInner String> getInterfacesImplementedByArrays() {
+  public static Iterable</*@SourceNameForNonArrayNonInner*/ String> getInterfacesImplementedByArrays() {
       return Collections.unmodifiableList(Arrays.asList(INTERFACES_IMPLEMENTED_BY_ARRAYS));
   }
 

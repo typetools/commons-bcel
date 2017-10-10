@@ -484,7 +484,7 @@ public abstract class Utility {
      * @param chopit Flag that determines whether chopping is executed or not
      * @return Compacted class name
      */
-    public static @BinaryName String compactClassName( @InternalForm String strIn, final String prefix, final boolean chopit ) {
+    public static @BinaryName String compactClassName( /*@InternalForm*/ String strIn, final String prefix, final boolean chopit ) {
         final int len = prefix.length();
         String str = strIn.replace('/', '.'); // Is `/' on all systems, even DOS
         if (chopit) {
@@ -997,7 +997,7 @@ public abstract class Utility {
      * @param  type Java type
      * @return byte code signature
      */
-    public static @FieldDescriptor String getSignature( @FullyQualifiedName String type ) {
+    public static @FieldDescriptor String getSignature( /*@FullyQualifiedName*/ String type ) {
         final StringBuilder buf = new StringBuilder();
         final char[] chars = type.toCharArray();
         boolean char_found = false;
