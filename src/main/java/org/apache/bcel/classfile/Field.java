@@ -103,7 +103,7 @@ public final class Field extends FieldOrMethod {
     /**
      * @return constant value associated with this field (may be null)
      */
-    public final ConstantValue getConstantValue() {
+    public final /*@Nullable*/ ConstantValue getConstantValue() {
         for (final Attribute attribute : super.getAttributes()) {
             if (attribute.getTag() == Const.ATTR_CONSTANT_VALUE) {
                 return (ConstantValue) attribute;
@@ -185,6 +185,7 @@ public final class Field extends FieldOrMethod {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
+    @SuppressWarnings("nullness") // BCEL bug: equals() crashes when passed null
     public boolean equals( final /*@Nullable*/ Object obj ) {
         return bcelComparator.equals(this, obj);
     }

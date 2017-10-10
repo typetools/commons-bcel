@@ -16,6 +16,10 @@
  */
 package org.apache.bcel.classfile;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -88,7 +92,7 @@ public class EnclosingMethod extends Attribute {
         return c;
     }
 
-    public final ConstantNameAndType getEnclosingMethod() {
+    public final /*@Nullable*/ ConstantNameAndType getEnclosingMethod() {
         if (methodIndex == 0) {
             return null;
         }

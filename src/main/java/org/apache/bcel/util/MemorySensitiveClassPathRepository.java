@@ -17,6 +17,10 @@
  */
 package org.apache.bcel.util;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
@@ -63,7 +67,7 @@ public class MemorySensitiveClassPathRepository implements Repository {
      * Find an already defined (cached) JavaClass object by name.
      */
     @Override
-    public JavaClass findClass(final String className) {
+    public /*@Nullable*/ JavaClass findClass(final String className) {
         final SoftReference<JavaClass> ref = _loadedClasses.get(className);
         if (ref == null) {
             return null;

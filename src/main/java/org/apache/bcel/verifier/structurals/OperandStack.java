@@ -149,7 +149,7 @@ public class OperandStack implements Cloneable {
     /**
      * Pops i elements off the stack. ALWAYS RETURNS "null"!!!
      */
-    public Type pop(final int i) {
+    public /*@Nullable*/ Type pop(final int i) {
         for (int j=0; j<i; j++) {
             pop();
         }

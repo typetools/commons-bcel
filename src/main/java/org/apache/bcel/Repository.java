@@ -17,6 +17,10 @@
  */
 package org.apache.bcel;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 import java.io.IOException;
 
 import org.apache.bcel.classfile.JavaClass;
@@ -81,7 +85,7 @@ public abstract class Repository {
      *  system class path; returns null if the class file can't be
      *  found
      */
-    public static ClassPath.ClassFile lookupClassFile( final String class_name ) {
+    public static ClassPath. /*@Nullable*/ ClassFile lookupClassFile( final String class_name ) {
         try {
             final ClassPath path = repository.getClassPath();
             if (path == null) {

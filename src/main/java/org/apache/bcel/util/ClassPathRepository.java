@@ -17,6 +17,10 @@
  */
 package org.apache.bcel.util;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -33,7 +37,7 @@ import org.apache.bcel.classfile.JavaClass;
  */
 public class ClassPathRepository implements Repository {
 
-    private ClassPath _path = null;
+    private ClassPath _path;
     private final Map<String, JavaClass> _loadedClasses = new HashMap<>(); // CLASSNAME X JAVACLASS
 
     public ClassPathRepository(final ClassPath path) {
@@ -61,7 +65,7 @@ public class ClassPathRepository implements Repository {
      * Find an already defined (cached) JavaClass object by name.
      */
     @Override
-    public JavaClass findClass(final String className) {
+    public /*@Nullable*/ JavaClass findClass(final String className) {
         return _loadedClasses.get(className);
     }
 

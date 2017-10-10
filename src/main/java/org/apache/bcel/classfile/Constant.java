@@ -108,6 +108,7 @@ public abstract class Constant implements Cloneable, Node {
     /**
      * @return deep copy of this constant
      */
+    @SuppressWarnings("nullness") // bug in BCEL: uncaught exception
     public Constant copy() {
         try {
             return (Constant) super.clone();

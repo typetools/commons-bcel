@@ -17,6 +17,10 @@
 
 package org.apache.bcel.classfile;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -64,7 +68,7 @@ public class MethodParameter implements Cloneable {
     /**
      * Returns the name of the parameter.
      */
-    public String getParameterName(final ConstantPool constant_pool) {
+    public /*@Nullable*/ String getParameterName(final ConstantPool constant_pool) {
         if (name_index == 0) {
             return null;
         }
@@ -105,6 +109,7 @@ public class MethodParameter implements Cloneable {
     /**
      * @return deep copy of this object
      */
+    @SuppressWarnings("nullness") // bug in BCEL: uncaught exception
     public MethodParameter copy() {
         try {
             return (MethodParameter) clone();

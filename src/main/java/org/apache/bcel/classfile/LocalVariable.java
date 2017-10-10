@@ -287,6 +287,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
     /**
      * @return deep copy of this object
      */
+    @SuppressWarnings("nullness") // bug in BCEL: uncaught exception
     public LocalVariable copy() {
         try {
             return (LocalVariable) clone();

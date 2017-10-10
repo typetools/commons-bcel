@@ -19,6 +19,7 @@ package org.apache.bcel.verifier.statics;
 
 
 /*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.interning.qual.InternedDistinct;
 */
 
@@ -118,7 +119,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
      * <B>Repository.lookupClass(myOwner.getClassname()).getMethods()[method_nr];</B>.
      * You should not add own information. Leave that to JustIce.
      */
-    public LocalVariablesInfo getLocalVariablesInfo(final int method_nr) {
+    public /*@Nullable*/ LocalVariablesInfo getLocalVariablesInfo(final int method_nr) {
         if (this.verify() != VerificationResult.VR_OK) {
             return null; // It's cached, don't worry.
         }

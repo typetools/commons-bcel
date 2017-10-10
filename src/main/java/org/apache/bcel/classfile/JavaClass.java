@@ -18,6 +18,7 @@
 package org.apache.bcel.classfile;
 
 /*>>>
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 */
 
@@ -67,7 +68,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     private Field[] fields; // Fields, i.e., variables of class
     private Method[] methods; // methods defined in the class
     private Attribute[] attributes; // attributes defined in the class
-    private AnnotationEntry[] annotations;   // annotations defined on the class
+    private AnnotationEntry /*@MonotonicNonNull*/ [] annotations;   // annotations defined on the class
     private byte source = HEAP; // Generated in memory
     private boolean isAnonymous = false;
     private boolean isNested = false;
@@ -435,7 +436,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
      * @return A {@link Method} corresponding to
      * java.lang.reflect.Method if any
      */
-    public Method getMethod( final java.lang.reflect.Method m ) {
+    public /*@Nullable*/ Method getMethod( final java.lang.reflect.Method m ) {
         for (final Method method : methods) {
             if (m.getName().equals(method.getName()) && (m.getModifiers() == method.getModifiers())
                     && Type.getSignature(m).equals(method.getSignature())) {
@@ -663,6 +664,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     /**
      * @return deep copy of this class
      */
+    @SuppressWarnings("nullness") // bug in BCEL: uncaught exception
     public JavaClass copy() {
         JavaClass c = null;
         try {
@@ -818,7 +820,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
      * is java.lang.Object
      * @throws ClassNotFoundException if the superclass can't be found
      */
-    public JavaClass getSuperClass() throws ClassNotFoundException {
+    public /*@Nullable*/ JavaClass getSuperClass() throws ClassNotFoundException {
         if ("java.lang.Object".equals(getClassName())) {
             return null;
         }

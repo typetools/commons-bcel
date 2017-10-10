@@ -18,6 +18,7 @@
 package org.apache.bcel.classfile;
 
 /*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.*;
 */
 
@@ -1267,7 +1268,7 @@ public abstract class Utility {
     }
 
 
-    public static String printArray( final Object[] obj, final boolean braces, final boolean quote ) {
+    public static /*@Nullable*/ String printArray( final Object[] obj, final boolean braces, final boolean quote ) {
         if (obj == null) {
             return null;
         }

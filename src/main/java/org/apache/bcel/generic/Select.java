@@ -142,7 +142,6 @@ public abstract class Select extends BranchInstruction implements VariableLength
      * @param out Output stream
      */
     @Override
-    @RequiresNonNull("target")
     public void dump( final DataOutputStream out ) throws IOException {
         out.writeByte(super.getOpcode());
         for (int i = 0; i < padding; i++) {

@@ -18,6 +18,7 @@
 package org.apache.bcel.generic;
 
 /*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.ClassGetName;
 */
 
@@ -47,7 +48,7 @@ public class InstructionFactory implements InstructionConstants {
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
      */
     @Deprecated
-    protected ClassGen cg;
+    protected /*@Nullable*/ ClassGen cg;
 
     /**
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
@@ -56,7 +57,7 @@ public class InstructionFactory implements InstructionConstants {
     protected ConstantPoolGen cp;
 
 
-    public InstructionFactory(final ClassGen cg, final ConstantPoolGen cp) {
+    public InstructionFactory(final /*@Nullable*/ ClassGen cg, final ConstantPoolGen cp) {
         this.cg = cg;
         this.cp = cp;
     }
@@ -197,6 +198,7 @@ public class InstructionFactory implements InstructionConstants {
         return createInvoke(m.class_name, m.name, m.result_type, m.arg_types, kind);
     }
 
+    @SuppressWarnings("nullness") // indices 2 and 3 are never used
     private static final MethodObject[] append_mos = {
             new MethodObject("java.lang.StringBuffer", "append", Type.STRINGBUFFER, new Type[] {
                 Type.STRING
@@ -769,7 +771,7 @@ public class InstructionFactory implements InstructionConstants {
     }
 
 
-    public ClassGen getClassGen() {
+    public /*@Nullable*/ ClassGen getClassGen() {
         return cg;
     }
 

@@ -196,6 +196,7 @@ public class AnnotationEntryGen {
      * @param cp  The constant pool gen where we can create the necessary name refs
      * @param annotationEntryGens An array of AnnotationGen objects
      */
+    @SuppressWarnings("nullness") // bug in BCEL: should throw instead of returning null
     static Attribute[] getAnnotationAttributes(final ConstantPoolGen cp, final AnnotationEntryGen[] annotationEntryGens) {
         if (annotationEntryGens.length == 0) {
             return new Attribute[0];
@@ -271,6 +272,7 @@ public class AnnotationEntryGen {
      * - RuntimeVisibleParameterAnnotations
      * - RuntimeInvisibleParameterAnnotations
      */
+    @SuppressWarnings("nullness") // bug in BCEL: should throw instead of returning null
     static Attribute[] getParameterAnnotationAttributes(
             final ConstantPoolGen cp,
             final List<AnnotationEntryGen>[] /*Array of lists, array size depends on #params */vec) {

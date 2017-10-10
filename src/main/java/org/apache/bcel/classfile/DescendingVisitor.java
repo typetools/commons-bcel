@@ -47,6 +47,7 @@ public class DescendingVisitor implements Visitor
      *            nesting level, i.e., 0 returns the direct predecessor
      * @return container of current entitity, i.e., predecessor during traversal
      */
+    @SuppressWarnings("nullness") // bug in BCEL: should throw if argument is invalid
     public Object predecessor(final int level)
     {
         final int size = stack.size();

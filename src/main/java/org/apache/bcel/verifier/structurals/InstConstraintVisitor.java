@@ -1256,7 +1256,7 @@ public class InstConstraintVisitor extends EmptyVisitor{
             return (ObjectType)rt;
         }
         constraintViolated(o, "expecting ObjectType but got "+rt);
-        return null;
+        return null; // dead code
     }
 
     /**

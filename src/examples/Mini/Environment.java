@@ -90,7 +90,7 @@ public class Environment implements Cloneable {
 
   /** Get entry from hash table.
    */
-  public EnvEntry get(String key) {
+  public /*@Nullable*/ EnvEntry get(String key) {
     int       hash;
     Vector<EnvEntry>    v;
     EnvEntry entry = null;

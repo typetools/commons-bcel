@@ -17,6 +17,10 @@
  */
 package org.apache.bcel.classfile;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -52,7 +56,7 @@ public final class InnerClasses extends Attribute {
      * @param inner_classes array of inner classes attributes
      * @param constant_pool Array of constants
      */
-    public InnerClasses(final int name_index, final int length, final InnerClass[] inner_classes,
+    public InnerClasses(final int name_index, final int length, final InnerClass /*@Nullable*/ [] inner_classes,
             final ConstantPool constant_pool) {
         super(Const.ATTR_INNER_CLASSES, name_index, length, constant_pool);
         this.inner_classes = inner_classes != null ? inner_classes : new InnerClass[0];

@@ -17,6 +17,10 @@
  */
 package org.apache.bcel.util;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -117,7 +121,7 @@ public class ClassLoaderRepository implements Repository {
      * @return null
      */
     @Override
-    public ClassPath getClassPath() {
+    public /*@Nullable*/ ClassPath getClassPath() {
         return null;
     }
 }

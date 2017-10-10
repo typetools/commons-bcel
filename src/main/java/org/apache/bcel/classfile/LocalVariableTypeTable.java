@@ -17,6 +17,10 @@
 
 package org.apache.bcel.classfile;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -96,7 +100,7 @@ public class LocalVariableTypeTable extends Attribute {
         return local_variable_type_table;
     }
 
-    public final LocalVariable getLocalVariable(final int index) {
+    public final /*@Nullable*/ LocalVariable getLocalVariable(final int index) {
         for (final LocalVariable variable : local_variable_type_table) {
             if (variable.getIndex() == index) {
                 return variable;

@@ -301,7 +301,7 @@ public class FieldGen extends FieldGenOrMethodGen {
     }
 
 
-    public String getInitValue() {
+    public /*@Nullable*/ String getInitValue() {
         if (value != null) {
             return value.toString();
         }

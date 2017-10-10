@@ -17,6 +17,9 @@
  */
 package org.apache.bcel.classfile;
 
+/*>>>
+import org.checkerframework.checker.initialization.qual.UnknownInitialization;
+*/
 import org.apache.bcel.Const;
 
 /**
@@ -93,7 +96,7 @@ public abstract class AccessFlags {
         setFlag(Const.ACC_PUBLIC, flag);
     }
 
-    public final boolean isPublic() {
+    public final boolean isPublic(/*>>>@UnknownInitialization(AccessFlags.class) AccessFlags this*/) {
         return (access_flags & Const.ACC_PUBLIC) != 0;
     }
 
@@ -101,7 +104,7 @@ public abstract class AccessFlags {
         setFlag(Const.ACC_PRIVATE, flag);
     }
 
-    public final boolean isPrivate() {
+    public final boolean isPrivate(/*>>>@UnknownInitialization(AccessFlags.class) AccessFlags this*/) {
         return (access_flags & Const.ACC_PRIVATE) != 0;
     }
 
@@ -109,7 +112,7 @@ public abstract class AccessFlags {
         setFlag(Const.ACC_PROTECTED, flag);
     }
 
-    public final boolean isProtected() {
+    public final boolean isProtected(/*>>>@UnknownInitialization(AccessFlags.class) AccessFlags this*/) {
         return (access_flags & Const.ACC_PROTECTED) != 0;
     }
 
@@ -117,7 +120,7 @@ public abstract class AccessFlags {
         setFlag(Const.ACC_STATIC, flag);
     }
 
-    public final boolean isStatic() {
+    public final boolean isStatic(/*>>>@UnknownInitialization(AccessFlags.class) AccessFlags this*/) {
         return (access_flags & Const.ACC_STATIC) != 0;
     }
 
@@ -125,7 +128,7 @@ public abstract class AccessFlags {
         setFlag(Const.ACC_FINAL, flag);
     }
 
-    public final boolean isFinal() {
+    public final boolean isFinal(/*>>>@UnknownInitialization(AccessFlags.class) AccessFlags this*/) {
         return (access_flags & Const.ACC_FINAL) != 0;
     }
 
@@ -133,7 +136,7 @@ public abstract class AccessFlags {
         setFlag(Const.ACC_SYNCHRONIZED, flag);
     }
 
-    public final boolean isSynchronized() {
+    public final boolean isSynchronized(/*>>>@UnknownInitialization(AccessFlags.class) AccessFlags this*/) {
         return (access_flags & Const.ACC_SYNCHRONIZED) != 0;
     }
 
@@ -141,7 +144,7 @@ public abstract class AccessFlags {
         setFlag(Const.ACC_VOLATILE, flag);
     }
 
-    public final boolean isVolatile() {
+    public final boolean isVolatile(/*>>>@UnknownInitialization(AccessFlags.class) AccessFlags this*/) {
         return (access_flags & Const.ACC_VOLATILE) != 0;
     }
 
@@ -149,7 +152,7 @@ public abstract class AccessFlags {
         setFlag(Const.ACC_TRANSIENT, flag);
     }
 
-    public final boolean isTransient() {
+    public final boolean isTransient(/*>>>@UnknownInitialization(AccessFlags.class) AccessFlags this*/) {
         return (access_flags & Const.ACC_TRANSIENT) != 0;
     }
 
@@ -157,7 +160,7 @@ public abstract class AccessFlags {
         setFlag(Const.ACC_NATIVE, flag);
     }
 
-    public final boolean isNative() {
+    public final boolean isNative(/*>>>@UnknownInitialization(AccessFlags.class) AccessFlags this*/) {
         return (access_flags & Const.ACC_NATIVE) != 0;
     }
 
@@ -165,7 +168,7 @@ public abstract class AccessFlags {
         setFlag(Const.ACC_INTERFACE, flag);
     }
 
-    public final boolean isInterface() {
+    public final boolean isInterface(/*>>>@UnknownInitialization(AccessFlags.class) AccessFlags this*/) {
         return (access_flags & Const.ACC_INTERFACE) != 0;
     }
 
@@ -173,7 +176,7 @@ public abstract class AccessFlags {
         setFlag(Const.ACC_ABSTRACT, flag);
     }
 
-    public final boolean isAbstract() {
+    public final boolean isAbstract(/*>>>@UnknownInitialization(AccessFlags.class) AccessFlags this*/) {
         return (access_flags & Const.ACC_ABSTRACT) != 0;
     }
 
@@ -181,7 +184,7 @@ public abstract class AccessFlags {
         setFlag(Const.ACC_STRICT, flag);
     }
 
-    public final boolean isStrictfp() {
+    public final boolean isStrictfp(/*>>>@UnknownInitialization(AccessFlags.class) AccessFlags this*/) {
         return (access_flags & Const.ACC_STRICT) != 0;
     }
 
@@ -189,7 +192,7 @@ public abstract class AccessFlags {
         setFlag(Const.ACC_SYNTHETIC, flag);
     }
 
-    public final boolean isSynthetic() {
+    public final boolean isSynthetic(/*>>>@UnknownInitialization(AccessFlags.class) AccessFlags this*/) {
         return (access_flags & Const.ACC_SYNTHETIC) != 0;
     }
 
@@ -197,7 +200,7 @@ public abstract class AccessFlags {
         setFlag(Const.ACC_ANNOTATION, flag);
     }
 
-    public final boolean isAnnotation() {
+    public final boolean isAnnotation(/*>>>@UnknownInitialization(AccessFlags.class) AccessFlags this*/) {
         return (access_flags & Const.ACC_ANNOTATION) != 0;
     }
 
@@ -205,7 +208,7 @@ public abstract class AccessFlags {
         setFlag(Const.ACC_ENUM, flag);
     }
 
-    public final boolean isEnum() {
+    public final boolean isEnum(/*>>>@UnknownInitialization(AccessFlags.class) AccessFlags this*/) {
         return (access_flags & Const.ACC_ENUM) != 0;
     }
 
@@ -213,7 +216,7 @@ public abstract class AccessFlags {
         setFlag(Const.ACC_VARARGS, flag);
     }
 
-    public final boolean isVarArgs() {
+    public final boolean isVarArgs(/*>>>@UnknownInitialization(AccessFlags.class) AccessFlags this*/) {
         return (access_flags & Const.ACC_VARARGS) != 0;
     }
 }

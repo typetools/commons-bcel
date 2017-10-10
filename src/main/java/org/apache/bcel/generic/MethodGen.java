@@ -963,7 +963,7 @@ public class MethodGen extends FieldGenOrMethodGen {
         }
 
 
-        public BranchTarget pop() {
+        public /*@Nullable*/ BranchTarget pop() {
             if (!branchTargets.empty()) {
                 final BranchTarget bt = branchTargets.pop();
                 return bt;
@@ -1142,7 +1142,7 @@ public class MethodGen extends FieldGenOrMethodGen {
      * Return a list of AnnotationGen objects representing parameter annotations
      * @since 6.0
      */
-    public List<AnnotationEntryGen> getAnnotationsOnParameter(final int i) {
+    public /*@Nullable*/ List<AnnotationEntryGen> getAnnotationsOnParameter(final int i) {
         ensureExistingParameterAnnotationsUnpacked();
         if (!hasParameterAnnotations || i>arg_types.length) {
             return null;

@@ -86,7 +86,6 @@ public abstract /*@UsesObjectEquals*/ class BranchInstruction extends Instructio
      * @param out Output stream
      */
     @Override
-    /*@RequiresNonNull("target")*/
     public void dump( final DataOutputStream out ) throws IOException {
         out.writeByte(super.getOpcode());
         index = getTargetOffset();
@@ -118,7 +117,6 @@ public abstract /*@UsesObjectEquals*/ class BranchInstruction extends Instructio
     /**
      * @return the offset to this instruction's target
      */
-    /*@RequiresNonNull("target")*/
     protected int getTargetOffset() {
         return getTargetOffset(target);
     }

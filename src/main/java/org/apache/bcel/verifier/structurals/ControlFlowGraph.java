@@ -18,6 +18,10 @@
 package org.apache.bcel.verifier.structurals;
 
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -292,7 +296,7 @@ public class ControlFlowGraph{
          * we were called by this one.
          * Returns null if we were called from the top level.
          */
-        private InstructionContextImpl lastExecutionJSR() {
+        private /*@Nullable*/ InstructionContextImpl lastExecutionJSR() {
 
             final int size = executionPredecessors.size();
             int retcount = 0;

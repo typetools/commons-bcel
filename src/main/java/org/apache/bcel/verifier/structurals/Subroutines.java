@@ -18,6 +18,7 @@
 package org.apache.bcel.verifier.structurals;
 
 /*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 */
 
@@ -594,7 +595,7 @@ public class Subroutines{
      * @see #getSubroutine(InstructionHandle)
      * @see #getTopLevel()
      */
-    public Subroutine subroutineOf(final InstructionHandle any) {
+    public /*@Nullable*/ Subroutine subroutineOf(final InstructionHandle any) {
         for (final Subroutine s : subroutines.values()) {
             if (s.contains(any)) {
                 return s;
