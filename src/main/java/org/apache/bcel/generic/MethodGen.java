@@ -43,6 +43,13 @@ import org.apache.bcel.classfile.RuntimeVisibleParameterAnnotations;
 import org.apache.bcel.classfile.Utility;
 import org.apache.bcel.util.BCELComparator;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signature.qual.BinaryName;
+import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
+import org.checkerframework.framework.qual.AnnotatedFor;
+*/
+
 /**
  * Template class for building up a method. This is done by defining exception
  * handlers, adding thrown exceptions, local variables and attributes, whereas
@@ -57,6 +64,7 @@ import org.apache.bcel.util.BCELComparator;
  * @see     InstructionList
  * @see     Method
  */
+/*@AnnotatedFor({"nullness"})*/
 public class MethodGen extends FieldGenOrMethodGen {
 
     private String class_name;
@@ -66,7 +74,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     private int max_stack;
     private InstructionList il;
     private boolean strip_attributes;
-    private LocalVariableTypeTable local_variable_type_table = null;
+    private /*@Nullable*/ LocalVariableTypeTable local_variable_type_table = null;
     private final List<LocalVariableGen> variable_vec = new ArrayList<>();
     private final List<LineNumberGen> line_number_vec = new ArrayList<>();
     private final List<CodeExceptionGen> exception_vec = new ArrayList<>();
@@ -118,8 +126,8 @@ public class MethodGen extends FieldGenOrMethodGen {
      * abstract or native methods
      * @param cp constant pool
      */
-    public MethodGen(final int access_flags, final Type return_type, final Type[] arg_types, String[] arg_names,
-            final String method_name, final String class_name, final InstructionList il, final ConstantPoolGen cp) {
+    public MethodGen(final int access_flags, final Type return_type, final Type[] arg_types, String /*@Nullable*/ [] arg_names,
+            final String method_name, final /*@Nullable*/ String class_name, final InstructionList il, final ConstantPoolGen cp) {
         super(access_flags);
         setType(return_type);
         setArgumentTypes(arg_types);
@@ -312,8 +320,8 @@ public class MethodGen extends FieldGenOrMethodGen {
      * @return new local variable object
      * @see LocalVariable
      */
-    public LocalVariableGen addLocalVariable( final String name, final Type type, final InstructionHandle start,
-            final InstructionHandle end ) {
+    public LocalVariableGen addLocalVariable( final String name, final Type type, final /*@Nullable*/ InstructionHandle start,
+            final /*@Nullable*/ InstructionHandle end ) {
         return addLocalVariable(name, type, max_locals, start, end);
     }
 
@@ -1135,7 +1143,7 @@ public class MethodGen extends FieldGenOrMethodGen {
      * Return a list of AnnotationGen objects representing parameter annotations
      * @since 6.0
      */
-    public List<AnnotationEntryGen> getAnnotationsOnParameter(final int i) {
+    public /*@Nullable*/ List<AnnotationEntryGen> getAnnotationsOnParameter(final int i) {
         ensureExistingParameterAnnotationsUnpacked();
         if (!hasParameterAnnotations || i>arg_types.length) {
             return null;
