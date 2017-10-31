@@ -48,6 +48,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.BinaryName;
 import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.checker.index.SameLen;
 */
 
 /**
@@ -839,7 +840,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
 
-    public Type[] getArgumentTypes() {
+    public Type /*@SameLen({"this.getArgumentNames()", "this.getArgumentTypes()"})*/ [] getArgumentTypes() {
         return arg_types.clone();
     }
 
@@ -859,7 +860,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
 
-    public String[] getArgumentNames() {
+    public String /*@SameLen({"this.getArgumentNames()", "this.getArgumentTypes()"})*/ [] getArgumentNames() {
         return arg_names.clone();
     }
 
