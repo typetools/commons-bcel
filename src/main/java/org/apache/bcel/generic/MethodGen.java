@@ -48,7 +48,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.BinaryName;
 import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
 import org.checkerframework.framework.qual.AnnotatedFor;
-import org.checkerframework.checker.index.SameLen;
+import org.checkerframework.checker.index.qual.SameLen;
 */
 
 /**
