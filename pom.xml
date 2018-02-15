@@ -64,9 +64,8 @@
     <jna.version>4.5.0</jna.version>
     <!-- These properties will be set by the Maven Dependency plugin -->
     <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
-    <!-- Uncomment to use the Type Annotations compiler. -->
     <typeAnnotationsJavac>${org.checkerframework:compiler:jar}</typeAnnotationsJavac>
-    <checkerframework.version>2.2.1</checkerframework.version>
+    <checkerframework.version>2.3.2</checkerframework.version>
   </properties>
 
   <!-- Cannot be added to Commons Parent, see https://issues.apache.org/jira/browse/COMMONSSITE-26 -->
@@ -259,28 +258,24 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.6.1</version>
         <configuration>
-          <!-- 1.8 needed for pluggable type-checking -->
-          <source>1.8</source>
-          <target>1.8</target>
-          <!-- Uncomment the following line to use the type annotations compiler. -->
+          <source>1.7</source>
+          <target>1.7</target>
           <fork>true</fork>
           <compilerArguments>
             <Xmaxerrs>10000</Xmaxerrs>
             <Xmaxwarns>10000</Xmaxwarns>
           </compilerArguments>
           <annotationProcessors>
-<!-- TODO: re-enable all.  It's easier to enable one at a time while getting the project to type-check, though. -->
-            <!-- Add all the checkers you want to enable here -->
-<!--            <annotationProcessor>org.checkerframework.checker.interning.InterningChecker</annotationProcessor> -->
+            <annotationProcessor>org.checkerframework.checker.interning.InterningChecker</annotationProcessor>
             <annotationProcessor>org.checkerframework.checker.nullness.NullnessChecker</annotationProcessor>
-<!--            <annotationProcessor>org.checkerframework.checker.signature.SignatureChecker</annotationProcessor> -->
+            <annotationProcessor>org.checkerframework.checker.signature.SignatureChecker</annotationProcessor>
           </annotationProcessors>
           <compilerArgs>
-            <arg>-AprintErrorStack</arg>
-            <!-- location of the annotated JDK, which comes from a Maven dependency -->
             <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
-            <!-- Uncomment the following line to use the type annotations compiler. -->
             <arg>-J-Xbootclasspath/p:${typeAnnotationsJavac}</arg>
+            <!-- -AuseDefaultsForUncheckedCode=source causes compilation errors in
+                 any library that uses an unannotated part of BCEL. -->
+            <!-- <arg>-AuseDefaultsForUncheckedCode=source</arg> -->
             <arg>-Awarns</arg>
           </compilerArgs>
           <testExcludes>
@@ -353,9 +348,9 @@
         </configuration>
       </plugin>
       <plugin>
-        <!-- This plugin will set properties values using dependency information -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.3</version>
         <executions>
           <execution>
             <goals>
@@ -492,30 +487,21 @@
       <groupId>org.checkerframework</groupId>
       <artifactId>checker-qual</artifactId>
       <version>${checkerframework.version}</version>
-      <scope>system</scope>
-      <systemPath>${env.CHECKERFRAMEWORK}/checker/dist/checker-qual.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker</artifactId>
       <version>${checkerframework.version}</version>
-      <scope>system</scope>
-      <systemPath>${env.CHECKERFRAMEWORK}/checker/dist/checker.jar</systemPath>
     </dependency>
-    <!-- The Type Annotations compiler. Uncomment if using annotations in comments. -->
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>compiler</artifactId>
-      <version>${checkerframework.version}</version>
-      <scope>system</scope>
-      <systemPath>${env.CHECKERFRAMEWORK}/checker/dist/javac.jar</systemPath>
+      <version>2.3.2</version>
     </dependency>
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>jdk8</artifactId>
       <version>${checkerframework.version}</version>
-      <scope>system</scope>
-      <systemPath>${env.CHECKERFRAMEWORK}/checker/dist/jdk8.jar</systemPath>
     </dependency>
   </dependencies>
 
