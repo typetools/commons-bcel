@@ -25,6 +25,10 @@ import org.apache.bcel.classfile.ConstantClass;
 import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.util.ByteSequence;
 
+/*>>>
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
+*/
+
 /**
  * Abstract super class for instructions that use an index into the
  * constant pool such as LDC, INVOKEVIRTUAL, etc.
@@ -128,7 +132,7 @@ public abstract class CPInstruction extends Instruction implements TypedInstruct
      * @param index in  constant pool.
      */
     @Override
-    public void setIndex( final int index ) { // TODO could be package-protected?
+    public void setIndex( /*>>> @UnderInitialization CPInstruction this, */ final int index ) { // TODO could be package-protected?
         if (index < 0) {
             throw new ClassGenException("Negative index value: " + index);
         }

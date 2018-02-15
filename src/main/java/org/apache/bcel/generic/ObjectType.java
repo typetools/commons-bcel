@@ -22,7 +22,9 @@ import org.apache.bcel.Repository;
 import org.apache.bcel.classfile.JavaClass;
 
 /*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
+import org.checkerframework.checker.signature.qual.FullyQualifiedName;
 import org.checkerframework.framework.qual.AnnotatedFor;
 */
 
@@ -46,7 +48,7 @@ public class ObjectType extends ReferenceType {
     /**
      * @param class_name fully qualified class name, e.g. java.lang.String
      */
-    public ObjectType(final String class_name) {
+    public ObjectType(final /*@FullyQualifiedName*/ String class_name) {
         super(Const.T_REFERENCE, "L" + class_name.replace('.', '/') + ";");
         this.class_name = class_name.replace('/', '.');
     }
@@ -70,7 +72,7 @@ public class ObjectType extends ReferenceType {
     /** @return true if both type objects refer to the same class.
      */
     @Override
-    public boolean equals( final Object type ) {
+    public boolean equals( final /*@Nullable*/ Object type ) {
         return (type instanceof ObjectType)
                 ? ((ObjectType) type).class_name.equals(class_name)
                 : false;
