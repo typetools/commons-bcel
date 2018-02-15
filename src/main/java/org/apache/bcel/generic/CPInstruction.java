@@ -144,11 +144,11 @@ public abstract class CPInstruction extends Instruction implements TypedInstruct
     /** @return type related with this instruction.
      */
     @Override
-    @SuppressWarnings("signature") // convert @ClassGetName to @FieldDescriptor
+    @SuppressWarnings("signature") // convert /*@ClassGetName*/ to @FieldDescriptor
     public Type getType( final ConstantPoolGen cpg ) {
         final ConstantPool cp = cpg.getConstantPool();
         String name = cp.getConstantString(index, org.apache.bcel.Const.CONSTANT_Class);
-        // This if statement converts @ClassGetName into @FieldDescriptor (EXCEPT it doesn't work for primitive types)
+        // This if statement converts /*@ClassGetName*/ into /*@FieldDescriptor*/ (EXCEPT it doesn't work for primitive types)
         if (!name.startsWith("[")) {
             name = "L" + name + ";";
         }

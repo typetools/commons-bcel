@@ -107,7 +107,7 @@ public class ClassLoader extends java.lang.ClassLoader {
     }
 
     @Override
-    protected Class<?> loadClass( final @BinaryName String class_name, final boolean resolve ) throws ClassNotFoundException {
+    protected Class<?> loadClass( final /*@BinaryName*/ String class_name, final boolean resolve ) throws ClassNotFoundException {
         Class<?> cl = null;
         /* First try: lookup hash table.
          */

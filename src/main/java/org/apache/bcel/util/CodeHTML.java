@@ -56,7 +56,7 @@ final class CodeHTML {
     private final String class_name; // name of current class
 //    private Method[] methods; // Methods to print
     private final PrintWriter file; // file to write to
-    private @MonotonicNonNull BitSet goto_set;
+    private /*@MonotonicNonNull*/ BitSet goto_set;
     private final ConstantPool constant_pool;
     private final ConstantHTML constant_html;
     private static boolean wide = false;
@@ -390,7 +390,7 @@ final class CodeHTML {
      * Find all target addresses in code, so that they can be marked
      * with &lt;A NAME = ...&gt;. Target addresses are kept in an BitSet object.
      */
-    @EnsuresNonNull("goto_set")
+    /*@EnsuresNonNull("goto_set")*/
     private void findGotos( /*>>>@UnknownInitialization(CodeHTML.class) CodeHTML this,*/ final ByteSequence bytes, final /*@Nullable*/ Code code ) throws IOException {
         int index;
         goto_set = new BitSet(bytes.available());

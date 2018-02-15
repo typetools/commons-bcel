@@ -214,7 +214,7 @@ public abstract /*@UsesObjectEquals*/ class BranchInstruction extends Instructio
      * Set branch target
      * @param target branch target
      */
-    @EnsuresNonNull("this.target")
+    /*@EnsuresNonNull("this.target")*/
     public void setTarget( /*>>>@UnknownInitialization(BranchInstruction.class) BranchInstruction this,*/ final InstructionHandle target ) {
         notifyTarget(this.target, target, this);
         this.target = target;

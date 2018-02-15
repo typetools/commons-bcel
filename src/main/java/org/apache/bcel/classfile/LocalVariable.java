@@ -176,7 +176,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
     /**
      * @return Signature.
      */
-    public final @FieldDescriptor String getSignature() {
+    public final /*@FieldDescriptor*/ String getSignature() {
         ConstantUtf8 c;
         c = (ConstantUtf8) constant_pool.getConstant(signature_index, Const.CONSTANT_Utf8);
         return c.getBytes();

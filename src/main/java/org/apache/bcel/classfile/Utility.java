@@ -468,7 +468,7 @@ public abstract class Utility {
      */
     // TODO: This is also called on the result of cp.getConstantString(catch_type, Const.CONSTANT_Class)
     // which I thought was @ClassGetName.
-    public static @BinaryName String compactClassName( final @InternalForm String str ) {
+    public static /*@BinaryName*/ String compactClassName( final /*@InternalForm*/ String str ) {
         return compactClassName(str, true);
     }
 
@@ -484,7 +484,7 @@ public abstract class Utility {
      * @param chopit Flag that determines whether chopping is executed or not
      * @return Compacted class name
      */
-    public static @BinaryName String compactClassName( /*@InternalForm*/ String strIn, final String prefix, final boolean chopit ) {
+    public static /*@BinaryName*/ String compactClassName( /*@InternalForm*/ String strIn, final String prefix, final boolean chopit ) {
         final int len = prefix.length();
         String str = strIn.replace('/', '.'); // Is `/' on all systems, even DOS
         if (chopit) {
@@ -506,7 +506,7 @@ public abstract class Utility {
      * @param chopit Flag that determines whether chopping is executed or not
      * @return Compacted class name
      */
-    public static @BinaryName String compactClassName( final @InternalForm String str, final boolean chopit ) {
+    public static /*@BinaryName*/ String compactClassName( final /*@InternalForm*/ String str, final boolean chopit ) {
         return compactClassName(str, "java.lang.", chopit);
     }
 
@@ -826,7 +826,7 @@ public abstract class Utility {
     // TODO: what BCEL calls "field signature" is @FieldDescriptor
     // TODO: result is one of fully-qualified name, binary name, Class.getName, internal form, Class.getSimpleName
     // TODO: result can contain generic type parameters, so it isn't a type in the Signature Checker.
-    public static String signatureToString( final @FieldDescriptor String signature, final boolean chopit ) {
+    public static String signatureToString( final /*@FieldDescriptor*/ String signature, final boolean chopit ) {
         //corrected concurrent private static field acess
         wrap(consumed_chars, 1); // This is the default, read just one char like `B'
         try {
@@ -997,7 +997,7 @@ public abstract class Utility {
      * @param  type Java type
      * @return byte code signature
      */
-    public static @FieldDescriptor String getSignature( /*@FullyQualifiedName*/ String type ) {
+    public static /*@FieldDescriptor*/ String getSignature( /*@FullyQualifiedName*/ String type ) {
         final StringBuilder buf = new StringBuilder();
         final char[] chars = type.toCharArray();
         boolean char_found = false;

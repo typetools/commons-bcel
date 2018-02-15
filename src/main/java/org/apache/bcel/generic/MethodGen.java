@@ -130,7 +130,7 @@ public class MethodGen extends FieldGenOrMethodGen {
      * @param cp constant pool
      */
     public MethodGen(final int access_flags, final Type return_type, final Type[] arg_types, String /*@Nullable*/ [] arg_names,
-            final String method_name, final /*@Nullable*/ @ClassGetName String class_name, final InstructionList il, final ConstantPoolGen cp) {
+            final String method_name, final /*@Nullable*/ /*@ClassGetName*/ String class_name, final InstructionList il, final ConstantPoolGen cp) {
         super(access_flags);
         setType(return_type);
         setArgumentTypes(arg_types);
@@ -206,7 +206,7 @@ public class MethodGen extends FieldGenOrMethodGen {
                         final int type = ce.getCatchType();
                         ObjectType c_type = null;
                         if (type > 0) {
-                            final @ClassGetName String cen = m.getConstantPool().getConstantString(type,
+                            final /*@ClassGetName*/ String cen = m.getConstantPool().getConstantString(type,
                                     Const.CONSTANT_Class);
                             c_type =  ObjectType.getInstance(cen);
                         }

@@ -38,7 +38,7 @@ public abstract class ReferenceType extends Type {
     //  * For ObjectType, the string s is a @FieldDescriptor.
     //  * For ArrayType, the string s is a @FieldDescriptor.
     //  * For UninitializedObjectType, s is a string "<UNINITIALIZED OBJECT OF TYPE ...>"
-    protected ReferenceType(final byte t, final @FieldDescriptor String s) {
+    protected ReferenceType(final byte t, final /*@FieldDescriptor*/ String s) {
         super(t, s);
     }
 
