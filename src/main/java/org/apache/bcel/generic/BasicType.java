@@ -19,6 +19,10 @@ package org.apache.bcel.generic;
 
 import org.apache.bcel.Const;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 /**
  * Denotes basic type such as int.
  *
@@ -78,7 +82,7 @@ public final class BasicType extends Type {
     /** @return true if both type objects refer to the same type
      */
     @Override
-    public boolean equals( final Object _type ) {
+    public boolean equals( final /*@Nullable*/ Object _type ) {
         return (_type instanceof BasicType) ? ((BasicType) _type).getType() == this.getType() : false;
     }
 }

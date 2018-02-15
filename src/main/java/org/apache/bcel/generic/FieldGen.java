@@ -32,6 +32,10 @@ import org.apache.bcel.classfile.Field;
 import org.apache.bcel.classfile.Utility;
 import org.apache.bcel.util.BCELComparator;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 /**
  * Template class for building up a field.  The only extraordinary thing
  * one can do is to add a constant value attribute to a field (which must of
@@ -297,7 +301,7 @@ public class FieldGen extends FieldGenOrMethodGen {
     }
 
 
-    public String getInitValue() {
+    public /*@Nullable*/ String getInitValue() {
         if (value != null) {
             return value.toString();
         }
@@ -363,7 +367,7 @@ public class FieldGen extends FieldGenOrMethodGen {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( final Object obj ) {
+    public boolean equals( final /*@Nullable*/ Object obj ) {
         return bcelComparator.equals(this, obj);
     }
 

@@ -37,6 +37,14 @@ import org.apache.bcel.classfile.LocalVariableTable;
 import org.apache.bcel.classfile.Method;
 import org.apache.bcel.classfile.Utility;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.RequiresNonNull;
+import org.checkerframework.checker.initialization.qual.UnknownInitialization;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+*/
+
 /**
  * Convert code into HTML file.
  *
@@ -48,7 +56,7 @@ final class CodeHTML {
     private final String class_name; // name of current class
 //    private Method[] methods; // Methods to print
     private final PrintWriter file; // file to write to
-    private BitSet goto_set;
+    private @MonotonicNonNull BitSet goto_set;
     private final ConstantPool constant_pool;
     private final ConstantHTML constant_html;
     private static boolean wide = false;
@@ -77,7 +85,7 @@ final class CodeHTML {
      * @param  stream data input stream
      * @return String representation of byte code
      */
-    private String codeToHTML( final ByteSequence bytes, final int method_number ) throws IOException {
+    private String codeToHTML( /*>>>@UnknownInitialization(CodeHTML.class) CodeHTML this,*/ final ByteSequence bytes, final int method_number ) throws IOException {
         final short opcode = (short) bytes.readUnsignedByte();
         String name;
         String signature;
@@ -382,7 +390,8 @@ final class CodeHTML {
      * Find all target addresses in code, so that they can be marked
      * with &lt;A NAME = ...&gt;. Target addresses are kept in an BitSet object.
      */
-    private void findGotos( final ByteSequence bytes, final Code code ) throws IOException {
+    @EnsuresNonNull("goto_set")
+    private void findGotos( /*>>>@UnknownInitialization(CodeHTML.class) CodeHTML this,*/ final ByteSequence bytes, final /*@Nullable*/ Code code ) throws IOException {
         int index;
         goto_set = new BitSet(bytes.available());
         int opcode;
@@ -491,7 +500,7 @@ final class CodeHTML {
     /**
      * Write a single method with the byte code associated with it.
      */
-    private void writeMethod( final Method method, final int method_number ) throws IOException {
+    private void writeMethod( /*>>> @UnknownInitialization(CodeHTML.class) CodeHTML this,*/ final Method method, final int method_number ) throws IOException {
         // Get raw signature
         final String signature = method.getSignature();
         // Get array of strings containing the argument types

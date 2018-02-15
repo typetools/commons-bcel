@@ -23,8 +23,7 @@ import org.apache.bcel.classfile.JavaClass;
 
 /*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
-import org.checkerframework.checker.signature.qual.FullyQualifiedName;
+import org.checkerframework.checker.signature.qual.*;
 import org.checkerframework.framework.qual.AnnotatedFor;
 */
 
@@ -36,20 +35,31 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 /*@AnnotatedFor({"signature"})*/
 public class ObjectType extends ReferenceType {
 
-    private final String class_name; // Class name of type
+    private final @BinaryNameForNonArray String class_name; // Class name of type
 
     /**
      * @since 6.0
      */
-    public static ObjectType getInstance(final String class_name) {
+    // TODO: actualy type is @BinaryNameForNonArray =
+    // @ClassGetName-for-nonarray, but that type requires warning
+    // suppressions at call sites, so just use @ClassGetName.
+    public static ObjectType getInstance(final /*@ BinaryNameForNonArray*/ @ClassGetName String class_name) {
         return new ObjectType(class_name);
     }
 
     /**
      * @param class_name fully qualified class name, e.g. java.lang.String
      */
-    public ObjectType(final /*@FullyQualifiedName*/ String class_name) {
+    // TODO: buggy documentation, is a @BinaryNameForNonArray (differs from @FullyQualifiedName for inner classes).
+    // TODO: actualy type is @BinaryNameForNonArray =
+    // @ClassGetName-for-nonarray, but that type requires warning
+    // suppressions at call sites, so just use @ClassGetName.
+    @SuppressWarnings("signature") // string manipulation
+    public ObjectType(final /*@ BinaryNameForNonArray*/ @ClassGetName String class_name) {
+        // second argument to super is a @FieldDescriptor
         super(Const.T_REFERENCE, "L" + class_name.replace('.', '/') + ";");
+        // TODO: Javadoc says argument is like "java.lang.String", but then why does this line replace slashes??
+        // Is this sometimes called with a non-@BinaryNameForNonArray argument, namely a @FieldDescriptor or @InternalForm (those are the only two representations that contain "/")?
         this.class_name = class_name.replace('/', '.');
     }
 

@@ -24,6 +24,10 @@ import java.io.IOException;
 import org.apache.bcel.Const;
 import org.apache.bcel.Constants;
 
+/*>>>
+import org.checkerframework.checker.signature.qual.FieldDescriptor;
+*/
+
 /**
  * This class represents a local variable within a method. It contains its
  * scope, name, signature and index on the method's frame.
@@ -172,7 +176,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
     /**
      * @return Signature.
      */
-    public final String getSignature() {
+    public final @FieldDescriptor String getSignature() {
         ConstantUtf8 c;
         c = (ConstantUtf8) constant_pool.getConstant(signature_index, Const.CONSTANT_Utf8);
         return c.getBytes();
@@ -283,6 +287,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
     /**
      * @return deep copy of this object
      */
+    @SuppressWarnings("nullness") // bug in BCEL: uncaught exception
     public LocalVariable copy() {
         try {
             return (LocalVariable) clone();

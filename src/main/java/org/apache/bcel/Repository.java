@@ -17,11 +17,16 @@
  */
 package org.apache.bcel;
 
+
 import java.io.IOException;
 
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.util.ClassPath;
 import org.apache.bcel.util.SyntheticRepository;
+
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
 
 /**
  * The repository maintains informations about class interdependencies, e.g.,
@@ -81,7 +86,7 @@ public abstract class Repository {
      *  system class path; returns null if the class file can't be
      *  found
      */
-    public static ClassPath.ClassFile lookupClassFile( final String class_name ) {
+    public static ClassPath. /*@Nullable*/ ClassFile lookupClassFile( final String class_name ) {
         try {
             final ClassPath path = repository.getClassPath();
             if (path == null) {

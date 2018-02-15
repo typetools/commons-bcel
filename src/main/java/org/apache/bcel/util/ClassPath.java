@@ -34,6 +34,10 @@ import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 /**
  * Responsible for loading (class) files from the CLASSPATH. Inspired by
  * sun.tools.ClassPath.
@@ -122,7 +126,7 @@ public class ClassPath {
 
 
     @Override
-    public boolean equals( final Object o ) {
+    public boolean equals( final /*@Nullable*/ Object o ) {
         if (o instanceof ClassPath) {
             final ClassPath cp = (ClassPath)o;
             return class_path.equals(cp.toString());
@@ -214,7 +218,7 @@ public class ClassPath {
      * @return InputStream supplying the resource, or null if no resource with that name.
      * @since 6.0
      */
-    public InputStream getResourceAsStream(final String name) {
+    public /*@Nullable*/ InputStream getResourceAsStream(final String name) {
         for (final PathEntry path : paths) {
             InputStream is;
             if ((is = path.getResourceAsStream(name)) != null) {
@@ -229,7 +233,7 @@ public class ClassPath {
      * @return URL supplying the resource, or null if no resource with that name.
      * @since 6.0
      */
-    public URL getResource(final String name) {
+    public /*@Nullable*/ URL getResource(final String name) {
         for (final PathEntry path : paths) {
             URL url;
             if ((url = path.getResource(name)) != null) {
@@ -279,7 +283,7 @@ public class ClassPath {
         throw new IOException("Couldn't find: " + name + suffix);
     }
 
-    private ClassFile getClassFileInternal(final String name, final String suffix) throws IOException {
+    private /*@Nullable*/ ClassFile getClassFileInternal(final String name, final String suffix) throws IOException {
 
       for (final PathEntry path : paths) {
           final ClassFile cf = path.getClassFile(name, suffix);
@@ -404,7 +408,7 @@ public class ClassPath {
         }
 
         @Override
-        URL getResource(final String name) {
+        /*@Nullable*/ URL getResource(final String name) {
             // Resource specification uses '/' whatever the platform
             final File file = new File(dir + File.separatorChar + name.replace('/', File.separatorChar));
             try {
@@ -415,7 +419,7 @@ public class ClassPath {
         }
 
         @Override
-        InputStream getResourceAsStream(final String name) {
+        /*@Nullable*/ InputStream getResourceAsStream(final String name) {
             // Resource specification uses '/' whatever the platform
             final File file = new File(dir + File.separatorChar + name.replace('/', File.separatorChar));
             try {
@@ -438,7 +442,7 @@ public class ClassPath {
 
 
                 @Override
-                public String getPath() {
+                public /*@Nullable*/ String getPath() {
                     try {
                         return file.getCanonicalPath();
                     } catch (final IOException e) {
@@ -483,7 +487,7 @@ public class ClassPath {
         }
 
         @Override
-        URL getResource(final String name) {
+        /*@Nullable*/ URL getResource(final String name) {
             final ZipEntry entry = zip.getEntry(name);
             try {
                 return (entry != null) ? new URL("jar:file:" + zip.getName() + "!/" + name) : null;
@@ -493,7 +497,7 @@ public class ClassPath {
         }
 
         @Override
-        InputStream getResourceAsStream(final String name) {
+        /*@Nullable*/ InputStream getResourceAsStream(final String name) {
             final ZipEntry entry = zip.getEntry(name);
             try {
                 return (entry != null) ? zip.getInputStream(entry) : null;
@@ -503,7 +507,7 @@ public class ClassPath {
         }
 
         @Override
-        ClassFile getClassFile( final String name, final String suffix ) throws IOException {
+        /*@Nullable*/ ClassFile getClassFile( final String name, final String suffix ) throws IOException {
             final ZipEntry entry = zip.getEntry(name.replace('.', '/') + suffix);
 
             if (entry == null) {

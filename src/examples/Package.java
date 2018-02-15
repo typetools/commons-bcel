@@ -82,7 +82,7 @@ public class Package {
      * this list, putting dependent classes in here and from there
      * into allClasses. Store class names against class names of their dependents
      */
-    TreeMap<String, String> dependents = new TreeMap<String, String>();
+    TreeMap</*@InternalForm*/ String, String> dependents = new TreeMap<String, String>();
 
     /**
      * Collect all classes that could not be found in the classpath.
@@ -247,7 +247,7 @@ public class Package {
      * add given class to dependents (from is where its dependent from)
      * some fiddeling to be done because of array class notation
      */
-    void addClassString(String clas, String from) throws IOException {
+    void addClassString(/*@FieldDescriptor*/ String clas, String from) throws IOException {
         if (log) {
             System.out.println("processing: " + clas + " referenced by " + from);
         }

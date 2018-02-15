@@ -53,8 +53,8 @@ public class ClassGen extends AccessFlags implements Cloneable {
 
     /* Corresponds to the fields found in a JavaClass object.
      */
-    private String class_name;
-    private String super_class_name;
+    private @BinaryNameForNonArray String class_name;
+    private @BinaryNameForNonArray String super_class_name;
     private final String file_name;
     private int class_name_index = -1;
     private int superclass_name_index = -1;

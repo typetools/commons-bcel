@@ -23,6 +23,10 @@ import org.apache.bcel.generic.Type;
 import org.apache.bcel.verifier.exc.AssertionViolatedException;
 import org.apache.bcel.verifier.exc.StructuralCodeConstraintException;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 /**
  * This class implements an array of local variables used for symbolic JVM
  * simulation.
@@ -99,7 +103,7 @@ public class LocalVariables implements Cloneable {
      * Fulfills the general contract of Object.equals().
      */
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(final /*@Nullable*/ Object o) {
         if (!(o instanceof LocalVariables)) {
             return false;
         }
@@ -208,6 +212,7 @@ public class LocalVariables implements Cloneable {
      * Replaces all occurences of u in this local variables set
      * with an "initialized" ObjectType.
      */
+    @SuppressWarnings("interning") // membership test
     public void initializeObject(final UninitializedObjectType u) {
         for (int i=0; i<locals.length; i++) {
             if (locals[i] == u) {

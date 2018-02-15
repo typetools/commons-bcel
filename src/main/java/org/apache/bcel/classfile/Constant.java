@@ -24,6 +24,10 @@ import java.io.IOException;
 import org.apache.bcel.Const;
 import org.apache.bcel.util.BCELComparator;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 /**
  * Abstract superclass for classes to represent the different constant types
  * in the constant pool of a class file. The classes keep closely to
@@ -104,6 +108,7 @@ public abstract class Constant implements Cloneable, Node {
     /**
      * @return deep copy of this constant
      */
+    @SuppressWarnings("nullness") // bug in BCEL: uncaught exception
     public Constant copy() {
         try {
             return (Constant) super.clone();
@@ -193,7 +198,7 @@ public abstract class Constant implements Cloneable, Node {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( final Object obj ) {
+    public boolean equals( final /*@Nullable*/ Object obj ) {
         return bcelComparator.equals(this, obj);
     }
 

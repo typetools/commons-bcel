@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.generic;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +26,13 @@ import org.apache.bcel.classfile.ClassFormatException;
 import org.apache.bcel.classfile.Utility;
 
 /*>>>
+import org.checkerframework.checker.interning.qual.*;
+import org.checkerframework.checker.interning.qual.Interned;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.BinaryName;
+import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
+import org.checkerframework.checker.signature.qual.FieldDescriptor;
 import org.checkerframework.framework.qual.AnnotatedFor;
 */
 
@@ -37,6 +42,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  *
  * @version $Id$
  */
+@SuppressWarnings("interning")  // sets constants
 /*@AnnotatedFor({"nullness","signature"})*/
 public abstract class Type {
 
@@ -50,31 +56,42 @@ public abstract class Type {
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
      */
     @Deprecated
-    protected String signature; // signature for the type TODO should be private
+    // The string is mostly a @FieldDescriptor.
+    // Subclasses are:
+    //  * BasicType: the string is a @FieldDescriptor
+    //  * ReferenceType
+    //     * For ObjectType, the string is a @FieldDescriptor.
+    //     * For ArrayType, the string is a @FieldDescriptor.
+    //     * For UninitializedObjectType, s is a string "<UNINITIALIZED OBJECT OF TYPE ...>"
+    //  * ReturnaddressType: the string is "<return address>"
+    //  * DOUBLE_Upper: the string is "Double_Upper"
+    //  * LONG_Upper: the string is "Long_Upper"
+    protected @FieldDescriptor String signature; // signature for the type TODO should be private
     /** Predefined constants
      */
-    public static final BasicType VOID = new BasicType(Const.T_VOID);
-    public static final BasicType BOOLEAN = new BasicType(Const.T_BOOLEAN);
-    public static final BasicType INT = new BasicType(Const.T_INT);
-    public static final BasicType SHORT = new BasicType(Const.T_SHORT);
-    public static final BasicType BYTE = new BasicType(Const.T_BYTE);
-    public static final BasicType LONG = new BasicType(Const.T_LONG);
-    public static final BasicType DOUBLE = new BasicType(Const.T_DOUBLE);
-    public static final BasicType FLOAT = new BasicType(Const.T_FLOAT);
-    public static final BasicType CHAR = new BasicType(Const.T_CHAR);
-    public static final ObjectType OBJECT = new ObjectType("java.lang.Object");
-    public static final ObjectType CLASS = new ObjectType("java.lang.Class");
-    public static final ObjectType STRING = new ObjectType("java.lang.String");
-    public static final ObjectType STRINGBUFFER = new ObjectType("java.lang.StringBuffer");
-    public static final ObjectType THROWABLE = new ObjectType("java.lang.Throwable");
+    public static final /*@InternedDistinct*/ BasicType VOID = new BasicType(Const.T_VOID);
+    public static final /*@InternedDistinct*/ BasicType BOOLEAN = new BasicType(Const.T_BOOLEAN);
+    public static final /*@InternedDistinct*/ BasicType INT = new BasicType(Const.T_INT);
+    public static final /*@InternedDistinct*/ BasicType SHORT = new BasicType(Const.T_SHORT);
+    public static final /*@InternedDistinct*/ BasicType BYTE = new BasicType(Const.T_BYTE);
+    public static final /*@InternedDistinct*/ BasicType LONG = new BasicType(Const.T_LONG);
+    public static final /*@InternedDistinct*/ BasicType DOUBLE = new BasicType(Const.T_DOUBLE);
+    public static final /*@InternedDistinct*/ BasicType FLOAT = new BasicType(Const.T_FLOAT);
+    public static final /*@InternedDistinct*/ BasicType CHAR = new BasicType(Const.T_CHAR);
+    public static final /*@InternedDistinct*/ ObjectType OBJECT = new ObjectType("java.lang.Object");
+    public static final /*@InternedDistinct*/ ObjectType CLASS = new ObjectType("java.lang.Class");
+    public static final /*@InternedDistinct*/ ObjectType STRING = new ObjectType("java.lang.String");
+    public static final /*@InternedDistinct*/ ObjectType STRINGBUFFER = new ObjectType("java.lang.StringBuffer");
+    public static final /*@InternedDistinct*/ ObjectType THROWABLE = new ObjectType("java.lang.Throwable");
     public static final Type[] NO_ARGS = new Type[0]; // EMPTY, so immutable
-    public static final ReferenceType NULL = new ReferenceType() {
+    public static final /*@InternedDistinct*/ ReferenceType NULL = new ReferenceType() {
     };
-    public static final Type UNKNOWN = new Type(Const.T_UNKNOWN, "<unknown object>") {
+    @SuppressWarnings("signature") // illegal object
+    public static final /*@InternedDistinct*/ Type UNKNOWN = new Type(Const.T_UNKNOWN, "<unknown object>") {
     };
 
 
-    protected Type(final byte t, final String s) {
+    protected Type(final byte t, final @FieldDescriptor String s) {
         type = t;
         signature = s;
     }
@@ -105,7 +122,7 @@ public abstract class Type {
     /**
      * @return signature for given type.
      */
-    public String getSignature() {
+    public @FieldDescriptor String getSignature() {
         return signature;
     }
 
@@ -123,6 +140,7 @@ public abstract class Type {
      * returns the given type.
      * @since 6.0
      */
+    @SuppressWarnings("interned") // primitive types are interned
     public Type normalizeForStackOrLocal() {
         if (this == Type.BOOLEAN || this == Type.BYTE || this == Type.SHORT || this == Type.CHAR) {
             return Type.INT;
@@ -150,7 +168,9 @@ public abstract class Type {
      * @return Type string, e.g. `int[]'
      */
     @Override
-    public /*@BinaryName*/ String toString() {
+    // TODO: result must be one of fully-qualified name, binary name, internal form, Class.getSimpleName
+    // TODO: looks like a bug, because signatureToString is called
+    public String toString() {
         return ((this.equals(Type.NULL) || (type >= Const.T_UNKNOWN))) ? signature : Utility
                 .signatureToString(signature, false);
     }
@@ -176,7 +196,7 @@ public abstract class Type {
         return buf.toString();
     }
 
-    @SuppressWarnings("nullness:type.argument.type.incompatible") // overrides initialValue
+    @SuppressWarnings("nullness:type.argument.type.incompatible") // initialValue returns non-null
     private static final ThreadLocal<Integer> consumed_chars = new ThreadLocal<Integer>() {
 
         @Override
@@ -186,6 +206,7 @@ public abstract class Type {
     };//int consumed_chars=0; // Remember position in string, see getArgumentTypes
 
 
+    @SuppressWarnings("nullness:type.argument.type.incompatible") // ThreadLocal workaround
     private static int unwrap( final ThreadLocal<Integer> tl ) {
         return tl.get().intValue();
     }
@@ -202,7 +223,10 @@ public abstract class Type {
      * @return type object
      */
     // @since 6.0 no longer final
-    public static /*@NonNull*/ Type getType( final String signature ) throws StringIndexOutOfBoundsException {
+    // TODO: getType(Class) calls "getType(cl.getName())" for arrays, which passes a
+    // @ClassGetName such as "[Ljava.lang.String;" rather than a
+    // @FieldDescriptor as documented in this method's Javadoc.
+    public static /*@NonNull*/ Type getType( final @FieldDescriptor String signature ) throws StringIndexOutOfBoundsException {
         final byte type = Utility.typeOfSignature(signature);
         if (type <= Const.T_VOID) {
             //corrected concurrent private static field acess
@@ -214,6 +238,7 @@ public abstract class Type {
                 dim++;
             } while (signature.charAt(dim) == '[');
             // Recurse, but just once, if the signature is ok
+            @SuppressWarnings("signature") // string manipulation: strip off array brackets and make recursive call
             final Type t = getType(signature.substring(dim));
             //corrected concurrent private static field acess
             //  consumed_chars += dim; // update counter - is replaced by
@@ -223,9 +248,12 @@ public abstract class Type {
         } else { // type == T_REFERENCE
             // Utility.signatureToString understands how to parse
             // generic types.
+            // TODO: either "java/lang/String" or "java.lang.String" might flow here.
             final String parsedSignature = Utility.signatureToString(signature, false);
             wrap(consumed_chars, parsedSignature.length() + 2); // "Lblabla;" `L' and `;' are removed
-            return ObjectType.getInstance(parsedSignature.replace('/', '.'));
+            @SuppressWarnings("signature") // string manipulation; known to be reference type
+            @BinaryNameForNonArray String className = parsedSignature.replace('/', '.');
+            return ObjectType.getInstance(className);
         }
     }
 
@@ -236,9 +264,11 @@ public abstract class Type {
      * @param signature signature string such as (Ljava/lang/String;)V
      * @return return type
      */
+    @SuppressWarnings("signature") // substring manipulation
+    // Argument is a @FieldDescriptor, possibly following a close-paren ")"
     public static Type getReturnType( final String signature ) {
         try {
-            // Read return type after `)'
+            // Read return type after `)'; also works if there is no `)'
             final int index = signature.lastIndexOf(')') + 1;
             return getType(signature.substring(index));
         } catch (final StringIndexOutOfBoundsException e) { // Should never occur
@@ -252,6 +282,7 @@ public abstract class Type {
      * @param signature signature string such as (Ljava/lang/String;)V
      * @return array of argument types
      */
+    @SuppressWarnings("signature") // substring manipulation
     public static Type[] getArgumentTypes( final String signature ) {
         final List<Type> vec = new ArrayList<>();
         int index;
@@ -313,6 +344,8 @@ public abstract class Type {
                 throw new IllegalStateException("Ooops, what primitive type is " + cl);
             }
         } else { // "Real" class
+            // If a non-array reference, then @ClassGetName = @FullyQualifiedName, so this is OK.
+            // TODO: Except not for inner classes, where they are different ("." vs "$" in name).
             return ObjectType.getInstance(cl.getName());
         }
     }
@@ -407,7 +440,7 @@ public abstract class Type {
      * The signature has a complicated dependency on other parameter
      * so it's tricky to do it in a call to the super ctor.
      */
-    void setSignature(final String signature) {
+    void setSignature(final @FieldDescriptor String signature) {
         this.signature = signature;
     }
 }

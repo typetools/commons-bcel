@@ -84,6 +84,7 @@ public class VerifierFactory {
      * and if you want to verify the transitive hull of
      * referenced class files.
      */
+    @SuppressWarnings("nullness") // vs is the right size; it contains no nulls
     public static Verifier[] getVerifiers() {
         final Verifier[] vs = new Verifier[hashMap.values().size()];
         return hashMap.values().toArray(vs); // Because vs is big enough, vs is used to store the values into and returned!

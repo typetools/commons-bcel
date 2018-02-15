@@ -140,6 +140,7 @@ public final class StackMapType implements Cloneable {
     /**
      * @return deep copy of this object
      */
+    @SuppressWarnings("nullness") // bug in BCEL: uncaught exception
     public StackMapType copy() {
         try {
             return (StackMapType) clone();

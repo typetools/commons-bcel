@@ -158,6 +158,7 @@ public class BootstrapMethod implements Cloneable {
     /**
      * @return deep copy of this object
      */
+    @SuppressWarnings("nullness") // bug in BCEL: uncaught exception
     public BootstrapMethod copy() {
         try {
             return (BootstrapMethod) clone();

@@ -17,11 +17,14 @@
  */
 package org.apache.bcel.verifier.structurals;
 
-
 import org.apache.bcel.Const;
 import org.apache.bcel.Constants;
 import org.apache.bcel.generic.ObjectType;
 import org.apache.bcel.generic.ReferenceType;
+
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
 
 /**
  * This class represents an uninitialized object type; see The Java
@@ -61,7 +64,7 @@ public class UninitializedObjectType extends ReferenceType implements Constants 
      *
      */
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(final /*@Nullable*/ Object o) {
         if (! (o instanceof UninitializedObjectType)) {
             return false;
         }

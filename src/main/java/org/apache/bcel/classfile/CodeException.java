@@ -207,6 +207,7 @@ public final class CodeException implements Cloneable, Node, Constants {
     /**
      * @return deep copy of this object
      */
+    @SuppressWarnings("nullness") // bug in BCEL: uncaught exception
     public CodeException copy() {
         try {
             return (CodeException) clone();

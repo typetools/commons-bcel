@@ -36,6 +36,10 @@ import org.apache.bcel.generic.Select;
 import org.apache.bcel.verifier.exc.AssertionViolatedException;
 import org.apache.bcel.verifier.exc.StructuralCodeConstraintException;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 /**
  * This class represents a control flow graph of a method.
  *
@@ -292,7 +296,7 @@ public class ControlFlowGraph{
          * we were called by this one.
          * Returns null if we were called from the top level.
          */
-        private InstructionContextImpl lastExecutionJSR() {
+        private /*@Nullable*/ InstructionContextImpl lastExecutionJSR() {
 
             final int size = executionPredecessors.size();
             int retcount = 0;

@@ -60,7 +60,7 @@ public class MethodGenTestCase extends TestCase {
         }
 
         fail("Method " + name + " not found in class " + cls);
-        return null;
+        return null; // dead code
     }
 
     public void testRemoveLocalVariable() throws Exception {

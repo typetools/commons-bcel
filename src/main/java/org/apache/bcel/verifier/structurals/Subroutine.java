@@ -20,6 +20,10 @@ package org.apache.bcel.verifier.structurals;
 
 import org.apache.bcel.generic.InstructionHandle;
 
+/*>>>
+import org.checkerframework.checker.interning.qual.UsesObjectEquals;
+*/
+
 /**
  * This interface defines properties of JVM bytecode subroutines.
  * Note that it is 'abused' to maintain the top-level code in a
@@ -27,7 +31,7 @@ import org.apache.bcel.generic.InstructionHandle;
  *
  * @version $Id$
  */
-public interface Subroutine{
+public /*@UsesObjectEquals*/ interface Subroutine{
     /**
      * Returns all the JsrInstructions that have the
      * first instruction of this subroutine as their target.

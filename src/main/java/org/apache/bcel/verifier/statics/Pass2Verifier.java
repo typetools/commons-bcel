@@ -73,6 +73,11 @@ import org.apache.bcel.verifier.exc.AssertionViolatedException;
 import org.apache.bcel.verifier.exc.ClassConstraintException;
 import org.apache.bcel.verifier.exc.LocalVariableInfoInconsistentException;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.interning.qual.InternedDistinct;
+*/
+
 /**
  * This PassVerifier verifies a class file according to
  * pass 2 as described in The Java Virtual Machine
@@ -114,7 +119,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
      * <B>Repository.lookupClass(myOwner.getClassname()).getMethods()[method_nr];</B>.
      * You should not add own information. Leave that to JustIce.
      */
-    public LocalVariablesInfo getLocalVariablesInfo(final int method_nr) {
+    public /*@Nullable*/ LocalVariablesInfo getLocalVariablesInfo(final int method_nr) {
         if (this.verify() != VerificationResult.VR_OK) {
             return null; // It's cached, don't worry.
         }
@@ -189,6 +194,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
      *
      * @throws ClassConstraintException otherwise.
      */
+    @SuppressWarnings("interned") // looking up same string in Repository
     private void every_class_has_an_accessible_superclass() {
         try {
         final Set<String> hs = new HashSet<>(); // save class names to detect circular inheritance
@@ -1006,8 +1012,10 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                     // We cannot safely trust any other "instanceof" mechanism. We need to transitively verify
                     // the ancestor hierarchy.
                     JavaClass e = Repository.lookupClass(cname);
-                    final JavaClass t = Repository.lookupClass(Type.THROWABLE.getClassName());
-                    final JavaClass o = Repository.lookupClass(Type.OBJECT.getClassName());
+                    @SuppressWarnings("interning") // lookupClass is deterministic
+                    final /*@InternedDistinct*/ JavaClass t = Repository.lookupClass(Type.THROWABLE.getClassName());
+                    @SuppressWarnings("interning") // lookupClass is deterministic
+                    final /*@InternedDistinct*/ JavaClass o = Repository.lookupClass(Type.OBJECT.getClassName());
                     while (e != o) {
                         if (e == t) {
                             break; // It's a subclass of Throwable, OKAY, leave.
@@ -1037,7 +1045,9 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
             int method_number = -1;
             final Method[] ms = Repository.lookupClass(myOwner.getClassName()).getMethods();
             for (int mn=0; mn<ms.length; mn++) {
-                if (m == ms[mn]) {
+                @SuppressWarnings("interning") // not sure why this is OK
+                boolean found = (m == ms[mn]);
+                if (found) {
                     method_number = mn;
                     break;
                 }
@@ -1169,8 +1179,10 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                 // We cannot safely trust any other "instanceof" mechanism. We need to transitively verify
                 // the ancestor hierarchy.
                 JavaClass e = Repository.lookupClass(cname);
-                final JavaClass t = Repository.lookupClass(Type.THROWABLE.getClassName());
-                final JavaClass o = Repository.lookupClass(Type.OBJECT.getClassName());
+                @SuppressWarnings("interning") // lookupClass is deterministic
+                final /*@InternedDistinct*/ JavaClass t = Repository.lookupClass(Type.THROWABLE.getClassName());
+                @SuppressWarnings("interning") // lookupClass is deterministic
+                final /*@InternedDistinct*/ JavaClass o = Repository.lookupClass(Type.OBJECT.getClassName());
                 while (e != o) {
                     if (e == t) {
                         break; // It's a subclass of Throwable, OKAY, leave.

@@ -23,6 +23,11 @@ import java.io.IOException;
 import org.apache.bcel.Const;
 import org.apache.bcel.util.ByteSequence;
 
+/*>>>
+import org.checkerframework.checker.initialization.qual.UnknownInitialization;
+import org.checkerframework.checker.interning.qual.InternedDistinct;
+*/
+
 /**
  * Abstract super class for instructions dealing with local variables.
  *
@@ -41,7 +46,7 @@ public abstract class LocalVariableInstruction extends Instruction implements Ty
     private short canon_tag = -1; // canonical tag such as ILOAD
 
 
-    private boolean wide() {
+    private boolean wide(/*>>>@UnknownInitialization(LocalVariableInstruction.class) LocalVariableInstruction this*/) {
         return n > Const.MAX_BYTE;
     }
 
@@ -163,7 +168,7 @@ public abstract class LocalVariableInstruction extends Instruction implements Ty
      * @see #setIndexOnly(int)
      */
     @Override
-    public void setIndex( final int n ) { // TODO could be package-protected?
+    public void setIndex( /*>>>@UnknownInitialization(LocalVariableInstruction.class) LocalVariableInstruction this,*/ final int n ) { // TODO could be package-protected?
         if ((n < 0) || (n > Const.MAX_SHORT)) {
             throw new ClassGenException("Illegal value: " + n);
         }
@@ -199,7 +204,7 @@ public abstract class LocalVariableInstruction extends Instruction implements Ty
      * @return type associated with the instruction
      */
     @Override
-    public Type getType( final ConstantPoolGen cp ) {
+    public /*@InternedDistinct*/ Type getType( final ConstantPoolGen cp ) {
         switch (canon_tag) {
             case Const.ILOAD:
             case Const.ISTORE:

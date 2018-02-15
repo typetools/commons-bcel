@@ -100,6 +100,10 @@ import org.apache.bcel.verifier.exc.StaticCodeConstraintException;
 import org.apache.bcel.verifier.exc.StaticCodeInstructionConstraintException;
 import org.apache.bcel.verifier.exc.StaticCodeInstructionOperandConstraintException;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 /**
  * This PassVerifier verifies a class file according to
  * pass 3, static part as described in The Java Virtual
@@ -579,7 +583,7 @@ public final class Pass3aVerifier extends PassVerifier{
                 return (ObjectType)rt;
             }
             constraintViolated(o, "expecting ObjectType but got "+rt);
-            return null;
+            return null; // dead code
         }
 
         /** Checks if the constraints of operands of the said instruction(s) are satisfied. */
@@ -1161,7 +1165,7 @@ public final class Pass3aVerifier extends PassVerifier{
          * @param invoke the instruction that references the method
          * @return the referenced method or null if not found.
          */
-        private Method getMethodRecursive(final JavaClass jc, final InvokeInstruction invoke) throws ClassNotFoundException{
+        private /*@Nullable*/ Method getMethodRecursive(final JavaClass jc, final InvokeInstruction invoke) throws ClassNotFoundException{
             Method m;
             //look in the given class
             m = getMethod(jc, invoke);
@@ -1194,7 +1198,7 @@ public final class Pass3aVerifier extends PassVerifier{
          * @param invoke the instruction that references the method
          * @return the referenced method or null if not found.
          */
-        private Method getMethod(final JavaClass jc, final InvokeInstruction invoke) {
+        private /*@Nullable*/ Method getMethod(final JavaClass jc, final InvokeInstruction invoke) {
             final Method[] ms = jc.getMethods();
             for (final Method element : ms) {
                 if ( (element.getName().equals(invoke.getMethodName(cpg))) &&

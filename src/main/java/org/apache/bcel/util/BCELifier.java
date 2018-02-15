@@ -57,6 +57,7 @@ public class BCELifier extends org.apache.bcel.classfile.EmptyVisitor {
 
     // The base package name for imports; assumes Const is at the top level
     // N.B we use the class so renames will be detected by the compiler/IDE
+    @SuppressWarnings("nullness") // can get package for Const.class
     private static final String BASE_PACKAGE = Const.class.getPackage().getName();
     private static final String CONSTANT_PREFIX = Const.class.getSimpleName()+".";
 

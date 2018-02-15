@@ -29,6 +29,10 @@ import org.apache.bcel.classfile.ConstantUtf8;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.classfile.Utility;
 
+/*>>>
+import org.checkerframework.checker.signature.qual.BinaryName;
+*/
+
 /**
  * <p>Drop in replacement for the standard class loader of the JVM. You can use it
  * in conjunction with the JavaWrapper to dynamically modify/create classes
@@ -103,7 +107,7 @@ public class ClassLoader extends java.lang.ClassLoader {
     }
 
     @Override
-    protected Class<?> loadClass( final String class_name, final boolean resolve ) throws ClassNotFoundException {
+    protected Class<?> loadClass( final @BinaryName String class_name, final boolean resolve ) throws ClassNotFoundException {
         Class<?> cl = null;
         /* First try: lookup hash table.
          */

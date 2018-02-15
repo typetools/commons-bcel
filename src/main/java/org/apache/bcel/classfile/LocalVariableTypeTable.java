@@ -23,6 +23,10 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 // The new table is used when generic types are about...
 
 //LocalVariableTable_attribute {
@@ -96,7 +100,7 @@ public class LocalVariableTypeTable extends Attribute {
         return local_variable_type_table;
     }
 
-    public final LocalVariable getLocalVariable(final int index) {
+    public final /*@Nullable*/ LocalVariable getLocalVariable(final int index) {
         for (final LocalVariable variable : local_variable_type_table) {
             if (variable.getIndex() == index) {
                 return variable;

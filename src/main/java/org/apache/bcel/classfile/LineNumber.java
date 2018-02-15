@@ -137,6 +137,7 @@ public final class LineNumber implements Cloneable, Node {
     /**
      * @return deep copy of this object
      */
+    @SuppressWarnings("nullness") // bug in BCEL: uncaught exception
     public LineNumber copy() {
         try {
             return (LineNumber) clone();

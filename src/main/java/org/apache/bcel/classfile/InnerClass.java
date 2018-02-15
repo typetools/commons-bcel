@@ -206,6 +206,7 @@ public final class InnerClass implements Cloneable, Node {
     /**
      * @return deep copy of this object
      */
+    @SuppressWarnings("nullness") // bug in BCEL: uncaught exception
     public InnerClass copy() {
         try {
             return (InnerClass) clone();

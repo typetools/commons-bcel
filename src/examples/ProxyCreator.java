@@ -55,6 +55,7 @@ public class ProxyCreator {
     /**
      * Load class and create instance
      */
+    @SuppressWarnings("nullness") // bug in BCEL: should throw instead of returning null
     public static Object createProxy(String pack, String class_name) {
         try {
             Class<?> cl = Class.forName(pack + "$$BCEL$$" + class_name);

@@ -22,6 +22,10 @@ import java.io.IOException;
 
 import org.apache.bcel.util.ByteSequence;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.RequiresNonNull;
+*/
+
 /**
  * Select - Abstract super class for LOOKUPSWITCH and TABLESWITCH instructions.
  *
@@ -76,6 +80,7 @@ public abstract class Select extends BranchInstruction implements VariableLength
      * Empty constructor needed for the Class.newInstance() statement in
      * Instruction.readInstruction(). Not to be used otherwise.
      */
+    @SuppressWarnings("nullness") // used only in special case
     Select() {
     }
 
@@ -88,6 +93,7 @@ public abstract class Select extends BranchInstruction implements VariableLength
      * @param targets instruction targets
      * @param defaultTarget default instruction target
      */
+    @SuppressWarnings("nullness") // target is temporarily set to null
     Select(final short opcode, final int[] match, final InstructionHandle[] targets, final InstructionHandle defaultTarget) {
         // don't set default target before instuction is built
         super(opcode, null);

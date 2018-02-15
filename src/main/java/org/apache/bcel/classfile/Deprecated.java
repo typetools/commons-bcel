@@ -23,6 +23,10 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 /**
  * This class is derived from <em>Attribute</em> and denotes that this is a
  * deprecated method.
@@ -33,7 +37,7 @@ import org.apache.bcel.Const;
  */
 public final class Deprecated extends Attribute {
 
-    private byte[] bytes;
+    private byte /*@Nullable*/ [] bytes;
 
 
     /**
@@ -51,7 +55,7 @@ public final class Deprecated extends Attribute {
      * @param bytes Attribute contents
      * @param constant_pool Array of constants
      */
-    public Deprecated(final int name_index, final int length, final byte[] bytes, final ConstantPool constant_pool) {
+    public Deprecated(final int name_index, final int length, final byte /*@Nullable*/ [] bytes, final ConstantPool constant_pool) {
         super(Const.ATTR_DEPRECATED, name_index, length, constant_pool);
         this.bytes = bytes;
     }

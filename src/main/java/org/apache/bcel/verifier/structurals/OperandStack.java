@@ -18,6 +18,10 @@
 package org.apache.bcel.verifier.structurals;
 
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 import java.util.ArrayList;
 
 import org.apache.bcel.generic.ObjectType;
@@ -88,7 +92,7 @@ public class OperandStack implements Cloneable {
      * objects on the stacks.
      */
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(final /*@Nullable*/ Object o) {
         if (!(o instanceof OperandStack)) {
             return false;
         }
@@ -145,7 +149,7 @@ public class OperandStack implements Cloneable {
     /**
      * Pops i elements off the stack. ALWAYS RETURNS "null"!!!
      */
-    public Type pop(final int i) {
+    public /*@Nullable*/ Type pop(final int i) {
         for (int j=0; j<i; j++) {
             pop();
         }
@@ -263,6 +267,7 @@ public class OperandStack implements Cloneable {
      * Replaces all occurences of u in this OperandStack instance
      * with an "initialized" ObjectType.
      */
+    @SuppressWarnings("interning") // membership test
     public void initializeObject(final UninitializedObjectType u) {
         for (int i=0; i<stack.size(); i++) {
             if (stack.get(i) == u) {

@@ -19,6 +19,11 @@ package org.apache.bcel.generic;
 
 import org.apache.bcel.Const;
 
+/*>>>
+import org.checkerframework.checker.interning.qual.InternedDistinct;
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 /**
  * Returnaddress, the type JSR or JSR_W instructions push upon the stack.
  *
@@ -27,13 +32,14 @@ import org.apache.bcel.Const;
  */
 public class ReturnaddressType extends Type {
 
-    public static final ReturnaddressType NO_TARGET = new ReturnaddressType();
+    public static final /*@InternedDistinct*/ ReturnaddressType NO_TARGET = new /*@InternedDistinct*/ ReturnaddressType();
     private InstructionHandle returnTarget;
 
 
     /**
      * A Returnaddress [that doesn't know where to return to].
      */
+    @SuppressWarnings("signature") // special-case object
     private ReturnaddressType() {
         super(Const.T_ADDRESS, "<return address>");
     }
@@ -42,6 +48,7 @@ public class ReturnaddressType extends Type {
     /**
      * Creates a ReturnaddressType object with a target.
      */
+    @SuppressWarnings("signature") // special-case object
     public ReturnaddressType(final InstructionHandle returnTarget) {
         super(Const.T_ADDRESS, "<return address targeting " + returnTarget + ">");
         this.returnTarget = returnTarget;
@@ -63,7 +70,7 @@ public class ReturnaddressType extends Type {
      * Returns if the two Returnaddresses refer to the same target.
      */
     @Override
-    public boolean equals( final Object rat ) {
+    public boolean equals( final /*@Nullable*/ Object rat ) {
         if (!(rat instanceof ReturnaddressType)) {
             return false;
         }

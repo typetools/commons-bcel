@@ -24,6 +24,10 @@ import org.apache.bcel.Const;
 import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.util.ByteSequence;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 /**
  * Abstract super class for all Java byte codes.
  *
@@ -118,6 +122,7 @@ public abstract class Instruction implements Cloneable {
      * @see BranchInstruction
      * @return (shallow) copy of an instruction
      */
+    @SuppressWarnings("nullness") // BCEL bug: ignored exception
     public Instruction copy() {
         Instruction i = null;
         // "Constant" instruction, no need to duplicate
@@ -574,7 +579,7 @@ public abstract class Instruction implements Cloneable {
      * @return true if that is an Instruction and has the same opcode
      */
     @Override
-    public boolean equals( final Object that ) {
+    public boolean equals( final /*@Nullable*/ Object that ) {
         return (that instanceof Instruction) ? cmp.equals(this, (Instruction) that) : false;
     }
 

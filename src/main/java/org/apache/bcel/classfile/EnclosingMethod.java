@@ -22,6 +22,10 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 /**
  * This attribute exists for local or
  * anonymous classes and ... there can be only one.
@@ -88,7 +92,7 @@ public class EnclosingMethod extends Attribute {
         return c;
     }
 
-    public final ConstantNameAndType getEnclosingMethod() {
+    public final /*@Nullable*/ ConstantNameAndType getEnclosingMethod() {
         if (methodIndex == 0) {
             return null;
         }
