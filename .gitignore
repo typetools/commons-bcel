@@ -5,3 +5,4 @@
 /.classpath
 /.project
 /maven-eclipse.xml
+*.xml.asc

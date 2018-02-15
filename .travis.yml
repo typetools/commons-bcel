@@ -20,4 +20,4 @@ jdk:
   - oraclejdk8
 
 install: mvn process-resources
-script: mvn verify
+script: mvn verify javadoc:javadoc
