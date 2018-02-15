@@ -18,11 +18,11 @@
 package org.apache.bcel.verifier.structurals;
 
 
+import org.apache.bcel.generic.InstructionHandle;
+
 /*>>>
 import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 */
-
-import org.apache.bcel.generic.InstructionHandle;
 
 /**
  * This interface defines properties of JVM bytecode subroutines.

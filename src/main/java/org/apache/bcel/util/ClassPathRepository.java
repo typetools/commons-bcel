@@ -17,10 +17,6 @@
  */
 package org.apache.bcel.util;
 
-/*>>>
-import org.checkerframework.checker.nullness.qual.Nullable;
-*/
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -28,6 +24,10 @@ import java.util.Map;
 
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.JavaClass;
+
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
 
 /**
  * This repository is used in situations where a Class is created outside the realm of a ClassLoader. Classes are loaded from the file systems using the paths

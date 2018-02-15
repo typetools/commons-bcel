@@ -17,10 +17,6 @@
  */
 package org.apache.bcel.generic;
 
-/*>>>
-import org.checkerframework.checker.nullness.qual.Nullable;
-*/
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +31,10 @@ import org.apache.bcel.classfile.ConstantValue;
 import org.apache.bcel.classfile.Field;
 import org.apache.bcel.classfile.Utility;
 import org.apache.bcel.util.BCELComparator;
+
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
 
 /**
  * Template class for building up a field.  The only extraordinary thing

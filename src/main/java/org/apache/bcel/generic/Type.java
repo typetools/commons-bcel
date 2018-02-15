@@ -17,6 +17,14 @@
  */
 package org.apache.bcel.generic;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.bcel.Const;
+import org.apache.bcel.classfile.ClassFormatException;
+import org.apache.bcel.classfile.Utility;
+
 /*>>>
 import org.checkerframework.checker.interning.qual.*;
 import org.checkerframework.checker.interning.qual.Interned;
@@ -27,13 +35,6 @@ import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
 import org.checkerframework.checker.signature.qual.FieldDescriptor;
 import org.checkerframework.framework.qual.AnnotatedFor;
 */
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.bcel.Const;
-import org.apache.bcel.classfile.ClassFormatException;
-import org.apache.bcel.classfile.Utility;
 
 /**
  * Abstract super class for all possible java types, namely basic types

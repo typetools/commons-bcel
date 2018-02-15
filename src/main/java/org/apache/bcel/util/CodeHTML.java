@@ -17,14 +17,6 @@
  */
 package org.apache.bcel.util;
 
-/*>>>
-import org.checkerframework.checker.nullness.qual.RequiresNonNull;
-import org.checkerframework.checker.initialization.qual.UnknownInitialization;
-import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
-*/
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -44,6 +36,14 @@ import org.apache.bcel.classfile.LocalVariable;
 import org.apache.bcel.classfile.LocalVariableTable;
 import org.apache.bcel.classfile.Method;
 import org.apache.bcel.classfile.Utility;
+
+/*>>>
+import org.checkerframework.checker.nullness.qual.RequiresNonNull;
+import org.checkerframework.checker.initialization.qual.UnknownInitialization;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+*/
 
 /**
  * Convert code into HTML file.

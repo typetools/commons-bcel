@@ -17,6 +17,11 @@
  */
 package org.apache.bcel.generic;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+
+import org.apache.bcel.util.ByteSequence;
+
 /*>>>
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.interning.qual.UsesObjectEquals;
@@ -24,11 +29,6 @@ import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
 */
-
-import java.io.DataOutputStream;
-import java.io.IOException;
-
-import org.apache.bcel.util.ByteSequence;
 
 /**
  * Abstract super class for branching instructions like GOTO, IFEQ, etc..

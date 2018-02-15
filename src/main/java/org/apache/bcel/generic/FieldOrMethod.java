@@ -17,16 +17,16 @@
  */
 package org.apache.bcel.generic;
 
-/*>>>
-import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
-import org.checkerframework.framework.qual.AnnotatedFor;
-*/
-
 import org.apache.bcel.Const;
 import org.apache.bcel.classfile.ConstantCP;
 import org.apache.bcel.classfile.ConstantNameAndType;
 import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.classfile.ConstantUtf8;
+
+/*>>>
+import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
+import org.checkerframework.framework.qual.AnnotatedFor;
+*/
 
 /**
  * Super class for InvokeInstruction and FieldInstruction, since they have

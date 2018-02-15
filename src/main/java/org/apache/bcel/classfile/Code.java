@@ -17,15 +17,15 @@
  */
 package org.apache.bcel.classfile;
 
-/*>>>
-import org.checkerframework.checker.nullness.qual.Nullable;
-*/
-
 import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.apache.bcel.Const;
+
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
 
 /**
  * This class represents a chunk of Java byte code contained in a

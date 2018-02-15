@@ -17,16 +17,16 @@
  */
 package org.apache.bcel.classfile;
 
-/*>>>
-import org.checkerframework.checker.signature.qual.FieldDescriptor;
-*/
-
 import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.apache.bcel.Const;
 import org.apache.bcel.Constants;
+
+/*>>>
+import org.checkerframework.checker.signature.qual.FieldDescriptor;
+*/
 
 /**
  * This class represents a local variable within a method. It contains its

@@ -17,16 +17,16 @@
  */
 package org.apache.bcel.generic;
 
-/*>>>
-import org.checkerframework.checker.nullness.qual.Nullable;
-*/
-
 import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.apache.bcel.Const;
 import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.util.ByteSequence;
+
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
 
 /**
  * Abstract super class for all Java byte codes.

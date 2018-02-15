@@ -18,11 +18,6 @@
 package org.apache.bcel.verifier.statics;
 
 
-/*>>>
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.interning.qual.InternedDistinct;
-*/
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
@@ -77,6 +72,11 @@ import org.apache.bcel.verifier.VerifierFactory;
 import org.apache.bcel.verifier.exc.AssertionViolatedException;
 import org.apache.bcel.verifier.exc.ClassConstraintException;
 import org.apache.bcel.verifier.exc.LocalVariableInfoInconsistentException;
+
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.interning.qual.InternedDistinct;
+*/
 
 /**
  * This PassVerifier verifies a class file according to

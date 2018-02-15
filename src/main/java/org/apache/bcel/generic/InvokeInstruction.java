@@ -17,16 +17,16 @@
  */
 package org.apache.bcel.generic;
 
-/*>>>
-import org.checkerframework.checker.signature.qual.ClassGetName;
-*/
-
 import java.util.StringTokenizer;
 
 import org.apache.bcel.Const;
 import org.apache.bcel.classfile.Constant;
 import org.apache.bcel.classfile.ConstantCP;
 import org.apache.bcel.classfile.ConstantPool;
+
+/*>>>
+import org.checkerframework.checker.signature.qual.ClassGetName;
+*/
 
 /**
  * Super class for the INVOKExxx family of instructions.

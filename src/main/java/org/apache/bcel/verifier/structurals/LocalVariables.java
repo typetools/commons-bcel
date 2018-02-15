@@ -18,14 +18,14 @@
 package org.apache.bcel.verifier.structurals;
 
 
-/*>>>
-import org.checkerframework.checker.nullness.qual.Nullable;
-*/
-
 import org.apache.bcel.generic.ReferenceType;
 import org.apache.bcel.generic.Type;
 import org.apache.bcel.verifier.exc.AssertionViolatedException;
 import org.apache.bcel.verifier.exc.StructuralCodeConstraintException;
+
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
 
 /**
  * This class implements an array of local variables used for symbolic JVM

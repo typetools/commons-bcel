@@ -17,17 +17,17 @@
  */
 package org.apache.bcel.classfile;
 
-/*>>>
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.framework.qual.AnnotatedFor;
-*/
-
 import java.io.DataInput;
 import java.io.IOException;
 
 import org.apache.bcel.Const;
 import org.apache.bcel.generic.Type;
 import org.apache.bcel.util.BCELComparator;
+
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.framework.qual.AnnotatedFor;
+*/
 
 /**
  * This class represents the method info structure, i.e., the representation

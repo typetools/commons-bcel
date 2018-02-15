@@ -17,10 +17,6 @@
  */
 package org.apache.bcel.util;
 
-/*>>>
-import org.checkerframework.checker.nullness.qual.Nullable;
-*/
-
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,6 +33,10 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
 
 /**
  * Responsible for loading (class) files from the CLASSPATH. Inspired by

@@ -17,11 +17,6 @@
  */
 package org.apache.bcel.generic;
 
-/*>>>
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.signature.qual.ClassGetName;
-*/
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -49,11 +44,13 @@ import org.apache.bcel.classfile.Utility;
 import org.apache.bcel.util.BCELComparator;
 
 /*>>>
+import org.checkerframework.checker.index.qual.SameLen;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.BinaryName;
 import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
+import org.checkerframework.checker.signature.qual.ClassGetName;
 import org.checkerframework.framework.qual.AnnotatedFor;
-import org.checkerframework.checker.index.qual.SameLen;
 */
 
 /**

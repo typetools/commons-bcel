@@ -17,10 +17,6 @@
  */
 package org.apache.bcel.util;
 
-/*>>>
-import org.checkerframework.checker.signature.qual.BinaryName;
-*/
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Hashtable;
@@ -32,6 +28,10 @@ import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.classfile.ConstantUtf8;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.classfile.Utility;
+
+/*>>>
+import org.checkerframework.checker.signature.qual.BinaryName;
+*/
 
 /**
  * <p>Drop in replacement for the standard class loader of the JVM. You can use it

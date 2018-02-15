@@ -17,12 +17,12 @@
  */
 package org.apache.bcel.generic;
 
+import org.apache.bcel.Const;
+import org.apache.bcel.classfile.LocalVariable;
+
 /*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
 */
-
-import org.apache.bcel.Const;
-import org.apache.bcel.classfile.LocalVariable;
 
 /**
  * This class represents a local variable within a method. It contains its

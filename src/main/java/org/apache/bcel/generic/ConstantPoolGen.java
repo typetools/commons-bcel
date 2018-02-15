@@ -17,12 +17,6 @@
  */
 package org.apache.bcel.generic;
 
-/*>>>
-import org.checkerframework.checker.interning.qual.UsesObjectEquals;
-import org.checkerframework.checker.signature.qual.FieldDescriptor;
-import org.checkerframework.checker.signature.qual.FullyQualifiedName;
-*/
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +36,12 @@ import org.apache.bcel.classfile.ConstantNameAndType;
 import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.classfile.ConstantString;
 import org.apache.bcel.classfile.ConstantUtf8;
+
+/*>>>
+import org.checkerframework.checker.interning.qual.UsesObjectEquals;
+import org.checkerframework.checker.signature.qual.FieldDescriptor;
+import org.checkerframework.checker.signature.qual.FullyQualifiedName;
+*/
 
 /**
  * This class is used to build up a constant pool. The user adds

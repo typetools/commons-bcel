@@ -17,16 +17,16 @@
  */
 package org.apache.bcel.generic;
 
-/*>>>
-import org.checkerframework.checker.initialization.qual.UnknownInitialization;
-import org.checkerframework.checker.interning.qual.InternedDistinct;
-*/
-
 import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.apache.bcel.Const;
 import org.apache.bcel.util.ByteSequence;
+
+/*>>>
+import org.checkerframework.checker.initialization.qual.UnknownInitialization;
+import org.checkerframework.checker.interning.qual.InternedDistinct;
+*/
 
 /**
  * Abstract super class for instructions dealing with local variables.

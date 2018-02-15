@@ -17,16 +17,16 @@
  */
 package org.apache.bcel.classfile;
 
-/*>>>
-import org.checkerframework.checker.nullness.qual.Nullable;
-*/
-
 import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.apache.bcel.Const;
 import org.apache.bcel.util.BCELComparator;
+
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
 
 /**
  * Abstract superclass for classes to represent the different constant types

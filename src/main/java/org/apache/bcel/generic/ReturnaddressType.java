@@ -17,12 +17,12 @@
  */
 package org.apache.bcel.generic;
 
+import org.apache.bcel.Const;
+
 /*>>>
 import org.checkerframework.checker.interning.qual.InternedDistinct;
 import org.checkerframework.checker.nullness.qual.Nullable;
 */
-
-import org.apache.bcel.Const;
 
 /**
  * Returnaddress, the type JSR or JSR_W instructions push upon the stack.

@@ -17,11 +17,6 @@
  */
 package org.apache.bcel.classfile;
 
-/*>>>
-import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
-*/
-
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -39,6 +34,11 @@ import org.apache.bcel.generic.Type;
 import org.apache.bcel.util.BCELComparator;
 import org.apache.bcel.util.ClassQueue;
 import org.apache.bcel.util.SyntheticRepository;
+
+/*>>>
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
 
 /**
  * Represents a Java class, i.e., the data structures, constant pool,

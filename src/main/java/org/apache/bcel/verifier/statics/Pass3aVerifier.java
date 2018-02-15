@@ -18,10 +18,6 @@
 package org.apache.bcel.verifier.statics;
 
 
-/*>>>
-import org.checkerframework.checker.nullness.qual.Nullable;
-*/
-
 import org.apache.bcel.Const;
 import org.apache.bcel.Repository;
 import org.apache.bcel.classfile.Attribute;
@@ -103,6 +99,10 @@ import org.apache.bcel.verifier.exc.InvalidMethodException;
 import org.apache.bcel.verifier.exc.StaticCodeConstraintException;
 import org.apache.bcel.verifier.exc.StaticCodeInstructionConstraintException;
 import org.apache.bcel.verifier.exc.StaticCodeInstructionOperandConstraintException;
+
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
 
 /**
  * This PassVerifier verifies a class file according to

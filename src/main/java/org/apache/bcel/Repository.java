@@ -17,15 +17,16 @@
  */
 package org.apache.bcel;
 
-/*>>>
-import org.checkerframework.checker.nullness.qual.Nullable;
-*/
 
 import java.io.IOException;
 
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.util.ClassPath;
 import org.apache.bcel.util.SyntheticRepository;
+
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
 
 /**
  * The repository maintains informations about class interdependencies, e.g.,

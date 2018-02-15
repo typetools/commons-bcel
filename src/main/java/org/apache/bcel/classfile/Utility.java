@@ -17,11 +17,6 @@
 
 package org.apache.bcel.classfile;
 
-/*>>>
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.signature.qual.*;
-*/
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.CharArrayReader;
@@ -41,6 +36,11 @@ import java.util.zip.GZIPOutputStream;
 
 import org.apache.bcel.Const;
 import org.apache.bcel.util.ByteSequence;
+
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signature.qual.*;
+*/
 
 /**
  * Utility functions that do not really belong to any class in particular.

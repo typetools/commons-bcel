@@ -17,12 +17,12 @@
  */
 package org.apache.bcel.generic;
 
+import org.apache.bcel.Const;
+
 /*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.ClassGetName;
 */
-
-import org.apache.bcel.Const;
 
 /**
  * Denotes array type, such as int[][]

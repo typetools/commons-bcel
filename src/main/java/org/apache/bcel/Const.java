@@ -17,14 +17,14 @@
  */
 package org.apache.bcel;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 /*>>>
 import org.checkerframework.checker.signature.qual.FieldDescriptor;
 import org.checkerframework.checker.signature.qual.FullyQualifiedName;
 import org.checkerframework.checker.signature.qual.SourceNameForNonArrayNonInner;
 */
-
-import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * Constants for the project, mostly defined in the JVM specification.

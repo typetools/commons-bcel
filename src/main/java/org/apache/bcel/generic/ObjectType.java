@@ -17,15 +17,15 @@
  */
 package org.apache.bcel.generic;
 
+import org.apache.bcel.Const;
+import org.apache.bcel.Repository;
+import org.apache.bcel.classfile.JavaClass;
+
 /*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.*;
 import org.checkerframework.framework.qual.AnnotatedFor;
 */
-
-import org.apache.bcel.Const;
-import org.apache.bcel.Repository;
-import org.apache.bcel.classfile.JavaClass;
 
 /** 
  * Denotes reference such as java.lang.String.
