@@ -29,10 +29,6 @@ import org.apache.bcel.classfile.Utility;
 import org.checkerframework.checker.interning.qual.*;
 */
 
-/*>>>
-import org.checkerframework.checker.interning.qual.*;
-*/
-
 /**
  * Instances of this class give users a handle to the instructions contained in
  * an InstructionList. Instruction objects may be used more than once within a
