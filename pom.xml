@@ -65,6 +65,7 @@
     <!-- These properties will be set by the Maven Dependency plugin -->
     <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
     <typeAnnotationsJavac>${org.checkerframework:compiler:jar}</typeAnnotationsJavac>
+    <checkerframework.version>2.3.2</checkerframework.version>
   </properties>
 
   <!-- Cannot be added to Commons Parent, see https://issues.apache.org/jira/browse/COMMONSSITE-26 -->
@@ -260,6 +261,10 @@
           <source>1.7</source>
           <target>1.7</target>
           <fork>true</fork>
+          <compilerArguments>
+            <Xmaxerrs>10000</Xmaxerrs>
+            <Xmaxwarns>10000</Xmaxwarns>
+          </compilerArguments>
           <annotationProcessors>
             <annotationProcessor>org.checkerframework.checker.interning.InterningChecker</annotationProcessor>
             <annotationProcessor>org.checkerframework.checker.nullness.NullnessChecker</annotationProcessor>
@@ -477,25 +482,26 @@
       <version>3.6</version>
       <scope>test</scope>
     </dependency>
+    <!-- Annotations from the Checker Framework: nullness, interning, locking, ... -->
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker-qual</artifactId>
-      <version>2.2.1</version>
+      <version>${checkerframework.version}</version>
     </dependency>
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker</artifactId>
-      <version>2.2.1</version>
+      <version>${checkerframework.version}</version>
     </dependency>
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>compiler</artifactId>
-      <version>2.2.1</version>
+      <version>2.3.2</version>
     </dependency>
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>jdk8</artifactId>
-      <version>2.2.1</version>
+      <version>${checkerframework.version}</version>
     </dependency>
   </dependencies>
 
