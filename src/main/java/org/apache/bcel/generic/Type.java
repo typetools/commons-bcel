@@ -27,12 +27,8 @@ import org.apache.bcel.classfile.Utility;
 
 /*>>>
 import org.checkerframework.checker.interning.qual.*;
-import org.checkerframework.checker.interning.qual.Interned;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.signature.qual.BinaryName;
-import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
-import org.checkerframework.checker.signature.qual.FieldDescriptor;
+import org.checkerframework.checker.nullness.qual.*;
+import org.checkerframework.checker.signature.qual.*;
 import org.checkerframework.framework.qual.AnnotatedFor;
 */
 
@@ -226,7 +222,7 @@ public abstract class Type {
     // TODO: getType(Class) calls "getType(cl.getName())" for arrays, which passes a
     // /*@ClassGetName*/ such as "[Ljava.lang.String;" rather than a
     // /*@FieldDescriptor*/ as documented in this method's Javadoc.
-    public static /*@NonNull*/ Type getType( final /*@FieldDescriptor*/ String signature ) throws StringIndexOutOfBoundsException {
+    public static /*@NonNull*/ Type getType( final /*@ClassGetName*/ String signature ) throws StringIndexOutOfBoundsException {
         final byte type = Utility.typeOfSignature(signature);
         if (type <= Const.T_VOID) {
             //corrected concurrent private static field acess

@@ -28,6 +28,10 @@ import org.apache.bcel.verifier.statics.Pass2Verifier;
 import org.apache.bcel.verifier.statics.Pass3aVerifier;
 import org.apache.bcel.verifier.structurals.Pass3bVerifier;
 
+/*>>>
+import org.checkerframework.checker.signature.qual.*;
+*/
+
 /**
  * A Verifier instance is there to verify a class file according to The Java Virtual
  * Machine Specification, 2nd Edition.
@@ -48,7 +52,7 @@ public class Verifier {
     /**
      * The name of the class this verifier operates on.
      */
-    private final String classname;
+    private final /*@FullyQualifiedName*/ String classname;
     /** A Pass1Verifier for this Verifier instance. */
     private Pass1Verifier p1v;
     /** A Pass2Verifier for this Verifier instance. */
@@ -108,7 +112,7 @@ public class Verifier {
      *
      * @see VerifierFactory
      */
-    Verifier(final String fully_qualified_classname) {
+    Verifier(final /*@FullyQualifiedName*/ String fully_qualified_classname) {
         classname = fully_qualified_classname;
         flush();
     }
@@ -121,7 +125,7 @@ public class Verifier {
      * Verifier by the getVerifiers() method of the VerifierFactory.
      * @see VerifierFactory
      */
-    public final String getClassName() {
+    public final /*@FullyQualifiedName*/ String getClassName() {
         return classname;
     }
 
