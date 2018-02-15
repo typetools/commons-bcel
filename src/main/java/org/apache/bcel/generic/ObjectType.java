@@ -19,9 +19,7 @@ package org.apache.bcel.generic;
 
 /*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
-import org.checkerframework.checker.signature.qual.ClassGetName;
-import org.checkerframework.checker.signature.qual.FullyQualifiedName;
+import org.checkerframework.checker.signature.qual.*;
 import org.checkerframework.framework.qual.AnnotatedFor;
 */
 
@@ -52,7 +50,7 @@ public class ObjectType extends ReferenceType {
     /**
      * @param class_name fully qualified class name, e.g. java.lang.String
      */
-    // TODO: buggy documentation, is a @BinaryNameForNonArray (differs from @FullyQualifiedName for inner classes)..
+    // TODO: buggy documentation, is a @BinaryNameForNonArray (differs from @FullyQualifiedName for inner classes).
     // TODO: actualy type is @BinaryNameForNonArray =
     // @ClassGetName-for-nonarray, but that type requires warning
     // suppressions at call sites, so just use @ClassGetName.

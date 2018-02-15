@@ -17,12 +17,6 @@
  */
 package org.apache.bcel.generic;
 
-/*>>>
-import org.checkerframework.checker.initialization.qual.UnknownInitialization;
-import org.checkerframework.checker.interning.qual.*;
-import org.checkerframework.checker.nullness.qual.Nullable;
-*/
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -30,6 +24,12 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.bcel.classfile.Utility;
+
+/*>>>
+import org.checkerframework.checker.initialization.qual.UnknownInitialization;
+import org.checkerframework.checker.interning.qual.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
 
 /**
  * Instances of this class give users a handle to the instructions contained in

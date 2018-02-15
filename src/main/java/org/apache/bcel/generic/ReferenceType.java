@@ -27,6 +27,10 @@ import org.apache.bcel.Const;
 import org.apache.bcel.Repository;
 import org.apache.bcel.classfile.JavaClass;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+*/
+
 /**
  * Super class for object and array types.
  *

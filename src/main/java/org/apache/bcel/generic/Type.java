@@ -195,7 +195,7 @@ public abstract class Type {
         return buf.toString();
     }
 
-    @SuppressWarnings("nullness:type.argument.type.incompatible") // initalValue returns non-null
+    @SuppressWarnings("nullness:type.argument.type.incompatible") // initialValue returns non-null
     private static final ThreadLocal<Integer> consumed_chars = new ThreadLocal<Integer>() {
 
         @Override

@@ -48,6 +48,14 @@ import org.apache.bcel.classfile.RuntimeVisibleParameterAnnotations;
 import org.apache.bcel.classfile.Utility;
 import org.apache.bcel.util.BCELComparator;
 
+/*>>>
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signature.qual.BinaryName;
+import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
+import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.checker.index.qual.SameLen;
+*/
+
 /**
  * Template class for building up a method. This is done by defining exception
  * handlers, adding thrown exceptions, local variables and attributes, whereas
@@ -62,6 +70,7 @@ import org.apache.bcel.util.BCELComparator;
  * @see     InstructionList
  * @see     Method
  */
+/*@AnnotatedFor({"nullness"})*/
 public class MethodGen extends FieldGenOrMethodGen {
 
     private String class_name;
@@ -71,7 +80,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     private int max_stack;
     private InstructionList il;
     private boolean strip_attributes;
-    private LocalVariableTypeTable local_variable_type_table = null;
+    private /*@Nullable*/ LocalVariableTypeTable local_variable_type_table = null;
     private final List<LocalVariableGen> variable_vec = new ArrayList<>();
     private final List<LineNumberGen> line_number_vec = new ArrayList<>();
     private final List<CodeExceptionGen> exception_vec = new ArrayList<>();
@@ -135,10 +144,10 @@ public class MethodGen extends FieldGenOrMethodGen {
         setConstantPool(cp);
         final boolean abstract_ = isAbstract() || isNative();
         InstructionHandle start = null;
-        InstructionHandle end = null;
+        final InstructionHandle end = null;
         if (!abstract_) {
             start = il.getStart();
-            end = il.getEnd();
+            // end == null => live to end of method
             /* Add local variables, namely the implicit `this' and the arguments
              */
             if (!isStatic() && (class_name != null)) { // Instance method -> `this' is local var 0
@@ -317,8 +326,8 @@ public class MethodGen extends FieldGenOrMethodGen {
      * @return new local variable object
      * @see LocalVariable
      */
-    public LocalVariableGen addLocalVariable( final String name, final Type type, final InstructionHandle start,
-            final InstructionHandle end ) {
+    public LocalVariableGen addLocalVariable( final String name, final Type type, final /*@Nullable*/ InstructionHandle start,
+            final /*@Nullable*/ InstructionHandle end ) {
         return addLocalVariable(name, type, max_locals, start, end);
     }
 
@@ -725,14 +734,12 @@ public class MethodGen extends FieldGenOrMethodGen {
         removeLocalVariables();
         for (final LocalVariable l : lv) {
             InstructionHandle start = il.findHandle(l.getStartPC());
-            InstructionHandle end = il.findHandle(l.getStartPC() + l.getLength());
+            final InstructionHandle end = il.findHandle(l.getStartPC() + l.getLength());
             // Repair malformed handles
             if (null == start) {
                 start = il.getStart();
             }
-            if (null == end) {
-                end = il.getEnd();
-            }
+            // end == null => live to end of method
             // Since we are recreating the LocalVaraible, we must
             // propagate the orig_index to new copy.
             addLocalVariable(l.getName(), Type.getType(l.getSignature()), l
@@ -838,7 +845,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
 
-    public Type[] getArgumentTypes() {
+    public Type /*@SameLen({"this.getArgumentNames()", "this.getArgumentTypes()"})*/ [] getArgumentTypes() {
         return arg_types.clone();
     }
 
@@ -858,7 +865,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
 
-    public String[] getArgumentNames() {
+    public String /*@SameLen({"this.getArgumentNames()", "this.getArgumentTypes()"})*/ [] getArgumentNames() {
         return arg_names.clone();
     }
 
