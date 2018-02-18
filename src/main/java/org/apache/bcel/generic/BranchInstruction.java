@@ -63,8 +63,8 @@ public abstract /*@UsesObjectEquals*/ class BranchInstruction extends Instructio
 
 
     /**
-     * Empty constructor needed for the Class.newInstance() statement in
-     * Instruction.readInstruction(). Not to be used otherwise.
+     * Empty constructor needed for Instruction.readInstruction.
+     * Not to be used otherwise.
      */
     @SuppressWarnings("initialization.fields.uninitialized") // constructor should be removed
     BranchInstruction() {
