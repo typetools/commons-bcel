@@ -41,6 +41,7 @@ import org.apache.bcel.classfile.ConstantUtf8;
 import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 import org.checkerframework.checker.signature.qual.FieldDescriptor;
 import org.checkerframework.checker.signature.qual.FullyQualifiedName;
+import org.checkerframework.dataflow.qual.Pure;
 */
 
 /**
@@ -726,6 +727,7 @@ public /*@UsesObjectEquals*/ class ConstantPoolGen {
      * @param i index in constant pool
      * @return constant pool entry at index i
      */
+    /*@Pure*/
     public Constant getConstant( final int i ) {
         return constants[i];
     }

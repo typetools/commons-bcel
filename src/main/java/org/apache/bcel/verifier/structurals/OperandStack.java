@@ -19,6 +19,7 @@ package org.apache.bcel.verifier.structurals;
 
 
 /*>>>
+import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.checker.nullness.qual.Nullable;
 */
 
@@ -126,6 +127,7 @@ public class OperandStack implements Cloneable {
     /**
      * Returns the element on top of the stack. The element is not popped off the stack!
      */
+    /*@Pure*/
     public Type peek() {
         return peek(0);
     }
@@ -134,6 +136,7 @@ public class OperandStack implements Cloneable {
    * Returns the element that's i elements below the top element; that means,
    * iff i==0 the top element is returned. The element is not popped off the stack!
    */
+    /*@Pure*/
     public Type peek(final int i) {
         return stack.get(size()-i-1);
     }
@@ -176,6 +179,7 @@ public class OperandStack implements Cloneable {
     /**
      * Returns the size of this OperandStack; that means, how many Type objects there are.
      */
+    /*@Pure*/
     public int size() {
         return stack.size();
     }

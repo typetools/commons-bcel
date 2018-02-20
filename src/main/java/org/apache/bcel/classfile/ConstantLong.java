@@ -23,6 +23,10 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+/*>>>
+import org.checkerframework.dataflow.qual.Pure;
+*/
+
 /**
  * This class is derived from the abstract {@link Constant}
  * and represents a reference to a long object.
@@ -92,6 +96,7 @@ public final class ConstantLong extends Constant implements ConstantObject {
     /**
      * @return data, i.e., 8 bytes.
      */
+    /*@Pure*/
     public final long getBytes() {
         return bytes;
     }

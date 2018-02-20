@@ -23,6 +23,10 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+/*>>>
+import org.checkerframework.dataflow.qual.Pure;
+*/
+
 /**
  * This class is derived from the abstract {@link Constant}
  * and represents a reference to an int object.
@@ -92,6 +96,7 @@ public final class ConstantInteger extends Constant implements ConstantObject {
     /**
      * @return data, i.e., 4 bytes.
      */
+    /*@Pure*/
     public final int getBytes() {
         return bytes;
     }

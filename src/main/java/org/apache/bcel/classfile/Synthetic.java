@@ -23,6 +23,10 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+/*>>>
+import org.checkerframework.dataflow.qual.Pure;
+*/
+
 /**
  * This class is derived from <em>Attribute</em> and declares this class as
  * `synthetic', i.e., it needs special handling.  The JVM specification
@@ -114,6 +118,7 @@ public final class Synthetic extends Attribute {
     /**
      * @return data bytes.
      */
+    /*@Pure*/
     public final byte[] getBytes() {
         return bytes;
     }

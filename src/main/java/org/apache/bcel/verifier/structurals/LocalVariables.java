@@ -25,6 +25,7 @@ import org.apache.bcel.verifier.exc.StructuralCodeConstraintException;
 
 /*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 */
 
 /**
@@ -64,6 +65,7 @@ public class LocalVariables implements Cloneable {
     /**
      * Returns the type of the local variable slot i.
      */
+    /*@Pure*/
     public Type get(final int i) {
         return locals[i];
     }
@@ -80,6 +82,7 @@ public class LocalVariables implements Cloneable {
      * Returns the number of local variable slots this
      * LocalVariables instance has.
      */
+    /*@Pure*/
     public int maxLocals() {
         return locals.length;
     }

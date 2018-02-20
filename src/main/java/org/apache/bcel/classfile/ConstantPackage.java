@@ -23,6 +23,10 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+/*>>>
+import org.checkerframework.dataflow.qual.Pure;
+*/
+
 /**
  * This class is derived from the abstract {@link Constant}
  * and represents a reference to a package.
@@ -95,6 +99,7 @@ public final class ConstantPackage extends Constant implements ConstantObject {
     /**
      * @return Name index in constant pool of package name.
      */
+    /*@Pure*/
     public final int getNameIndex() {
         return name_index;
     }

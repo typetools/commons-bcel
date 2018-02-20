@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.classfile;
 
+import org.checkerframework.dataflow.qual.Pure;
 import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -92,6 +93,7 @@ public final class ConstantDouble extends Constant implements ConstantObject {
     /**
      * @return data, i.e., 8 bytes.
      */
+    /*@Pure*/
     public final double getBytes() {
         return bytes;
     }

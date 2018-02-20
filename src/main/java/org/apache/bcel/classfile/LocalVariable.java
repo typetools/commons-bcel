@@ -26,6 +26,7 @@ import org.apache.bcel.Constants;
 
 /*>>>
 import org.checkerframework.checker.signature.qual.FieldDescriptor;
+import org.checkerframework.dataflow.qual.Pure;
 */
 
 /**
@@ -168,6 +169,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
     /**
      * @return Index in constant pool of variable name.
      */
+    /*@Pure*/
     public final int getNameIndex() {
         return name_index;
     }

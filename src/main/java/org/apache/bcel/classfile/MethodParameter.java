@@ -25,6 +25,7 @@ import org.apache.bcel.Const;
 
 /*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 */
 
 /**
@@ -57,6 +58,7 @@ public class MethodParameter implements Cloneable {
         access_flags = input.readUnsignedShort();
     }
 
+    /*@Pure*/
     public int getNameIndex() {
         return name_index;
     }

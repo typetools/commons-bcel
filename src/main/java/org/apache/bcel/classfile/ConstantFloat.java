@@ -23,6 +23,10 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+/*>>>
+import org.checkerframework.dataflow.qual.Pure;
+*/
+
 /**
  * This class is derived from the abstract {@link Constant}
  * and represents a reference to a float object.
@@ -93,6 +97,7 @@ public final class ConstantFloat extends Constant implements ConstantObject {
     /**
      * @return data, i.e., 4 bytes.
      */
+    /*@Pure*/
     public final float getBytes() {
         return bytes;
     }

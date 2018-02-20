@@ -24,6 +24,10 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+/*>>>
+import org.checkerframework.dataflow.qual.Pure;
+*/
+
 /**
  * Abstract super class for fields and methods.
  *
@@ -182,6 +186,7 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
     /**
      * @return Index in constant pool of object's name.
      */
+    /*@Pure*/
     public final int getNameIndex() {
         return name_index;
     }

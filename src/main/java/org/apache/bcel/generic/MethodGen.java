@@ -50,6 +50,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.BinaryName;
 import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
 import org.checkerframework.checker.signature.qual.ClassGetName;
+import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 */
 
@@ -607,6 +608,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     /**
      * @return all attributes of this method.
      */
+    /*@Pure*/
     public Attribute[] getCodeAttributes() {
         final Attribute[] attributes = new Attribute[code_attrs_vec.size()];
         code_attrs_vec.toArray(attributes);

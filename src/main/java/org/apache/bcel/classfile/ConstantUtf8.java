@@ -26,6 +26,10 @@ import java.util.Map;
 
 import org.apache.bcel.Const;
 
+/*>>>
+import org.checkerframework.dataflow.qual.Pure;
+*/
+
 /**
  * This class is derived from the abstract {@link Constant}
  * and represents a reference to a Utf8 encoded string.
@@ -186,6 +190,7 @@ public final class ConstantUtf8 extends Constant {
     /**
      * @return Data converted to string.
      */
+    /*@Pure*/
     public final String getBytes() {
         return bytes;
     }

@@ -24,6 +24,10 @@ import org.apache.bcel.classfile.ConstantUtf8;
 import org.apache.bcel.classfile.ElementValue;
 import org.apache.bcel.classfile.ElementValuePair;
 
+/*>>>
+import org.checkerframework.dataflow.qual.Pure;
+*/
+
 /**
  * @since 6.0
  */
@@ -90,6 +94,7 @@ public class ElementValuePairGen
         value.dump(dos);
     }
 
+    /*@Pure*/
     public int getNameIndex()
     {
         return nameIdx;

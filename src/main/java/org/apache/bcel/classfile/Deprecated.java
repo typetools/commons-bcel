@@ -25,6 +25,7 @@ import org.apache.bcel.Const;
 
 /*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 */
 
 /**
@@ -112,6 +113,7 @@ public final class Deprecated extends Attribute {
     /**
      * @return data bytes.
      */
+    /*@Pure*/
     public final byte[] getBytes() {
         return bytes;
     }

@@ -46,6 +46,10 @@ import org.apache.bcel.verifier.exc.AssertionViolatedException;
 import org.apache.bcel.verifier.exc.StructuralCodeConstraintException;
 import org.apache.bcel.verifier.exc.VerifierConstraintViolatedException;
 
+/*>>>
+import org.checkerframework.dataflow.qual.Pure;
+*/
+
 /**
  * This PassVerifier verifies a method of class file according to pass 3,
  * so-called structural verification as described in The Java Virtual Machine
@@ -95,6 +99,7 @@ public final class Pass3bVerifier extends PassVerifier{
         public ArrayList<InstructionContext> getEC(final int i) {
             return ecs.get(i);
         }
+        /*@Pure*/
         public int size() {
             return ics.size();
         }

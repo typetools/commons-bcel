@@ -33,6 +33,7 @@ import org.apache.bcel.util.ByteSequence;
 
 /*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 */
 
 /**
@@ -1146,6 +1147,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
     /**
      * @return length of list (Number of instructions, not bytes)
      */
+    /*@Pure*/
     public int size() {
         return length;
     }

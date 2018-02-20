@@ -38,6 +38,7 @@ import org.apache.bcel.util.SyntheticRepository;
 /*>>>
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 */
 
 /**
@@ -264,6 +265,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     /**
      * @return class in binary format
      */
+    /*@Pure*/
     public byte[] getBytes() {
         final ByteArrayOutputStream s = new ByteArrayOutputStream();
         final DataOutputStream ds = new DataOutputStream(s);
