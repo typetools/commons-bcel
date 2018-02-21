@@ -1,16 +1,30 @@
 This is a version of BCEL that is annotated with type annotations for the Checker Framework.
 
 
-To update from an upstream version of BCEL
-------------------------------------------
+To build this project
+---------------------
 
-# Pull in from a commit that corresponds to a public release.
-# Update the PACKAGE environment variable below.
+```
+mvn -B -Dmaven.test.skip=true package
+```
+
+The `.jar` file is found at, for example, `target/commons-io-2.6.jar`.
+
+
+To update to a newer version of the upstream library
+----------------------------------------------------
+
+In the upstream repository, find the commit corresponding to a public release.
+
+Pull in that commit:
+git pull https://github.com/apache/commons-io <commitid>
+
+Update the PACKAGE environment variable below.
 
 
 
-To upload this version of BCEL to Maven Central
------------------------------------------------
+To upload to Maven Central
+--------------------------
 
 
 # Set a new Maven Central version number in file cfMavenCentral.xml.
@@ -18,7 +32,8 @@ To upload this version of BCEL to Maven Central
 PACKAGE=bcel-6.2
 
 # Compile, and create Javadoc jar file
-mvn verify javadoc:javadoc && (cd target/site/apidocs && jar -cf ${PACKAGE}-javadoc.jar org)
+mvn verify
+mvn javadoc:javadoc && (cd target/site/apidocs && jar -cf ${PACKAGE}-javadoc.jar org)
 
 ## This does not seem to work for me:
 # -Dhomedir=/projects/swlab1/checker-framework/hosting-info
