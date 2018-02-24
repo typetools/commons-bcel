@@ -8,7 +8,7 @@ To build this project
 mvn -B -Dmaven.test.skip=true package
 ```
 
-The `.jar` file is found at, for example, `target/commons-io-2.6.jar`.
+The `.jar` file is found at, for example, `target/bcel-6.2.jar`.
 
 
 To update to a newer version of the upstream library
@@ -17,7 +17,7 @@ To update to a newer version of the upstream library
 In the upstream repository, find the commit corresponding to a public release.
 
 Pull in that commit:
-git pull https://github.com/apache/commons-io <commitid>
+git pull https://github.com/apache/commons-bcel <commitid>
 
 Update the PACKAGE environment variable below.
 
@@ -25,7 +25,6 @@ Update the PACKAGE environment variable below.
 
 To upload to Maven Central
 --------------------------
-
 
 # Set a new Maven Central version number in file cfMavenCentral.xml.
 
