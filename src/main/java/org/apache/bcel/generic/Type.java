@@ -166,7 +166,7 @@ public abstract class Type {
     @Override
     // TODO: result must be one of fully-qualified name, binary name, internal form, Class.getSimpleName
     // TODO: looks like a bug, because signatureToString is called
-    public String toString() {
+    public /*@BinaryName*/ String toString() {
         return ((this.equals(Type.NULL) || (type >= Const.T_UNKNOWN))) ? signature : Utility
                 .signatureToString(signature, false);
     }

@@ -104,7 +104,7 @@ public abstract class InvokeInstruction extends FieldOrMethod implements Excepti
      */
     @Override
     // TODO: return type must be one of fully-qualified name, binary name, Class.getName
-    public String getClassName( final ConstantPoolGen cpg ) {
+    public /*@ClassGetName*/ String getClassName( final ConstantPoolGen cpg ) {
         final ConstantPool cp = cpg.getConstantPool();
         final ConstantCP cmr = (ConstantCP) cp.getConstant(super.getIndex());
         final String className = cp.getConstantString(cmr.getClassIndex(), Const.CONSTANT_Class);
