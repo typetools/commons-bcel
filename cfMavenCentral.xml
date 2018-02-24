@@ -19,7 +19,7 @@
         </license>
     </licenses>
 
-    <version>0.0.4</version>
+    <version>0.0.5</version>
 
     <scm>
         <url>https://github.com/typetools/commons-bcel.git</url>
