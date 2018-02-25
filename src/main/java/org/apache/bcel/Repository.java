@@ -17,7 +17,6 @@
  */
 package org.apache.bcel;
 
-
 import java.io.IOException;
 
 import org.apache.bcel.classfile.JavaClass;
