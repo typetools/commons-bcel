@@ -21,6 +21,7 @@ git pull https://github.com/apache/commons-bcel <commitid>
 
 Update the PACKAGE environment variable below.
 
+Use latest Checker Framework version by changing `pom.xml`.
 
 
 To upload to Maven Central
