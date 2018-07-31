@@ -14,10 +14,14 @@ The `.jar` file is found at, for example, `target/bcel-6.2.jar`.
 To update to a newer version of the upstream library
 ----------------------------------------------------
 
-In the upstream repository, find the commit corresponding to a public release.
+At https://github.com/apache/commons-bcel/releases ,
+find the commit corresponding to a public release.
 
 Pull in that commit:
 git pull https://github.com/apache/commons-bcel <commitid>
+
+(Alternately, pull from a repo that contains bug fixes,
+such as https://github.com/codespecs/commons-bcel .)
 
 Update the PACKAGE environment variable below.
 
