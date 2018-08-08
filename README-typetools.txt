@@ -36,8 +36,7 @@ To upload to Maven Central
 PACKAGE=bcel-6.2.0.1
 
 # Compile, and create Javadoc jar file
-mvn verify
-mvn javadoc:javadoc && (cd target/site/apidocs && jar -cf ${PACKAGE}-javadoc.jar org)
+mvn verify && mvn javadoc:javadoc && (cd target/site/apidocs && jar -cf ${PACKAGE}-javadoc.jar org)
 
 ## This does not seem to work for me:
 # -Dhomedir=/projects/swlab1/checker-framework/hosting-info
