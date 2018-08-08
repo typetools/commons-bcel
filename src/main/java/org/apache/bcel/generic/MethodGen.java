@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -74,7 +75,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     private /*@BinaryNameForNonArray*/ String class_name;
     private Type[] arg_types;
     private String[] arg_names;
-    private int max_locals;
+    private @NonNegative int max_locals;
     private int max_stack;
     private InstructionList il;
     private boolean strip_attributes;
@@ -799,7 +800,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
 
-    public int getMaxLocals() {
+    public @NonNegative int getMaxLocals() {
         return max_locals;
     }
 

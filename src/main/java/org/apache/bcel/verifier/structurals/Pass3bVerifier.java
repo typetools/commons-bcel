@@ -18,6 +18,7 @@
 package org.apache.bcel.verifier.structurals;
 
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -100,7 +101,7 @@ public final class Pass3bVerifier extends PassVerifier{
             return ecs.get(i);
         }
         /*@Pure*/
-        public int size() {
+        public @NonNegative int size() {
             return ics.size();
         }
     } // end Inner Class InstructionContextQueue

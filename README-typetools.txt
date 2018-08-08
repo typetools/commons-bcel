@@ -8,7 +8,10 @@ To build this project
 mvn -B -Dmaven.test.skip=true package
 ```
 
-The `.jar` file is found at, for example, `target/bcel-6.2.jar`.
+There will be pluggable type-checking errors, because only the signatures, not
+the bodies, of methods are annotated.
+
+The `.jar` file is found at, for example, `target/bcel-6.2.0.1.jar`.
 
 
 To update to a newer version of the upstream library
@@ -31,12 +34,12 @@ Use latest Checker Framework version by changing `pom.xml`.
 To upload to Maven Central
 --------------------------
 
-# First, Set a new Maven Central version number in file cfMavenCentral.xml.
-# Then, set this environment variable to the same value.
-PACKAGE=bcel-6.2.0.1
+# Set the version number:
+#  * in file cfMavenCentral.xml
+#  * in file pom.xml (if different from upstream)
+#  * environment variable PACKAGE below
 
-# Compile, and create Javadoc jar file
-mvn verify && mvn javadoc:javadoc && (cd target/site/apidocs && jar -cf ${PACKAGE}-javadoc.jar org)
+PACKAGE=bcel-6.2.0.1 && mvn verify && mvn javadoc:javadoc && (cd target/site/apidocs && jar -cf ${PACKAGE}-javadoc.jar org)
 
 ## This does not seem to work for me:
 # -Dhomedir=/projects/swlab1/checker-framework/hosting-info

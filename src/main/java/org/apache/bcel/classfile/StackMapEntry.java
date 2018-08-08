@@ -17,6 +17,7 @@
 
 package org.apache.bcel.classfile;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -344,7 +345,7 @@ public final class StackMapEntry implements Node, Cloneable
     }
 
 
-    public int getNumberOfLocals() {
+    public @NonNegative int getNumberOfLocals() {
         return types_of_locals.length;
     }
 
