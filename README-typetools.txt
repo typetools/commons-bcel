@@ -33,7 +33,7 @@ To upload to Maven Central
 
 # First, Set a new Maven Central version number in file cfMavenCentral.xml.
 # Then, set this environment variable to the same value.
-PACKAGE=bcel-6.2
+PACKAGE=bcel-6.2.0.1
 
 # Compile, and create Javadoc jar file
 mvn verify
