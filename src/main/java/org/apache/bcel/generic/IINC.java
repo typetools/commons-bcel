@@ -22,9 +22,7 @@ import java.io.IOException;
 
 import org.apache.bcel.util.ByteSequence;
 
-/*>>>
 import org.checkerframework.checker.interning.qual.InternedDistinct;
-*/
 
 /**
  * IINC - Increment local variable by constant
@@ -153,7 +151,7 @@ public class IINC extends LocalVariableInstruction {
     /** @return int type
      */
     @Override
-    public /*@InternedDistinct*/ Type getType( final ConstantPoolGen cp ) {
+    public @InternedDistinct Type getType( final ConstantPoolGen cp ) {
         return Type.INT;
     }
 

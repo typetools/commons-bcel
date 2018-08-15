@@ -22,9 +22,7 @@ import java.util.ArrayList;
 
 import org.apache.bcel.generic.InstructionHandle;
 
-/*>>>
-import org.checkerframework.checker.interning.qual.*;
-*/
+import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 
 /**
  * An InstructionContext offers convenient access
@@ -33,7 +31,7 @@ import org.checkerframework.checker.interning.qual.*;
  *
  * @version $Id$
  */
-public /*@UsesObjectEquals*/ interface InstructionContext{
+public @UsesObjectEquals interface InstructionContext{
 
     /**
      * The getTag and setTag methods may be used for

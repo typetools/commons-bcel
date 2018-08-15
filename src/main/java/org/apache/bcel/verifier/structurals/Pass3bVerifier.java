@@ -47,9 +47,7 @@ import org.apache.bcel.verifier.exc.AssertionViolatedException;
 import org.apache.bcel.verifier.exc.StructuralCodeConstraintException;
 import org.apache.bcel.verifier.exc.VerifierConstraintViolatedException;
 
-/*>>>
 import org.checkerframework.dataflow.qual.Pure;
-*/
 
 /**
  * This PassVerifier verifies a method of class file according to pass 3,
@@ -100,7 +98,7 @@ public final class Pass3bVerifier extends PassVerifier{
         public ArrayList<InstructionContext> getEC(final int i) {
             return ecs.get(i);
         }
-        /*@Pure*/
+        @Pure
         public @NonNegative int size() {
             return ics.size();
         }

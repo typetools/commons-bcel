@@ -17,10 +17,8 @@
  */
 package org.apache.bcel.verifier.structurals;
 
-/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.interning.qual.UsesObjectEquals;
-*/
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,7 +71,7 @@ public class Subroutines{
     /**
      * This inner class implements the Subroutine interface.
      */
-    private /*@UsesObjectEquals*/ class SubroutineImpl implements Subroutine{
+    private @UsesObjectEquals class SubroutineImpl implements Subroutine{
         /**
          * UNSET, a symbol for an uninitialized localVariable
          * field. This is used for the "top-level" Subroutine;
@@ -595,7 +593,7 @@ public class Subroutines{
      * @see #getSubroutine(InstructionHandle)
      * @see #getTopLevel()
      */
-    public /*@Nullable*/ Subroutine subroutineOf(final InstructionHandle any) {
+    public @Nullable Subroutine subroutineOf(final InstructionHandle any) {
         for (final Subroutine s : subroutines.values()) {
             if (s.contains(any)) {
                 return s;

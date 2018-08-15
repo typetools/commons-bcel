@@ -35,11 +35,9 @@ import org.apache.bcel.util.BCELComparator;
 import org.apache.bcel.util.ClassQueue;
 import org.apache.bcel.util.SyntheticRepository;
 
-/*>>>
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
-*/
 
 /**
  * Represents a Java class, i.e., the data structures, constant pool,
@@ -69,7 +67,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     private Field[] fields; // Fields, i.e., variables of class
     private Method[] methods; // methods defined in the class
     private Attribute[] attributes; // attributes defined in the class
-    private AnnotationEntry /*@MonotonicNonNull*/ [] annotations;   // annotations defined on the class
+    private AnnotationEntry @MonotonicNonNull [] annotations;   // annotations defined on the class
     private byte source = HEAP; // Generated in memory
     private boolean isAnonymous = false;
     private boolean isNested = false;
@@ -265,7 +263,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     /**
      * @return class in binary format
      */
-    /*@Pure*/
+    @Pure
     public byte[] getBytes() {
         final ByteArrayOutputStream s = new ByteArrayOutputStream();
         final DataOutputStream ds = new DataOutputStream(s);
@@ -438,7 +436,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
      * @return A {@link Method} corresponding to
      * java.lang.reflect.Method if any
      */
-    public /*@Nullable*/ Method getMethod( final java.lang.reflect.Method m ) {
+    public @Nullable Method getMethod( final java.lang.reflect.Method m ) {
         for (final Method method : methods) {
             if (m.getName().equals(method.getName()) && (m.getModifiers() == method.getModifiers())
                     && Type.getSignature(m).equals(method.getSignature())) {
@@ -822,7 +820,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
      * is java.lang.Object
      * @throws ClassNotFoundException if the superclass can't be found
      */
-    public /*@Nullable*/ JavaClass getSuperClass() throws ClassNotFoundException {
+    public @Nullable JavaClass getSuperClass() throws ClassNotFoundException {
         if ("java.lang.Object".equals(getClassName())) {
             return null;
         }
@@ -908,7 +906,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( final /*@Nullable*/ Object obj ) {
+    public boolean equals( final @Nullable Object obj ) {
         return bcelComparator.equals(this, obj);
     }
 

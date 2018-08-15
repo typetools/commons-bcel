@@ -24,10 +24,8 @@ import org.apache.bcel.Const;
 import org.apache.bcel.generic.Type;
 import org.apache.bcel.util.BCELComparator;
 
-/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.framework.qual.AnnotatedFor;
-*/
 
 /**
  * This class represents the method info structure, i.e., the representation
@@ -36,7 +34,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  *
  * @version $Id$
  */
-/*@AnnotatedFor({"nullness"})*/
+@AnnotatedFor({"nullness"})
 public final class Method extends FieldOrMethod {
 
     private static BCELComparator bcelComparator = new BCELComparator() {
@@ -118,7 +116,7 @@ public final class Method extends FieldOrMethod {
     /**
      * @return Code attribute of method, if any
      */
-    public final /*@Nullable*/ Code getCode() {
+    public final @Nullable Code getCode() {
         for (final Attribute attribute : super.getAttributes()) {
             if (attribute instanceof Code) {
                 return (Code) attribute;
@@ -132,7 +130,7 @@ public final class Method extends FieldOrMethod {
      * @return ExceptionTable attribute of method, if any, i.e., list all
      * exceptions the method may throw not exception handlers!
      */
-    public final /*@Nullable*/ ExceptionTable getExceptionTable() {
+    public final @Nullable ExceptionTable getExceptionTable() {
         for (final Attribute attribute : super.getAttributes()) {
             if (attribute instanceof ExceptionTable) {
                 return (ExceptionTable) attribute;
@@ -145,7 +143,7 @@ public final class Method extends FieldOrMethod {
     /** @return LocalVariableTable of code attribute if any, i.e. the call is forwarded
      * to the Code atribute.
      */
-    public final /*@Nullable*/ LocalVariableTable getLocalVariableTable() {
+    public final @Nullable LocalVariableTable getLocalVariableTable() {
         final Code code = getCode();
         if (code == null) {
             return null;
@@ -157,7 +155,7 @@ public final class Method extends FieldOrMethod {
     /** @return LineNumberTable of code attribute if any, i.e. the call is forwarded
      * to the Code atribute.
      */
-    public final /*@Nullable*/ LineNumberTable getLineNumberTable() {
+    public final @Nullable LineNumberTable getLineNumberTable() {
         final Code code = getCode();
         if (code == null) {
             return null;
@@ -247,7 +245,7 @@ public final class Method extends FieldOrMethod {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( final /*@Nullable*/ Object obj ) {
+    public boolean equals( final @Nullable Object obj ) {
         return bcelComparator.equals(this, obj);
     }
 

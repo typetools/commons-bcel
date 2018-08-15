@@ -21,11 +21,9 @@ import org.apache.bcel.Const;
 import org.apache.bcel.Repository;
 import org.apache.bcel.classfile.JavaClass;
 
-/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.BinaryName;
 import org.checkerframework.checker.signature.qual.FieldDescriptor;
-*/
 
 /**
  * Super class for object and array types.
@@ -38,7 +36,7 @@ public abstract class ReferenceType extends Type {
     //  * For ObjectType, the string s is a @FieldDescriptor.
     //  * For ArrayType, the string s is a @FieldDescriptor.
     //  * For UninitializedObjectType, s is a string "<UNINITIALIZED OBJECT OF TYPE ...>"
-    protected ReferenceType(final byte t, final /*@FieldDescriptor*/ String s) {
+    protected ReferenceType(final byte t, final @FieldDescriptor String s) {
         super(t, s);
     }
 
@@ -201,7 +199,7 @@ public abstract class ReferenceType extends Type {
      * @throws ClassNotFoundException on failure to find superclasses of this
      *  type, or the type passed as a parameter
      */
-    public /*@Nullable*/ ReferenceType getFirstCommonSuperclass( final ReferenceType t ) throws ClassNotFoundException {
+    public @Nullable ReferenceType getFirstCommonSuperclass( final ReferenceType t ) throws ClassNotFoundException {
         if (this.equals(Type.NULL)) {
             return t;
         }
@@ -286,7 +284,7 @@ public abstract class ReferenceType extends Type {
      *  type, or the type passed as a parameter
      */
     @Deprecated
-    public /*@Nullable*/ ReferenceType firstCommonSuperclass( final ReferenceType t ) throws ClassNotFoundException {
+    public @Nullable ReferenceType firstCommonSuperclass( final ReferenceType t ) throws ClassNotFoundException {
         if (this.equals(Type.NULL)) {
             return t;
         }

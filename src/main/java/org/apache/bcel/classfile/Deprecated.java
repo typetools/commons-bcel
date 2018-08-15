@@ -23,10 +23,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
-/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
-*/
 
 /**
  * This class is derived from <em>Attribute</em> and denotes that this is a
@@ -38,7 +36,7 @@ import org.checkerframework.dataflow.qual.Pure;
  */
 public final class Deprecated extends Attribute {
 
-    private byte /*@Nullable*/ [] bytes;
+    private byte @Nullable [] bytes;
 
 
     /**
@@ -56,7 +54,7 @@ public final class Deprecated extends Attribute {
      * @param bytes Attribute contents
      * @param constant_pool Array of constants
      */
-    public Deprecated(final int name_index, final int length, final byte /*@Nullable*/ [] bytes, final ConstantPool constant_pool) {
+    public Deprecated(final int name_index, final int length, final byte @Nullable [] bytes, final ConstantPool constant_pool) {
         super(Const.ATTR_DEPRECATED, name_index, length, constant_pool);
         this.bytes = bytes;
     }
@@ -113,7 +111,7 @@ public final class Deprecated extends Attribute {
     /**
      * @return data bytes.
      */
-    /*@Pure*/
+    @Pure
     public final byte[] getBytes() {
         return bytes;
     }

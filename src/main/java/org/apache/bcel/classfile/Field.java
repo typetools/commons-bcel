@@ -24,9 +24,7 @@ import org.apache.bcel.Const;
 import org.apache.bcel.generic.Type;
 import org.apache.bcel.util.BCELComparator;
 
-/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
-*/
 
 /**
  * This class represents the field info structure, i.e., the representation
@@ -103,7 +101,7 @@ public final class Field extends FieldOrMethod {
     /**
      * @return constant value associated with this field (may be null)
      */
-    public final /*@Nullable*/ ConstantValue getConstantValue() {
+    public final @Nullable ConstantValue getConstantValue() {
         for (final Attribute attribute : super.getAttributes()) {
             if (attribute.getTag() == Const.ATTR_CONSTANT_VALUE) {
                 return (ConstantValue) attribute;
@@ -186,7 +184,7 @@ public final class Field extends FieldOrMethod {
      */
     @Override
     @SuppressWarnings("nullness") // BCEL bug: equals() crashes when passed null
-    public boolean equals( final /*@Nullable*/ Object obj ) {
+    public boolean equals( final @Nullable Object obj ) {
         return bcelComparator.equals(this, obj);
     }
 

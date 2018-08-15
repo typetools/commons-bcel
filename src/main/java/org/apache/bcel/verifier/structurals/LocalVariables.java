@@ -23,10 +23,8 @@ import org.apache.bcel.generic.Type;
 import org.apache.bcel.verifier.exc.AssertionViolatedException;
 import org.apache.bcel.verifier.exc.StructuralCodeConstraintException;
 
-/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
-*/
 
 /**
  * This class implements an array of local variables used for symbolic JVM
@@ -65,7 +63,7 @@ public class LocalVariables implements Cloneable {
     /**
      * Returns the type of the local variable slot i.
      */
-    /*@Pure*/
+    @Pure
     public Type get(final int i) {
         return locals[i];
     }
@@ -82,7 +80,7 @@ public class LocalVariables implements Cloneable {
      * Returns the number of local variable slots this
      * LocalVariables instance has.
      */
-    /*@Pure*/
+    @Pure
     public int maxLocals() {
         return locals.length;
     }
@@ -106,7 +104,7 @@ public class LocalVariables implements Cloneable {
      * Fulfills the general contract of Object.equals().
      */
     @Override
-    public boolean equals(final /*@Nullable*/ Object o) {
+    public boolean equals(final @Nullable Object o) {
         if (!(o instanceof LocalVariables)) {
             return false;
         }

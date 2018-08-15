@@ -23,10 +23,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
-/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
-*/
 
 /**
  * Entry of the parameters table.
@@ -58,7 +56,7 @@ public class MethodParameter implements Cloneable {
         access_flags = input.readUnsignedShort();
     }
 
-    /*@Pure*/
+    @Pure
     public int getNameIndex() {
         return name_index;
     }
@@ -70,7 +68,7 @@ public class MethodParameter implements Cloneable {
     /**
      * Returns the name of the parameter.
      */
-    public /*@Nullable*/ String getParameterName(final ConstantPool constant_pool) {
+    public @Nullable String getParameterName(final ConstantPool constant_pool) {
         if (name_index == 0) {
             return null;
         }

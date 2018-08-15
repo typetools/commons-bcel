@@ -22,9 +22,7 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
-/*>>>
 import org.checkerframework.dataflow.qual.Pure;
-*/
 
 /**
  * an annotation's element value pair
@@ -60,7 +58,7 @@ public class ElementValuePair
         return elementValue;
     }
 
-    /*@Pure*/
+    @Pure
     public int getNameIndex()
     {
         return elementNameIndex;

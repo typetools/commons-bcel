@@ -24,9 +24,7 @@ import java.io.IOException;
 import org.apache.bcel.Const;
 import org.apache.bcel.util.BCELComparator;
 
-/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
-*/
 
 /**
  * Abstract superclass for classes to represent the different constant types
@@ -202,7 +200,7 @@ public abstract class Constant implements Cloneable, Node {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( final /*@Nullable*/ Object obj ) {
+    public boolean equals( final @Nullable Object obj ) {
         return bcelComparator.equals(this, obj);
     }
 

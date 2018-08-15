@@ -26,9 +26,7 @@ import java.util.Map;
 
 import org.apache.bcel.Const;
 
-/*>>>
 import org.checkerframework.dataflow.qual.Pure;
-*/
 
 /**
  * Abstract super class for <em>Attribute</em> objects. Currently the
@@ -308,7 +306,7 @@ public abstract class Attribute implements Cloneable, Node {
     /**
      * @return Name index in constant pool of attribute name.
      */
-    /*@Pure*/
+    @Pure
     public final int getNameIndex()
     {
         return name_index;
