@@ -18,10 +18,8 @@
 package org.apache.bcel.verifier.structurals;
 
 
-/*>>>
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.checker.nullness.qual.Nullable;
-*/
 
 import java.util.ArrayList;
 
@@ -93,7 +91,7 @@ public class OperandStack implements Cloneable {
      * objects on the stacks.
      */
     @Override
-    public boolean equals(final /*@Nullable*/ Object o) {
+    public boolean equals(final @Nullable Object o) {
         if (!(o instanceof OperandStack)) {
             return false;
         }
@@ -127,7 +125,7 @@ public class OperandStack implements Cloneable {
     /**
      * Returns the element on top of the stack. The element is not popped off the stack!
      */
-    /*@Pure*/
+    @Pure
     public Type peek() {
         return peek(0);
     }
@@ -136,7 +134,7 @@ public class OperandStack implements Cloneable {
    * Returns the element that's i elements below the top element; that means,
    * iff i==0 the top element is returned. The element is not popped off the stack!
    */
-    /*@Pure*/
+    @Pure
     public Type peek(final int i) {
         return stack.get(size()-i-1);
     }
@@ -152,7 +150,7 @@ public class OperandStack implements Cloneable {
     /**
      * Pops i elements off the stack. ALWAYS RETURNS "null"!!!
      */
-    public /*@Nullable*/ Type pop(final int i) {
+    public @Nullable Type pop(final int i) {
         for (int j=0; j<i; j++) {
             pop();
         }
@@ -179,7 +177,7 @@ public class OperandStack implements Cloneable {
     /**
      * Returns the size of this OperandStack; that means, how many Type objects there are.
      */
-    /*@Pure*/
+    @Pure
     public int size() {
         return stack.size();
     }

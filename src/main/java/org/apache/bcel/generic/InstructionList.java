@@ -31,10 +31,8 @@ import org.apache.bcel.Const;
 import org.apache.bcel.classfile.Constant;
 import org.apache.bcel.util.ByteSequence;
 
-/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
-*/
 
 /**
  * This class is a container for a list of <a href="Instruction.html">Instruction</a> objects. Instructions can be appended, inserted, moved, deleted, etc..
@@ -111,7 +109,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
      *            target position to search for
      * @return target position's instruction handle if available
      */
-    public static /*@Nullable*/ InstructionHandle findHandle(final InstructionHandle[] ihs, final int[] pos, final int count, final int target) {
+    public static @Nullable InstructionHandle findHandle(final InstructionHandle[] ihs, final int[] pos, final int count, final int target) {
         int l = 0;
         int r = count - 1;
         /*
@@ -139,7 +137,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
      *            byte code position to search for
      * @return target position's instruction handle if available
      */
-    public /*@Nullable*/ InstructionHandle findHandle(final int pos) {
+    public @Nullable InstructionHandle findHandle(final int pos) {
         final int[] positions = byte_positions;
         InstructionHandle ih = start;
         for (int i = 0; i < length; i++) {
@@ -277,7 +275,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
      *            list to append to end of this list
      * @return instruction handle of the <B>first</B> appended instruction
      */
-    public /*@Nullable*/ InstructionHandle append(final InstructionList il) {
+    public @Nullable InstructionHandle append(final InstructionList il) {
         if (il == null) {
             throw new ClassGenException("Appending null InstructionList");
         }
@@ -804,7 +802,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
      * @return instruction found on success, null otherwise
      */
     @SuppressWarnings("interning") // equality test for searching in list
-    private /*@Nullable*/ InstructionHandle findInstruction1(final Instruction i) {
+    private @Nullable InstructionHandle findInstruction1(final Instruction i) {
         for (InstructionHandle ih = start; ih != null; ih = ih.getNext()) {
             if (ih.getInstruction() == i) {
                 return ih;
@@ -821,7 +819,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
      * @return instruction found on success, null otherwise
      */
     @SuppressWarnings("interning") // equality test for searching in list
-    private /*@Nullable*/ InstructionHandle findInstruction2(final Instruction i) {
+    private @Nullable InstructionHandle findInstruction2(final Instruction i) {
         for (InstructionHandle ih = end; ih != null; ih = ih.getPrev()) {
             if (ih.getInstruction() == i) {
                 return ih;
@@ -1147,7 +1145,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
     /**
      * @return length of list (Number of instructions, not bytes)
      */
-    /*@Pure*/
+    @Pure
     public int size() {
         return length;
     }

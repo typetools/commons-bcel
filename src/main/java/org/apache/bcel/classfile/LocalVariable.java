@@ -24,10 +24,8 @@ import java.io.IOException;
 import org.apache.bcel.Const;
 import org.apache.bcel.Constants;
 
-/*>>>
 import org.checkerframework.checker.signature.qual.FieldDescriptor;
 import org.checkerframework.dataflow.qual.Pure;
-*/
 
 /**
  * This class represents a local variable within a method. It contains its
@@ -169,7 +167,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
     /**
      * @return Index in constant pool of variable name.
      */
-    /*@Pure*/
+    @Pure
     public final int getNameIndex() {
         return name_index;
     }
@@ -178,7 +176,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
     /**
      * @return Signature.
      */
-    public final /*@FieldDescriptor*/ String getSignature() {
+    public final @FieldDescriptor String getSignature() {
         ConstantUtf8 c;
         c = (ConstantUtf8) constant_pool.getConstant(signature_index, Const.CONSTANT_Utf8);
         return c.getBytes();

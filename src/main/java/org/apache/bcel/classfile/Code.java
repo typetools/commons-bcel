@@ -23,9 +23,7 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
-/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
-*/
 
 /**
  * This class represents a chunk of Java byte code contained in a
@@ -112,8 +110,8 @@ public final class Code extends Attribute {
      * @param attributes Attributes of code: LineNumber or LocalVariable
      * @param constant_pool Array of constants
      */
-    public Code(final int name_index, final int length, final int max_stack, final int max_locals, final byte /*@Nullable*/ [] code,
-            final CodeException /*@Nullable*/ [] exception_table, final Attribute /*@Nullable*/ [] attributes, final ConstantPool constant_pool) {
+    public Code(final int name_index, final int length, final int max_stack, final int max_locals, final byte @Nullable [] code,
+            final CodeException @Nullable [] exception_table, final Attribute @Nullable [] attributes, final ConstantPool constant_pool) {
         super(Const.ATTR_CODE, name_index, length, constant_pool);
         this.max_stack = max_stack;
         this.max_locals = max_locals;
@@ -173,7 +171,7 @@ public final class Code extends Attribute {
     /**
      * @return LineNumberTable of Code, if it has one
      */
-    public /*@Nullable*/ LineNumberTable getLineNumberTable() {
+    public @Nullable LineNumberTable getLineNumberTable() {
         for (final Attribute attribute : attributes) {
             if (attribute instanceof LineNumberTable) {
                 return (LineNumberTable) attribute;
@@ -186,7 +184,7 @@ public final class Code extends Attribute {
     /**
      * @return LocalVariableTable of Code, if it has one
      */
-    public /*@Nullable*/ LocalVariableTable getLocalVariableTable() {
+    public @Nullable LocalVariableTable getLocalVariableTable() {
         for (final Attribute attribute : attributes) {
             if (attribute instanceof LocalVariableTable) {
                 return (LocalVariableTable) attribute;

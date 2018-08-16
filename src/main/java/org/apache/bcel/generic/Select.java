@@ -22,9 +22,7 @@ import java.io.IOException;
 
 import org.apache.bcel.util.ByteSequence;
 
-/*>>>
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
-*/
 
 /**
  * Select - Abstract super class for LOOKUPSWITCH and TABLESWITCH instructions.

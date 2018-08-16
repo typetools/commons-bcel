@@ -23,10 +23,8 @@ import org.apache.bcel.classfile.ConstantNameAndType;
 import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.classfile.ConstantUtf8;
 
-/*>>>
 import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
 import org.checkerframework.framework.qual.AnnotatedFor;
-*/
 
 /**
  * Super class for InvokeInstruction and FieldInstruction, since they have
@@ -34,7 +32,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  *
  * @version $Id$
  */
-/*@AnnotatedFor({"signature"})*/
+@AnnotatedFor({"signature"})
 public abstract class FieldOrMethod extends CPInstruction implements LoadClass {
 
     /**
@@ -87,7 +85,7 @@ public abstract class FieldOrMethod extends CPInstruction implements LoadClass {
      */
     @Deprecated
     @SuppressWarnings("signature") // string manipulation
-    public /*@BinaryNameForNonArray*/ String getClassName( final ConstantPoolGen cpg ) {
+    public @BinaryNameForNonArray String getClassName( final ConstantPoolGen cpg ) {
         final ConstantPool cp = cpg.getConstantPool();
         final ConstantCP cmr = (ConstantCP) cp.getConstant(super.getIndex());
         final String className = cp.getConstantString(cmr.getClassIndex(), Const.CONSTANT_Class);

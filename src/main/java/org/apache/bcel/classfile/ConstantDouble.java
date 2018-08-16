@@ -93,7 +93,7 @@ public final class ConstantDouble extends Constant implements ConstantObject {
     /**
      * @return data, i.e., 8 bytes.
      */
-    /*@Pure*/
+    @Pure
     public final double getBytes() {
         return bytes;
     }

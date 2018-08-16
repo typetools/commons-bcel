@@ -19,6 +19,8 @@ package Mini;
 
 import java.util.Vector;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 /**
  * For efficiency and convenience reasons we want our own hash table. It does
  * not conform to java.util.Dictionary(yet).
@@ -90,7 +92,7 @@ public class Environment implements Cloneable {
 
   /** Get entry from hash table.
    */
-  public /*@Nullable*/ EnvEntry get(String key) {
+  public @Nullable EnvEntry get(String key) {
     int       hash;
     Vector<EnvEntry>    v;
     EnvEntry entry = null;

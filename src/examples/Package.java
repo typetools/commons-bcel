@@ -36,6 +36,9 @@ import org.apache.bcel.classfile.ConstantUtf8;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.util.ClassPath;
 
+import org.checkerframework.checker.signature.qual.FieldDescriptor;
+import org.checkerframework.checker.signature.qual.InternalForm;
+
 /**
  * Package the client. Creates a jar file in the current directory
  * that contains a minimal set of classes needed to run the client.
@@ -82,7 +85,7 @@ public class Package {
      * this list, putting dependent classes in here and from there
      * into allClasses. Store class names against class names of their dependents
      */
-    TreeMap</*@InternalForm*/ String, String> dependents = new TreeMap<String, String>();
+    TreeMap<@InternalForm String, String> dependents = new TreeMap<String, String>();
 
     /**
      * Collect all classes that could not be found in the classpath.
@@ -247,7 +250,7 @@ public class Package {
      * add given class to dependents (from is where its dependent from)
      * some fiddeling to be done because of array class notation
      */
-    void addClassString(/*@FieldDescriptor*/ String clas, String from) throws IOException {
+    void addClassString(@FieldDescriptor String clas, String from) throws IOException {
         if (log) {
             System.out.println("processing: " + clas + " referenced by " + from);
         }

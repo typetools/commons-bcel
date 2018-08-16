@@ -19,10 +19,8 @@ package org.apache.bcel.generic;
 
 import org.apache.bcel.Const;
 
-/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.ClassGetName;
-*/
 
 /**
  * Denotes array type, such as int[][]
@@ -50,7 +48,7 @@ public final class ArrayType extends ReferenceType {
      *
      * @param class_name complete name of class (java.lang.String, e.g.)
      */
-    public ArrayType(final /*@ClassGetName*/ String class_name, final int dimensions) {
+    public ArrayType(final @ClassGetName String class_name, final int dimensions) {
         this(ObjectType.getInstance(class_name), dimensions);
     }
 
@@ -126,7 +124,7 @@ public final class ArrayType extends ReferenceType {
     /** @return true if both type objects refer to the same array type.
      */
     @Override
-    public boolean equals( final /*@Nullable*/ Object _type ) {
+    public boolean equals( final @Nullable Object _type ) {
         if (_type instanceof ArrayType) {
             final ArrayType array = (ArrayType) _type;
             return (array.dimensions == dimensions) && array.basic_type.equals(basic_type);

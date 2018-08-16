@@ -73,10 +73,8 @@ import org.apache.bcel.verifier.exc.AssertionViolatedException;
 import org.apache.bcel.verifier.exc.ClassConstraintException;
 import org.apache.bcel.verifier.exc.LocalVariableInfoInconsistentException;
 
-/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.interning.qual.InternedDistinct;
-*/
 
 /**
  * This PassVerifier verifies a class file according to
@@ -119,7 +117,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
      * <B>Repository.lookupClass(myOwner.getClassname()).getMethods()[method_nr];</B>.
      * You should not add own information. Leave that to JustIce.
      */
-    public /*@Nullable*/ LocalVariablesInfo getLocalVariablesInfo(final int method_nr) {
+    public @Nullable LocalVariablesInfo getLocalVariablesInfo(final int method_nr) {
         if (this.verify() != VerificationResult.VR_OK) {
             return null; // It's cached, don't worry.
         }
@@ -1013,9 +1011,9 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                     // the ancestor hierarchy.
                     JavaClass e = Repository.lookupClass(cname);
                     @SuppressWarnings("interning") // lookupClass is deterministic
-                    final /*@InternedDistinct*/ JavaClass t = Repository.lookupClass(Type.THROWABLE.getClassName());
+                    final @InternedDistinct JavaClass t = Repository.lookupClass(Type.THROWABLE.getClassName());
                     @SuppressWarnings("interning") // lookupClass is deterministic
-                    final /*@InternedDistinct*/ JavaClass o = Repository.lookupClass(Type.OBJECT.getClassName());
+                    final @InternedDistinct JavaClass o = Repository.lookupClass(Type.OBJECT.getClassName());
                     while (e != o) {
                         if (e == t) {
                             break; // It's a subclass of Throwable, OKAY, leave.
@@ -1180,9 +1178,9 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                 // the ancestor hierarchy.
                 JavaClass e = Repository.lookupClass(cname);
                 @SuppressWarnings("interning") // lookupClass is deterministic
-                final /*@InternedDistinct*/ JavaClass t = Repository.lookupClass(Type.THROWABLE.getClassName());
+                final @InternedDistinct JavaClass t = Repository.lookupClass(Type.THROWABLE.getClassName());
                 @SuppressWarnings("interning") // lookupClass is deterministic
-                final /*@InternedDistinct*/ JavaClass o = Repository.lookupClass(Type.OBJECT.getClassName());
+                final @InternedDistinct JavaClass o = Repository.lookupClass(Type.OBJECT.getClassName());
                 while (e != o) {
                     if (e == t) {
                         break; // It's a subclass of Throwable, OKAY, leave.

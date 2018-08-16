@@ -23,9 +23,7 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
-/*>>>
 import org.checkerframework.dataflow.qual.Pure;
-*/
 
 /**
  * This class is derived from the abstract {@link Constant}
@@ -101,7 +99,7 @@ public final class ConstantNameAndType extends Constant {
     /**
      * @return Name index in constant pool of field/method name.
      */
-    /*@Pure*/
+    @Pure
     public final int getNameIndex() {
         return name_index;
     }

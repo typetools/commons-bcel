@@ -17,7 +17,6 @@
  */
 package org.apache.bcel.generic;
 
-import org.checkerframework.checker.index.qual.NonNegative;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -44,7 +43,7 @@ import org.apache.bcel.classfile.RuntimeVisibleParameterAnnotations;
 import org.apache.bcel.classfile.Utility;
 import org.apache.bcel.util.BCELComparator;
 
-/*>>>
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.SameLen;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -53,7 +52,6 @@ import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
 import org.checkerframework.checker.signature.qual.ClassGetName;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
-*/
 
 /**
  * Template class for building up a method. This is done by defining exception
@@ -69,17 +67,17 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @see     InstructionList
  * @see     Method
  */
-/*@AnnotatedFor({"nullness"})*/
+@AnnotatedFor({"nullness"})
 public class MethodGen extends FieldGenOrMethodGen {
 
-    private /*@BinaryNameForNonArray*/ String class_name;
+    private @BinaryNameForNonArray String class_name;
     private Type[] arg_types;
     private String[] arg_names;
     private @NonNegative int max_locals;
     private int max_stack;
     private InstructionList il;
     private boolean strip_attributes;
-    private /*@Nullable*/ LocalVariableTypeTable local_variable_type_table = null;
+    private @Nullable LocalVariableTypeTable local_variable_type_table = null;
     private final List<LocalVariableGen> variable_vec = new ArrayList<>();
     private final List<LineNumberGen> line_number_vec = new ArrayList<>();
     private final List<CodeExceptionGen> exception_vec = new ArrayList<>();
@@ -131,8 +129,8 @@ public class MethodGen extends FieldGenOrMethodGen {
      * abstract or native methods
      * @param cp constant pool
      */
-    public MethodGen(final int access_flags, final Type return_type, final Type[] arg_types, String /*@Nullable*/ [] arg_names,
-            final String method_name, final /*@Nullable*/ /*@BinaryNameForNonArray*/ String class_name, final InstructionList il, final ConstantPoolGen cp) {
+    public MethodGen(final int access_flags, final Type return_type, final Type[] arg_types, String @Nullable [] arg_names,
+            final String method_name, final @Nullable @BinaryNameForNonArray String class_name, final InstructionList il, final ConstantPoolGen cp) {
         super(access_flags);
         setType(return_type);
         setArgumentTypes(arg_types);
@@ -188,7 +186,7 @@ public class MethodGen extends FieldGenOrMethodGen {
      * @param class_name class name containing this method
      * @param cp constant pool
      */
-    public MethodGen(final Method m, final /*@BinaryNameForNonArray*/ String class_name, final ConstantPoolGen cp) {
+    public MethodGen(final Method m, final @BinaryNameForNonArray String class_name, final ConstantPoolGen cp) {
         this(m.getAccessFlags(), Type.getReturnType(m.getSignature()), Type.getArgumentTypes(m
                 .getSignature()), null /* may be overridden anyway */
         , m.getName(), class_name,
@@ -208,7 +206,7 @@ public class MethodGen extends FieldGenOrMethodGen {
                         final int type = ce.getCatchType();
                         ObjectType c_type = null;
                         if (type > 0) {
-                            final /*@ClassGetName*/ String cen = m.getConstantPool().getConstantString(type,
+                            final @ClassGetName String cen = m.getConstantPool().getConstantString(type,
                                     Const.CONSTANT_Class);
                             c_type =  ObjectType.getInstance(cen);
                         }
@@ -325,8 +323,8 @@ public class MethodGen extends FieldGenOrMethodGen {
      * @return new local variable object
      * @see LocalVariable
      */
-    public LocalVariableGen addLocalVariable( final String name, final Type type, final /*@Nullable*/ InstructionHandle start,
-            final /*@Nullable*/ InstructionHandle end ) {
+    public LocalVariableGen addLocalVariable( final String name, final Type type, final @Nullable InstructionHandle start,
+            final @Nullable InstructionHandle end ) {
         return addLocalVariable(name, type, max_locals, start, end);
     }
 
@@ -609,7 +607,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     /**
      * @return all attributes of this method.
      */
-    /*@Pure*/
+    @Pure
     public Attribute[] getCodeAttributes() {
         final Attribute[] attributes = new Attribute[code_attrs_vec.size()];
         code_attrs_vec.toArray(attributes);
@@ -820,12 +818,12 @@ public class MethodGen extends FieldGenOrMethodGen {
 
     /** @return class that contains this method
      */
-    public /*@BinaryNameForNonArray*/ String getClassName() {
+    public @BinaryNameForNonArray String getClassName() {
         return class_name;
     }
 
 
-    public void setClassName( final /*@BinaryNameForNonArray*/ String class_name ) { // TODO could be package-protected?
+    public void setClassName( final @BinaryNameForNonArray String class_name ) { // TODO could be package-protected?
         this.class_name = class_name;
     }
 
@@ -845,7 +843,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
 
-    public Type /*@SameLen({"this.getArgumentNames()", "this.getArgumentTypes()"})*/ [] getArgumentTypes() {
+    public Type @SameLen({"this.getArgumentNames()", "this.getArgumentTypes()"}) [] getArgumentTypes() {
         return arg_types.clone();
     }
 
@@ -865,7 +863,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
 
-    public String /*@SameLen({"this.getArgumentNames()", "this.getArgumentTypes()"})*/ [] getArgumentNames() {
+    public String @SameLen({"this.getArgumentNames()", "this.getArgumentTypes()"}) [] getArgumentNames() {
         return arg_names.clone();
     }
 
@@ -970,7 +968,7 @@ public class MethodGen extends FieldGenOrMethodGen {
         }
 
 
-        public /*@Nullable*/ BranchTarget pop() {
+        public @Nullable BranchTarget pop() {
             if (!branchTargets.empty()) {
                 final BranchTarget bt = branchTargets.pop();
                 return bt;
@@ -1133,7 +1131,7 @@ public class MethodGen extends FieldGenOrMethodGen {
 
     /** @return deep copy of this method
      */
-    public MethodGen copy( final /*@BinaryNameForNonArray*/ String class_name, final ConstantPoolGen cp ) {
+    public MethodGen copy( final @BinaryNameForNonArray String class_name, final ConstantPoolGen cp ) {
         final Method m = ((MethodGen) clone()).getMethod();
         final MethodGen mg = new MethodGen(m, class_name, super.getConstantPool());
         if (super.getConstantPool() != cp) {
@@ -1149,7 +1147,7 @@ public class MethodGen extends FieldGenOrMethodGen {
      * Return a list of AnnotationGen objects representing parameter annotations
      * @since 6.0
      */
-    public /*@Nullable*/ List<AnnotationEntryGen> getAnnotationsOnParameter(final int i) {
+    public @Nullable List<AnnotationEntryGen> getAnnotationsOnParameter(final int i) {
         ensureExistingParameterAnnotationsUnpacked();
         if (!hasParameterAnnotations || i>arg_types.length) {
             return null;
@@ -1276,7 +1274,7 @@ public class MethodGen extends FieldGenOrMethodGen {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( final /*@Nullable*/ Object obj ) {
+    public boolean equals( final @Nullable Object obj ) {
         return bcelComparator.equals(this, obj);
     }
 

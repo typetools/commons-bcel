@@ -23,11 +23,9 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
-/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
-*/
 
 /**
  * This class represents the constant pool, i.e., a table of constants, of
@@ -41,7 +39,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @see     Constant
  * @see     org.apache.bcel.generic.ConstantPoolGen
  */
-/*@AnnotatedFor({"nullness"})*/
+@AnnotatedFor({"nullness"})
 public class ConstantPool implements Cloneable, Node {
 
     private Constant[] constant_pool;
@@ -239,7 +237,7 @@ public class ConstantPool implements Cloneable, Node {
      * @return Constant value
      * @see    Constant
      */
-    /*@Pure*/
+    @Pure
     public Constant getConstant( final int index ) {
         if (index >= constant_pool.length || index < 0) {
             throw new ClassFormatException("Invalid constant pool reference: " + index
@@ -259,7 +257,7 @@ public class ConstantPool implements Cloneable, Node {
      * @see    Constant
      * @throws  ClassFormatException
      */
-    /*@Pure*/
+    @Pure
     public Constant getConstant( final int index, final byte tag ) throws ClassFormatException {
         Constant c;
         c = getConstant(index);

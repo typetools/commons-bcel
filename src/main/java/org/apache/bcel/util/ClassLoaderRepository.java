@@ -25,9 +25,7 @@ import java.util.Map;
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.JavaClass;
 
-/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
-*/
 
 /**
  * The repository maintains information about which classes have
@@ -121,7 +119,7 @@ public class ClassLoaderRepository implements Repository {
      * @return null
      */
     @Override
-    public /*@Nullable*/ ClassPath getClassPath() {
+    public @Nullable ClassPath getClassPath() {
         return null;
     }
 }

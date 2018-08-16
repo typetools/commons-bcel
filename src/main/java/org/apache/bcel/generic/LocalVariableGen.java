@@ -20,9 +20,7 @@ package org.apache.bcel.generic;
 import org.apache.bcel.Const;
 import org.apache.bcel.classfile.LocalVariable;
 
-/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
-*/
 
 /**
  * This class represents a local variable within a method. It contains its
@@ -241,7 +239,7 @@ public class LocalVariableGen implements InstructionTargeter, NamedAndTyped, Clo
      * are valid in the same range.
      */
     @Override
-    public boolean equals( final /*@Nullable*/ Object o ) {
+    public boolean equals( final @Nullable Object o ) {
         if (!(o instanceof LocalVariableGen)) {
             return false;
         }

@@ -25,11 +25,9 @@ import java.util.Set;
 
 import org.apache.bcel.classfile.Utility;
 
-/*>>>
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
-import org.checkerframework.checker.interning.qual.*;
+import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 import org.checkerframework.checker.nullness.qual.Nullable;
-*/
 
 /**
  * Instances of this class give users a handle to the instructions contained in
@@ -48,7 +46,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @see BranchHandle
  * @see InstructionList
  */
-public /*@UsesObjectEquals*/ class InstructionHandle {
+public @UsesObjectEquals class InstructionHandle {
 
     private InstructionHandle next;
     private InstructionHandle prev;
@@ -83,7 +81,7 @@ public /*@UsesObjectEquals*/ class InstructionHandle {
      * Replace current instruction contained in this handle.
      * Old instruction is disposed using Instruction.dispose().
      */
-    public void setInstruction( /*>>> @UnknownInitialization InstructionHandle this, */final Instruction i ) { // Overridden in BranchHandle TODO could be package-protected?
+    public void setInstruction( @UnknownInitialization InstructionHandle this, final Instruction i ) { // Overridden in BranchHandle TODO could be package-protected?
         if (i == null) {
             throw new ClassGenException("Assigning null to handle");
         }
@@ -119,7 +117,7 @@ public /*@UsesObjectEquals*/ class InstructionHandle {
         setInstruction(i);
     }
 
-    private static /*@Nullable*/ InstructionHandle ih_list = null; // List of reusable handles
+    private static @Nullable InstructionHandle ih_list = null; // List of reusable handles
 
 
     /** Factory method.
@@ -283,7 +281,7 @@ public /*@UsesObjectEquals*/ class InstructionHandle {
      *
      * @param key the key object to store/retrieve the attribute
      */
-    public /*@Nullable*/ Object getAttribute( final Object key ) {
+    public @Nullable Object getAttribute( final Object key ) {
         if (attributes != null) {
             return attributes.get(key);
         }

@@ -19,10 +19,8 @@ package org.apache.bcel.generic;
 
 import org.apache.bcel.Const;
 
-/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.ClassGetName;
-*/
 
 /**
  * Instances of this class may be used, e.g., to generate typed
@@ -48,7 +46,7 @@ public class InstructionFactory implements InstructionConstants {
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
      */
     @Deprecated
-    protected /*@Nullable*/ ClassGen cg;
+    protected @Nullable ClassGen cg;
 
     /**
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
@@ -57,7 +55,7 @@ public class InstructionFactory implements InstructionConstants {
     protected ConstantPoolGen cp;
 
 
-    public InstructionFactory(final /*@Nullable*/ ClassGen cg, final ConstantPoolGen cp) {
+    public InstructionFactory(final @Nullable ClassGen cg, final ConstantPoolGen cp) {
         this.cg = cg;
         this.cp = cp;
     }
@@ -599,7 +597,7 @@ public class InstructionFactory implements InstructionConstants {
                 src = Const.T_INT;
             }
             @SuppressWarnings("signature") // string manipulation
-            final /*@ClassGetName*/ String name = "org.apache.bcel.generic." + short_names[src - Const.T_CHAR] + "2"
+            final @ClassGetName String name = "org.apache.bcel.generic." + short_names[src - Const.T_CHAR] + "2"
                     + short_names[dest - Const.T_CHAR];
             Instruction i = null;
             try {
@@ -771,7 +769,7 @@ public class InstructionFactory implements InstructionConstants {
     }
 
 
-    public /*@Nullable*/ ClassGen getClassGen() {
+    public @Nullable ClassGen getClassGen() {
         return cg;
     }
 

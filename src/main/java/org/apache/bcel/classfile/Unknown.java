@@ -25,9 +25,7 @@ import java.util.Map;
 
 import org.apache.bcel.Const;
 
-/*>>>
 import org.checkerframework.dataflow.qual.Pure;
-*/
 
 /**
  * This class represents a reference to an unknown (i.e.,
@@ -135,7 +133,7 @@ public final class Unknown extends Attribute {
     /**
      * @return data bytes.
      */
-    /*@Pure*/
+    @Pure
     public final byte[] getBytes() {
         return bytes;
     }

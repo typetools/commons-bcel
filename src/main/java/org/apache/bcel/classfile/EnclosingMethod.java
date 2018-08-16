@@ -22,9 +22,7 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
-/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
-*/
 
 /**
  * This attribute exists for local or
@@ -92,7 +90,7 @@ public class EnclosingMethod extends Attribute {
         return c;
     }
 
-    public final /*@Nullable*/ ConstantNameAndType getEnclosingMethod() {
+    public final @Nullable ConstantNameAndType getEnclosingMethod() {
         if (methodIndex == 0) {
             return null;
         }

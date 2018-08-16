@@ -23,9 +23,7 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
-/*>>>
 import org.checkerframework.checker.nullness.qual.Nullable;
-*/
 
 /**
  * This class represents colection of local variables in a
@@ -128,7 +126,7 @@ public class LocalVariableTable extends Attribute {
      *             same slot, use getLocalVariable(int index, int pc) instead.
      */
     @java.lang.Deprecated
-    public final /*@Nullable*/ LocalVariable getLocalVariable( final int index ) {
+    public final @Nullable LocalVariable getLocalVariable( final int index ) {
         for (final LocalVariable variable : local_variable_table) {
             if (variable.getIndex() == index) {
                 return variable;
@@ -145,7 +143,7 @@ public class LocalVariableTable extends Attribute {
      *
      * @return the LocalVariable that matches or null if not found
      */
-    public final /*@Nullable*/ LocalVariable getLocalVariable( final int index, final int pc ) {
+    public final @Nullable LocalVariable getLocalVariable( final int index, final int pc ) {
         for (final LocalVariable variable : local_variable_table) {
             if (variable.getIndex() == index) {
                 final int start_pc = variable.getStartPC();
