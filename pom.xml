@@ -510,7 +510,9 @@
   </dependencies>
 
   <profiles>
-    <!-- Profile to use the version of Checker Framework installed locally-->
+    <!-- Profile to use the version of Checker Framework installed locally.
+         Run mvn with `-Pcheckerframework-local`.
+    -->
     <profile>
       <id>checkerframework-local</id>
       <dependencies>
