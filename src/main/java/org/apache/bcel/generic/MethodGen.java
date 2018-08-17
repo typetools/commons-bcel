@@ -48,7 +48,6 @@ import org.checkerframework.checker.index.qual.SameLen;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.BinaryName;
-import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
 import org.checkerframework.checker.signature.qual.ClassGetName;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -70,7 +69,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"nullness"})
 public class MethodGen extends FieldGenOrMethodGen {
 
-    private @BinaryNameForNonArray String class_name;
+    private @BinaryName String class_name;
     private Type[] arg_types;
     private String[] arg_names;
     private @NonNegative int max_locals;
@@ -130,7 +129,7 @@ public class MethodGen extends FieldGenOrMethodGen {
      * @param cp constant pool
      */
     public MethodGen(final int access_flags, final Type return_type, final Type[] arg_types, String @Nullable [] arg_names,
-            final String method_name, final @Nullable @BinaryNameForNonArray String class_name, final InstructionList il, final ConstantPoolGen cp) {
+            final String method_name, final @Nullable @BinaryName String class_name, final InstructionList il, final ConstantPoolGen cp) {
         super(access_flags);
         setType(return_type);
         setArgumentTypes(arg_types);
@@ -186,7 +185,7 @@ public class MethodGen extends FieldGenOrMethodGen {
      * @param class_name class name containing this method
      * @param cp constant pool
      */
-    public MethodGen(final Method m, final @BinaryNameForNonArray String class_name, final ConstantPoolGen cp) {
+    public MethodGen(final Method m, final @BinaryName String class_name, final ConstantPoolGen cp) {
         this(m.getAccessFlags(), Type.getReturnType(m.getSignature()), Type.getArgumentTypes(m
                 .getSignature()), null /* may be overridden anyway */
         , m.getName(), class_name,
@@ -818,12 +817,12 @@ public class MethodGen extends FieldGenOrMethodGen {
 
     /** @return class that contains this method
      */
-    public @BinaryNameForNonArray String getClassName() {
+    public @BinaryName String getClassName() {
         return class_name;
     }
 
 
-    public void setClassName( final @BinaryNameForNonArray String class_name ) { // TODO could be package-protected?
+    public void setClassName( final @BinaryName String class_name ) { // TODO could be package-protected?
         this.class_name = class_name;
     }
 
@@ -1131,7 +1130,7 @@ public class MethodGen extends FieldGenOrMethodGen {
 
     /** @return deep copy of this method
      */
-    public MethodGen copy( final @BinaryNameForNonArray String class_name, final ConstantPoolGen cp ) {
+    public MethodGen copy( final @BinaryName String class_name, final ConstantPoolGen cp ) {
         final Method m = ((MethodGen) clone()).getMethod();
         final MethodGen mg = new MethodGen(m, class_name, super.getConstantPool());
         if (super.getConstantPool() != cp) {
