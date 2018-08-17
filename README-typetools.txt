@@ -7,10 +7,6 @@ To build this project
 ```
 mvn -B -Dmaven.test.skip=true package
 ```
-or to use a locally-built version of the Checker Framework:
-```
-mvn -B -Dmaven.test.skip=true package -Pcheckerframework-local
-```
 
 There will be pluggable type-checking errors, because only the signatures, not
 the bodies, of methods are annotated.

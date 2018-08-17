@@ -510,7 +510,11 @@
   </dependencies>
 
   <profiles>
-    <!-- Profile to use the version of Checker Framework installed locally.
+    <!-- THIS DOES NOT WORK!
+         The culprit is the "2.5.4" in <annotationProcessorPaths>; I don't know how to
+         make that use ${CHECKERFRAMEWORK}/checker/dist/checker.jar .
+
+         Profile to use the version of Checker Framework installed locally.
          Run mvn with `-Pcheckerframework-local`.
     -->
     <profile>
