@@ -23,7 +23,7 @@ import org.apache.bcel.classfile.ConstantNameAndType;
 import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.classfile.ConstantUtf8;
 
-import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
+import org.checkerframework.checker.signature.qual.BinaryName;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -85,7 +85,7 @@ public abstract class FieldOrMethod extends CPInstruction implements LoadClass {
      */
     @Deprecated
     @SuppressWarnings("signature") // string manipulation
-    public @BinaryNameForNonArray String getClassName( final ConstantPoolGen cpg ) {
+    public @BinaryName String getClassName( final ConstantPoolGen cpg ) {
         final ConstantPool cp = cpg.getConstantPool();
         final ConstantCP cmr = (ConstantCP) cp.getConstant(super.getIndex());
         final String className = cp.getConstantString(cmr.getClassIndex(), Const.CONSTANT_Class);

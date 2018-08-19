@@ -22,7 +22,7 @@ import java.util.Collections;
 
 import org.checkerframework.checker.signature.qual.FieldDescriptor;
 import org.checkerframework.checker.signature.qual.FullyQualifiedName;
-import org.checkerframework.checker.signature.qual.SourceNameForNonArrayNonInner;
+import org.checkerframework.checker.signature.qual.DotSeparatedIdentifiers;
 
 /**
  * Constants for the project, mostly defined in the JVM specification.
@@ -434,12 +434,12 @@ public final class Const {
   /**
    * The names of the interfaces implemented by arrays
    */
-  private static final @SourceNameForNonArrayNonInner String[] INTERFACES_IMPLEMENTED_BY_ARRAYS = {"java.lang.Cloneable", "java.io.Serializable"};
+  private static final @DotSeparatedIdentifiers String[] INTERFACES_IMPLEMENTED_BY_ARRAYS = {"java.lang.Cloneable", "java.io.Serializable"};
 
   /**
    * @since 6.0
    */
-  public static Iterable<@SourceNameForNonArrayNonInner String> getInterfacesImplementedByArrays() {
+  public static Iterable<@DotSeparatedIdentifiers String> getInterfacesImplementedByArrays() {
       return Collections.unmodifiableList(Arrays.asList(INTERFACES_IMPLEMENTED_BY_ARRAYS));
   }
 

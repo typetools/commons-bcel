@@ -30,7 +30,6 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.ClassGetName;
 import org.checkerframework.checker.signature.qual.BinaryName;
-import org.checkerframework.checker.signature.qual.BinaryNameForNonArray;
 import org.checkerframework.checker.signature.qual.FieldDescriptor;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -250,7 +249,7 @@ public abstract class Type {
             final String parsedSignature = Utility.signatureToString(signature, false);
             wrap(consumed_chars, parsedSignature.length() + 2); // "Lblabla;" `L' and `;' are removed
             @SuppressWarnings("signature") // string manipulation; known to be reference type
-            @BinaryNameForNonArray String className = parsedSignature.replace('/', '.');
+            @BinaryName String className = parsedSignature.replace('/', '.');
             return ObjectType.getInstance(className);
         }
     }
