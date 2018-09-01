@@ -65,7 +65,7 @@
     <!-- These properties will be set by the Maven Dependency plugin -->
     <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
     <typeAnnotationsJavac>${org.checkerframework:compiler:jar}</typeAnnotationsJavac>
-    <checkerFrameworkVersion>2.5.4</checkerFrameworkVersion>
+    <checkerFrameworkVersion>2.5.5</checkerFrameworkVersion>
   </properties>
 
   <!-- Cannot be added to Commons Parent, see https://issues.apache.org/jira/browse/COMMONSSITE-26 -->
