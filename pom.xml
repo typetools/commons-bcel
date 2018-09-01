@@ -269,7 +269,7 @@
             <path>
               <groupId>org.checkerframework</groupId>
               <artifactId>checker</artifactId>
-              <version>2.5.4</version>
+              <version>2.5.5</version>
             </path>
           </annotationProcessorPaths>
           <annotationProcessors>
@@ -511,7 +511,7 @@
 
   <profiles>
     <!-- THIS DOES NOT WORK!
-         The culprit is the "2.5.4" in <annotationProcessorPaths>; I don't know how to
+         The culprit is (e.g.) the "2.5.5" in <annotationProcessorPaths>; I don't know how to
          make that use ${CHECKERFRAMEWORK}/checker/dist/checker.jar .
 
          Profile to use the version of Checker Framework installed locally.
