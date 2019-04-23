@@ -21,6 +21,7 @@ To update to a newer version of the upstream library
 At https://github.com/apache/commons-bcel/releases ,
 find the commit corresponding to a public release.
 
+Update the following line in this file, so that others know the current status:
 BCEL version 6.2 is commit 893d9bb
 
 Pull in that commit:
@@ -31,9 +32,37 @@ git pull https://github.com/apache/commons-bcel <commitid>
 (Alternately, pull from a repo that contains bug fixes,
 such as https://github.com/codespecs/commons-bcel .)
 
-Update the PACKAGE environment variable below.
+Use the upstream version number as the version number.
+That is, if there is a merge conflict related to version numbers,
+use the upstream version.
 
-Use the latest Checker Framework version by changing `pom.xml`.
+Change `pom.xml` to use the latest Checker Framework version.
+
+Build the project (instructions appear above).
+
+Test it in a branch of Daikon:
+ * copy the bcel-VERSION.jar file to the `daikon/java/lib` directory
+ * remove the old bcel-OLDVERSION.jar file
+ * run:  make -C java typecheck
+   If there are any warnings or errors, then either add annotations
+   to BCEL or fix bugs in Daikon.
+ * push your branch, and ensure that the the Travis tests pass
+    * if a branch in your own fork, see https://travis-ci.org/codespecs/$USERNAME/branches
+    * if a branch of master, see https://travis-ci.org/codespecs/daikon/branches
+ * merge your branch into master
+
+Upload BCEL to Maven Central (instructions appear below).
+
+
+To make changes between upstream releases
+-----------------------------------------
+
+If you need to release a new version of BCEL between upstream releases (for
+example, because of a bug fix or because of added annotations), use the
+version number policy explained at section "Version numbers for annotated
+libraries" in
+https://rawgit.com/typetools/checker-framework/master/docs/developer/developer-manual.html#annotated-library-version-numbers
+.
 
 
 To upload to Maven Central
