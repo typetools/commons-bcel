@@ -62,6 +62,24 @@ The <action> type attribute can be add,update,fix,remove.
    -->
 
   <body>
+    <release version="6.3.1" date="2019-03-20" description="Bug fix release">
+      <action issue="BCEL-267" type="fix" dev="ggregory" due-to="Stephan Herrmann, Sebb, Gary Gregory, Torsten Curdt">Race conditions on static fields in BranchHandle and InstructionHandle.</action>
+      <action issue="BCEL-297" type="fix" dev="ggregory" due-to="Mark Roberts, mingleizhang">Possible NPE in override implementation of Object.equals (#20)</action>
+      <action issue="BCEL-298" type="update" dev="ggregory" due-to="mingleizhang">Add some files to .gitignore (#19)</action>
+      <action issue="BCEL-315" type="fix" dev="ggregory" due-to="Gary Gregory">NullPointerException at org.apache.bcel.classfile.FieldOrMethod.dump().</action>
+    </release>
+
+    <release version="6.3" date="2019-01-23" description="Experimental Java 9, 10, 11, 12-EA, and 13-EA Support">
+      <action issue="BCEL-304" type="fix" dev="ggregory" due-to="Gary Gregory, Ed Pavlak">ClassPath.getClassFile() and friends do not work with JDK 9 and higher (PR #22.)</action>
+      <action issue="BCEL-305" type="fix" dev="ggregory" due-to="Gary Gregory">ClassPath.getClassFile() and friends do not work with JRE 9 and higher</action>
+      <action                  type="update" dev="ggregory" due-to="Mark Thomas, Gary Gregory">Initial support for Java 11</action>
+      <action                  type="add" dev="ggregory" due-to="Mark Thomas">Added org.apache.bcel.classfile.Visitor.visitConstantDynamic(ConstantDynamic)</action>
+      <action                  type="add" dev="ggregory" due-to="Mark Thomas">Added org.apache.bcel.classfile.ConstantDynamic</action>
+      <action                  type="add" dev="ggregory" due-to="Mark Thomas">Added fields in org.apache.bcel.Const for Java 9, 10, and 11.</action>      
+      <action                  type="add" dev="ggregory" due-to="Mark Thomas">Added fields in org.apache.bcel.Const for Java 12 and 13 based on Java Early Access releases.</action>      
+      <action                  type="update" dev="ggregory" due-to="Gary Gregory">Update Java requirement from Java 7 to Java 8.</action>      
+    </release>
+
     <release version="6.2" date="2017-12-08" description="Experimental Java 9 Support">
       <action issue="BCEL-294" type="fix" dev="britter" due-to="Mark Roberts">Incorrect comment in StackMap.java</action>
       <action issue="BCEL-296" type="fix" dev="ggregory" due-to="Mark Roberts">Incorrect comment in several classes.</action>

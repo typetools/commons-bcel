@@ -115,20 +115,72 @@ public final class Const {
    *  */
   public static final short MAJOR_1_8 = 52;
 
-  /** Major version number of class files for Java 1.9.
-   *  @see #MINOR_1_9
-   *  */
-  public static final short MAJOR_1_9 = 53;
-
   /** Minor version number of class files for Java 1.8.
    *  @see #MAJOR_1_8
    *  */
   public static final short MINOR_1_8 = 0;
 
-  /** Minor version number of class files for Java 1.9.
-   *  @see #MAJOR_1_9
+  /** Major version number of class files for Java 9.
+   *  @see #MINOR_9
    *  */
-  public static final short MINOR_1_9 = 0;
+  public static final short MAJOR_9 = 53;
+
+  /** Minor version number of class files for Java 9.
+   *  @see #MAJOR_9
+   *  */
+  public static final short MINOR_9 = 0;
+
+  /**
+   * @deprecated Use {@link #MAJOR_9} instead
+   */
+  @Deprecated
+  public static final short MAJOR_1_9 = MAJOR_9;
+
+  /**
+   * @deprecated Use {@link #MINOR_9} instead
+   */
+  @Deprecated
+  public static final short MINOR_1_9 = MINOR_9;
+
+  /** Major version number of class files for Java 10.
+   *  @see #MINOR_10
+   *  */
+  public static final short MAJOR_10 = 54;
+
+  /** Minor version number of class files for Java 10.
+   *  @see #MAJOR_10
+   *  */
+  public static final short MINOR_10 = 0;
+
+  /** Major version number of class files for Java 11.
+   *  @see #MINOR_11
+   *  */
+  public static final short MAJOR_11 = 55;
+
+  /** Minor version number of class files for Java 11.
+   *  @see #MAJOR_11
+   *  */
+  public static final short MINOR_11 = 0;
+
+  /** Major version number of class files for Java 12.
+   *  @see #MINOR_12
+   *  */
+  public static final short MAJOR_12 = 56;
+
+  /** Minor version number of class files for Java 12.
+   *  @see #MAJOR_12
+   *  */
+  public static final short MINOR_12 = 0;
+
+  /** Major version number of class files for Java 13.
+   *  @see #MINOR_13
+   *  */
+  public static final short MAJOR_13 = 57;
+
+  /** Minor version number of class files for Java 13.
+   *  @see #MAJOR_13
+   *  */
+  public static final short MINOR_13 = 0;
 
   /** Default major version number.  Class file is for Java 1.1.
    *  @see #MAJOR_1_1
@@ -369,6 +421,14 @@ public final class Const {
   public static final byte CONSTANT_MethodType         = 16;
 
   /**
+   * Marks a constant pool entry as dynamically computed.
+   * @see  <a href="https://bugs.openjdk.java.net/secure/attachment/74618/constant-dynamic.html">
+   * Change request for JEP 309</a>
+   * @since 6.3
+   */
+  public static final byte CONSTANT_Dynamic            = 17;
+
+  /**
    * Marks a constant pool entry as an Invoke Dynamic
    * @see  <a href="http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.10">
    * The Constant Pool in The Java Virtual Machine Specification</a>
@@ -377,22 +437,16 @@ public final class Const {
 
   /**
    * Marks a constant pool entry as a Module Reference.
-   *
-   * <p>Note: Early access Java 9 support- currently subject to change</p>
-   *
-   * @see <a href="http://cr.openjdk.java.net/~mr/jigsaw/spec/lang-vm.html#jigsaw-2.6">
-   * JPMS: Modules in the Java Language and JVM</a>
+   * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.4.11">
+   * The Constant Pool in The Java Virtual Machine Specification</a>
    * @since 6.1
    */
   public static final byte CONSTANT_Module             = 19;
 
   /**
    * Marks a constant pool entry as a Package Reference.
-   *
-   * <p>Note: Early access Java 9 support- currently subject to change</p>
-   *
-   * @see <a href="http://cr.openjdk.java.net/~mr/jigsaw/spec/lang-vm.html#jigsaw-2.6">
-   * JPMS: Modules in the Java Language and JVM</a>
+   * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.4.12">
+   * The Constant Pool in The Java Virtual Machine Specification</a>
    * @since 6.1
    */
   public static final byte CONSTANT_Package            = 20;
@@ -407,7 +461,7 @@ public final class Const {
     "CONSTANT_Class", "CONSTANT_String", "CONSTANT_Fieldref",
     "CONSTANT_Methodref", "CONSTANT_InterfaceMethodref",
     "CONSTANT_NameAndType", "", "", "CONSTANT_MethodHandle",
-    "CONSTANT_MethodType", "", "CONSTANT_InvokeDynamic",
+    "CONSTANT_MethodType", "CONSTANT_Dynamic", "CONSTANT_InvokeDynamic",
     "CONSTANT_Module", "CONSTANT_Package"};
 
   /**
