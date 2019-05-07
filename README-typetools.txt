@@ -88,4 +88,9 @@ mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/stagin
 && \
 mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=cfMavenCentral.xml -Dgpg.publicKeyring=/projects/swlab1/checker-framework/hosting-info/pubring.gpg -Dgpg.secretKeyring=/projects/swlab1/checker-framework/hosting-info/secring.gpg -Dgpg.keyname=ADF4D638 -Dgpg.passphrase="`cat /projects/swlab1/checker-framework/hosting-info/release-private.password`" -Dfile=target/site/apidocs/${PACKAGE}-javadoc.jar -Dclassifier=javadoc
 
-# Complete the release at https://oss.sonatype.org/#stagingRepositories
+# Complete the release at https://oss.sonatype.org/#stagingRepositories :
+#  * Search for a repository named orgcheckerframework-NNNN (NNNN are digits)
+#  * Click on it
+#  * Click "close" at the top.
+#  * Click "refresh" at the top until the bottom pane has "Repositery closed"
+#  * Click "release" at the top (make sure the "automatically drop" box is checked)
