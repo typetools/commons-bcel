@@ -22,7 +22,7 @@ At https://github.com/apache/commons-bcel/releases ,
 find the commit corresponding to a public release.
 
 Update the following line in this file, so that others know the current status:
-BCEL version 6.2 is commit 893d9bb
+BCEL version 6.3.1 is commit dce57b3
 
 Pull in that commit:
 ```
@@ -75,7 +75,7 @@ This must be done on a CSE machine, which has access to the necessary passwords.
 #  * in file pom.xml (if different from upstream)
 #  * environment variable PACKAGE below
 
-PACKAGE=bcel-6.2.0.2 && \
+PACKAGE=bcel-6.3.1 && \
 mvn clean verify && \
 mvn javadoc:javadoc && (cd target/site/apidocs && jar -cf ${PACKAGE}-javadoc.jar org)
 
