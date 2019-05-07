@@ -18,11 +18,12 @@
 package org.apache.bcel.generic;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Hashtable;
+import java.util.Objects;
 import java.util.List;
 import java.util.Stack;
+import java.util.Hashtable;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import org.apache.bcel.Const;
 import org.apache.bcel.classfile.AnnotationEntry;
@@ -45,7 +46,6 @@ import org.apache.bcel.util.BCELComparator;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.SameLen;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.BinaryName;
 import org.checkerframework.checker.signature.qual.ClassGetName;
@@ -93,8 +93,8 @@ public class MethodGen extends FieldGenOrMethodGen {
         public boolean equals( final Object o1, final Object o2 ) {
             final MethodGen THIS = (MethodGen) o1;
             final MethodGen THAT = (MethodGen) o2;
-            return THIS.getName().equals(THAT.getName())
-                    && THIS.getSignature().equals(THAT.getSignature());
+            return Objects.equals(THIS.getName(), THAT.getName())
+                    && Objects.equals(THIS.getSignature(), THAT.getSignature());
         }
 
 

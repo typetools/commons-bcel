@@ -27,6 +27,7 @@ cache:
 
 jdk:
   - oraclejdk8
+  - openjdk8
 
 install: mvn process-resources
 script: mvn verify javadoc:javadoc

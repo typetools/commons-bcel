@@ -27,13 +27,13 @@
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>42</version>
+    <version>47</version>
   </parent>
 
   <groupId>org.apache.bcel</groupId>
   <artifactId>bcel</artifactId>
   <packaging>jar</packaging>
-  <version>6.2.0.2</version>
+  <version>6.3.1</version>
   <name>Apache Commons BCEL</name>
   <description>Apache Commons Bytecode Engineering Library</description>
 
@@ -47,8 +47,8 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <commons.componentid>bcel</commons.componentid>
     <commons.module.name>org.apache.bcel</commons.module.name>
-    <commons.release.version>6.2.0.2</commons.release.version>
-    <commons.release.desc>(Java 8+)</commons.release.desc>
+    <commons.release.version>6.3.1</commons.release.version>
+    <commons.release.desc>(Java 8)</commons.release.desc>
     <commons.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/commons/content/proper/commons-bcel</commons.scmPubUrl>
     <!-- Configuration properties for the OSGi maven-bundle-plugin -->
     <commons.osgi.symbolicName>org.apache.${commons.componentid}</commons.osgi.symbolicName>
@@ -59,13 +59,14 @@
     <commons.jira.id>BCEL</commons.jira.id>
     <commons.jira.pid>12314220</commons.jira.pid>
     <commons.findbugs.version>3.0.5</commons.findbugs.version>
+    <commons.surefire.version>3.0.0-M3</commons.surefire.version>
     <checkstyle.plugin.version>2.17</checkstyle.plugin.version>
     <commons.clirr.version>2.8</commons.clirr.version>
     <jna.version>4.5.0</jna.version>
     <!-- These properties will be set by the Maven Dependency plugin -->
     <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
     <typeAnnotationsJavac>${org.checkerframework:compiler:jar}</typeAnnotationsJavac>
-    <checkerFrameworkVersion>2.5.5</checkerFrameworkVersion>
+    <checkerFrameworkVersion>2.8.0</checkerFrameworkVersion>
   </properties>
 
   <!-- Cannot be added to Commons Parent, see https://issues.apache.org/jira/browse/COMMONSSITE-26 -->
@@ -269,7 +270,7 @@
             <path>
               <groupId>org.checkerframework</groupId>
               <artifactId>checker</artifactId>
-              <version>2.5.5</version>
+              <version>2.8.0</version>
             </path>
           </annotationProcessorPaths>
           <annotationProcessors>
@@ -488,7 +489,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.7</version>
+      <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
     <!-- Annotations from the Checker Framework: nullness, interning, locking, ... -->
@@ -510,11 +511,7 @@
   </dependencies>
 
   <profiles>
-    <!-- THIS DOES NOT WORK!
-         The culprit is (e.g.) the "2.5.5" in <annotationProcessorPaths>; I don't know how to
-         make that use ${CHECKERFRAMEWORK}/checker/dist/checker.jar .
-
-         Profile to use the version of Checker Framework installed locally.
+    <!-- Profile to use the version of Checker Framework installed locally.
          Run mvn with `-Pcheckerframework-local`.
     -->
     <profile>
@@ -525,28 +522,21 @@
           <artifactId>checker-qual</artifactId>
           <version>0.0.0</version>
           <scope>system</scope>
-          <systemPath>${CHECKERFRAMEWORK}/checker/dist/checker-qual.jar</systemPath>
+          <systemPath>${env.CHECKERFRAMEWORK}/checker/dist/checker-qual.jar</systemPath>
         </dependency>
         <dependency>
           <groupId>org.checkerframework</groupId>
           <artifactId>checker</artifactId>
           <version>0.0.0</version>
           <scope>system</scope>
-          <systemPath>${CHECKERFRAMEWORK}/checker/dist/checker.jar</systemPath>
-        </dependency>
-        <dependency>
-          <groupId>org.checkerframework</groupId>
-          <artifactId>compiler</artifactId>
-          <version>0.0.0</version>
-          <scope>system</scope>
-          <systemPath>${CHECKERFRAMEWORK}/checker/dist/javac.jar</systemPath>
+          <systemPath>${env.CHECKERFRAMEWORK}/checker/dist/checker.jar</systemPath>
         </dependency>
         <dependency>
           <groupId>org.checkerframework</groupId>
           <artifactId>jdk8</artifactId>
           <version>0.0.0</version>
           <scope>system</scope>
-          <systemPath>${CHECKERFRAMEWORK}/checker/dist/jdk8.jar</systemPath>
+          <systemPath>${env.CHECKERFRAMEWORK}/checker/dist/jdk8.jar</systemPath>
         </dependency>
       </dependencies>
     </profile>
@@ -621,7 +611,7 @@
         <dependency>
           <groupId>org.apache.commons</groupId>
           <artifactId>commons-collections4</artifactId>
-          <version>4.1</version>
+          <version>4.3</version>
           <scope>test</scope>
         </dependency>
       </dependencies>
@@ -672,15 +662,6 @@
       </build>
     </profile>
 
-    <profile>
-      <id>jdk8-javadoc</id>
-      <activation>
-        <jdk>[1.8,)</jdk>
-      </activation>
-      <properties>
-        <additionalparam>-Xdoclint:none</additionalparam>
-      </properties>
-    </profile>
   </profiles>
 
 </project>

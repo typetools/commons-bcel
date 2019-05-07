@@ -22,7 +22,7 @@ At https://github.com/apache/commons-bcel/releases ,
 find the commit corresponding to a public release.
 
 Update the following line in this file, so that others know the current status:
-BCEL version 6.2 is commit 893d9bb
+BCEL version 6.3.1 is commit dce57b3
 
 Pull in that commit:
 ```
@@ -75,7 +75,7 @@ This must be done on a CSE machine, which has access to the necessary passwords.
 #  * in file pom.xml (if different from upstream)
 #  * environment variable PACKAGE below
 
-PACKAGE=bcel-6.2.0.2 && \
+PACKAGE=bcel-6.3.1 && \
 mvn clean verify && \
 mvn javadoc:javadoc && (cd target/site/apidocs && jar -cf ${PACKAGE}-javadoc.jar org)
 
@@ -88,4 +88,9 @@ mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/stagin
 && \
 mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=cfMavenCentral.xml -Dgpg.publicKeyring=/projects/swlab1/checker-framework/hosting-info/pubring.gpg -Dgpg.secretKeyring=/projects/swlab1/checker-framework/hosting-info/secring.gpg -Dgpg.keyname=ADF4D638 -Dgpg.passphrase="`cat /projects/swlab1/checker-framework/hosting-info/release-private.password`" -Dfile=target/site/apidocs/${PACKAGE}-javadoc.jar -Dclassifier=javadoc
 
-# Complete the release at https://oss.sonatype.org/#stagingRepositories
+# Complete the release at https://oss.sonatype.org/#stagingRepositories :
+#  * Search for a repository named orgcheckerframework-NNNN (NNNN are digits)
+#  * Click on it
+#  * Click "close" at the top.
+#  * Click "refresh" at the top until the bottom pane has "Repositery closed"
+#  * Click "release" at the top (make sure the "automatically drop" box is checked)

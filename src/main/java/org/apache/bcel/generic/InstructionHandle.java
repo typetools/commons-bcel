@@ -62,6 +62,16 @@ public @UsesObjectEquals class InstructionHandle {
     private Map<Object, Object> attributes;
 
 
+    /**
+     * Does nothing.
+     *
+     * @deprecated Does nothing as of 6.3.1.
+     */
+    @Deprecated
+    protected void addHandle() {
+        // noop
+    }
+
     public final InstructionHandle getNext() {
         return next;
     }
@@ -117,19 +127,10 @@ public @UsesObjectEquals class InstructionHandle {
         setInstruction(i);
     }
 
-    private static @Nullable InstructionHandle ih_list = null; // List of reusable handles
-
-
     /** Factory method.
      */
     static InstructionHandle getInstructionHandle( final Instruction i ) {
-        if (ih_list == null) {
-            return new InstructionHandle(i);
-        }
-        final InstructionHandle ih = ih_list;
-        ih_list = ih.next;
-        ih.setInstruction(i);
-        return ih;
+        return new InstructionHandle(i);
     }
 
 
@@ -166,16 +167,8 @@ public @UsesObjectEquals class InstructionHandle {
     }
 
 
-    /** Overridden in BranchHandle
-     */
-    protected void addHandle() {
-        next = ih_list;
-        ih_list = this;
-    }
-
-
     /**
-     * Delete contents, i.e., remove user access and make handle reusable.
+     * Delete contents, i.e., remove user access.
      */
     @SuppressWarnings("nullness") // object won't be used after calling dispose()
     void dispose() {
@@ -185,7 +178,6 @@ public @UsesObjectEquals class InstructionHandle {
         i_position = -1;
         attributes = null;
         removeAllTargeters();
-        addHandle();
     }
 
 

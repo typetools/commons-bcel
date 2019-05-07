@@ -25,7 +25,7 @@
  | commons-build-plugin/trunk/src/main/resources/commons-xdoc-templates |
  +======================================================================+
  |                                                                      |
- | 1) Re-generate using: mvn commons:readme-md                          |
+ | 1) Re-generate using: mvn commons-build:readme-md                          |
  |                                                                      |
  | 2) Set the following properties in the component's pom:              |
  |    - commons.componentid (required, alphabetic, lower case)          |
@@ -43,10 +43,10 @@
 Apache Commons BCEL
 ===================
 
-[![Build Status](https://travis-ci.org/apache/bcel.svg?branch=master)](https://travis-ci.org/apache/bcel)
-[![Coverage Status](https://coveralls.io/repos/apache/bcel/badge.svg?branch=master)](https://coveralls.io/r/apache/bcel)
+[![Build Status](https://travis-ci.org/apache/commons-bcel.svg)](https://travis-ci.org/apache/commons-bcel)
+[![Coverage Status](https://coveralls.io/repos/apache/commons-bcel/badge.svg)](https://coveralls.io/r/apache/commons-bcel)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.bcel/bcel/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.apache.bcel/bcel/)
-[![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+[![Javadocs](https://javadoc.io/badge/org.apache.bcel/bcel/6.3.1.svg)](https://javadoc.io/doc/org.apache.bcel/bcel/6.3.1)
 
 Apache Commons Bytecode Engineering Library
 
@@ -54,7 +54,7 @@ Documentation
 -------------
 
 More information can be found on the [Apache Commons BCEL homepage](https://commons.apache.org/proper/commons-bcel).
-The [JavaDoc](https://commons.apache.org/proper/commons-bcel/apidocs/index.html) can be browsed.
+The [Javadoc](https://commons.apache.org/proper/commons-bcel/apidocs) can be browsed.
 Questions related to the usage of Apache Commons BCEL should be posted to the [user mailing list][ml].
 
 Where can I get the latest release?
@@ -67,7 +67,7 @@ Alternatively you can pull it from the central Maven repositories:
 <dependency>
   <groupId>org.apache.bcel</groupId>
   <artifactId>bcel</artifactId>
-  <version>6.2</version>
+  <version>6.3.1</version>
 </dependency>
 ```
 

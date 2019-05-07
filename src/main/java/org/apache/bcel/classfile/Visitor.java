@@ -156,4 +156,11 @@ public interface Visitor
      * @since 6.1
      */
     void visitConstantModule(ConstantModule constantModule);
+
+    /**
+     * @since 6.3
+     */
+    default void visitConstantDynamic(ConstantDynamic constantDynamic) {
+        // empty
+    }
 }
