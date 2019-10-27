@@ -19,14 +19,14 @@ To update to a newer version of the upstream library
 ----------------------------------------------------
 
 At https://github.com/apache/commons-bcel/releases ,
-find the commit corresponding to a public release.
+find the tag corresponding to a public release.
 
 Update the following line in this file, so that others know the current status:
-BCEL version 6.3.1 is commit dce57b3
+BCEL version 6.3.1 is tag commons-bcel-6.3.1
 
-Pull in that commit:
+Pull in that tag:
 ```
-git pull https://github.com/apache/commons-bcel <commitid>
+git pull https://github.com/apache/commons-bcel <tag>
 ```
 
 (Alternately, pull from a repo that contains bug fixes,
