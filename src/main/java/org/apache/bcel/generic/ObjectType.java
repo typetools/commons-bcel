@@ -39,22 +39,20 @@ public class ObjectType extends ReferenceType {
     /**
      * @since 6.0
      */
-    // TODO: actualy type is @BinaryName =
-    // @ClassGetName-for-nonarray, but that type requires warning
-    // suppressions at call sites, so just use @ClassGetName.
-    public static ObjectType getInstance(final /*@ BinaryName*/ @ClassGetName String class_name) {
+    public static ObjectType getInstance(final @BinaryName String class_name) {
         return new ObjectType(class_name);
     }
 
     /**
      * @param class_name fully qualified class name, e.g. java.lang.String
      */
+    // The argument can be either @BinaryName or @InternalForm.  There is no Signature Checker
+    // annotation for that.  Use @BinaryName since the documentation is closest to that.
     @SuppressWarnings("signature") // string manipulation
     public ObjectType(final @BinaryName String class_name) {
         // second argument to super is a @FieldDescriptor
         super(Const.T_REFERENCE, "L" + class_name.replace('.', '/') + ";");
-        // TODO: Javadoc says argument is like "java.lang.String", but then why does this line replace slashes??
-        // Is this sometimes called with a non-@BinaryName argument, namely a @FieldDescriptor or @InternalForm (those are the only two representations that contain "/")?
+        // This has an effect only if the argument is @InternalForm, not @BinaryName.
         this.class_name = class_name.replace('/', '.');
     }
 
