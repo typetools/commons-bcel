@@ -27,12 +27,11 @@ import org.apache.bcel.classfile.JavaClass;
  *
  * Usage: patch <oldstring> <newstring> files
  *
- * @version $Id$
  */
 public class patchclass {
 
-    public static void main(String[] argv) throws Exception {
-        String[] file_name = new String[argv.length];
+    public static void main(final String[] argv) throws Exception {
+        final String[] file_name = new String[argv.length];
         int files = 0;
 
         if (argv.length < 3) {
@@ -45,8 +44,8 @@ public class patchclass {
         }
 
         for (int i = 0; i < files; i++) {
-            ClassParser parser = new ClassParser(file_name[i]);
-            JavaClass java_class = parser.parse();
+            final ClassParser parser = new ClassParser(file_name[i]);
+            final JavaClass java_class = parser.parse();
 
             patchIt(argv[0], argv[1], java_class.getConstantPool().getConstantPool());
 
@@ -57,10 +56,10 @@ public class patchclass {
     }
 
     /*
-     * Replace all occurences of string "<em>old</em>" with 
+     * Replace all occurences of string "<em>old</em>" with
      * "<em>replacement</em>" in all Utf8 constants
      */
-    private static void patchIt(String old, String replacement, Constant[] constant_pool) {
+    private static void patchIt(final String old, final String replacement, final Constant[] constant_pool) {
         ConstantUtf8 c;
         String str;
         int index, old_index;
@@ -92,7 +91,7 @@ public class patchclass {
                         c = new ConstantUtf8(str);
                         constant_pool[i] = c;
                     }
-                } catch (StringIndexOutOfBoundsException e) { // Should not occur
+                } catch (final StringIndexOutOfBoundsException e) { // Should not occur
                     System.err.println(e);
                 }
             }

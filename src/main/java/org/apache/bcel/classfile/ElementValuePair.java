@@ -27,7 +27,6 @@ import org.checkerframework.dataflow.qual.Pure;
 /**
  * an annotation's element value pair
  *
- * @version $Id: ElementValuePair
  * @since 6.0
  */
 public class ElementValuePair

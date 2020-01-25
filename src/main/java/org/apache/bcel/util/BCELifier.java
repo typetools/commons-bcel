@@ -42,7 +42,6 @@ import org.apache.bcel.generic.Type;
  * are done with BCEL. It does not cover all features of BCEL,
  * but tries to mimic hand-written code as close as possible.
  *
- * @version $Id$
  */
 public class BCELifier extends org.apache.bcel.classfile.EmptyVisitor {
 
@@ -110,6 +109,8 @@ public class BCELifier extends org.apache.bcel.classfile.EmptyVisitor {
                 + "\", \"" + super_name + "\", " + "\"" + clazz.getSourceFileName() + "\", "
                 + printFlags(clazz.getAccessFlags(), FLAGS.CLASS) + ", "
                 + "new String[] { " + inter + " });");
+        _out.println("    _cg.setMajor(" + clazz.getMajor() +");");
+        _out.println("    _cg.setMinor(" + clazz.getMinor() +");");
         _out.println();
         _out.println("    _cp = _cg.getConstantPool();");
         _out.println("    _factory = new InstructionFactory(_cg, _cp);");
@@ -213,7 +214,7 @@ public class BCELifier extends org.apache.bcel.classfile.EmptyVisitor {
             return "0";
         }
         final StringBuilder buf = new StringBuilder();
-        for (int i = 0, pow = 1; pow <= Const.MAX_ACC_FLAG; i++) {
+        for (int i = 0, pow = 1; pow <= Const.MAX_ACC_FLAG_I; i++) {
             if ((flags & pow) != 0) {
                 if ((pow == Const.ACC_SYNCHRONIZED) && (location == FLAGS.CLASS)) {
                     buf.append(CONSTANT_PREFIX+"ACC_SUPER | ");

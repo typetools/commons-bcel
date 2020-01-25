@@ -29,7 +29,6 @@ import org.checkerframework.checker.interning.qual.UsesObjectEquals;
  * to information like control flow successors and
  * such.
  *
- * @version $Id$
  */
 public @UsesObjectEquals interface InstructionContext{
 

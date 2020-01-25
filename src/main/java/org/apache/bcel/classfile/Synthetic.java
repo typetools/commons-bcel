@@ -34,7 +34,6 @@ import org.checkerframework.dataflow.qual.Pure;
  * is intended to be instantiated from the
  * <em>Attribute.readAttribute()</em> method.
  *
- * @version $Id$
  * @see     Attribute
  */
 public final class Synthetic extends Attribute {
@@ -80,7 +79,7 @@ public final class Synthetic extends Attribute {
         if (length > 0) {
             bytes = new byte[length];
             input.readFully(bytes);
-            System.err.println("Synthetic attribute with length > 0");
+            println("Synthetic attribute with length > 0");
         }
     }
 
@@ -105,7 +104,7 @@ public final class Synthetic extends Attribute {
      * @throws IOException
      */
     @Override
-    public final void dump( final DataOutputStream file ) throws IOException {
+    public void dump( final DataOutputStream file ) throws IOException {
         super.dump(file);
         if (super.getLength() > 0) {
             file.write(bytes, 0, super.getLength());
@@ -117,7 +116,7 @@ public final class Synthetic extends Attribute {
      * @return data bytes.
      */
     @Pure
-    public final byte[] getBytes() {
+    public byte[] getBytes() {
         return bytes;
     }
 
@@ -125,7 +124,7 @@ public final class Synthetic extends Attribute {
     /**
      * @param bytes
      */
-    public final void setBytes( final byte[] bytes ) {
+    public void setBytes( final byte[] bytes ) {
         this.bytes = bytes;
     }
 
@@ -134,7 +133,7 @@ public final class Synthetic extends Attribute {
      * @return String representation.
      */
     @Override
-    public final String toString() {
+    public String toString() {
         final StringBuilder buf = new StringBuilder("Synthetic");
         if (super.getLength() > 0) {
             buf.append(" ").append(Utility.toHexString(bytes));

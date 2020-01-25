@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.verifier.structurals;
 
+
 import org.apache.bcel.Const;
 import org.apache.bcel.Constants;
 import org.apache.bcel.generic.ObjectType;
@@ -29,7 +30,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * Virtual Machine Specification, Second Edition, page 147: 4.9.4 for
  * more details.
  *
- * @version $Id$
  */
 public class UninitializedObjectType extends ReferenceType implements Constants {
 

@@ -36,7 +36,6 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
  * @see LDC
  * @see INVOKEVIRTUAL
  *
- * @version $Id$
  */
 public abstract class CPInstruction extends Instruction implements TypedInstruction,
         IndexedInstruction {

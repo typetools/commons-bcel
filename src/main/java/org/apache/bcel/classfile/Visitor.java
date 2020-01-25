@@ -22,7 +22,6 @@ package org.apache.bcel.classfile;
  * that implements this interface can traverse the contents of a Java class just
  * by calling the `accept' method which all classes have.
  *
- * @version $Id$
  */
 public interface Visitor
 {
@@ -133,6 +132,13 @@ public interface Visitor
     void visitMethodParameters(MethodParameters obj);
 
     /**
+     * @since 6.4.0
+     */
+    default void visitMethodParameter(final MethodParameter obj) {
+        // empty
+    }
+
+    /**
      * @since 6.0
      */
     void visitConstantMethodType(ConstantMethodType obj);
@@ -160,7 +166,70 @@ public interface Visitor
     /**
      * @since 6.3
      */
-    default void visitConstantDynamic(ConstantDynamic constantDynamic) {
+    default void visitConstantDynamic(final ConstantDynamic constantDynamic) {
+        // empty
+    }
+
+    /**
+     * @since 6.4.0
+     */
+    default void visitModule(final Module constantModule) {
+        // empty
+    }
+
+    /**
+     * @since 6.4.0
+     */
+    default void visitModuleRequires(final ModuleRequires constantModule) {
+        // empty
+    }
+
+    /**
+     * @since 6.4.0
+     */
+    default void visitModuleExports(final ModuleExports constantModule) {
+        // empty
+    }
+
+    /**
+     * @since 6.4.0
+     */
+    default void visitModuleOpens(final ModuleOpens constantModule) {
+        // empty
+    }
+
+    /**
+     * @since 6.4.0
+     */
+    default void visitModuleProvides(final ModuleProvides constantModule) {
+        // empty
+    }
+
+    /**
+     * @since 6.4.0
+     */
+    default void visitModulePackages(final ModulePackages constantModule) {
+        // empty
+    }
+
+    /**
+     * @since 6.4.0
+     */
+    default void visitModuleMainClass(final ModuleMainClass obj) {
+        // empty
+    }
+
+    /**
+     * @since 6.4.0
+     */
+    default void visitNestHost(final NestHost obj) {
+        // empty
+    }
+
+    /**
+     * @since 6.4.0
+     */
+    default void visitNestMembers(final NestMembers obj) {
         // empty
     }
 }

@@ -42,14 +42,13 @@ import org.apache.bcel.generic.Type;
 /**
  * Root node of everything, direct children are nodes of type FunDecl
  *
- * @version $Id$
  */
 public class ASTProgram extends SimpleNode
 implements MiniParserConstants, MiniParserTreeConstants, org.apache.bcel.Constants {
   private ASTFunDecl[] fun_decls; // Children: Function declarations
   private Environment  env;       // Environment contains variables and functions
 
-  ASTProgram(int id) {
+  ASTProgram(final int id) {
     super(id);
 
     env = new Environment();
@@ -58,7 +57,7 @@ implements MiniParserConstants, MiniParserTreeConstants, org.apache.bcel.Constan
      * WRITE has one arg of type T_INT, both return T_INT.
      */
     ASTIdent   ident  = new ASTIdent("WRITE", T_INT, -1, -1);
-    ASTIdent[] args   = { new ASTIdent("", T_INT, -1, -1) }; 
+    ASTIdent[] args   = { new ASTIdent("", T_INT, -1, -1) };
     Function   fun    = new Function(ident, args, true);
     env.put(fun);
 
@@ -66,7 +65,7 @@ implements MiniParserConstants, MiniParserTreeConstants, org.apache.bcel.Constan
     args  = new ASTIdent[0];
     fun   = new Function(ident, args, true);
     env.put(fun);
-    
+
     /* Add predefined idents TRUE/FALSE of type T_BOOLEAN
      */
     ident = new ASTIdent("TRUE", T_BOOLEAN, -1, -1);
@@ -78,11 +77,11 @@ implements MiniParserConstants, MiniParserTreeConstants, org.apache.bcel.Constan
     env.put(var);
   }
 
-  ASTProgram(MiniParser p, int id) {
+  ASTProgram(final MiniParser p, final int id) {
     super(p, id);
   }
 
-  public static Node jjtCreate(MiniParser p, int id) {
+  public static Node jjtCreate(final MiniParser p, final int id) {
     return new ASTProgram(p, id);
   }
 
@@ -104,7 +103,7 @@ implements MiniParserConstants, MiniParserTreeConstants, org.apache.bcel.Constan
    *
    * Put everything into the environment, which is copied appropiately to each
    * recursion level, i.e. each FunDecl gets its own copy that it can further
-   * manipulate. 
+   * manipulate.
    *
    * Checks for name clashes of function declarations.
    */
@@ -122,7 +121,7 @@ implements MiniParserConstants, MiniParserTreeConstants, org.apache.bcel.Constan
         name  = f.getName();
         fname = name.getName();
         fun   = env.get(fname); // Lookup in env
-        
+
         if(fun != null) {
         MiniC.addError(f.getLine(), f.getColumn(),
                          "Redeclaration of " + fun + ".");
@@ -130,24 +129,24 @@ implements MiniParserConstants, MiniParserTreeConstants, org.apache.bcel.Constan
         env.put(new Function(name, null)); // `args' will be set by FunDecl.traverse()
     }
 
-        
+
       }
 
       // Go for it
       for(int i=0; i < fun_decls.length; i++) {
         fun_decls[i] = fun_decls[i].traverse((Environment)env.clone());
-        
+
         // Look for `main' routine
         fname = fun_decls[i].getName().getName();
         if(fname.equals("main")) {
         main = (Function)env.get(fname);
     }
       }
-      
+
       if(main == null) {
         MiniC.addError(0, 0, "You didn't declare a `main' function.");
     } else if(main.getNoArgs() != 0) {
-        MiniC.addError(main.getLine(), main.getColumn(), 
+        MiniC.addError(main.getLine(), main.getColumn(),
                         "Main function has too many arguments declared.");
     }
     }
@@ -155,16 +154,16 @@ implements MiniParserConstants, MiniParserTreeConstants, org.apache.bcel.Constan
     return this;
   }
 
-  /** 
+  /**
    * Second pass, determine type of each node, if possible.
    */
-  public void eval(int pass) {
+  public void eval(final int pass) {
 
     for(int i=0; i < fun_decls.length; i++) {
       fun_decls[i].eval(pass);
 
       if(pass == 3) { // Final check for unresolved types
-        ASTIdent name = fun_decls[i].getName();
+        final ASTIdent name = fun_decls[i].getName();
 
         if(name.getType() == T_UNKNOWN) {
         MiniC.addError(name.getColumn(), name.getLine(),
@@ -178,17 +177,17 @@ implements MiniParserConstants, MiniParserTreeConstants, org.apache.bcel.Constan
   /**
    * Fifth pass, produce Java code.
    */
-  public void code(PrintWriter out, String name) {
+  public void code(final PrintWriter out, final String name) {
     out.println("import java.io.BufferedReader;");
     out.println("import java.io.InputStreamReader;");
     out.println("import java.io.IOException;\n");
 
     out.println("public final class " + name + " {");
-    out.println("  private static BufferedReader _in = new BufferedReader" + 
+    out.println("  private static BufferedReader _in = new BufferedReader" +
                 "(new InputStreamReader(System.in));\n");
 
     out.println("  private static int _readInt() throws IOException {\n" +
-                "    System.out.print(\"Please enter a number> \");\n" + 
+                "    System.out.print(\"Please enter a number> \");\n" +
                 "    return Integer.parseInt(_in.readLine());\n  }\n");
 
     out.println("  private static int _writeInt(int n) {\n" +
@@ -204,7 +203,7 @@ implements MiniParserConstants, MiniParserTreeConstants, org.apache.bcel.Constan
   /**
    * Fifth pass, produce Java byte code.
    */
-  public void byte_code(ClassGen class_gen, ConstantPoolGen cp) {
+  public void byte_code(final ClassGen class_gen, final ConstantPoolGen cp) {
     /* private static BufferedReader _in;
      */
     class_gen.addField(new Field(ACC_PRIVATE | ACC_STATIC,
@@ -214,13 +213,13 @@ implements MiniParserConstants, MiniParserTreeConstants, org.apache.bcel.Constan
 
     MethodGen       method;
     InstructionList il = new InstructionList();
-    String          class_name = class_gen.getClassName();
+    final String          class_name = class_gen.getClassName();
 
     /* Often used constant pool entries
      */
-    int             _in = cp.addFieldref(class_name, "_in", "Ljava/io/BufferedReader;");
+    final int             _in = cp.addFieldref(class_name, "_in", "Ljava/io/BufferedReader;");
 
-    int             out = cp.addFieldref("java.lang.System", "out",
+    final int             out = cp.addFieldref("java.lang.System", "out",
                                          "Ljava/io/PrintStream;");
 
     il.append(new GETSTATIC(out));
@@ -250,8 +249,8 @@ implements MiniParserConstants, MiniParserTreeConstants, org.apache.bcel.Constan
 
     /* private static int _writeInt(int i) throws IOException
      */
-    Type[]   args = { Type.INT };
-    String[] argv = { "i" } ;
+    final Type[]   args = { Type.INT };
+    final String[] argv = { "i" } ;
     il = new InstructionList();
     il.append(new GETSTATIC(out));
     il.append(new NEW(cp.addClass("java.lang.StringBuffer")));
@@ -269,7 +268,7 @@ implements MiniParserConstants, MiniParserTreeConstants, org.apache.bcel.Constan
     il.append(new INVOKEVIRTUAL(cp.addMethodref("java.lang.StringBuffer",
                                                 "toString",
                                                 "()Ljava/lang/String;")));
-    
+
     il.append(new INVOKEVIRTUAL(cp.addMethodref("java.io.PrintStream",
                                                 "println",
                                                 "(Ljava/lang/String;)V")));
@@ -295,7 +294,7 @@ implements MiniParserConstants, MiniParserTreeConstants, org.apache.bcel.Constan
 
     method = new MethodGen(ACC_PUBLIC, Type.VOID, Type.NO_ARGS, null,
                            "<init>", class_name, il, cp);
-    
+
     method.setMaxStack(1);
     class_gen.addMethod(method.getMethod());
 
@@ -328,7 +327,7 @@ implements MiniParserConstants, MiniParserTreeConstants, org.apache.bcel.Constan
   }
 
   @Override
-  public void dump(String prefix) {
+  public void dump(final String prefix) {
     System.out.println(toString(prefix));
 
     for(int i = 0; i < fun_decls.length; ++i) {

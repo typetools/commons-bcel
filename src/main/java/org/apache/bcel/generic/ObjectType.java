@@ -29,7 +29,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 /** 
  * Denotes reference such as java.lang.String.
  *
- * @version $Id$
  */
 @AnnotatedFor({"signature"})
 public class ObjectType extends ReferenceType {

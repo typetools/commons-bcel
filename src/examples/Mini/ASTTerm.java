@@ -22,19 +22,18 @@ package Mini;
 
 /**
  *
- * @version $Id$
  */
 public class ASTTerm extends ASTExpr {
   // Generated methods
-  ASTTerm(int id) {
+  ASTTerm(final int id) {
     super(id);
   }
 
-  ASTTerm(MiniParser p, int id) {
+  ASTTerm(final MiniParser p, final int id) {
     super(p, id);
   }
 
-  public static Node jjtCreate(MiniParser p, int id) {
+  public static Node jjtCreate(final MiniParser p, final int id) {
     return new ASTTerm(p, id);
   }
 
@@ -45,7 +44,7 @@ public class ASTTerm extends ASTExpr {
    * and may be safely replaced with it.
    */
   @Override
-  public ASTExpr traverse(Environment env) {
+  public ASTExpr traverse(final Environment env) {
     if(kind == -1) {
         return exprs[0].traverse(env);
     } else {

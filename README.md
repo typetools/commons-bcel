@@ -25,7 +25,7 @@
  | commons-build-plugin/trunk/src/main/resources/commons-xdoc-templates |
  +======================================================================+
  |                                                                      |
- | 1) Re-generate using: mvn commons-build:readme-md                          |
+ | 1) Re-generate using: mvn commons-build:readme-md                    |
  |                                                                      |
  | 2) Set the following properties in the component's pom:              |
  |    - commons.componentid (required, alphabetic, lower case)          |
@@ -46,7 +46,7 @@ Apache Commons BCEL
 [![Build Status](https://travis-ci.org/apache/commons-bcel.svg)](https://travis-ci.org/apache/commons-bcel)
 [![Coverage Status](https://coveralls.io/repos/apache/commons-bcel/badge.svg)](https://coveralls.io/r/apache/commons-bcel)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.bcel/bcel/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.apache.bcel/bcel/)
-[![Javadocs](https://javadoc.io/badge/org.apache.bcel/bcel/6.3.1.svg)](https://javadoc.io/doc/org.apache.bcel/bcel/6.3.1)
+[![Javadocs](https://javadoc.io/badge/org.apache.bcel/bcel/6.4.1.svg)](https://javadoc.io/doc/org.apache.bcel/bcel/6.4.1)
 
 Apache Commons Bytecode Engineering Library
 
@@ -67,7 +67,7 @@ Alternatively you can pull it from the central Maven repositories:
 <dependency>
   <groupId>org.apache.bcel</groupId>
   <artifactId>bcel</artifactId>
-  <version>6.3.1</version>
+  <version>6.4.1</version>
 </dependency>
 ```
 

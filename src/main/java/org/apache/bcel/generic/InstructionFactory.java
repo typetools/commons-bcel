@@ -31,7 +31,6 @@ import org.checkerframework.checker.signature.qual.ClassGetName;
  * Note: The static createXXX methods return singleton instances
  * from the {@link InstructionConst} class.
  *
- * @version $Id$
  * @see Const
  * @see InstructionConst
  */

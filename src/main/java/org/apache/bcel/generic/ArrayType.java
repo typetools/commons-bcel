@@ -25,7 +25,6 @@ import org.checkerframework.checker.signature.qual.ClassGetName;
 /**
  * Denotes array type, such as int[][]
  *
- * @version $Id$
  */
 public final class ArrayType extends ReferenceType {
 

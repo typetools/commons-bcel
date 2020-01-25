@@ -22,7 +22,6 @@ import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 /**
  * Super class for JSR - Jump to subroutine
  *
- * @version $Id$
  */
 // @UsesObjectEquals like its superclass BranchInstruction is.
 public abstract @UsesObjectEquals class JsrInstruction extends BranchInstruction implements UnconditionalBranch,

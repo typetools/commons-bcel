@@ -28,7 +28,6 @@ import org.apache.bcel.Const;
  * purposes. This attribute is used by the <em>Code</em> attribute. It
  * contains pairs of PCs and line numbers.
  *
- * @version $Id$
  * @see     Code
  * @see LineNumber
  */
@@ -99,7 +98,7 @@ public final class LineNumberTable extends Attribute {
      * @throws IOException if an I/O Exception occurs in writeShort
      */
     @Override
-    public final void dump( final DataOutputStream file ) throws IOException {
+    public void dump( final DataOutputStream file ) throws IOException {
         super.dump(file);
         file.writeShort(line_number_table.length);
         for (final LineNumber lineNumber : line_number_table) {
@@ -111,7 +110,7 @@ public final class LineNumberTable extends Attribute {
     /**
      * @return Array of (pc offset, line number) pairs.
      */
-    public final LineNumber[] getLineNumberTable() {
+    public LineNumber[] getLineNumberTable() {
         return line_number_table;
     }
 
@@ -119,7 +118,7 @@ public final class LineNumberTable extends Attribute {
     /**
      * @param line_number_table the line number entries for this table
      */
-    public final void setLineNumberTable( final LineNumber[] line_number_table ) {
+    public void setLineNumberTable( final LineNumber[] line_number_table ) {
         this.line_number_table = line_number_table;
     }
 
@@ -128,7 +127,7 @@ public final class LineNumberTable extends Attribute {
      * @return String representation.
      */
     @Override
-    public final String toString() {
+    public String toString() {
         final StringBuilder buf = new StringBuilder();
         final StringBuilder line = new StringBuilder();
         final String newLine = System.getProperty("line.separator", "\n");
@@ -165,7 +164,7 @@ public final class LineNumberTable extends Attribute {
         /* Do a binary search since the array is ordered.
          */
         do {
-            final int i = (l + r) / 2;
+            final int i = (l + r) >>> 1;
             final int j = line_number_table[i].getStartPC();
             if (j == pos) {
                 return line_number_table[i].getLineNumber();
@@ -210,7 +209,7 @@ public final class LineNumberTable extends Attribute {
     }
 
 
-    public final int getTableLength() {
+    public int getTableLength() {
         return line_number_table == null ? 0 : line_number_table.length;
     }
 }

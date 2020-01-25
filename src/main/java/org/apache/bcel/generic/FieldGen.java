@@ -40,7 +40,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * one can do is to add a constant value attribute to a field (which must of
  * course be compatible with to the declared type).
  *
- * @version $Id$
  * @see Field
  */
 public class FieldGen extends FieldGenOrMethodGen {

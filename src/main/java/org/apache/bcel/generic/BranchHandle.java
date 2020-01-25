@@ -26,7 +26,6 @@ package org.apache.bcel.generic;
  * @see InstructionHandle
  * @see Instruction
  * @see InstructionList
- * @version $Id$
  */
 public final class BranchHandle extends InstructionHandle {
 
@@ -43,7 +42,7 @@ public final class BranchHandle extends InstructionHandle {
     /** Factory method.
      */
     static BranchHandle getBranchHandle( final BranchInstruction i ) {
-    	return new BranchHandle(i);
+        return new BranchHandle(i);
     }
 
 

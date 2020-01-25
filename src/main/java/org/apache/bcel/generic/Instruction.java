@@ -29,7 +29,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 /**
  * Abstract super class for all Java byte codes.
  *
- * @version $Id$
  */
 public abstract class Instruction implements Cloneable {
 

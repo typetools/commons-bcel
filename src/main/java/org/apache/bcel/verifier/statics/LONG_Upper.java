@@ -23,7 +23,6 @@ import org.apache.bcel.generic.Type;
 
 /**
  * This class represents the upper half of a LONG variable.
- * @version $Id$
  */
 public final class LONG_Upper extends Type{
 
@@ -36,7 +35,11 @@ public final class LONG_Upper extends Type{
         super(Const.T_UNKNOWN, "Long_Upper");
     }
 
-    /** Use this method to get the single instance of this class. */
+    /**
+     * Gets the single instance of this class.
+     *
+     * @return the single instance of this class.
+     */
     public static LONG_Upper theInstance() {
         return singleton;
     }

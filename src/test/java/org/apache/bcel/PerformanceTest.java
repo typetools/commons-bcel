@@ -39,7 +39,7 @@ import junit.framework.TestCase;
 
 public final class PerformanceTest extends TestCase {
 
-    private static final boolean REPORT = Boolean.parseBoolean(System.getProperty("PerformanceTest.report", "true"));;
+    private static final boolean REPORT = Boolean.parseBoolean(System.getProperty("PerformanceTest.report", "true"));
 
     private static byte[] read(final InputStream is) throws IOException {
         if (is == null) {
@@ -133,19 +133,15 @@ public final class PerformanceTest extends TestCase {
 
     public void testPerformance() {
         final File javaLib = new File(System.getProperty("java.home"), "lib");
-        javaLib.listFiles(new FileFilter() {
-
-            @Override
-            public boolean accept(final File file) {
-                if(file.getName().endsWith(".jar")) {
-                    try {
-                        test(file);
-                    } catch (final IOException e) {
-                        Assert.fail(e.getMessage());
-                    }
+        javaLib.listFiles((FileFilter) file -> {
+            if(file.getName().endsWith(".jar")) {
+                try {
+                    test(file);
+                } catch (final IOException e) {
+                    Assert.fail(e.getMessage());
                 }
-                return false;
             }
+            return false;
         });
     }
 

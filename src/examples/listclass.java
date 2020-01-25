@@ -62,7 +62,9 @@ import org.apache.bcel.classfile.Method;
  * <li>{@code -nocontents} Do not print JavaClass.toString() for the class. I added
  * this because sometimes I'm only interested in dependency information.</li>
  * </ul>
- * <p>Here's a couple examples of how I typically use listclass:<br>
+ * <p>
+ * Here's a couple examples of how I typically use listclass:
+ * </p>
  * <pre>java listclass -code MyClass</pre>
  * Print information about the class and the byte code of the methods
  * <pre>java listclass -nocontents -dependencies MyClass</pre>
@@ -71,12 +73,12 @@ import org.apache.bcel.classfile.Method;
  * Print a recursive listing of all classes which MyClass depends on.  Do not
  * analyze classes beginning with "java.", "javax.", or "sun.".
  * <pre>java listclass -nocontents -dependencies -recurse MyClass -exclude java.javax. sun.</pre>
+ * <p>
  * Print a recursive listing of dependency information for MyClass and its
  * dependents.  Do not analyze classes beginning with "java.", "javax.", or "sun."
  * </p>
  *
  *         <a href="mailto:twheeler@objectspace.com">Thomas Wheeler</A>
- * @version $Id$
  */
 public class listclass {
 
@@ -89,9 +91,9 @@ public class listclass {
     Map<String, String> listedClasses;
     List<String> exclude_name;
 
-    public static void main(String[] argv) {
-        List<String> file_name = new ArrayList<String>();
-        List<String> exclude_name = new ArrayList<String>();
+    public static void main(final String[] argv) {
+        final List<String> file_name = new ArrayList<>();
+        final List<String> exclude_name = new ArrayList<>();
         boolean code = false;
         boolean constants = false;
         boolean verbose = true;
@@ -102,7 +104,7 @@ public class listclass {
         String name;
 
         // Parse command line arguments.
-        for (String arg : argv) {
+        for (final String arg : argv) {
             if (arg.charAt(0) == '-') {  // command line switch
                 if (arg.equals("-constants")) {
                     constants = true;
@@ -146,7 +148,7 @@ public class listclass {
         if (file_name.size() == 0) {
             System.err.println("list: No input files specified");
         } else {
-            listclass listClass = new listclass(code, constants, verbose, classdep,
+            final listclass listClass = new listclass(code, constants, verbose, classdep,
                     nocontents, recurse, exclude_name);
 
             for (int i = 0; i < file_name.size(); i++) {
@@ -157,22 +159,22 @@ public class listclass {
         }
     }
 
-    public listclass(boolean code, boolean constants, boolean verbose, boolean classdep,
-                     boolean nocontents, boolean recurse, List<String> exclude_name) {
+    public listclass(final boolean code, final boolean constants, final boolean verbose, final boolean classdep,
+                     final boolean nocontents, final boolean recurse, final List<String> exclude_name) {
         this.code = code;
         this.constants = constants;
         this.verbose = verbose;
         this.classdep = classdep;
         this.nocontents = nocontents;
         this.recurse = recurse;
-        this.listedClasses = new HashMap<String, String>();
+        this.listedClasses = new HashMap<>();
         this.exclude_name = exclude_name;
     }
 
     /**
      * Print the given class on screen
      */
-    public void list(String name) {
+    public void list(final String name) {
         try {
             JavaClass java_class;
 
@@ -213,15 +215,15 @@ public class listclass {
             listedClasses.put(name, name);
 
             if (recurse) {
-                String[] dependencies = getClassDependencies(java_class.getConstantPool());
+                final String[] dependencies = getClassDependencies(java_class.getConstantPool());
 
-                for (String dependency : dependencies) {
+                for (final String dependency : dependencies) {
                     list(dependency);
                 }
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             System.out.println("Error loading class " + name + " (" + e.getMessage() + ")");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             System.out.println("Error processing class " + name + " (" + e.getMessage() + ")");
         }
     }
@@ -229,22 +231,22 @@ public class listclass {
     /**
      * Dump the list of classes this class is dependent on
      */
-    public static void printClassDependencies(ConstantPool pool) {
+    public static void printClassDependencies(final ConstantPool pool) {
         System.out.println("Dependencies:");
-        for (String name : getClassDependencies(pool)) {
+        for (final String name : getClassDependencies(pool)) {
             System.out.println("\t" + name);
         }
     }
 
-    public static String[] getClassDependencies(ConstantPool pool) {
-        String[] tempArray = new String[pool.getLength()];
+    public static String[] getClassDependencies(final ConstantPool pool) {
+        final String[] tempArray = new String[pool.getLength()];
         int size = 0;
-        StringBuilder buf = new StringBuilder();
+        final StringBuilder buf = new StringBuilder();
 
         for (int idx = 0; idx < pool.getLength(); idx++) {
-            Constant c = pool.getConstant(idx);
+            final Constant c = pool.getConstant(idx);
             if (c != null && c.getTag() == Constants.CONSTANT_Class) {
-                ConstantUtf8 c1 = (ConstantUtf8) pool.getConstant(((ConstantClass) c).getNameIndex());
+                final ConstantUtf8 c1 = (ConstantUtf8) pool.getConstant(((ConstantClass) c).getNameIndex());
                 buf.setLength(0);
                 buf.append(c1.getBytes());
                 for (int n = 0; n < buf.length(); n++) {
@@ -257,7 +259,7 @@ public class listclass {
             }
         }
 
-        String[] dependencies = new String[size];
+        final String[] dependencies = new String[size];
         System.arraycopy(tempArray, 0, dependencies, 0, size);
         return dependencies;
     }
@@ -265,11 +267,11 @@ public class listclass {
     /**
      * Dump the disassembled code of all methods in the class.
      */
-    public static void printCode(Method[] methods, boolean verbose) {
-        for (Method method : methods) {
+    public static void printCode(final Method[] methods, final boolean verbose) {
+        for (final Method method : methods) {
             System.out.println(method);
 
-            Code code = method.getCode();
+            final Code code = method.getCode();
             if (code != null) {
                 System.out.println(code.toString(verbose));
             }

@@ -52,7 +52,6 @@ import org.checkerframework.dataflow.qual.Pure;
  * Constants.MAX_SHORT entries. Note that the first (0) is used by the
  * JVM and that Double and Long constants need two slots.
  *
- * @version $Id$
  * @see Constant
  */
 public @UsesObjectEquals class ConstantPoolGen {
@@ -198,6 +197,10 @@ public @UsesObjectEquals class ConstantPoolGen {
             } else if (c instanceof org.apache.bcel.classfile.ConstantMethodType) {
                 // TODO should this be handled somehow?
             } else if (c instanceof org.apache.bcel.classfile.ConstantMethodHandle) {
+                // TODO should this be handled somehow?
+            } else if (c instanceof org.apache.bcel.classfile.ConstantModule) {
+                // TODO should this be handled somehow?
+            } else if (c instanceof org.apache.bcel.classfile.ConstantPackage) {
                 // TODO should this be handled somehow?
             } else {
                 assert false : "Unexpected constant type: " + c.getClass().getName();

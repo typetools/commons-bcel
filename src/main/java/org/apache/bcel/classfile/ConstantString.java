@@ -27,7 +27,6 @@ import org.apache.bcel.Const;
  * This class is derived from the abstract {@link Constant}
  * and represents a reference to a String object.
  *
- * @version $Id$
  * @see     Constant
  */
 public final class ConstantString extends Constant implements ConstantObject {
@@ -83,7 +82,7 @@ public final class ConstantString extends Constant implements ConstantObject {
      * @throws IOException
      */
     @Override
-    public final void dump( final DataOutputStream file ) throws IOException {
+    public void dump( final DataOutputStream file ) throws IOException {
         file.writeByte(super.getTag());
         file.writeShort(string_index);
     }
@@ -92,7 +91,7 @@ public final class ConstantString extends Constant implements ConstantObject {
     /**
      * @return Index in constant pool of the string (ConstantUtf8).
      */
-    public final int getStringIndex() {
+    public int getStringIndex() {
         return string_index;
     }
 
@@ -100,7 +99,7 @@ public final class ConstantString extends Constant implements ConstantObject {
     /**
      * @param string_index the index into the constant of the string value
      */
-    public final void setStringIndex( final int string_index ) {
+    public void setStringIndex( final int string_index ) {
         this.string_index = string_index;
     }
 
@@ -109,7 +108,7 @@ public final class ConstantString extends Constant implements ConstantObject {
      * @return String representation.
      */
     @Override
-    public final String toString() {
+    public String toString() {
         return super.toString() + "(string_index = " + string_index + ")";
     }
 

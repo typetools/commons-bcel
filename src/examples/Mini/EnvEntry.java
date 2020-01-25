@@ -20,10 +20,9 @@ package Mini;
 /**
  * Entry in environment.
  *
- * @version $Id$
  */
 public interface EnvEntry {
-  public String getHashKey();
-  public int    getLine();
-  public int    getColumn();
+  String getHashKey();
+  int    getLine();
+  int    getColumn();
 }

@@ -29,7 +29,6 @@ import org.checkerframework.checker.nullness.qual.RequiresNonNull;
  *
  * <p>We use our super's <code>target</code> property as the default target.
  *
- * @version $Id$
  * @see LOOKUPSWITCH
  * @see TABLESWITCH
  * @see InstructionList

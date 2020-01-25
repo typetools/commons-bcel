@@ -27,29 +27,40 @@
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>47</version>
+    <version>49</version>
   </parent>
 
   <groupId>org.apache.bcel</groupId>
   <artifactId>bcel</artifactId>
   <packaging>jar</packaging>
-  <version>6.3.1</version>
+  <version>6.4.1</version>
   <name>Apache Commons BCEL</name>
   <description>Apache Commons Bytecode Engineering Library</description>
 
-  <url>http://commons.apache.org/proper/commons-bcel</url>
+  <url>https://commons.apache.org/proper/commons-bcel</url>
   <inceptionYear>2004</inceptionYear>
 
   <properties>
+    <!-- These properties will be set by the Maven Dependency plugin -->
+    <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
+    <typeAnnotationsJavac>${org.checkerframework:compiler:jar}</typeAnnotationsJavac>
+    <checkerFrameworkVersion>2.8.0</checkerFrameworkVersion>
+
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <commons.componentid>bcel</commons.componentid>
     <commons.module.name>org.apache.bcel</commons.module.name>
-    <commons.release.version>6.3.1</commons.release.version>
+    <commons.release.version>6.4.1</commons.release.version>
+    <commons.release.isDistModule>true</commons.release.isDistModule>
+    <commons.rc.version>RC1</commons.rc.version>
+    <commons.bc.version>6.4.0</commons.bc.version>
     <commons.release.desc>(Java 8)</commons.release.desc>
     <commons.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/commons/content/proper/commons-bcel</commons.scmPubUrl>
+    <commons.distSvnStagingUrl>scm:svn:https://dist.apache.org/repos/dist/dev/commons/${commons.componentid}</commons.distSvnStagingUrl>
+    <commons.releaseManagerName>Gary Gregory</commons.releaseManagerName>    
+    <commons.releaseManagerKey>86fdc7e2a11262cb</commons.releaseManagerKey>
     <!-- Configuration properties for the OSGi maven-bundle-plugin -->
     <commons.osgi.symbolicName>org.apache.${commons.componentid}</commons.osgi.symbolicName>
     <commons.osgi.export>org.apache.bcel.*;version=${project.version};-noimport:=true</commons.osgi.export>
@@ -60,13 +71,13 @@
     <commons.jira.pid>12314220</commons.jira.pid>
     <commons.findbugs.version>3.0.5</commons.findbugs.version>
     <commons.surefire.version>3.0.0-M3</commons.surefire.version>
-    <checkstyle.plugin.version>2.17</checkstyle.plugin.version>
+    <checkstyle.plugin.version>3.1.0</checkstyle.plugin.version>
     <commons.clirr.version>2.8</commons.clirr.version>
-    <jna.version>4.5.0</jna.version>
-    <!-- These properties will be set by the Maven Dependency plugin -->
-    <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
-    <typeAnnotationsJavac>${org.checkerframework:compiler:jar}</typeAnnotationsJavac>
-    <checkerFrameworkVersion>2.8.0</checkerFrameworkVersion>
+    <jna.version>5.4.0</jna.version>
+    <commons.japicmp.version>0.14.1</commons.japicmp.version>
+    <japicmp.skip>false</japicmp.skip>
+    <clirr.skip>true</clirr.skip>
+    <commons.jacoco.version>0.8.4</commons.jacoco.version>
   </properties>
 
   <!-- Cannot be added to Commons Parent, see https://issues.apache.org/jira/browse/COMMONSSITE-26 -->
@@ -186,28 +197,29 @@
       <name>BCEL User List</name>
       <subscribe>user-subscribe@commons.apache.org</subscribe>
       <unsubscribe>user-unsubscribe@commons.apache.org</unsubscribe>
-      <archive>http://mail-archives.apache.org/mod_mbox/commons-user/</archive>
+      <archive>https://mail-archives.apache.org/mod_mbox/commons-user/</archive>
     </mailingList>
     <mailingList>
       <name>BCEL Developer List</name>
       <subscribe>dev-subscribe@commons.apache.org</subscribe>
       <unsubscribe>dev-unsubscribe@commons.apache.org</unsubscribe>
-      <archive>http://mail-archives.apache.org/mod_mbox/commons-dev/</archive>
+      <archive>https://mail-archives.apache.org/mod_mbox/commons-dev/</archive>
     </mailingList>
   </mailingLists>
 
   <issueManagement>
     <system>jira</system>
-    <url>http://issues.apache.org/jira/browse/BCEL</url>
+    <url>https://issues.apache.org/jira/browse/BCEL</url>
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/bcel/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/commons/proper/bcel/trunk</developerConnection>
-    <url>http://svn.apache.org/repos/asf/commons/proper/bcel/trunk</url>
+    <connection>scm:git:https://gitbox.apache.org/repos/asf/commons-bcel.git</connection>
+    <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/commons-bcel.git</developerConnection>
+    <url>https://gitbox.apache.org/repos/asf?p=commons-bcel.git</url>
   </scm>
 
   <build>
+    <defaultGoal>clean verify apache-rat:check japicmp:cmp checkstyle:check javadoc:javadoc</defaultGoal>
     <plugins>
       <plugin>
         <groupId>org.apache.rat</groupId>
@@ -215,6 +227,9 @@
         <version>${commons.rat.version}</version>
         <configuration>
           <excludes>
+	    <exclude>README-typetools.txt</exclude>
+	    <exclude>TAGS</exclude>
+	    <exclude>cfMavenCentral.xml</exclude>
             <exclude>src/test/resources/**</exclude>
             <exclude>docs/*.bib</exclude>
             <exclude>docs/*.mdl</exclude>
@@ -358,6 +373,31 @@
         </configuration>
       </plugin>
       <plugin>
+        <groupId>com.github.siom79.japicmp</groupId>
+        <artifactId>japicmp-maven-plugin</artifactId>
+        <configuration>
+          <parameter>
+            <overrideCompatibilityChangeParameters>
+              <overrideCompatibilityChangeParameter>
+                <compatibilityChange>METHOD_NEW_DEFAULT</compatibilityChange>
+                <binaryCompatible>true</binaryCompatible>
+                <sourceCompatible>true</sourceCompatible>
+                <semanticVersionLevel>PATCH</semanticVersionLevel>
+              </overrideCompatibilityChangeParameter>
+            </overrideCompatibilityChangeParameters>
+          </parameter>
+        </configuration>
+      </plugin>    
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>${commons.spotbugs.version}</version>
+        <configuration>
+          <threshold>Normal</threshold>
+          <effort>Default</effort>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <version>2.3</version>
@@ -413,7 +453,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.8</version>
+        <version>3.12.0</version>
         <configuration>
           <targetJdk>${maven.compiler.target}</targetJdk>
           <linkXref>true</linkXref>
@@ -452,6 +492,9 @@
         <version>${commons.rat.version}</version>
         <configuration>
           <excludes>
+	    <exclude>README-typetools.txt</exclude>
+	    <exclude>TAGS</exclude>
+	    <exclude>cfMavenCentral.xml</exclude>
             <exclude>src/test/resources/**</exclude>
             <exclude>docs/*.bib</exclude>
             <exclude>docs/*.mdl</exclude>
@@ -464,6 +507,22 @@
           </excludes>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>com.github.siom79.japicmp</groupId>
+        <artifactId>japicmp-maven-plugin</artifactId>
+        <configuration>
+          <parameter>
+            <overrideCompatibilityChangeParameters>
+              <overrideCompatibilityChangeParameter>
+                <compatibilityChange>METHOD_NEW_DEFAULT</compatibilityChange>
+                <binaryCompatible>true</binaryCompatible>
+                <sourceCompatible>true</sourceCompatible>
+                <semanticVersionLevel>PATCH</semanticVersionLevel>
+              </overrideCompatibilityChangeParameter>
+            </overrideCompatibilityChangeParameters>
+          </parameter>
+        </configuration>
+      </plugin>    
     </plugins>
   </reporting>
 
@@ -489,7 +548,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.8.1</version>
+      <version>3.9</version>
       <scope>test</scope>
     </dependency>
     <!-- Annotations from the Checker Framework: nullness, interning, locking, ... -->
@@ -611,7 +670,7 @@
         <dependency>
           <groupId>org.apache.commons</groupId>
           <artifactId>commons-collections4</artifactId>
-          <version>4.3</version>
+          <version>4.4</version>
           <scope>test</scope>
         </dependency>
       </dependencies>
@@ -661,7 +720,7 @@
         </plugins>
       </build>
     </profile>
-
+    
   </profiles>
 
 </project>

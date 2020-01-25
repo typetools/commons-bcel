@@ -48,7 +48,6 @@ import org.checkerframework.dataflow.qual.Pure;
  * class file.  Those interested in programatically generating classes
  * should see the <a href="../generic/ClassGen.html">ClassGen</a> class.
 
- * @version $Id$
  * @see org.apache.bcel.generic.ClassGen
  */
 public class JavaClass extends AccessFlags implements Cloneable, Node, Comparable<JavaClass> {
@@ -617,7 +616,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
             }
             buf.append('\n');
         }
-        buf.append("filename\t\t").append(file_name).append('\n');
+        buf.append("file name\t\t").append(file_name).append('\n');
         buf.append("compiled from\t\t").append(source_file_name).append('\n');
         buf.append("compiler version\t").append(major).append(".").append(minor).append('\n');
         buf.append("access flags\t\t").append(super.getAccessFlags()).append('\n');
@@ -728,7 +727,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
                       boolean innerClassAttributeRefersToMe = false;
                       String inner_class_name = constant_pool.getConstantString(innerClasse.getInnerClassIndex(),
                                  Const.CONSTANT_Class);
-                      inner_class_name = Utility.compactClassName(inner_class_name);
+                      inner_class_name = Utility.compactClassName(inner_class_name, false);
                       if (inner_class_name.equals(getClassName())) {
                           innerClassAttributeRefersToMe = true;
                       }

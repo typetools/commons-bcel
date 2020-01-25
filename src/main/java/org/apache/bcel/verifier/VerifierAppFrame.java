@@ -46,7 +46,6 @@ import org.apache.bcel.classfile.JavaClass;
  * This class implements a machine-generated frame for use with
  * the GraphicalVerfifier.
  *
- * @version $Id$
  * @see GraphicalVerifier
  */
 public class VerifierAppFrame extends JFrame {
@@ -127,13 +126,7 @@ public class VerifierAppFrame extends JFrame {
         jScrollPane1.getViewport().setBackground(Color.red);
         messagesScrollPane.getViewport().setBackground(Color.red);
         messagesScrollPane.setPreferredSize(new Dimension(10, 10));
-        classNamesJList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-
-            @Override
-            public void valueChanged( final ListSelectionEvent e ) {
-                classNamesJList_valueChanged(e);
-            }
-        });
+        classNamesJList.addListSelectionListener(e -> classNamesJList_valueChanged(e));
         classNamesJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jScrollPane3.setBorder(BorderFactory.createLineBorder(Color.black));
         jScrollPane3.setPreferredSize(new Dimension(100, 100));
@@ -152,46 +145,16 @@ public class VerifierAppFrame extends JFrame {
         newFileMenuItem.setText("New...");
         newFileMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(78,
                 InputEvent.CTRL_MASK, true));
-        newFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
-
-            @Override
-            public void actionPerformed( final ActionEvent e ) {
-                newFileMenuItem_actionPerformed(e);
-            }
-        });
+        newFileMenuItem.addActionListener(e -> newFileMenuItem_actionPerformed(e));
         pass3aTextPane.setEditable(false);
         pass3bTextPane.setEditable(false);
-        pass3aJList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-
-            @Override
-            public void valueChanged( final ListSelectionEvent e ) {
-                pass3aJList_valueChanged(e);
-            }
-        });
-        pass3bJList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-
-            @Override
-            public void valueChanged( final ListSelectionEvent e ) {
-                pass3bJList_valueChanged(e);
-            }
-        });
+        pass3aJList.addListSelectionListener(e -> pass3aJList_valueChanged(e));
+        pass3bJList.addListSelectionListener(e -> pass3bJList_valueChanged(e));
         jMenu2.setText("Help");
         whatisMenuItem.setText("What is...");
-        whatisMenuItem.addActionListener(new java.awt.event.ActionListener() {
-
-            @Override
-            public void actionPerformed( final ActionEvent e ) {
-                whatisMenuItem_actionPerformed(e);
-            }
-        });
+        whatisMenuItem.addActionListener(e -> whatisMenuItem_actionPerformed(e));
         aboutMenuItem.setText("About");
-        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
-
-            @Override
-            public void actionPerformed( final ActionEvent e ) {
-                aboutMenuItem_actionPerformed(e);
-            }
-        });
+        aboutMenuItem.addActionListener(e -> aboutMenuItem_actionPerformed(e));
         jSplitPane2.add(messagesPanel, JSplitPane.BOTTOM);
         messagesPanel.add(messagesScrollPane, null);
         messagesScrollPane.getViewport().add(messagesTextPane, null);
@@ -393,7 +356,7 @@ public class VerifierAppFrame extends JFrame {
                 .showMessageDialog(
                         this,
                         "JustIce is a Java class file verifier.\n"+
-                        "It was implemented by Enver Haase in 2001, 2002.\n<http://commons.apache.org/bcel/>",
+                        "It was implemented by Enver Haase in 2001, 2002.\n<https://commons.apache.org/bcel/>",
                         JUSTICE_VERSION, JOptionPane.INFORMATION_MESSAGE);
     }
 

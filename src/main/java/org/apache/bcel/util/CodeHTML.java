@@ -46,7 +46,6 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 /**
  * Convert code into HTML file.
  *
- * @version $Id$
  *
  */
 final class CodeHTML {

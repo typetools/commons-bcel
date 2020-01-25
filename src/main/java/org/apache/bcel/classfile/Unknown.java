@@ -36,7 +36,6 @@ import org.checkerframework.dataflow.qual.Pure;
  * {@link Attribute#addAttributeReader(String, UnknownAttributeReader)}.
 
  *
- * @version $Id$
  * @see Attribute
  * @see UnknownAttributeReader
  */
@@ -122,7 +121,7 @@ public final class Unknown extends Attribute {
      * @throws IOException
      */
     @Override
-    public final void dump( final DataOutputStream file ) throws IOException {
+    public void dump( final DataOutputStream file ) throws IOException {
         super.dump(file);
         if (super.getLength() > 0) {
             file.write(bytes, 0, super.getLength());
@@ -134,7 +133,7 @@ public final class Unknown extends Attribute {
      * @return data bytes.
      */
     @Pure
-    public final byte[] getBytes() {
+    public byte[] getBytes() {
         return bytes;
     }
 
@@ -143,7 +142,7 @@ public final class Unknown extends Attribute {
      * @return name of attribute.
      */
     @Override
-    public final String getName() {
+    public String getName() {
         return name;
     }
 
@@ -151,7 +150,7 @@ public final class Unknown extends Attribute {
     /**
      * @param bytes the bytes to set
      */
-    public final void setBytes( final byte[] bytes ) {
+    public void setBytes( final byte[] bytes ) {
         this.bytes = bytes;
     }
 
@@ -160,7 +159,7 @@ public final class Unknown extends Attribute {
      * @return String representation.
      */
     @Override
-    public final String toString() {
+    public String toString() {
         if (super.getLength() == 0 || bytes == null) {
             return "(Unknown attribute " + name + ")";
         }

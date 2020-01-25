@@ -37,7 +37,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * Abstract super class for all possible java types, namely basic types
  * such as int, object types like String and array types, e.g. int[]
  *
- * @version $Id$
  */
 @SuppressWarnings("interning")  // sets constants
 @AnnotatedFor({"nullness","signature"})
@@ -243,10 +242,9 @@ public abstract class Type {
             wrap(consumed_chars, _temp);
             return new ArrayType(t, dim);
         } else { // type == T_REFERENCE
-            // Utility.signatureToString understands how to parse
-            // generic types.
+            // Utility.typeSignatureToString understands how to parse generic types.
             // TODO: either "java/lang/String" or "java.lang.String" might flow here.
-            final String parsedSignature = Utility.signatureToString(signature, false);
+            final String parsedSignature = Utility.typeSignatureToString(signature, false);
             wrap(consumed_chars, parsedSignature.length() + 2); // "Lblabla;" `L' and `;' are removed
             @SuppressWarnings("signature") // string manipulation; known to be reference type
             @BinaryName String className = parsedSignature.replace('/', '.');
@@ -284,11 +282,12 @@ public abstract class Type {
         final List<Type> vec = new ArrayList<>();
         int index;
         Type[] types;
-        try { // Read all declarations between for `(' and `)'
-            if (signature.charAt(0) != '(') {
+        try {
+            // Skip any type arguments to read argument declarations between `(' and `)'
+            index = signature.indexOf('(') + 1;
+            if (index <= 0) {
                 throw new ClassFormatException("Invalid method signature: " + signature);
             }
-            index = 1; // current string position
             while (signature.charAt(index) != ')') {
                 vec.add(getType(signature.substring(index)));
                 //corrected concurrent private static field acess
@@ -388,11 +387,12 @@ public abstract class Type {
     static int getArgumentTypesSize( final String signature ) {
         int res = 0;
         int index;
-        try { // Read all declarations between for `(' and `)'
-            if (signature.charAt(0) != '(') {
+        try {
+            // Skip any type arguments to read argument declarations between `(' and `)'
+            index = signature.indexOf('(') + 1;
+            if (index <= 0) {
                 throw new ClassFormatException("Invalid method signature: " + signature);
             }
-            index = 1; // current string position
             while (signature.charAt(index) != ')') {
                 final int coded = getTypeSize(signature.substring(index));
                 res += size(coded);

@@ -54,6 +54,7 @@ import org.apache.bcel.classfile.LocalVariableTable;
 import org.apache.bcel.classfile.LocalVariableTypeTable;
 import org.apache.bcel.classfile.Method;
 import org.apache.bcel.classfile.MethodParameters;
+import org.apache.bcel.classfile.NestMembers;
 import org.apache.bcel.classfile.Node;
 import org.apache.bcel.classfile.ParameterAnnotationEntry;
 import org.apache.bcel.classfile.ParameterAnnotations;
@@ -77,7 +78,6 @@ import org.apache.bcel.verifier.exc.AssertionViolatedException;
  * Note that this class also serves as a placeholder for more sophisticated message
  * handling in future versions of JustIce.
  *
- * @version $Id$
  */
 public class StringRepresentation extends org.apache.bcel.classfile.EmptyVisitor {
     /** The string representation, created by a visitXXX() method, output by toString(). */
@@ -88,6 +88,7 @@ public class StringRepresentation extends org.apache.bcel.classfile.EmptyVisitor
     /**
      * Creates a new StringRepresentation object which is the representation of n.
      *
+     * @param n The node to represent.
      * @see #toString()
      */
     public StringRepresentation(final Node n) {
@@ -402,6 +403,14 @@ public class StringRepresentation extends org.apache.bcel.classfile.EmptyVisitor
      */
     @Override
     public void visitParameterAnnotationEntry(final ParameterAnnotationEntry obj) {
+        tostring = toString(obj);
+    }
+
+    /**
+     * @since 6.4.0
+     */
+    @Override
+    public void visitNestMembers(final NestMembers obj) {
         tostring = toString(obj);
     }
 }

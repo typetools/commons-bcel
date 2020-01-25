@@ -24,7 +24,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * A VerificationResult is what a PassVerifier returns
  * after verifying.
  *
- * @version $Id$
  */
 public class VerificationResult {
 

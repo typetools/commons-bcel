@@ -24,7 +24,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 /**
  * Denotes basic type such as int.
  *
- * @version $Id$
  */
 public final class BasicType extends Type {
 

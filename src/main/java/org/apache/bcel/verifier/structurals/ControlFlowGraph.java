@@ -41,7 +41,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 /**
  * This class represents a control flow graph of a method.
  *
- * @version $Id$
  */
 public class ControlFlowGraph{
 

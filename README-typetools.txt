@@ -18,7 +18,7 @@ This creates file
 To update to a newer version of the upstream library
 ----------------------------------------------------
 
-At https://github.com/apache/commons-bcel/releases ,
+At https://github.com/apache/commons-bcel/tags ,
 find the tag corresponding to a public release.
 
 Update the following line in this file, so that others know the current status:

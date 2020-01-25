@@ -16,8 +16,8 @@
 ## under the License.
 ##
               ${project.name}
-                  Version ${version}
-                RELEASE NOTES
+              Version ${version}
+              RELEASE NOTES
 
 
 INTRODUCTION:
@@ -129,6 +129,14 @@ REMOVED:
 ## End of main loop
 #end
 
+Historical list of changes: ${project.url}changes-report.html
+
+For complete information on ${project.name}, including instructions on how to submit bug reports,
+patches, or suggestions for improvement, see the Apache ${project.name} website:
+
+${project.url}
+
+Download it from ${project.url}/download_bcel.cgi
 
 Have fun!
 -Apache Commons BCEL team
@@ -138,7 +146,7 @@ Feedback
 
 Open source works best when you give feedback:
 
-    http://commons.apache.org/bcel
+    https://commons.apache.org/bcel
 
 Please direct all bug reports to JIRA:
 
@@ -147,3 +155,6 @@ Please direct all bug reports to JIRA:
 Or subscribe to the commons-user mailing list
 
 The Apache Commons Team
+
+-----------------------------------------------------------------------------
+

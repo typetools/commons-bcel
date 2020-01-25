@@ -24,7 +24,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * This class represents a JVM execution frame; that means,
  * a local variable array and an operand stack.
  *
- * @version $Id$
  */
 
 public class Frame{

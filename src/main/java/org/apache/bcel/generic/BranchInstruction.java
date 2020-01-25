@@ -34,7 +34,6 @@ import org.checkerframework.checker.nullness.qual.RequiresNonNull;
  * LOOKUPSWITCH and TABLESWITCH.
  *
  * @see InstructionList
- * @version $Id$
  */
 @SuppressWarnings("superclass.notannotated") // @UsesObjectEquals because InstructionComparator returns false for BranchInstruction comparisons.
 public abstract @UsesObjectEquals class BranchInstruction extends Instruction implements InstructionTargeter {

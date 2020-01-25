@@ -44,7 +44,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * existing java class (file).
  *
  * @see JavaClass
- * @version $Id$
  */
 @AnnotatedFor({"nullness","signature"})
 public class ClassGen extends AccessFlags implements Cloneable {
