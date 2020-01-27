@@ -22,7 +22,7 @@ At https://github.com/apache/commons-bcel/tags ,
 find the tag corresponding to a public release.
 
 Update the following line in this file, so that others know the current status:
-BCEL version 6.3.1 is tag commons-bcel-6.3.1
+BCEL version 6.4.1 is tag rel/commons-bcel-6.4.1
 
 Pull in that tag:
 ```
@@ -37,6 +37,7 @@ That is, if there is a merge conflict related to version numbers,
 use the upstream version.
 
 Change `pom.xml` to use the latest Checker Framework version.
+(If possible; Error Prone may conflict with the Checker Framework.)
 
 Build the project (instructions appear above).
 
@@ -46,9 +47,7 @@ Test it in a branch of Daikon:
  * run:  make -C java typecheck
    If there are any warnings or errors, then either add annotations
    to BCEL or fix bugs in Daikon.
- * push your branch, and ensure that the the Travis tests pass
-    * if a branch in your own fork, see https://travis-ci.org/codespecs/$USERNAME/branches
-    * if a branch of master, see https://travis-ci.org/codespecs/daikon/branches
+ * push your branch, and ensure that the the Azure Pipelines tests pass
  * merge your branch into master
 
 Upload BCEL to Maven Central (instructions appear below).
@@ -75,7 +74,7 @@ This must be done on a CSE machine, which has access to the necessary passwords.
 #  * in file pom.xml (if different from upstream)
 #  * environment variable PACKAGE below
 
-PACKAGE=bcel-6.3.1 && \
+PACKAGE=bcel-6.4.1 && \
 mvn clean verify && \
 mvn javadoc:javadoc && (cd target/site/apidocs && jar -cf ${PACKAGE}-javadoc.jar org)
 
