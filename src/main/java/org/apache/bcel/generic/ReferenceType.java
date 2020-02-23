@@ -222,9 +222,10 @@ public abstract class ReferenceType extends Type {
             if ((arrType1.getDimensions() == arrType2.getDimensions())
                     && arrType1.getBasicType() instanceof ObjectType
                     && arrType2.getBasicType() instanceof ObjectType) {
-                return new ArrayType(((ObjectType) arrType1.getBasicType())
-                        .getFirstCommonSuperclass((ObjectType) arrType2.getBasicType()), arrType1
-                        .getDimensions());
+                ObjectType basicType1 = (ObjectType) arrType1.getBasicType();
+                ObjectType basicType2 = (ObjectType) arrType2.getBasicType();
+                return new ArrayType(basicType1.getFirstCommonSuperclass(basicType2),
+                                     arrType1.getDimensions());
             }
         }
         if ((this instanceof ArrayType) || (t instanceof ArrayType)) {
