@@ -44,7 +44,7 @@
     <!-- These properties will be set by the Maven Dependency plugin -->
     <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
     <typeAnnotationsJavac>${org.checkerframework:compiler:jar}</typeAnnotationsJavac>
-    <checkerFrameworkVersion>2.8.0</checkerFrameworkVersion>
+    <checkerFrameworkVersion>2.10.1</checkerFrameworkVersion>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -227,7 +227,6 @@
         <version>${commons.rat.version}</version>
         <configuration>
           <excludes>
-            <exclude>README-codespecs.txt</exclude>
             <exclude>README-typetools.txt</exclude>
             <exclude>TAGS</exclude>
             <exclude>cfMavenCentral.xml</exclude>
@@ -273,7 +272,37 @@
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
         <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+          <fork>true</fork>
+          <compilerArguments>
+            <Xmaxerrs>10000</Xmaxerrs>
+            <Xmaxwarns>10000</Xmaxwarns>
+          </compilerArguments>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.checkerframework</groupId>
+              <artifactId>checker</artifactId>
+              <version>${checkerFrameworkVersion}</version>
+            </path>
+          </annotationProcessorPaths>
+          <annotationProcessors>
+            <annotationProcessor>org.checkerframework.checker.interning.InterningChecker</annotationProcessor>
+            <annotationProcessor>org.checkerframework.checker.nullness.NullnessChecker</annotationProcessor>
+            <annotationProcessor>org.checkerframework.checker.signature.SignatureChecker</annotationProcessor>
+          </annotationProcessors>
+          <compilerArgs>
+            <arg>-AprintErrorStack</arg>
+            <!-- location of the annotated JDK, which comes from a Maven dependency -->
+            <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
+            <!-- -AuseDefaultsForUncheckedCode=source causes compilation errors in
+                 any library that uses an unannotated part of BCEL. -->
+            <!-- <arg>-AuseDefaultsForUncheckedCode=source</arg> -->
+            <!-- Make type-checking warnings into errors. -->
+            <arg>-Awarns</arg>
+          </compilerArgs>
           <testExcludes>
             <testExclude>**/*Benchmark*</testExclude>
           </testExcludes>
@@ -368,6 +397,18 @@
           <effort>Default</effort>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.1.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>properties</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
@@ -451,9 +492,6 @@
         <version>${commons.rat.version}</version>
         <configuration>
           <excludes>
-            <exclude>README-typetools.txt</exclude>
-            <exclude>TAGS</exclude>
-            <exclude>cfMavenCentral.xml</exclude>
             <exclude>src/test/resources/**</exclude>
             <exclude>docs/*.bib</exclude>
             <exclude>docs/*.mdl</exclude>
