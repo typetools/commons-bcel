@@ -43,8 +43,8 @@
   <properties>
     <!-- These properties will be set by the Maven Dependency plugin -->
     <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
-    <typeAnnotationsJavac>${org.checkerframework:compiler:jar}</typeAnnotationsJavac>
-    <checkerFrameworkVersion>2.10.1</checkerFrameworkVersion>
+    <errorProneJavac>${com.google.errorprone:javac:jar}</errorProneJavac>
+    <checkerFrameworkVersion>3.1.1</checkerFrameworkVersion>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -274,9 +274,12 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
         <configuration>
+          <fork>true</fork>
+          <!-- If using JDK 8, add source and target. -->
           <source>1.8</source>
           <target>1.8</target>
-          <fork>true</fork>
+          <!-- If using JDK 11, remove source and target and uncomment "release" below. -->
+          <!-- <release>11</release> -->
           <compilerArguments>
             <Xmaxerrs>10000</Xmaxerrs>
             <Xmaxwarns>10000</Xmaxwarns>
@@ -295,12 +298,17 @@
           </annotationProcessors>
           <compilerArgs>
             <arg>-AprintErrorStack</arg>
-            <!-- location of the annotated JDK, which comes from a Maven dependency -->
+            <!-- If using JDK 8, use only the two arguments immediately below. -->
+            <arg>-J-Xbootclasspath/p:${errorProneJavac}</arg>
             <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
+            <!-- If using JDK 11, remove the two arguments above, remove the
+              space in the one below, and uncomment it. -->
+            <!-- <arg>-J- -add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg> -->
+
             <!-- -AuseDefaultsForUncheckedCode=source causes compilation errors in
                  any library that uses an unannotated part of BCEL. -->
             <!-- <arg>-AuseDefaultsForUncheckedCode=source</arg> -->
-            <!-- Make type-checking warnings into errors. -->
+            <!-- Make type-checking errors into warnings. -->
             <arg>-Awarns</arg>
           </compilerArgs>
           <testExcludes>
@@ -559,10 +567,16 @@
       <artifactId>checker</artifactId>
       <version>${checkerFrameworkVersion}</version>
     </dependency>
+    <!-- If using JDK 8, add the following additional dependencies -->
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>jdk8</artifactId>
       <version>${checkerFrameworkVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.errorprone</groupId>
+      <artifactId>javac</artifactId>
+      <version>9+181-r4173-1</version>
     </dependency>
   </dependencies>
 
@@ -593,6 +607,11 @@
           <version>0.0.0</version>
           <scope>system</scope>
           <systemPath>${env.CHECKERFRAMEWORK}/checker/dist/jdk8.jar</systemPath>
+        </dependency>
+        <dependency>
+          <groupId>com.google.errorprone</groupId>
+          <artifactId>javac</artifactId>
+          <version>9+181-r4173-1</version>
         </dependency>
       </dependencies>
     </profile>
