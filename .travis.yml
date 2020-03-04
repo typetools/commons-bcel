@@ -29,6 +29,13 @@ jdk:
   - oraclejdk11
   - openjdk8
   - openjdk11
+# Apache only
+# - openjdk12
+# - openjdk13
+# - openjdk-ea
+# unique to Apache release process
+# after_success:
+#   - mvn -Ddoclint:none clean cobertura:cobertura coveralls:report
 
 install: mvn process-resources
 script: mvn verify javadoc:javadoc
