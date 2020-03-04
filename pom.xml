@@ -42,10 +42,7 @@
 
   <properties>
     <!-- These properties will be set by the Maven Dependency plugin -->
-    <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
-    <typeAnnotationsJavac>${org.checkerframework:compiler:jar}</typeAnnotationsJavac>
-    <checkerFrameworkVersion>2.8.0</checkerFrameworkVersion>
-
+    <checkerFrameworkVersion>3.2.0</checkerFrameworkVersion>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -227,9 +224,9 @@
         <version>${commons.rat.version}</version>
         <configuration>
           <excludes>
-	    <exclude>README-typetools.txt</exclude>
-	    <exclude>TAGS</exclude>
-	    <exclude>cfMavenCentral.xml</exclude>
+            <exclude>README-typetools.txt</exclude>
+            <exclude>TAGS</exclude>
+            <exclude>cfMavenCentral.xml</exclude>
             <exclude>src/test/resources/**</exclude>
             <exclude>docs/*.bib</exclude>
             <exclude>docs/*.mdl</exclude>
@@ -273,11 +270,11 @@
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.6.1</version>
+        <version>3.8.1</version>
         <configuration>
+          <fork>true</fork>
           <source>1.8</source>
           <target>1.8</target>
-          <fork>true</fork>
           <compilerArguments>
             <Xmaxerrs>10000</Xmaxerrs>
             <Xmaxwarns>10000</Xmaxwarns>
@@ -286,7 +283,7 @@
             <path>
               <groupId>org.checkerframework</groupId>
               <artifactId>checker</artifactId>
-              <version>2.8.0</version>
+              <version>${checkerFrameworkVersion}</version>
             </path>
           </annotationProcessorPaths>
           <annotationProcessors>
@@ -296,12 +293,10 @@
           </annotationProcessors>
           <compilerArgs>
             <arg>-AprintErrorStack</arg>
-            <!-- location of the annotated JDK, which comes from a Maven dependency -->
-            <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
             <!-- -AuseDefaultsForUncheckedCode=source causes compilation errors in
                  any library that uses an unannotated part of BCEL. -->
             <!-- <arg>-AuseDefaultsForUncheckedCode=source</arg> -->
-            <!-- Make type-checking warnings into errors. -->
+            <!-- Make type-checking errors into warnings. -->
             <arg>-Awarns</arg>
           </compilerArgs>
           <testExcludes>
@@ -401,7 +396,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.3</version>
+        <version>3.1.1</version>
         <executions>
           <execution>
             <goals>
@@ -456,7 +451,6 @@
         <artifactId>maven-pmd-plugin</artifactId>
         <version>3.12.0</version>
         <configuration>
-          <targetJdk>${maven.compiler.target}</targetJdk>
           <linkXref>true</linkXref>
           <rulesets>
             <ruleset>${basedir}/src/conf/pmd.xml</ruleset>
@@ -493,9 +487,6 @@
         <version>${commons.rat.version}</version>
         <configuration>
           <excludes>
-	    <exclude>README-typetools.txt</exclude>
-	    <exclude>TAGS</exclude>
-	    <exclude>cfMavenCentral.xml</exclude>
             <exclude>src/test/resources/**</exclude>
             <exclude>docs/*.bib</exclude>
             <exclude>docs/*.mdl</exclude>
@@ -563,11 +554,6 @@
       <artifactId>checker</artifactId>
       <version>${checkerFrameworkVersion}</version>
     </dependency>
-    <dependency>
-      <groupId>org.checkerframework</groupId>
-      <artifactId>jdk8</artifactId>
-      <version>${checkerFrameworkVersion}</version>
-    </dependency>
   </dependencies>
 
   <profiles>
@@ -598,7 +584,72 @@
           <scope>system</scope>
           <systemPath>${env.CHECKERFRAMEWORK}/checker/dist/jdk8.jar</systemPath>
         </dependency>
+        <dependency>
+          <groupId>com.google.errorprone</groupId>
+          <artifactId>javac</artifactId>
+          <version>9+181-r4173-1</version>
+        </dependency>
       </dependencies>
+    </profile>
+
+    <profile>
+      <id>jdk11</id>
+      <activation>
+        <jdk>11</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <fork>true</fork>
+              <compilerArgs combine.children="append">
+                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
+              </compilerArgs>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>jdk8</id>
+      <activation>
+        <jdk>1.8</jdk>
+      </activation>
+      <!-- using github.com/google/error-prone-javac is required when running on JDK 8 -->
+      <properties>
+        <javac.version>9+181-r4173-1</javac.version>
+        <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>com.google.errorprone</groupId>
+          <artifactId>javac</artifactId>
+          <version>9+181-r4173-1</version>
+        </dependency>
+        <dependency>
+          <groupId>org.checkerframework</groupId>
+          <artifactId>jdk8</artifactId>
+          <version>${checkerFrameworkVersion}</version>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <fork>true</fork>
+              <compilerArgs combine.children="append">
+                <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
+                <arg>-J-Xbootclasspath/p:${settings.localRepository}/com/google/errorprone/javac/${javac.version}/javac-${javac.version}.jar</arg>
+              </compilerArgs>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
 
     <!--
