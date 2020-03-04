@@ -26,7 +26,6 @@ import org.checkerframework.checker.interning.qual.UsesObjectEquals;
  * code in a consistent fashion, too.
  */
 public @UsesObjectEquals interface Subroutine{
-
     /**
      * Returns all the JsrInstructions that have the first instruction of this subroutine as their target. <B>Must not
      * be invoked on the 'top-level subroutine'.</B>

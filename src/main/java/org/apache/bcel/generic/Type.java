@@ -17,7 +17,6 @@
  */
 package org.apache.bcel.generic;
 
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -26,7 +26,7 @@ import org.checkerframework.checker.signature.qual.BinaryName;
 import org.checkerframework.checker.signature.qual.ClassGetName;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
-/** 
+/**
  * Denotes reference such as java.lang.String.
  *
  */

@@ -39,7 +39,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.BinaryName;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
-/** 
+/**
  * Template class for building up a java class. May be initialized with an
  * existing java class (file).
  *
