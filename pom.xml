@@ -292,7 +292,6 @@
             <annotationProcessor>org.checkerframework.checker.signature.SignatureChecker</annotationProcessor>
           </annotationProcessors>
           <compilerArgs>
-            <arg>-AprintErrorStack</arg>
             <!-- -AuseDefaultsForUncheckedCode=source causes compilation errors in
                  any library that uses an unannotated part of BCEL. -->
             <!-- <arg>-AuseDefaultsForUncheckedCode=source</arg> -->
