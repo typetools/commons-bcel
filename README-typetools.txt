@@ -18,6 +18,9 @@ This creates file
 To update to a newer version of the upstream library
 ----------------------------------------------------
 
+Usually, update https://github.com/codespecs/commons-bcel to a newer version and just pull from it.
+
+(Alternately:
 At https://github.com/apache/commons-bcel/tags ,
 find the tag corresponding to a public release.
 
@@ -29,15 +32,11 @@ Pull in that tag:
 git pull https://github.com/apache/commons-bcel <tag>
 ```
 
-(Alternately, pull from a repo that contains bug fixes,
-such as https://github.com/codespecs/commons-bcel .)
-
-Use the upstream version number as the version number.
-That is, if there is a merge conflict related to version numbers,
+If there is a merge conflict related to version numbers,
 use the upstream version.
+)
 
 Change `pom.xml` to use the latest Checker Framework version.
-(If possible; Error Prone may conflict with the Checker Framework.)
 
 Build the project (instructions appear above).
 
