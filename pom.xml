@@ -42,7 +42,7 @@
 
   <properties>
     <!-- These properties will be set by the Maven Dependency plugin -->
-    <checkerFrameworkVersion>3.2.0</checkerFrameworkVersion>
+    <checkerFrameworkVersion>3.7.0</checkerFrameworkVersion>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -620,18 +620,12 @@
       <!-- using github.com/google/error-prone-javac is required when running on JDK 8 -->
       <properties>
         <javac.version>9+181-r4173-1</javac.version>
-        <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
       </properties>
       <dependencies>
         <dependency>
           <groupId>com.google.errorprone</groupId>
           <artifactId>javac</artifactId>
           <version>9+181-r4173-1</version>
-        </dependency>
-        <dependency>
-          <groupId>org.checkerframework</groupId>
-          <artifactId>jdk8</artifactId>
-          <version>${checkerFrameworkVersion}</version>
         </dependency>
       </dependencies>
       <build>
