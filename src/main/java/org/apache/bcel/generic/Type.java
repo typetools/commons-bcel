@@ -336,7 +336,7 @@ public abstract class Type {
             } else if (cl == Character.TYPE) {
                 return CHAR;
             } else {
-                throw new IllegalStateException("Ooops, what primitive type is " + cl);
+                throw new IllegalStateException("Unknown primitive type " + cl);
             }
         } else { // "Real" class
             // If a non-array reference, then @ClassGetName = @FullyQualifiedName, so this is OK.

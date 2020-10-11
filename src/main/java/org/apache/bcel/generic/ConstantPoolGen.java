@@ -115,15 +115,15 @@ public @UsesObjectEquals class ConstantPoolGen {
                 final ConstantString s = (ConstantString) c;
                 final ConstantUtf8 u8 = (ConstantUtf8) constants[s.getStringIndex()];
                 final String key = u8.getBytes();
-                if (!string_table.containsKey(key)) {
-                    string_table.put(key, new Index(i));
+                if (!stringTable.containsKey(key)) {
+                    stringTable.put(key, new Index(i));
                 }
             } else if (c instanceof ConstantClass) {
                 final ConstantClass s = (ConstantClass) c;
                 final ConstantUtf8 u8 = (ConstantUtf8) constants[s.getNameIndex()];
                 final String key = u8.getBytes();
-                if (!class_table.containsKey(key)) {
-                    class_table.put(key, new Index(i));
+                if (!classTable.containsKey(key)) {
+                    classTable.put(key, new Index(i));
                 }
             } else if (c instanceof ConstantNameAndType) {
                 final ConstantNameAndType n = (ConstantNameAndType) c;
@@ -136,14 +136,14 @@ public @UsesObjectEquals class ConstantPoolGen {
                 final String key = sb.toString();
                 sb.delete(0, sb.length());
 
-                if (!n_a_t_table.containsKey(key)) {
-                    n_a_t_table.put(key, new Index(i));
+                if (!natTable.containsKey(key)) {
+                    natTable.put(key, new Index(i));
                 }
             } else if (c instanceof ConstantUtf8) {
                 final ConstantUtf8 u = (ConstantUtf8) c;
                 final String key = u.getBytes();
-                if (!utf8_table.containsKey(key)) {
-                    utf8_table.put(key, new Index(i));
+                if (!utf8Table.containsKey(key)) {
+                    utf8Table.put(key, new Index(i));
                 }
             } else if (c instanceof ConstantCP) {
                 final ConstantCP m = (ConstantCP) c;
@@ -181,8 +181,8 @@ public @UsesObjectEquals class ConstantPoolGen {
                 final String key = sb.toString();
                 sb.delete(0, sb.length());
 
-                if (!cp_table.containsKey(key)) {
-                    cp_table.put(key, new Index(i));
+                if (!cpTable.containsKey(key)) {
+                    cpTable.put(key, new Index(i));
                 }
             } else if (c == null) { // entries may be null
                 // nothing to do
@@ -237,7 +237,7 @@ public @UsesObjectEquals class ConstantPoolGen {
         }
     }
 
-    private final Map<String, Index> string_table = new HashMap<>();
+    private final Map<String, Index> stringTable = new HashMap<>();
 
 
     /**
@@ -247,7 +247,7 @@ public @UsesObjectEquals class ConstantPoolGen {
      * @return index on success, -1 otherwise
      */
     public int lookupString( final String str ) {
-        final Index index = string_table.get(str);
+        final Index index = stringTable.get(str);
         return (index != null) ? index.index : -1;
     }
 
@@ -268,13 +268,13 @@ public @UsesObjectEquals class ConstantPoolGen {
         final ConstantString s = new ConstantString(utf8);
         ret = index;
         constants[index++] = s;
-        if (!string_table.containsKey(str)) {
-            string_table.put(str, new Index(ret));
+        if (!stringTable.containsKey(str)) {
+            stringTable.put(str, new Index(ret));
         }
         return ret;
     }
 
-    private final Map<String, Index> class_table = new HashMap<>();
+    private final Map<String, Index> classTable = new HashMap<>();
 
 
     /**
@@ -284,7 +284,7 @@ public @UsesObjectEquals class ConstantPoolGen {
      * @return index on success, -1 otherwise
      */
     public int lookupClass( final String str ) {
-        final Index index = class_table.get(str.replace('.', '/'));
+        final Index index = classTable.get(str.replace('.', '/'));
         return (index != null) ? index.index : -1;
     }
 
@@ -298,8 +298,8 @@ public @UsesObjectEquals class ConstantPoolGen {
         final ConstantClass c = new ConstantClass(addUtf8(clazz));
         ret = index;
         constants[index++] = c;
-        if (!class_table.containsKey(clazz)) {
-            class_table.put(clazz, new Index(ret));
+        if (!classTable.containsKey(clazz)) {
+            classTable.put(clazz, new Index(ret));
         }
         return ret;
     }
@@ -413,7 +413,7 @@ public @UsesObjectEquals class ConstantPoolGen {
         return ret;
     }
 
-    private final Map<String, Index> utf8_table = new HashMap<>();
+    private final Map<String, Index> utf8Table = new HashMap<>();
 
 
     /**
@@ -423,7 +423,7 @@ public @UsesObjectEquals class ConstantPoolGen {
      * @return index on success, -1 otherwise
      */
     public int lookupUtf8( final String n ) {
-        final Index index = utf8_table.get(n);
+        final Index index = utf8Table.get(n);
         return (index != null) ? index.index : -1;
     }
 
@@ -442,8 +442,8 @@ public @UsesObjectEquals class ConstantPoolGen {
         adjustSize();
         ret = index;
         constants[index++] = new ConstantUtf8(n);
-        if (!utf8_table.containsKey(n)) {
-            utf8_table.put(n, new Index(ret));
+        if (!utf8Table.containsKey(n)) {
+            utf8Table.put(n, new Index(ret));
         }
         return ret;
     }
@@ -525,7 +525,7 @@ public @UsesObjectEquals class ConstantPoolGen {
         return ret;
     }
 
-    private final Map<String, Index> n_a_t_table = new HashMap<>();
+    private final Map<String, Index> natTable = new HashMap<>();
 
 
     /**
@@ -536,7 +536,7 @@ public @UsesObjectEquals class ConstantPoolGen {
      * @return index on success, -1 otherwise
      */
     public int lookupNameAndType( final String name, final String signature ) {
-        final Index _index = n_a_t_table.get(name + NAT_DELIM + signature);
+        final Index _index = natTable.get(name + NAT_DELIM + signature);
         return (_index != null) ? _index.index : -1;
     }
 
@@ -562,13 +562,13 @@ public @UsesObjectEquals class ConstantPoolGen {
         ret = index;
         constants[index++] = new ConstantNameAndType(name_index, signature_index);
         final String key = name + NAT_DELIM + signature;
-        if (!n_a_t_table.containsKey(key)) {
-            n_a_t_table.put(key, new Index(ret));
+        if (!natTable.containsKey(key)) {
+            natTable.put(key, new Index(ret));
         }
         return ret;
     }
 
-    private final Map<String, Index> cp_table = new HashMap<>();
+    private final Map<String, Index> cpTable = new HashMap<>();
 
 
     /**
@@ -580,7 +580,7 @@ public @UsesObjectEquals class ConstantPoolGen {
      * @return index on success, -1 otherwise
      */
     public int lookupMethodref( final String class_name, final String method_name, final String signature ) {
-        final Index index = cp_table.get(class_name + METHODREF_DELIM + method_name
+        final Index index = cpTable.get(class_name + METHODREF_DELIM + method_name
                 + METHODREF_DELIM + signature);
         return (index != null) ? index.index : -1;
     }
@@ -613,8 +613,8 @@ public @UsesObjectEquals class ConstantPoolGen {
         ret = index;
         constants[index++] = new ConstantMethodref(class_index, name_and_type_index);
         final String key = class_name + METHODREF_DELIM + method_name + METHODREF_DELIM + signature;
-        if (!cp_table.containsKey(key)) {
-            cp_table.put(key, new Index(ret));
+        if (!cpTable.containsKey(key)) {
+            cpTable.put(key, new Index(ret));
         }
         return ret;
     }
@@ -634,7 +634,7 @@ public @UsesObjectEquals class ConstantPoolGen {
      * @return index on success, -1 otherwise
      */
     public int lookupInterfaceMethodref( final String class_name, final String method_name, final String signature ) {
-        final Index index = cp_table.get(class_name + IMETHODREF_DELIM + method_name
+        final Index index = cpTable.get(class_name + IMETHODREF_DELIM + method_name
                 + IMETHODREF_DELIM + signature);
         return (index != null) ? index.index : -1;
     }
@@ -668,8 +668,8 @@ public @UsesObjectEquals class ConstantPoolGen {
         ret = index;
         constants[index++] = new ConstantInterfaceMethodref(class_index, name_and_type_index);
         final String key = class_name + IMETHODREF_DELIM + method_name + IMETHODREF_DELIM + signature;
-        if (!cp_table.containsKey(key)) {
-            cp_table.put(key, new Index(ret));
+        if (!cpTable.containsKey(key)) {
+            cpTable.put(key, new Index(ret));
         }
         return ret;
     }
@@ -689,7 +689,7 @@ public @UsesObjectEquals class ConstantPoolGen {
      * @return index on success, -1 otherwise
      */
     public int lookupFieldref( final String class_name, final String field_name, final String signature ) {
-        final Index index = cp_table.get(class_name + FIELDREF_DELIM + field_name
+        final Index index = cpTable.get(class_name + FIELDREF_DELIM + field_name
                 + FIELDREF_DELIM + signature);
         return (index != null) ? index.index : -1;
     }
@@ -717,8 +717,8 @@ public @UsesObjectEquals class ConstantPoolGen {
         ret = index;
         constants[index++] = new ConstantFieldref(class_index, name_and_type_index);
         final String key = class_name + FIELDREF_DELIM + field_name + FIELDREF_DELIM + signature;
-        if (!cp_table.containsKey(key)) {
-            cp_table.put(key, new Index(ret));
+        if (!cpTable.containsKey(key)) {
+            cpTable.put(key, new Index(ret));
         }
         return ret;
     }
@@ -837,11 +837,11 @@ public @UsesObjectEquals class ConstantPoolGen {
                     case Const.CONSTANT_Fieldref:
                         return addFieldref(class_name, name, signature);
                     default: // Never reached
-                        throw new RuntimeException("Unknown constant type " + c);
+                        throw new IllegalArgumentException("Unknown constant type " + c);
                 }
             }
             default: // Never reached
-                throw new RuntimeException("Unknown constant type " + c);
+                throw new IllegalArgumentException("Unknown constant type " + c);
         }
     }
 }

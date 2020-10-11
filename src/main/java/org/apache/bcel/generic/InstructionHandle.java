@@ -301,7 +301,7 @@ public @UsesObjectEquals class InstructionHandle {
 
     /**
      * @param next the next to set
-     * @ since 6.0
+     * @since 6.0
      */
     final InstructionHandle setNext(final InstructionHandle next) {
         this.next = next;
@@ -311,7 +311,7 @@ public @UsesObjectEquals class InstructionHandle {
 
     /**
      * @param prev the prev to set
-     * @ since 6.0
+     * @since 6.0
      */
     final InstructionHandle setPrev(final InstructionHandle prev) {
         this.prev = prev;

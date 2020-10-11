@@ -367,8 +367,8 @@ public class ClassPath implements Closeable {
         public void close() throws IOException {
             if (modules != null) {
                 // don't use a for each loop to avoid creating an iterator for the GC to collect.
-                for (int i = 0; i < modules.length; i++) {
-                    modules[i].close();
+                for (JrtModule module : modules) {
+                    module.close();
                 }
             }
             if (modularRuntimeImage != null) {
@@ -379,8 +379,8 @@ public class ClassPath implements Closeable {
         @Override
         @Nullable ClassFile getClassFile(final String name, final String suffix) throws IOException {
             // don't use a for each loop to avoid creating an iterator for the GC to collect.
-            for (int i = 0; i < modules.length; i++) {
-                final ClassFile classFile = modules[i].getClassFile(name, suffix);
+            for (JrtModule module : modules) {
+                final ClassFile classFile = module.getClassFile(name, suffix);
                 if (classFile != null) {
                     return classFile;
                 }
@@ -391,8 +391,8 @@ public class ClassPath implements Closeable {
         @Override
         @Nullable URL getResource(final String name) {
             // don't use a for each loop to avoid creating an iterator for the GC to collect.
-            for (int i = 0; i < modules.length; i++) {
-                final URL url = modules[i].getResource(name);
+            for (JrtModule module : modules) {
+                final URL url = module.getResource(name);
                 if (url != null) {
                     return url;
                 }
@@ -403,8 +403,8 @@ public class ClassPath implements Closeable {
         @Override
         @Nullable InputStream getResourceAsStream(final String name) {
             // don't use a for each loop to avoid creating an iterator for the GC to collect.
-            for (int i = 0; i < modules.length; i++) {
-                final InputStream inputStream = modules[i].getResourceAsStream(name);
+            for (JrtModule module : modules) {
+                final InputStream inputStream = module.getResourceAsStream(name);
                 if (inputStream != null) {
                     return inputStream;
                 }
@@ -453,8 +453,8 @@ public class ClassPath implements Closeable {
         final File modulesDir = new File(modulesPath);
         if (modulesDir.exists()) {
             final String[] modules = modulesDir.list(MODULES_FILTER);
-            for (int i = 0; i < modules.length; i++) {
-                list.add(modulesDir.getPath() + File.separatorChar + modules[i]);
+            for (String module : modules) {
+                list.add(modulesDir.getPath() + File.separatorChar + module);
             }
         }
     }

@@ -32,6 +32,7 @@ jdk:
   - openjdk12
 ## The Checker Framework doesn't work with JDK 13+ yet.
 #   - openjdk13
+#   - openjdk14  
 #   - openjdk-ea
 ## Unique to Apache release process
 # after_success:

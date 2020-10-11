@@ -36,10 +36,10 @@ import org.checkerframework.dataflow.qual.Pure;
 public class MethodParameter implements Cloneable {
 
     /** Index of the CONSTANT_Utf8_info structure in the constant_pool table representing the name of the parameter */
-    private int name_index;
+    private int nameIndex;
 
     /** The access flags */
-    private int access_flags;
+    private int accessFlags;
 
     public MethodParameter() {
     }
@@ -52,47 +52,47 @@ public class MethodParameter implements Cloneable {
      * @throws ClassFormatException
      */
     MethodParameter(final DataInput input) throws IOException {
-        name_index = input.readUnsignedShort();
-        access_flags = input.readUnsignedShort();
+        nameIndex = input.readUnsignedShort();
+        accessFlags = input.readUnsignedShort();
     }
 
     @Pure
     public int getNameIndex() {
-        return name_index;
+        return nameIndex;
     }
 
     public void setNameIndex(final int name_index) {
-        this.name_index = name_index;
+        this.nameIndex = name_index;
     }
 
     /**
      * Returns the name of the parameter.
      */
     public @Nullable String getParameterName(final ConstantPool constant_pool) {
-        if (name_index == 0) {
+        if (nameIndex == 0) {
             return null;
         }
-        return ((ConstantUtf8) constant_pool.getConstant(name_index, Const.CONSTANT_Utf8)).getBytes();
+        return ((ConstantUtf8) constant_pool.getConstant(nameIndex, Const.CONSTANT_Utf8)).getBytes();
        }
 
     public int getAccessFlags() {
-        return access_flags;
+        return accessFlags;
     }
 
     public void setAccessFlags(final int access_flags) {
-        this.access_flags = access_flags;
+        this.accessFlags = access_flags;
     }
 
     public boolean isFinal() {
-        return (access_flags & Const.ACC_FINAL) != 0;
+        return (accessFlags & Const.ACC_FINAL) != 0;
     }
 
     public boolean isSynthetic() {
-        return (access_flags & Const.ACC_SYNTHETIC) != 0;
+        return (accessFlags & Const.ACC_SYNTHETIC) != 0;
     }
 
     public boolean isMandated() {
-        return (access_flags & Const.ACC_MANDATED) != 0;
+        return (accessFlags & Const.ACC_MANDATED) != 0;
     }
 
     public void accept(final Visitor v) {
@@ -106,8 +106,8 @@ public class MethodParameter implements Cloneable {
      * @throws IOException
      */
     public final void dump(final DataOutputStream file) throws IOException {
-        file.writeShort(name_index);
-        file.writeShort(access_flags);
+        file.writeShort(nameIndex);
+        file.writeShort(accessFlags);
     }
 
     /**

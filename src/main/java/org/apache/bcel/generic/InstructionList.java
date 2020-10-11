@@ -50,7 +50,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
     private InstructionHandle start = null;
     private InstructionHandle end = null;
     private int length = 0; // number of elements in list
-    private int[] byte_positions; // byte code offsets corresponding to instructions
+    private int[] bytePositions; // byte code offsets corresponding to instructions
 
     /**
      * Create (empty) instruction list.
@@ -137,7 +137,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
      * @return target position's instruction handle if available
      */
     public @Nullable InstructionHandle findHandle(final int pos) {
-        final int[] positions = byte_positions;
+        final int[] positions = bytePositions;
         InstructionHandle ih = start;
         for (int i = 0; i < length; i++) {
             if (positions[i] == pos) {
@@ -185,8 +185,8 @@ public class InstructionList implements Iterable<InstructionHandle> {
         } catch (final IOException e) {
             throw new ClassGenException(e.toString(), e);
         }
-        byte_positions = new int[count]; // Trim to proper size
-        System.arraycopy(pos, 0, byte_positions, 0, count);
+        bytePositions = new int[count]; // Trim to proper size
+        System.arraycopy(pos, 0, bytePositions, 0, count);
         /*
          * Pass 2: Look for BranchInstruction and update their targets, i.e., convert offsets to instruction handles.
          */
@@ -928,8 +928,8 @@ public class InstructionList implements Iterable<InstructionHandle> {
             pos[count++] = index;
             index += i.getLength();
         }
-        byte_positions = new int[count]; // Trim to proper size
-        System.arraycopy(pos, 0, byte_positions, 0, count);
+        bytePositions = new int[count]; // Trim to proper size
+        System.arraycopy(pos, 0, bytePositions, 0, count);
     }
 
     /**
@@ -1039,7 +1039,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
      * @return array containing all instruction's offset in byte code
      */
     public int[] getInstructionPositions() {
-        return byte_positions;
+        return bytePositions;
     }
 
     /**
