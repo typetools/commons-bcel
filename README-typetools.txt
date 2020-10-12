@@ -18,9 +18,13 @@ This creates file
 To update to a newer version of the upstream library
 ----------------------------------------------------
 
-Usually, update https://github.com/codespecs/commons-bcel to a newer version and just pull from it.
+Usually, update https://github.com/codespecs/commons-bcel to a newer version and just pull from it:
+```
+git pull https://github.com/codespecs/commons-bcel
+```
 
-(Alternately:
+[
+Alternately:
 At https://github.com/apache/commons-bcel/tags ,
 find the tag corresponding to a public release.
 
@@ -34,14 +38,14 @@ git pull https://github.com/apache/commons-bcel <tag>
 
 If there is a merge conflict related to version numbers,
 use the upstream version.
-)
+]
 
 Change `pom.xml` to use the latest Checker Framework version.
 
 Build the project (instructions appear above).
 
 Test it in a branch of Daikon:
- * copy the bcel-VERSION.jar file to the `daikon/java/lib` directory
+ * copy the target/bcel-VERSION.jar file to the `daikon/java/lib` directory
  * remove the old bcel-OLDVERSION.jar file
  * run:  make -C java typecheck
    If there are any warnings or errors, then either add annotations
@@ -72,6 +76,8 @@ This must be done on a CSE machine, which has access to the necessary passwords.
 #  * in file cfMavenCentral.xml
 #  * in file pom.xml (if different from upstream)
 #  * environment variable PACKAGE below
+
+# JAVA_HOME must be a JDK 8 JDK.
 
 PACKAGE=bcel-6.4.1 && \
 mvn clean verify && \
