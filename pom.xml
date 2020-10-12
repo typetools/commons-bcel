@@ -41,7 +41,6 @@
   <inceptionYear>2004</inceptionYear>
 
   <properties>
-    <!-- These properties will be set by the Maven Dependency plugin -->
     <checkerFrameworkVersion>3.7.0</checkerFrameworkVersion>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -271,34 +270,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
         <configuration>
-          <fork>true</fork>
-          <source>1.8</source>
-          <target>1.8</target>
-          <compilerArguments>
-            <Xmaxerrs>10000</Xmaxerrs>
-            <Xmaxwarns>10000</Xmaxwarns>
-          </compilerArguments>
-          <annotationProcessorPaths>
-            <path>
-              <groupId>org.checkerframework</groupId>
-              <artifactId>checker</artifactId>
-              <version>${checkerFrameworkVersion}</version>
-            </path>
-          </annotationProcessorPaths>
-          <annotationProcessors>
-            <annotationProcessor>org.checkerframework.checker.interning.InterningChecker</annotationProcessor>
-            <annotationProcessor>org.checkerframework.checker.nullness.NullnessChecker</annotationProcessor>
-            <annotationProcessor>org.checkerframework.checker.signature.SignatureChecker</annotationProcessor>
-          </annotationProcessors>
-          <compilerArgs>
-            <!-- -AuseDefaultsForUncheckedCode=source causes compilation errors in
-                 any library that uses an unannotated part of BCEL. -->
-            <!-- <arg>-AuseDefaultsForUncheckedCode=source</arg> -->
-            <!-- Make type-checking errors into warnings. -->
-            <arg>-Awarns</arg>
-          </compilerArgs>
           <testExcludes>
             <testExclude>**/*Benchmark*</testExclude>
           </testExcludes>
@@ -393,18 +365,6 @@
           <effort>Default</effort>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <version>3.1.1</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>properties</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
@@ -434,6 +394,7 @@
         <artifactId>maven-pmd-plugin</artifactId>
         <version>3.13.0</version>
         <configuration>
+          <targetJdk>${maven.compiler.target}</targetJdk>
           <linkXref>true</linkXref>
           <rulesets>
             <ruleset>${basedir}/src/conf/pmd.xml</ruleset>
@@ -536,72 +497,64 @@
       <artifactId>checker-qual</artifactId>
       <version>${checkerFrameworkVersion}</version>
     </dependency>
-    <dependency>
-      <groupId>org.checkerframework</groupId>
-      <artifactId>checker</artifactId>
-      <version>${checkerFrameworkVersion}</version>
-    </dependency>
   </dependencies>
 
   <profiles>
-    <!-- Profile to use the version of Checker Framework installed locally.
-         Run mvn with `-Pcheckerframework-local`.
-    -->
     <profile>
-      <id>checkerframework-local</id>
+      <id>checkerframework</id>
+      <activation>
+        <jdk>[1.8,13)</jdk>
+      </activation>
+      <build>
+        <plugins>
+	  <plugin>
+	    <artifactId>maven-compiler-plugin</artifactId>
+	    <version>3.8.1</version>
+	    <configuration>
+	      <fork>true</fork>
+	      <source>1.8</source>
+	      <target>1.8</target>
+	      <compilerArguments>
+		<Xmaxerrs>10000</Xmaxerrs>
+		<Xmaxwarns>10000</Xmaxwarns>
+	      </compilerArguments>
+	      <annotationProcessorPaths>
+		<path>
+		  <groupId>org.checkerframework</groupId>
+		  <artifactId>checker</artifactId>
+		  <version>${checkerFrameworkVersion}</version>
+		</path>
+	      </annotationProcessorPaths>
+	      <annotationProcessors>
+		<annotationProcessor>org.checkerframework.checker.interning.InterningChecker</annotationProcessor>
+		<annotationProcessor>org.checkerframework.checker.nullness.NullnessChecker</annotationProcessor>
+		<annotationProcessor>org.checkerframework.checker.signature.SignatureChecker</annotationProcessor>
+	      </annotationProcessors>
+	      <compilerArgs>
+		<!-- -AuseDefaultsForUncheckedCode=source causes compilation errors in
+		     any library that uses an unannotated part of BCEL. -->
+		<!-- <arg>-AuseDefaultsForUncheckedCode=source</arg> -->
+		<!-- Make type-checking errors into warnings. -->
+		<arg>-Awarns</arg>
+	      </compilerArgs>
+	      <testExcludes>
+		<testExclude>**/*Benchmark*</testExclude>
+	      </testExcludes>
+	    </configuration>
+	  </plugin>
+        </plugins>
+      </build>
       <dependencies>
-        <dependency>
-          <groupId>org.checkerframework</groupId>
-          <artifactId>checker-qual</artifactId>
-          <version>0.0.0</version>
-          <scope>system</scope>
-          <systemPath>${env.CHECKERFRAMEWORK}/checker/dist/checker-qual.jar</systemPath>
-        </dependency>
-        <dependency>
-          <groupId>org.checkerframework</groupId>
-          <artifactId>checker</artifactId>
-          <version>0.0.0</version>
-          <scope>system</scope>
-          <systemPath>${env.CHECKERFRAMEWORK}/checker/dist/checker.jar</systemPath>
-        </dependency>
-        <dependency>
-          <groupId>org.checkerframework</groupId>
-          <artifactId>jdk8</artifactId>
-          <version>0.0.0</version>
-          <scope>system</scope>
-          <systemPath>${env.CHECKERFRAMEWORK}/checker/dist/jdk8.jar</systemPath>
-        </dependency>
-        <dependency>
-          <groupId>com.google.errorprone</groupId>
-          <artifactId>javac</artifactId>
-          <version>9+181-r4173-1</version>
-        </dependency>
+	<dependency>
+	  <groupId>org.checkerframework</groupId>
+	  <artifactId>checker</artifactId>
+	  <version>${checkerFrameworkVersion}</version>
+	</dependency>
       </dependencies>
     </profile>
 
     <profile>
-      <id>jdk11</id>
-      <activation>
-        <jdk>11</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <fork>true</fork>
-              <compilerArgs combine.children="append">
-                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
-              </compilerArgs>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>jdk8</id>
+      <id>checkerframework-jdk8</id>
       <activation>
         <jdk>1.8</jdk>
       </activation>
@@ -631,6 +584,55 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+
+    <profile>
+      <id>checkerframework-jdk11</id>
+      <activation>
+        <jdk>11</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <fork>true</fork>
+              <compilerArgs combine.children="append">
+                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
+              </compilerArgs>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <!-- Temporary until animal-sniffer-maven-plugin is released with https://github.com/mojohaus/animal-sniffer/pull/91.
+             Version 1.19 is broken:  https://github.com/mojohaus/animal-sniffer/issues/76. -->
+        <animal.sniffer.skip>true</animal.sniffer.skip>
+      </properties>
+    </profile>
+
+    <!-- Profile to use the version of Checker Framework installed locally.
+         Run mvn with `-Pcheckerframework-local`.
+    -->
+    <profile>
+      <id>checkerframework-local</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.checkerframework</groupId>
+          <artifactId>checker-qual</artifactId>
+          <version>0.0.0</version>
+          <scope>system</scope>
+          <systemPath>${env.CHECKERFRAMEWORK}/checker/dist/checker-qual.jar</systemPath>
+        </dependency>
+        <dependency>
+          <groupId>org.checkerframework</groupId>
+          <artifactId>checker</artifactId>
+          <version>0.0.0</version>
+          <scope>system</scope>
+          <systemPath>${env.CHECKERFRAMEWORK}/checker/dist/checker.jar</systemPath>
+        </dependency>
+      </dependencies>
     </profile>
 
     <!-- Profile to build and run PerformanceTest. Use 'mvn test -Pjdk-rt' -->
