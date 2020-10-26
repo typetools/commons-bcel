@@ -79,7 +79,7 @@ This must be done on a CSE machine, which has access to the necessary passwords.
 
 # JAVA_HOME must be a JDK 8 JDK.
 
-PACKAGE=bcel-6.4.1 && \
+PACKAGE=bcel-6.5.0 && \
 mvn clean verify && \
 mvn javadoc:javadoc && (cd target/site/apidocs && jar -cf ${PACKAGE}-javadoc.jar org)
 
