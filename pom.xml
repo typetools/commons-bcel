@@ -41,7 +41,7 @@
   <inceptionYear>2004</inceptionYear>
 
   <properties>
-    <checkerFrameworkVersion>3.7.0</checkerFrameworkVersion>
+    <checkerFrameworkVersion>3.22.1</checkerFrameworkVersion>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>

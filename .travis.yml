@@ -29,11 +29,8 @@ jdk:
   - oraclejdk11
   - openjdk8
   - openjdk11
-  - openjdk12
-## The Checker Framework doesn't work with JDK 13+ yet.
-#   - openjdk13
-#   - openjdk14  
-#   - openjdk-ea
+  - openjdk17
+  - openjdk-ea
 ## Unique to Apache release process
 # after_success:
 #   - mvn -Ddoclint:none clean cobertura:cobertura coveralls:report
