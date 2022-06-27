@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.util;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -56,7 +57,7 @@ public class LruCacheClassPathRepository extends AbstractClassPathRepository {
     }
 
     @Override
-    public JavaClass findClass(final String className) {
+    public @Nullable JavaClass findClass(final String className) {
         return loadedClasses.get(className);
     }
 

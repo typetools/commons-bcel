@@ -529,6 +529,7 @@
 		<annotationProcessor>org.checkerframework.checker.interning.InterningChecker</annotationProcessor>
 		<annotationProcessor>org.checkerframework.checker.nullness.NullnessChecker</annotationProcessor>
 		<annotationProcessor>org.checkerframework.checker.signature.SignatureChecker</annotationProcessor>
+		<annotationProcessor>org.checkerframework.checker.resourceleak.ResourceLeakChecker</annotationProcessor>
 	      </annotationProcessors>
 	      <compilerArgs>
 		<!-- -AuseDefaultsForUncheckedCode=source causes compilation errors in

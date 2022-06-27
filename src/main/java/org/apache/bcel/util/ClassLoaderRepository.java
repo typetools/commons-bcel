@@ -71,7 +71,7 @@ public class ClassLoaderRepository implements Repository {
      * Find an already defined JavaClass.
      */
     @Override
-    public JavaClass findClass( final String className ) {
+    public @Nullable JavaClass findClass( final String className ) {
         return loadedClasses.containsKey(className) ? loadedClasses.get(className) : null;
     }
 

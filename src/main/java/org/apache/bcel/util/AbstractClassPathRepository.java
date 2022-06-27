@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.util;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.JavaClass;
 
@@ -46,7 +47,7 @@ abstract class AbstractClassPathRepository implements Repository {
     public abstract void removeClass(final JavaClass javaClass);
 
     @Override
-    public abstract JavaClass findClass(final String className);
+    public abstract @Nullable JavaClass findClass(final String className);
 
     @Override
     public abstract void clear();

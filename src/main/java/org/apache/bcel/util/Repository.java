@@ -17,6 +17,8 @@
  */
 package org.apache.bcel.util;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import org.apache.bcel.classfile.JavaClass;
 
 /**
@@ -40,7 +42,7 @@ public interface Repository {
     /**
      * Finds the class with the name provided, if the class isn't there, return NULL.
      */
-    JavaClass findClass(String className);
+    @Nullable JavaClass findClass(String className);
 
     /**
      * Finds the class with the name provided, if the class isn't there, make an attempt to load it.
