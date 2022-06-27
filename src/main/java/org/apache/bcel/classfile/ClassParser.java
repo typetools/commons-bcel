@@ -44,7 +44,7 @@ import org.apache.bcel.Const;
  * further details about the structure of a bytecode file.
  *
  */
-@MustCall("parse")
+@InheritableMustCall("parse")
 public final class ClassParser {
 
     private @Owning DataInputStream dataInputStream;
