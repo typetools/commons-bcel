@@ -120,7 +120,7 @@ public final class ClassParser {
      * @throws  IOException
      * @throws  ClassFormatException
      */
-    @EnsuresCalledMethods(value="dataInputStream",methods="close")
+    @EnsuresCalledMethods(value="dataInputStream", methods="close")
     public JavaClass parse() throws IOException, ClassFormatException {
         ZipFile zip = null;
         try {
