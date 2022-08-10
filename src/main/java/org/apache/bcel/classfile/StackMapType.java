@@ -23,6 +23,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This class represents the type of a local variable or item on stack
  * used in the StackMap entries.
@@ -74,6 +76,7 @@ public final class StackMapType implements Cloneable {
     }
 
 
+    @Pure
     public byte getType() {
         return type;
     }
@@ -87,6 +90,7 @@ public final class StackMapType implements Cloneable {
     /** @return index to constant pool if type == ITEM_Object, or offset
      * in byte code, if type == ITEM_NewObject, and -1 otherwise
      */
+    @Pure
     public int getIndex() {
         return index;
     }
@@ -153,6 +157,7 @@ public final class StackMapType implements Cloneable {
     /**
      * @return Constant pool used by this object.
      */
+    @Pure
     public ConstantPool getConstantPool() {
         return constantPool;
     }

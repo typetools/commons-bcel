@@ -17,6 +17,8 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * ACONST_NULL - Push null reference
  * <PRE>Stack: ... -&gt; ..., null</PRE>
@@ -35,6 +37,7 @@ public class ACONST_NULL extends Instruction implements PushInstruction, TypedIn
     /** @return Type.NULL
      */
     @Override
+    @Pure
     public Type getType( final ConstantPoolGen cp ) {
         return Type.NULL;
     }

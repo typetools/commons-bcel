@@ -23,6 +23,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This class is derived from the abstract {@link Constant}
  * and represents a reference to a String object.
@@ -91,6 +93,7 @@ public final class ConstantString extends Constant implements ConstantObject {
     /**
      * @return Index in constant pool of the string (ConstantUtf8).
      */
+    @Pure
     public int getStringIndex() {
         return stringIndex;
     }

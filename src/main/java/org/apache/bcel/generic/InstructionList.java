@@ -1038,6 +1038,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
      *
      * @return array containing all instruction's offset in byte code
      */
+    @Pure
     public int[] getInstructionPositions() {
         return bytePositions;
     }
@@ -1125,6 +1126,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
     /**
      * @return start of list
      */
+    @Pure
     public InstructionHandle getStart() {
         return start;
     }
@@ -1132,6 +1134,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
     /**
      * @return end of list
      */
+    @Pure
     public InstructionHandle getEnd() {
         return end;
     }
@@ -1139,6 +1142,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
     /**
      * @return length of list (Number of instructions, not bytes)
      */
+    @Pure
     public int getLength() {
         return length;
     }

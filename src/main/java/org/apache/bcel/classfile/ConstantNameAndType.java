@@ -114,6 +114,7 @@ public final class ConstantNameAndType extends Constant {
     /**
      * @return Index in constant pool of field/method signature.
      */
+    @Pure
     public int getSignatureIndex() {
         return signatureIndex;
     }

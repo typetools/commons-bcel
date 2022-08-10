@@ -35,6 +35,8 @@ import org.apache.bcel.classfile.RuntimeInvisibleParameterAnnotations;
 import org.apache.bcel.classfile.RuntimeVisibleAnnotations;
 import org.apache.bcel.classfile.RuntimeVisibleParameterAnnotations;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * @since 6.0
  */
@@ -130,6 +132,7 @@ public class AnnotationEntryGen {
         evs.add(evp);
     }
 
+    @Pure
     public int getTypeIndex() {
         return typeIndex;
     }
@@ -149,6 +152,7 @@ public class AnnotationEntryGen {
     /**
      * Returns list of ElementNameValuePair objects
      */
+    @Pure
     public List<ElementValuePairGen> getValues() {
         return evs;
     }

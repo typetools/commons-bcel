@@ -19,6 +19,7 @@ package org.apache.bcel.verifier;
 
 import org.checkerframework.checker.interning.qual.InternedDistinct;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * A VerificationResult is what a PassVerifier returns
@@ -75,12 +76,14 @@ public class VerificationResult {
      * Returns one of the {@link #VERIFIED_OK}, {@link #VERIFIED_NOTYET},
      * {@link #VERIFIED_REJECTED} constants.
      */
+    @Pure
     public int getStatus() {
         return numeric;
     }
 
 
     /** Returns a detailed message. */
+    @Pure
     public String getMessage() {
         return detailMessage;
     }

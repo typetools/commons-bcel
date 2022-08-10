@@ -23,6 +23,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This class is derived from <em>Attribute</em> and represents the list of modules required, exported, opened or provided by a module.
  * There may be at most one Module attribute in a ClassFile structure.
@@ -108,6 +110,7 @@ public final class Module extends Attribute {
      * @return table of required modules
      * @see ModuleRequires
      */
+    @Pure
     public ModuleRequires[] getRequiresTable() {
         return requiresTable;
     }
@@ -117,6 +120,7 @@ public final class Module extends Attribute {
      * @return table of exported interfaces
      * @see ModuleExports
      */
+    @Pure
     public ModuleExports[] getExportsTable() {
         return exportsTable;
     }
@@ -126,6 +130,7 @@ public final class Module extends Attribute {
      * @return table of provided interfaces
      * @see ModuleOpens
      */
+    @Pure
     public ModuleOpens[] getOpensTable() {
         return opensTable;
     }
@@ -135,6 +140,7 @@ public final class Module extends Attribute {
      * @return table of provided interfaces
      * @see ModuleProvides
      */
+    @Pure
     public ModuleProvides[] getProvidesTable() {
         return providesTable;
     }

@@ -23,6 +23,7 @@ import org.apache.bcel.generic.ObjectType;
 import org.apache.bcel.generic.ReferenceType;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * This class represents an uninitialized object type; see The Java
@@ -45,6 +46,7 @@ public class UninitializedObjectType extends ReferenceType implements Constants 
      * Returns the ObjectType of the same class as the one of the uninitialized object
      * represented by this UninitializedObjectType instance.
      */
+    @Pure
     public ObjectType getInitialized() {
         return initialized;
     }

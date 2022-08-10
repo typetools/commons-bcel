@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * represents one parameter annotation in the parameter annotation table
  *
@@ -65,6 +67,7 @@ public class ParameterAnnotationEntry implements Node {
     /**
      * returns the array of annotation entries in this annotation
      */
+    @Pure
     public AnnotationEntry[] getAnnotationEntries() {
         return annotationTable;
     }

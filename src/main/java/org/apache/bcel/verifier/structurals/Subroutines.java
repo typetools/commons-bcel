@@ -17,9 +17,6 @@
  */
 package org.apache.bcel.verifier.structurals;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.interning.qual.UsesObjectEquals;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -43,6 +40,10 @@ import org.apache.bcel.generic.ReturnInstruction;
 import org.apache.bcel.generic.Select;
 import org.apache.bcel.verifier.exc.AssertionViolatedException;
 import org.apache.bcel.verifier.exc.StructuralCodeConstraintException;
+
+import org.checkerframework.checker.interning.qual.UsesObjectEquals;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Instances of this class contain information about the subroutines
@@ -613,6 +614,7 @@ public class Subroutines{
      * @see Subroutine#getEnteringJsrInstructions()
      * @see Subroutine#getLeavingRET()
      */
+    @Pure
     public Subroutine getTopLevel() {
         return TOPLEVEL;
     }

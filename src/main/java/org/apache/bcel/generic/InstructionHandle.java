@@ -28,6 +28,7 @@ import org.apache.bcel.classfile.Utility;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Instances of this class give users a handle to the instructions contained in
@@ -71,16 +72,19 @@ public @UsesObjectEquals class InstructionHandle {
         // noop
     }
 
+    @Pure
     public final InstructionHandle getNext() {
         return next;
     }
 
 
+    @Pure
     public final InstructionHandle getPrev() {
         return prev;
     }
 
 
+    @Pure
     public final Instruction getInstruction() {
         return instruction;
     }
@@ -153,6 +157,7 @@ public @UsesObjectEquals class InstructionHandle {
      * instruction. This is accurate only after
      * InstructionList.setPositions() has been called.
      */
+    @Pure
     public int getPosition() {
         return i_position;
     }
@@ -318,3 +323,4 @@ public @UsesObjectEquals class InstructionHandle {
         return prev;
     }
 }
+

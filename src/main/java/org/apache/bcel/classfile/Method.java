@@ -26,6 +26,7 @@ import org.apache.bcel.generic.Type;
 import org.apache.bcel.util.BCELComparator;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -116,6 +117,7 @@ public final class Method extends FieldOrMethod {
     /**
      * @return Code attribute of method, if any
      */
+    @Pure
     public @Nullable Code getCode() {
         for (final Attribute attribute : super.getAttributes()) {
             if (attribute instanceof Code) {
@@ -130,6 +132,7 @@ public final class Method extends FieldOrMethod {
      * @return ExceptionTable attribute of method, if any, i.e., list all
      * exceptions the method may throw not exception handlers!
      */
+    @Pure
     public @Nullable ExceptionTable getExceptionTable() {
         for (final Attribute attribute : super.getAttributes()) {
             if (attribute instanceof ExceptionTable) {
@@ -143,6 +146,7 @@ public final class Method extends FieldOrMethod {
     /** @return LocalVariableTable of code attribute if any, i.e. the call is forwarded
      * to the Code atribute.
      */
+    @Pure
     public @Nullable LocalVariableTable getLocalVariableTable() {
         final Code code = getCode();
         if (code == null) {
@@ -155,6 +159,7 @@ public final class Method extends FieldOrMethod {
     /** @return LineNumberTable of code attribute if any, i.e. the call is forwarded
      * to the Code atribute.
      */
+    @Pure
     public @Nullable LineNumberTable getLineNumberTable() {
         final Code code = getCode();
         if (code == null) {
@@ -224,6 +229,7 @@ public final class Method extends FieldOrMethod {
     /**
      * @return Comparison strategy object
      */
+    @Pure
     public static BCELComparator getComparator() {
         return bcelComparator;
     }
@@ -265,6 +271,7 @@ public final class Method extends FieldOrMethod {
      * @return Annotations on the parameters of a method
      * @since 6.0
      */
+    @Pure
     public ParameterAnnotationEntry[] getParameterAnnotationEntries() {
         if (parameterAnnotationEntries == null) {
             parameterAnnotationEntries = ParameterAnnotationEntry.createParameterAnnotationEntries(getAttributes());

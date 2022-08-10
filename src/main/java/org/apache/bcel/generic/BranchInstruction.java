@@ -27,6 +27,7 @@ import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Abstract super class for branching instructions like GOTO, IFEQ, etc..
@@ -194,6 +195,7 @@ public abstract @UsesObjectEquals class BranchInstruction extends Instruction im
     /**
      * @return target offset in byte code
      */
+    @Pure
     public final int getIndex() {
         return index;
     }
@@ -202,6 +204,7 @@ public abstract @UsesObjectEquals class BranchInstruction extends Instruction im
     /**
      * @return target of branch instruction
      */
+    @Pure
     public InstructionHandle getTarget() {
         return target;
     }

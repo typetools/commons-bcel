@@ -398,6 +398,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     /**
      * @return `LocalVariableTypeTable' attribute of this method.
      */
+    @Pure
     public LocalVariableTypeTable getLocalVariableTypeTable() {
         return localVariableTypeTable;
     }
@@ -831,6 +832,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
 
+    @Pure
     public @NonNegative int getMaxLocals() {
         return maxLocals;
     }
@@ -844,6 +846,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
 
+    @Pure
     public int getMaxStack() {
         return maxStack;
     }
@@ -851,6 +854,7 @@ public class MethodGen extends FieldGenOrMethodGen {
 
     /** @return class that contains this method
      */
+    @Pure
     public @BinaryName String getClassName() {
         return className;
     }
@@ -866,6 +870,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
 
+    @Pure
     public Type getReturnType() {
         return getType();
     }
@@ -886,6 +891,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
 
+    @Pure
     public Type getArgumentType( final int i ) {
         return argTypes[i];
     }
@@ -906,11 +912,13 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
 
+    @Pure
     public String getArgumentName( final int i ) {
         return argNames[i];
     }
 
 
+    @Pure
     public InstructionList getInstructionList() {
         return il;
     }
@@ -1286,6 +1294,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     /**
      * @return Comparison strategy object
      */
+    @Pure
     public static BCELComparator getComparator() {
         return bcelComparator;
     }

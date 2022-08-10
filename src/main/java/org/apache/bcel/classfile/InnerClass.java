@@ -22,6 +22,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.apache.bcel.Const;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * This class represents a inner class attribute, i.e., the class
@@ -103,6 +104,7 @@ public final class InnerClass implements Cloneable, Node {
     /**
      * @return access flags of inner class.
      */
+    @Pure
     public int getInnerAccessFlags() {
         return innerAccessFlags;
     }
@@ -111,6 +113,7 @@ public final class InnerClass implements Cloneable, Node {
     /**
      * @return class index of inner class.
      */
+    @Pure
     public int getInnerClassIndex() {
         return innerClassIndex;
     }
@@ -119,6 +122,7 @@ public final class InnerClass implements Cloneable, Node {
     /**
      * @return name index of inner class.
      */
+    @Pure
     public int getInnerNameIndex() {
         return innerNameIndex;
     }
@@ -127,6 +131,7 @@ public final class InnerClass implements Cloneable, Node {
     /**
      * @return class index of outer class.
      */
+    @Pure
     public int getOuterClassIndex() {
         return outerClassIndex;
     }

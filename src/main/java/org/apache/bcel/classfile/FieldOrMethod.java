@@ -152,6 +152,7 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
     /**
      * @return Collection of object attributes.
      */
+    @Pure
     public final Attribute[] getAttributes() {
         return attributes;
     }
@@ -169,6 +170,7 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
     /**
      * @return Constant pool used by this object.
      */
+    @Pure
     public final ConstantPool getConstantPool() {
         return constant_pool;
     }
@@ -202,6 +204,7 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
     /**
      * @return Index in constant pool of field signature.
      */
+    @Pure
     public final int getSignatureIndex() {
         return signature_index;
     }
@@ -262,6 +265,7 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
      * @return Annotations on the field or method
      * @since 6.0
      */
+    @Pure
     public AnnotationEntry[] getAnnotationEntries() {
         if (annotationEntries == null) {
             annotationEntries = AnnotationEntry.createAnnotationEntries(getAttributes());
@@ -295,3 +299,4 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
         return signatureAttributeString;
     }
 }
+

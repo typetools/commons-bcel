@@ -21,6 +21,8 @@ import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * @since 6.0
  */
@@ -50,6 +52,7 @@ public abstract class ElementValue
         this.cpool = cpool;
     }
 
+    @Pure
     public int getElementValueType()
     {
         return type;

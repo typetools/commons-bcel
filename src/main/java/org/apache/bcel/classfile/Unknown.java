@@ -142,6 +142,7 @@ public final class Unknown extends Attribute {
      * @return name of attribute.
      */
     @Override
+    @Pure
     public String getName() {
         return name;
     }

@@ -23,6 +23,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This class represents a stack map attribute used for
  * preverification of Java classes for the <a
@@ -91,6 +93,7 @@ public final class StackMap extends Attribute {
     /**
      * @return Array of stack map entries
      */
+    @Pure
     public StackMapEntry[] getStackMap() {
         return map;
     }
@@ -154,6 +157,7 @@ public final class StackMap extends Attribute {
     }
 
 
+    @Pure
     public int getMapLength() {
         return map == null ? 0 : map.length;
     }

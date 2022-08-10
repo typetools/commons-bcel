@@ -24,6 +24,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This class is derived from <em>Attribute</em> and represents a reference
  * to a GJ attribute.
@@ -100,6 +102,7 @@ public final class Signature extends Attribute {
     /**
      * @return Index in constant pool of source file name.
      */
+    @Pure
     public int getSignatureIndex() {
         return signatureIndex;
     }

@@ -17,6 +17,8 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * DCONST - Push 0.0 or 1.0, other values cause an exception
  *
@@ -58,6 +60,7 @@ public class DCONST extends Instruction implements ConstantPushInstruction {
     /** @return Type.DOUBLE
      */
     @Override
+    @Pure
     public Type getType( final ConstantPoolGen cp ) {
         return Type.DOUBLE;
     }

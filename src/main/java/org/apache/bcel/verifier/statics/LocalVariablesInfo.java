@@ -22,6 +22,8 @@ import org.apache.bcel.generic.Type;
 import org.apache.bcel.verifier.exc.AssertionViolatedException;
 import org.apache.bcel.verifier.exc.LocalVariableInfoInconsistentException;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * A utility class holding the information about
  * the names and the types of the local variables in
@@ -46,6 +48,7 @@ public class LocalVariablesInfo{
      * @param slot Slot to query.
      * @return The LocalVariableInfo for the given slot.
      */
+    @Pure
     public LocalVariableInfo getLocalVariableInfo(final int slot) {
         if (slot < 0 || slot >= localVariableInfos.length) {
             throw new AssertionViolatedException("Slot number for local variable information out of range.");

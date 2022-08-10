@@ -30,6 +30,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.ClassGetName;
 import org.checkerframework.checker.signature.qual.BinaryName;
 import org.checkerframework.checker.signature.qual.FieldDescriptor;
+import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -117,6 +118,7 @@ public abstract class Type {
     /**
      * @return signature for given type.
      */
+    @Pure
     public @FieldDescriptor String getSignature() {
         return signature;
     }
@@ -125,6 +127,7 @@ public abstract class Type {
     /**
      * @return type as defined in Constants
      */
+    @Pure
     public byte getType() {
         return type;
     }
@@ -146,6 +149,7 @@ public abstract class Type {
     /**
      * @return stack size of this type (2 for long and double, 0 for void, 1 otherwise)
      */
+    @Pure
     public int getSize() {
         switch (type) {
             case Const.T_DOUBLE:

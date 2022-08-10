@@ -17,6 +17,8 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * LCONST - Push 0 or 1, other values cause an exception
  *
@@ -58,6 +60,7 @@ public class LCONST extends Instruction implements ConstantPushInstruction {
     /** @return Type.LONG
      */
     @Override
+    @Pure
     public Type getType( final ConstantPoolGen cp ) {
         return Type.LONG;
     }

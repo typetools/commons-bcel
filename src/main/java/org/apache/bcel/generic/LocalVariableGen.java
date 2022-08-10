@@ -21,6 +21,7 @@ import org.apache.bcel.Const;
 import org.apache.bcel.classfile.LocalVariable;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Represents a local variable within a method. It contains its
@@ -121,11 +122,13 @@ public class LocalVariableGen implements InstructionTargeter, NamedAndTyped, Clo
     }
 
 
+    @Pure
     public int getIndex() {
         return index;
     }
 
 
+    @Pure
     public int getOrigIndex() {
         return origIndex;
     }
@@ -136,6 +139,7 @@ public class LocalVariableGen implements InstructionTargeter, NamedAndTyped, Clo
     }
 
 
+    @Pure
     public boolean getLiveToEnd() {
         return liveToEnd;
     }
@@ -148,6 +152,7 @@ public class LocalVariableGen implements InstructionTargeter, NamedAndTyped, Clo
 
 
     @Override
+    @Pure
     public String getName() {
         return name;
     }
@@ -160,16 +165,19 @@ public class LocalVariableGen implements InstructionTargeter, NamedAndTyped, Clo
 
 
     @Override
+    @Pure
     public Type getType() {
         return type;
     }
 
 
+    @Pure
     public InstructionHandle getStart() {
         return start;
     }
 
 
+    @Pure
     public InstructionHandle getEnd() {
         return end;
     }

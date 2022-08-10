@@ -17,12 +17,14 @@
  */
 package org.apache.bcel.util;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.JavaClass;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * This abstract class provides a logic of a loading {@link JavaClass} objects class names via {@link ClassPath}.
@@ -133,6 +135,7 @@ abstract class AbstractClassPathRepository implements Repository {
     }
 
     @Override
+    @Pure
     public ClassPath getClassPath() {
         return _path;
     }

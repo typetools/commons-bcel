@@ -28,6 +28,8 @@ import org.apache.bcel.classfile.ConstantUtf8;
 import org.apache.bcel.classfile.ElementValue;
 import org.apache.bcel.classfile.SimpleElementValue;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * @since 6.0
  */
@@ -177,6 +179,7 @@ public class SimpleElementValueGen extends ElementValueGen
         return new SimpleElementValue(super.getElementValueType(), idx, getConstantPool().getConstantPool());
     }
 
+    @Pure
     public int getIndex()
     {
         return idx;

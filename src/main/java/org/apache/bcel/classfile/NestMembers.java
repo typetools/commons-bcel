@@ -23,6 +23,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This class is derived from <em>Attribute</em> and records the classes and interfaces that
  * are authorized to claim membership in the nest hosted by the current class or interface.
@@ -107,6 +109,7 @@ public final class NestMembers extends Attribute {
     /**
      * @return array of indices into constant pool of class names.
      */
+    @Pure
     public int[] getClasses() {
         return classes;
     }
@@ -115,6 +118,7 @@ public final class NestMembers extends Attribute {
     /**
      * @return Length of classes table.
      */
+    @Pure
     public int getNumberClasses() {
         return classes == null ? 0 : classes.length;
     }

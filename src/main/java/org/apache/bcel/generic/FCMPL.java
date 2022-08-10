@@ -17,6 +17,8 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * FCMPL - Compare floats: value1 &lt; value2
  * <PRE>Stack: ..., value1, value2 -&gt; ..., result</PRE>
@@ -32,6 +34,7 @@ public class FCMPL extends Instruction implements TypedInstruction, StackProduce
     /** @return Type.FLOAT
      */
     @Override
+    @Pure
     public Type getType( final ConstantPoolGen cp ) {
         return Type.FLOAT;
     }

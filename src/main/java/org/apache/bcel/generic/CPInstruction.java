@@ -27,6 +27,7 @@ import org.apache.bcel.util.ByteSequence;
 
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Abstract super class for instructions that use an index into the
@@ -120,6 +121,7 @@ public abstract class CPInstruction extends Instruction implements TypedInstruct
      * @return index in constant pool referred by this instruction.
      */
     @Override
+    @Pure
     public final int getIndex() {
         return index;
     }

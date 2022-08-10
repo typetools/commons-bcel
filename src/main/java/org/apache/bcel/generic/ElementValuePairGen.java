@@ -104,6 +104,7 @@ public class ElementValuePairGen
         return ((ConstantUtf8) constantPoolGen.getConstant(nameIdx)).getBytes();
     }
 
+    @Pure
     public final ElementValueGen getValue()
     {
         return value;

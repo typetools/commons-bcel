@@ -24,6 +24,8 @@ import java.util.Arrays;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This class represents a bootstrap method attribute, i.e., the bootstrap
  * method ref, the number of bootstrap arguments and an array of the
@@ -80,6 +82,7 @@ public class BootstrapMethod implements Cloneable {
     /**
      * @return index into constant_pool of bootstrap_method
      */
+    @Pure
     public int getBootstrapMethodRef() {
         return bootstrapMethodRef;
     }
@@ -101,6 +104,7 @@ public class BootstrapMethod implements Cloneable {
     /**
      * @return count of number of boostrap arguments
      */
+    @Pure
     public int getNumBootstrapArguments() {
         return bootstrapArguments.length;
     }

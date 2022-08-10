@@ -37,6 +37,7 @@ import org.apache.bcel.verifier.exc.AssertionViolatedException;
 import org.apache.bcel.verifier.exc.StructuralCodeConstraintException;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * This class represents a control flow graph of a method.
@@ -96,6 +97,7 @@ public class ControlFlowGraph{
 
         /* Satisfies InstructionContext.getTag(). */
         @Override
+        @Pure
         public int getTag() {
             return TAG;
         }
@@ -282,6 +284,7 @@ public class ControlFlowGraph{
          * Fulfils the contract of InstructionContext.getInstruction().
          */
         @Override
+        @Pure
         public InstructionHandle getInstruction() {
             return instruction;
         }

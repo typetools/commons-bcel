@@ -101,6 +101,8 @@ import org.apache.bcel.verifier.exc.StaticCodeInstructionConstraintException;
 import org.apache.bcel.verifier.exc.StaticCodeInstructionOperandConstraintException;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
+
 
 /**
  * This PassVerifier verifies a class file according to
@@ -464,6 +466,7 @@ public final class Pass3aVerifier extends PassVerifier{
     }
 
     /** Returns the method number as supplied when instantiating. */
+    @Pure
     public int getMethodNo() {
         return methodNo;
     }

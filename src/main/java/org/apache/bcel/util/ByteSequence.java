@@ -20,6 +20,8 @@ package org.apache.bcel.util;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * Utility class that implements a sequence of bytes which can be read
  * via the `readByte()' method. This is used to implement a wrapper for the
@@ -37,6 +39,7 @@ public final class ByteSequence extends DataInputStream {
     }
 
 
+    @Pure
     public int getIndex() {
         return byteStream.getPosition();
     }

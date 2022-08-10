@@ -26,6 +26,7 @@ import org.apache.bcel.generic.Type;
 import org.apache.bcel.util.BCELComparator;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * This class represents the field info structure, i.e., the representation
@@ -101,6 +102,7 @@ public final class Field extends FieldOrMethod {
     /**
      * @return constant value associated with this field (may be null)
      */
+    @Pure
     public @Nullable ConstantValue getConstantValue() {
         for (final Attribute attribute : super.getAttributes()) {
             if (attribute.getTag() == Const.ATTR_CONSTANT_VALUE) {
@@ -162,6 +164,7 @@ public final class Field extends FieldOrMethod {
     /**
      * @return Comparison strategy object
      */
+    @Pure
     public static BCELComparator getComparator() {
         return bcelComparator;
     }

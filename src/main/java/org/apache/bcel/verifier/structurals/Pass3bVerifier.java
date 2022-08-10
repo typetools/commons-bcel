@@ -444,6 +444,7 @@ public final class Pass3bVerifier extends PassVerifier{
     }
 
     /** Returns the method number as supplied when instantiating. */
+    @Pure
     public int getMethodNo() {
         return methodNo;
     }

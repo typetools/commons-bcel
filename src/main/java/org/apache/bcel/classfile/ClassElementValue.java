@@ -22,6 +22,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * @since 6.0
  */
@@ -38,6 +40,7 @@ public class ClassElementValue extends ElementValue
         this.idx = idx;
     }
 
+    @Pure
     public int getIndex()
     {
         return idx;

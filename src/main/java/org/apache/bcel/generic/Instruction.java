@@ -25,6 +25,7 @@ import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.util.ByteSequence;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Abstract super class for all Java byte codes.
@@ -72,6 +73,7 @@ public abstract class Instruction implements Cloneable {
 
     /** @return name of instruction, i.e., opcode name
      */
+    @Pure
     public String getName() {
         return Const.getOpcodeName(opcode);
     }
@@ -504,6 +506,7 @@ public abstract class Instruction implements Cloneable {
     /**
      * @return this instructions opcode
      */
+    @Pure
     public short getOpcode() {
         return opcode;
     }
@@ -512,6 +515,7 @@ public abstract class Instruction implements Cloneable {
     /**
      * @return length (in bytes) of instruction
      */
+    @Pure
     public int getLength() {
         return length;
     }
@@ -558,6 +562,7 @@ public abstract class Instruction implements Cloneable {
      * @deprecated (6.0) use the built in comparator, or wrap this class in another object that implements these methods
      */
     @Deprecated
+    @Pure
     public static InstructionComparator getComparator() {
         return cmp;
     }

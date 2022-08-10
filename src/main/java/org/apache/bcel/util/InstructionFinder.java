@@ -31,6 +31,8 @@ import org.apache.bcel.generic.ClassGenException;
 import org.apache.bcel.generic.InstructionHandle;
 import org.apache.bcel.generic.InstructionList;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * InstructionFinder is a tool to search for given instructions patterns, i.e.,
  * match sequences of instructions in an instruction list via regular
@@ -286,6 +288,7 @@ public class InstructionFinder {
     /**
      * @return the inquired instruction list
      */
+    @Pure
     public final InstructionList getInstructionList() {
         return il;
     }

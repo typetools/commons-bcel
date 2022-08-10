@@ -29,6 +29,7 @@ import org.apache.bcel.verifier.statics.Pass3aVerifier;
 import org.apache.bcel.verifier.structurals.Pass3bVerifier;
 
 import org.checkerframework.checker.signature.qual.FullyQualifiedName;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * A Verifier instance is there to verify a class file according to The Java Virtual
@@ -122,6 +123,7 @@ public class Verifier {
      * Verifier by the getVerifiers() method of the VerifierFactory.
      * @see VerifierFactory
      */
+    @Pure
     public final @FullyQualifiedName String getClassName() {
         return classname;
     }

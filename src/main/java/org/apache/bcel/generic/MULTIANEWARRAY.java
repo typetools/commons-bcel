@@ -24,6 +24,8 @@ import org.apache.bcel.ExceptionConst;
 import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.util.ByteSequence;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * MULTIANEWARRAY - Create new mutidimensional array of references
  * <PRE>Stack: ..., count1, [count2, ...] -&gt; ..., arrayref</PRE>
@@ -79,6 +81,7 @@ public class MULTIANEWARRAY extends CPInstruction implements LoadClass, Allocati
     /**
      * @return number of dimensions to be created
      */
+    @Pure
     public final short getDimensions() {
         return dimensions;
     }

@@ -24,6 +24,7 @@ import org.apache.bcel.classfile.JavaClass;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.BinaryName;
 import org.checkerframework.checker.signature.qual.ClassGetName;
+import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -58,6 +59,7 @@ public class ObjectType extends ReferenceType {
 
     /** @return name of referenced class
      */
+    @Pure
     public @BinaryName String getClassName() {
         return className;
     }

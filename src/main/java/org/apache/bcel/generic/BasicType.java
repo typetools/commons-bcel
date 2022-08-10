@@ -20,6 +20,7 @@ package org.apache.bcel.generic;
 import org.apache.bcel.Const;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Denotes basic type such as int.
@@ -42,6 +43,7 @@ public final class BasicType extends Type {
 
 
     // @since 6.0 no longer final
+    @Pure
     public static BasicType getType( final byte type ) {
         switch (type) {
             case Const.T_VOID:

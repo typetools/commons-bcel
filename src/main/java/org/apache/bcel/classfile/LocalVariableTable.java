@@ -24,6 +24,7 @@ import java.io.IOException;
 import org.apache.bcel.Const;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * This class represents colection of local variables in a
@@ -110,6 +111,7 @@ public class LocalVariableTable extends Attribute {
     /**
      * @return Array of local variables of method.
      */
+    @Pure
     public final LocalVariable[] getLocalVariableTable() {
         return localVariableTable;
     }
@@ -125,6 +127,7 @@ public class LocalVariableTable extends Attribute {
      *             same slot, use getLocalVariable(int index, int pc) instead.
      */
     @java.lang.Deprecated
+    @Pure
     public final @Nullable LocalVariable getLocalVariable( final int index ) {
         for (final LocalVariable variable : localVariableTable) {
             if (variable.getIndex() == index) {
@@ -142,6 +145,7 @@ public class LocalVariableTable extends Attribute {
      *
      * @return the LocalVariable that matches or null if not found
      */
+    @Pure
     public final @Nullable LocalVariable getLocalVariable( final int index, final int pc ) {
         for (final LocalVariable variable : localVariableTable) {
             if (variable.getIndex() == index) {
@@ -192,6 +196,7 @@ public class LocalVariableTable extends Attribute {
     }
 
 
+    @Pure
     public final int getTableLength() {
         return localVariableTable == null ? 0 : localVariableTable.length;
     }

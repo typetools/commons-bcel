@@ -20,6 +20,7 @@ package org.apache.bcel.classfile;
 import org.apache.bcel.Const;
 
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Super class for all objects that have modifiers like private, final, ... I.e. classes, fields, and methods.
@@ -47,6 +48,7 @@ public abstract class AccessFlags {
     /**
      * @return Access flags of the object aka. "modifiers".
      */
+    @Pure
     public final int getAccessFlags() {
         return access_flags;
     }
@@ -54,6 +56,7 @@ public abstract class AccessFlags {
     /**
      * @return Access flags of the object aka. "modifiers".
      */
+    @Pure
     public final int getModifiers() {
         return access_flags;
     }

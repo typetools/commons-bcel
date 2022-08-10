@@ -17,6 +17,8 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * FCONST - Push 0.0, 1.0 or 2.0, other values cause an exception
  *
@@ -60,6 +62,7 @@ public class FCONST extends Instruction implements ConstantPushInstruction {
     /** @return Type.FLOAT
      */
     @Override
+    @Pure
     public Type getType( final ConstantPoolGen cp ) {
         return Type.FLOAT;
     }

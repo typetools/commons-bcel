@@ -21,6 +21,7 @@ import org.apache.bcel.Const;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.ClassGetName;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Instances of this class may be used, e.g., to generate typed
@@ -789,6 +790,7 @@ public class InstructionFactory implements InstructionConstants {
     }
 
 
+    @Pure
     public @Nullable ClassGen getClassGen() {
         return cg;
     }
@@ -799,6 +801,7 @@ public class InstructionFactory implements InstructionConstants {
     }
 
 
+    @Pure
     public ConstantPoolGen getConstantPool() {
         return cp;
     }

@@ -17,6 +17,8 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * SWITCH - Branch depending on int value, generates either LOOKUPSWITCH or
  * TABLESWITCH instruction, depending on whether the match values (int[]) can be
@@ -149,6 +151,7 @@ public final class SWITCH implements CompoundInstruction {
     }
 
 
+    @Pure
     public Instruction getInstruction() {
         return instruction;
     }

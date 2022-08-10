@@ -23,6 +23,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This class is derived from <em>Attribute</em> and records the nest host of the nest
  * to which the current class or interface claims to belong.
@@ -100,6 +102,7 @@ public final class NestHost extends Attribute {
     /**
      * @return index into constant pool of host class name.
      */
+    @Pure
     public int getHostClassIndex() {
         return hostClassIndex;
     }

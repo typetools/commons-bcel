@@ -34,6 +34,8 @@ import org.apache.bcel.classfile.Utility;
 import org.apache.bcel.util.BCELComparator;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
+
 
 /**
  * Template class for building up a field.  The only extraordinary thing
@@ -344,6 +346,7 @@ public class FieldGen extends FieldGenOrMethodGen {
     /**
      * @return Comparison strategy object
      */
+    @Pure
     public static BCELComparator getComparator() {
         return bcelComparator;
     }

@@ -21,6 +21,8 @@ import java.util.Objects;
 
 import org.apache.bcel.classfile.LineNumber;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This class represents a line number within a method, i.e., give an instruction
  * a line number corresponding to the source code line.
@@ -94,6 +96,7 @@ public class LineNumberGen implements InstructionTargeter, Cloneable {
     }
 
 
+    @Pure
     public InstructionHandle getInstruction() {
         return ih;
     }
@@ -104,6 +107,7 @@ public class LineNumberGen implements InstructionTargeter, Cloneable {
     }
 
 
+    @Pure
     public int getSourceLine() {
         return srcLine;
     }

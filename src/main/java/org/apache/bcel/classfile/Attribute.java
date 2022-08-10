@@ -316,6 +316,7 @@ public abstract class Attribute implements Cloneable, Node {
      * @return Constant pool used by this object.
      * @see ConstantPool
      */
+    @Pure
     public final ConstantPool getConstantPool()
     {
         return constant_pool;
@@ -324,6 +325,7 @@ public abstract class Attribute implements Cloneable, Node {
     /**
      * @return Length of attribute field in bytes.
      */
+    @Pure
     public final int getLength()
     {
         return length;
@@ -351,6 +353,7 @@ public abstract class Attribute implements Cloneable, Node {
     /**
      * @return Tag of attribute, i.e., its type. Value may not be altered, thus there is no setTag() method.
      */
+    @Pure
     public final byte getTag()
     {
         return tag;

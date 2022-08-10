@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.verifier.exc;
 
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Instances of this class are thrown by BCEL's class file verifier "JustIce"
@@ -78,6 +79,7 @@ public abstract class VerifierConstraintViolatedException extends RuntimeExcepti
      * @return the error message string of this VerifierConstraintViolatedException.
      */
     @Override
+    @Pure
     public String getMessage() {
         return detailMessage;
     }

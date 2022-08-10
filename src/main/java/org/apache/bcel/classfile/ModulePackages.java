@@ -23,6 +23,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This class is derived from <em>Attribute</em> and represents the list of packages that are exported or opened by the Module attribute.
  * There may be at most one ModulePackages attribute in a ClassFile structure.
@@ -106,6 +108,7 @@ public final class ModulePackages extends Attribute {
     /**
      * @return array of indices into constant pool of package names.
      */
+    @Pure
     public int[] getPackageIndexTable() {
         return packageIndexTable;
     }
@@ -114,6 +117,7 @@ public final class ModulePackages extends Attribute {
     /**
      * @return Length of package table.
      */
+    @Pure
     public int getNumberOfPackages() {
         return packageIndexTable == null ? 0 : packageIndexTable.length;
     }

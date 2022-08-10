@@ -19,6 +19,8 @@ package org.apache.bcel.generic;
 
 import org.apache.bcel.classfile.CodeException;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This class represents an exception handler, i.e., specifies the  region where
  * a handler is active and an instruction where the actual handling is done.
@@ -143,6 +145,7 @@ public final class CodeExceptionGen implements InstructionTargeter, Cloneable {
 
 
     /** Gets the type of the Exception to catch, 'null' for ANY. */
+    @Pure
     public ObjectType getCatchType() {
         return catchType;
     }
@@ -150,6 +153,7 @@ public final class CodeExceptionGen implements InstructionTargeter, Cloneable {
 
     /** @return start of handled region (inclusive)
      */
+    @Pure
     public InstructionHandle getStartPC() {
         return startPc;
     }
@@ -157,6 +161,7 @@ public final class CodeExceptionGen implements InstructionTargeter, Cloneable {
 
     /** @return end of handled region (inclusive)
      */
+    @Pure
     public InstructionHandle getEndPC() {
         return endPc;
     }
@@ -164,6 +169,7 @@ public final class CodeExceptionGen implements InstructionTargeter, Cloneable {
 
     /** @return start of handler
      */
+    @Pure
     public InstructionHandle getHandlerPC() {
         return handlerPc;
     }

@@ -19,6 +19,8 @@ package org.apache.bcel.generic;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * Super class for the family of arithmetic instructions.
  *
@@ -45,6 +47,7 @@ public abstract class ArithmeticInstruction extends Instruction implements Typed
     /** @return type associated with the instruction
      */
     @Override
+    @Pure
     public Type getType( final ConstantPoolGen cp ) {
         final short _opcode = super.getOpcode();
         switch (_opcode) {

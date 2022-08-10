@@ -23,6 +23,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This class is derived from <em>Attribute</em> and represents a constant
  * value, i.e., a default value for initializing a class field.
@@ -100,6 +102,7 @@ public final class ConstantValue extends Attribute {
     /**
      * @return Index in constant pool of constant value.
      */
+    @Pure
     public int getConstantValueIndex() {
         return constantValueIndex;
     }

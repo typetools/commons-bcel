@@ -24,6 +24,7 @@ import java.io.IOException;
 import org.apache.bcel.Const;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * This class is derived from <em>Attribute</em> and denotes that this class
@@ -112,6 +113,7 @@ public final class InnerClasses extends Attribute {
     /**
      * @return array of inner class "records"
      */
+    @Pure
     public InnerClass[] getInnerClasses() {
         return innerClasses;
     }

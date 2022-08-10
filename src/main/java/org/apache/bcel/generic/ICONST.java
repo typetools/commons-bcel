@@ -17,6 +17,8 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * ICONST - Push value between -1, ..., 5, other values cause an exception
  *
@@ -56,6 +58,7 @@ public class ICONST extends Instruction implements ConstantPushInstruction {
     /** @return Type.INT
      */
     @Override
+    @Pure
     public Type getType( final ConstantPoolGen cp ) {
         return Type.INT;
     }

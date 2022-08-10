@@ -21,6 +21,8 @@ import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * base class for parameter annotations
  *
@@ -88,6 +90,7 @@ public abstract class ParameterAnnotations extends Attribute {
     /**
      * @return the parameter annotation entry table
      */
+    @Pure
     public final ParameterAnnotationEntry[] getParameterAnnotationTable() {
         return parameterAnnotationTable;
     }
@@ -96,6 +99,7 @@ public abstract class ParameterAnnotations extends Attribute {
     /**
      * returns the array of parameter annotation entries in this parameter annotation
      */
+    @Pure
     public ParameterAnnotationEntry[] getParameterAnnotationEntries() {
         return parameterAnnotationTable;
     }

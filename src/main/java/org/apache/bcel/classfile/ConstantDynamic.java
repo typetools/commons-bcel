@@ -22,6 +22,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This class is derived from the abstract {@link Constant}
  * and represents a reference to a dynamically computed constant.
@@ -76,6 +78,7 @@ public final class ConstantDynamic extends ConstantCP {
      * for use by ConstantInvokeDynamic.
      * @since 6.0
      */
+    @Pure
     public int getBootstrapMethodAttrIndex() {
         return super.getClassIndex();  // AKA bootstrap_method_attr_index
     }

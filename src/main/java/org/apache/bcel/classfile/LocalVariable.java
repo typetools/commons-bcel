@@ -150,6 +150,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
     /**
      * @return Constant pool used by this object.
      */
+    @Pure
     public ConstantPool getConstantPool() {
         return constantPool;
     }
@@ -158,6 +159,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
     /**
      * @return Variable is valid within getStartPC() .. getStartPC()+getLength()
      */
+    @Pure
     public int getLength() {
         return length;
     }
@@ -195,6 +197,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
     /**
      * @return Index in constant pool of variable signature.
      */
+    @Pure
     public int getSignatureIndex() {
         return signatureIndex;
     }
@@ -203,6 +206,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
     /**
      * @return index of register where variable is stored
      */
+    @Pure
     public int getIndex() {
         return index;
     }
@@ -211,6 +215,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
     /**
      * @return index of register where variable was originally stored
      */
+    @Pure
     public int getOrigIndex() {
         return origIndex;
     }
@@ -219,6 +224,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
     /**
      * @return Start of range where the variable is valid
      */
+    @Pure
     public int getStartPC() {
         return startPc;
     }

@@ -23,6 +23,7 @@ import java.io.IOException;
 import org.apache.bcel.Const;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * This attribute exists for local or
@@ -68,10 +69,12 @@ public class EnclosingMethod extends Attribute {
     }
 
     // Accessors
+    @Pure
     public final int getEnclosingClassIndex() {
         return classIndex;
     }
 
+    @Pure
     public final int getEnclosingMethodIndex() {
         return methodIndex;
     }

@@ -21,6 +21,8 @@ import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This class represents a (PC offset, line number) pair, i.e., a line number in
  * the source that corresponds to a relative address in the byte code. This
@@ -95,6 +97,7 @@ public final class LineNumber implements Cloneable, Node {
     /**
      * @return Corresponding source line
      */
+    @Pure
     public int getLineNumber() {
         return 0xffff & lineNumber;
     }
@@ -103,6 +106,7 @@ public final class LineNumber implements Cloneable, Node {
     /**
      * @return PC in code
      */
+    @Pure
     public int getStartPC() {
         return  0xffff & startPc;
     }

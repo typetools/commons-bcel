@@ -35,6 +35,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * Wraps a Java 9 JEP 220 modular runtime image. Requires the JRT NIO file system.
  *
@@ -145,6 +147,7 @@ public class ModularRuntimeImage implements Closeable {
         return list(PACKAGES_PATH);
     }
 
+    @Pure
     public FileSystem getFileSystem() {
         return fileSystem;
     }

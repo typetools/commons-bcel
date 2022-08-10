@@ -21,6 +21,8 @@ import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * base class for annotations
  *
@@ -90,6 +92,7 @@ public abstract class Annotations extends Attribute {
     /**
      * @return the number of annotation entries in this annotation
      */
+    @Pure
     public final int getNumAnnotations() {
         if (annotationTable == null) {
             return 0;

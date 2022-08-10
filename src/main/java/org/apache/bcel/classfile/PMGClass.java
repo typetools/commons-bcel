@@ -23,6 +23,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This class is derived from <em>Attribute</em> and represents a reference
  * to a PMG attribute.
@@ -104,6 +106,7 @@ public final class PMGClass extends Attribute {
     /**
      * @return Index in constant pool of source file name.
      */
+    @Pure
     public int getPMGClassIndex() {
         return pmgClassIndex;
     }
@@ -120,6 +123,7 @@ public final class PMGClass extends Attribute {
     /**
      * @return Index in constant pool of source file name.
      */
+    @Pure
     public int getPMGIndex() {
         return pmgIndex;
     }

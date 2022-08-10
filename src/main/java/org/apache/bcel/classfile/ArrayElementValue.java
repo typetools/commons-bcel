@@ -20,6 +20,8 @@ package org.apache.bcel.classfile;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * @since 6.0
  */
@@ -85,6 +87,7 @@ public class ArrayElementValue extends ElementValue
         return elementValues;
     }
 
+    @Pure
     public int getElementValuesArraySize()
     {
         return elementValues.length;

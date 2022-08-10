@@ -23,6 +23,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This class is derived from <em>Attribute</em> and indicates the main class of a module.
  * There may be at most one ModuleMainClass attribute in a ClassFile structure.
@@ -99,6 +101,7 @@ public final class ModuleMainClass extends Attribute {
     /**
      * @return index into constant pool of host class name.
      */
+    @Pure
     public int getHostClassIndex() {
         return mainClassIndex;
     }

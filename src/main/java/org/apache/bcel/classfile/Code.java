@@ -24,6 +24,7 @@ import java.io.IOException;
 import org.apache.bcel.Const;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * This class represents a chunk of Java byte code contained in a
@@ -196,6 +197,7 @@ public final class Code extends Attribute {
     /**
      * @return Actual byte code of the method.
      */
+    @Pure
     public byte[] getCode() {
         return code;
     }
@@ -213,6 +215,7 @@ public final class Code extends Attribute {
     /**
      * @return Number of local variables.
      */
+    @Pure
     public int getMaxLocals() {
         return maxLocals;
     }
@@ -221,6 +224,7 @@ public final class Code extends Attribute {
     /**
      * @return Maximum size of stack used by this method.
      */
+    @Pure
     public int getMaxStack() {
         return maxStack;
     }

@@ -22,6 +22,8 @@ import java.io.IOException;
 
 import org.apache.bcel.util.ByteSequence;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * SIPUSH - Push short
  *
@@ -85,6 +87,7 @@ public class SIPUSH extends Instruction implements ConstantPushInstruction {
     /** @return Type.SHORT
      */
     @Override
+    @Pure
     public Type getType( final ConstantPoolGen cp ) {
         return Type.SHORT;
     }

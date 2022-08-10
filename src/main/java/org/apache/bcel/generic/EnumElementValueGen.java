@@ -24,6 +24,8 @@ import org.apache.bcel.classfile.ConstantUtf8;
 import org.apache.bcel.classfile.ElementValue;
 import org.apache.bcel.classfile.EnumElementValue;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * @since 6.0
  */
@@ -130,11 +132,13 @@ public class EnumElementValueGen extends ElementValueGen
         // ((ConstantUtf8)getConstantPool().getConstant(cu8.getStringIndex())).getBytes();
     }
 
+    @Pure
     public int getValueIndex()
     {
         return valueIdx;
     }
 
+    @Pure
     public int getTypeIndex()
     {
         return typeIdx;

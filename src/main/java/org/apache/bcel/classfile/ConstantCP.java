@@ -22,6 +22,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.apache.bcel.Const;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Abstract super class for Fieldref, Methodref, InterfaceMethodref and
@@ -100,6 +101,7 @@ public abstract class ConstantCP extends Constant {
     /**
      * @return Reference (index) to class this constant refers to.
      */
+    @Pure
     public final int getClassIndex() {
         return class_index;
     }
@@ -116,6 +118,7 @@ public abstract class ConstantCP extends Constant {
     /**
      * @return Reference (index) to signature of the field.
      */
+    @Pure
     public final int getNameAndTypeIndex() {
         return name_and_type_index;
     }

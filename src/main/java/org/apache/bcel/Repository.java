@@ -24,6 +24,7 @@ import org.apache.bcel.util.ClassPath;
 import org.apache.bcel.util.SyntheticRepository;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * The repository maintains informations about class interdependencies, e.g.,
@@ -42,6 +43,7 @@ public abstract class Repository {
     /**
      * @return currently used repository instance
      */
+    @Pure
     public static org.apache.bcel.util.Repository getRepository() {
         return repository;
     }

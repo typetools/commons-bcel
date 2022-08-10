@@ -25,6 +25,8 @@ import org.apache.bcel.ExceptionConst;
 import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.util.ByteSequence;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * INVOKEINTERFACE - Invoke interface method
  * <PRE>Stack: ..., objectref, [arg1, [arg2 ...]] -&gt; ...</PRE>
@@ -73,6 +75,7 @@ public final class INVOKEINTERFACE extends InvokeInstruction {
      * The <B>count</B> argument according to the Java Language Specification,
      * Second Edition.
      */
+    @Pure
     public int getCount() {
         return nargs;
     }

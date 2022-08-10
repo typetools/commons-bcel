@@ -23,6 +23,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * Represents the default value of a annotation for a method info
  *
@@ -76,6 +78,7 @@ public class AnnotationDefault extends Attribute {
     /**
      * @return the default value
      */
+    @Pure
     public final ElementValue getDefaultValue() {
         return defaultValue;
     }

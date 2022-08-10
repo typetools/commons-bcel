@@ -41,6 +41,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Responsible for loading (class) files from the CLASSPATH. Inspired by sun.tools.ClassPath.
@@ -191,6 +192,7 @@ public class ClassPath implements Closeable {
             return file.exists() ? new ClassFile() {
 
                 @Override
+                @Pure
                 public String getBase() {
                     return dir;
                 }

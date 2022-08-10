@@ -26,6 +26,7 @@ import org.apache.bcel.Const;
 import org.apache.bcel.util.BCELComparator;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Abstract superclass for classes to represent the different constant types
@@ -85,6 +86,7 @@ public abstract class Constant implements Cloneable, Node {
      * @return Tag of constant, i.e., its type. No setTag() method to avoid
      * confusion.
      */
+    @Pure
     public final byte getTag() {
         return tag;
     }
@@ -173,6 +175,7 @@ public abstract class Constant implements Cloneable, Node {
     /**
      * @return Comparison strategy object
      */
+    @Pure
     public static BCELComparator getComparator() {
         return bcelComparator;
     }

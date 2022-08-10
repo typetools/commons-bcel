@@ -23,6 +23,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This class represents a table of line numbers for debugging
  * purposes. This attribute is used by the <em>Code</em> attribute. It
@@ -110,6 +112,7 @@ public final class LineNumberTable extends Attribute {
     /**
      * @return Array of (pc offset, line number) pairs.
      */
+    @Pure
     public LineNumber[] getLineNumberTable() {
         return lineNumberTable;
     }
@@ -209,6 +212,7 @@ public final class LineNumberTable extends Attribute {
     }
 
 
+    @Pure
     public int getTableLength() {
         return lineNumberTable == null ? 0 : lineNumberTable.length;
     }

@@ -756,6 +756,7 @@ public @UsesObjectEquals class ConstantPoolGen {
     /**
      * @return current size of constant pool
      */
+    @Pure
     public int getSize() {
         return index;
     }

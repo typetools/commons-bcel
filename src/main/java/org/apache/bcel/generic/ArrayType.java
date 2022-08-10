@@ -21,6 +21,7 @@ import org.apache.bcel.Const;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.ClassGetName;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Denotes array type, such as int[][]
@@ -89,6 +90,7 @@ public final class ArrayType extends ReferenceType {
     /**
      * @return basic type of array, i.e., for int[][][] the basic type is int
      */
+    @Pure
     public Type getBasicType() {
         return basicType;
     }
@@ -107,6 +109,7 @@ public final class ArrayType extends ReferenceType {
 
     /** @return number of dimensions of array
      */
+    @Pure
     public int getDimensions() {
         return dimensions;
     }

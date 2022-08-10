@@ -26,6 +26,8 @@ import java.util.List;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * represents one annotation in the annotation table
  *
@@ -67,14 +69,17 @@ public class AnnotationEntry implements Node {
         this.isRuntimeVisible = isRuntimeVisible;
     }
 
+    @Pure
     public int getTypeIndex() {
         return typeIndex;
     }
 
+    @Pure
     public ConstantPool getConstantPool() {
         return constantPool;
     }
 
+    @Pure
     public boolean isRuntimeVisible() {
         return isRuntimeVisible;
     }
@@ -101,6 +106,7 @@ public class AnnotationEntry implements Node {
     /**
      * @return the annotation type index
      */
+    @Pure
     public int getAnnotationTypeIndex() {
         return typeIndex;
     }
@@ -108,6 +114,7 @@ public class AnnotationEntry implements Node {
     /**
      * @return the number of element value pairs in this annotation entry
      */
+    @Pure
     public final int getNumElementValuePairs() {
         return elementValuePairs.size();
     }

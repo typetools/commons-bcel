@@ -17,6 +17,8 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * Super class for stack operations like DUP and POP.
  *
@@ -41,6 +43,7 @@ public abstract class StackInstruction extends Instruction {
 
     /** @return Type.UNKNOWN
      */
+    @Pure
     public Type getType( final ConstantPoolGen cp ) {
         return Type.UNKNOWN;
     }

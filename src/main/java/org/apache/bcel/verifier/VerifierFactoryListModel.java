@@ -25,6 +25,8 @@ import java.util.TreeSet;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This class implements an adapter; it implements both a Swing ListModel and a VerifierFactoryObserver.
  *
@@ -64,6 +66,7 @@ public class VerifierFactoryListModel implements VerifierFactoryObserver, javax.
     }
 
     @Override
+    @Pure
     public synchronized int getSize() {
         return cache.size();
     }

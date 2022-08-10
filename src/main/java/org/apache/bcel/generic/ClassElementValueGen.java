@@ -24,6 +24,8 @@ import org.apache.bcel.classfile.ClassElementValue;
 import org.apache.bcel.classfile.ConstantUtf8;
 import org.apache.bcel.classfile.ElementValue;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * @since 6.0
  */
@@ -73,6 +75,7 @@ public class ClassElementValueGen extends ElementValueGen
         }
     }
 
+    @Pure
     public int getIndex()
     {
         return idx;

@@ -23,6 +23,8 @@ import java.io.IOException;
 import org.apache.bcel.ExceptionConst;
 import org.apache.bcel.util.ByteSequence;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * NEWARRAY -  Create new array of basic type (int, short, ...)
  * <PRE>Stack: ..., count -&gt; ..., arrayref</PRE>
@@ -68,6 +70,7 @@ public class NEWARRAY extends Instruction implements AllocationInstruction, Exce
     /**
      * @return numeric code for basic element type
      */
+    @Pure
     public final byte getTypecode() {
         return type;
     }

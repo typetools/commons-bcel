@@ -24,6 +24,7 @@ import java.io.IOException;
 import org.apache.bcel.Const;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 // The new table is used when generic types are about...
 
@@ -94,10 +95,12 @@ public class LocalVariableTypeTable extends Attribute {
         }
     }
 
+    @Pure
     public final LocalVariable[] getLocalVariableTypeTable() {
         return localVariableTypeTable;
     }
 
+    @Pure
     public final @Nullable LocalVariable getLocalVariable(final int index) {
         for (final LocalVariable variable : localVariableTypeTable) {
             if (variable.getIndex() == index) {
@@ -146,6 +149,7 @@ public class LocalVariableTypeTable extends Attribute {
         return c;
     }
 
+    @Pure
     public final int getTableLength() {
         return localVariableTypeTable == null ? 0 : localVariableTypeTable.length;
     }

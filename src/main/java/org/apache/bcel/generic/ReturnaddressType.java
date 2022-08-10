@@ -21,6 +21,7 @@ import org.apache.bcel.Const;
 
 import org.checkerframework.checker.interning.qual.InternedDistinct;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Returnaddress, the type JSR or JSR_W instructions push upon the stack.
@@ -82,6 +83,7 @@ public class ReturnaddressType extends Type {
     /**
      * @return the target of this ReturnaddressType
      */
+    @Pure
     public InstructionHandle getTarget() {
         return returnTarget;
     }

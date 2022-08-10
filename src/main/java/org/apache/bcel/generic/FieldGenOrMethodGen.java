@@ -24,6 +24,8 @@ import org.apache.bcel.Const;
 import org.apache.bcel.classfile.AccessFlags;
 import org.apache.bcel.classfile.Attribute;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * Super class for FieldGen and MethodGen objects, since they have
  * some methods in common!
@@ -76,6 +78,7 @@ public abstract class FieldGenOrMethodGen extends AccessFlags implements NamedAn
 
 
     @Override
+    @Pure
     public Type getType() {
         return type;
     }
@@ -84,6 +87,7 @@ public abstract class FieldGenOrMethodGen extends AccessFlags implements NamedAn
     /** @return name of method/field.
      */
     @Override
+    @Pure
     public String getName() {
         return name;
     }
@@ -95,6 +99,7 @@ public abstract class FieldGenOrMethodGen extends AccessFlags implements NamedAn
     }
 
 
+    @Pure
     public ConstantPoolGen getConstantPool() {
         return cp;
     }

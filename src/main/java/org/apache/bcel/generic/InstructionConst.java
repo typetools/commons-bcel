@@ -19,6 +19,8 @@ package org.apache.bcel.generic;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This interface contains shareable instruction objects.
  *
@@ -290,6 +292,7 @@ public final class InstructionConst {
      * @param index the index, e.g. {@link Const#RETURN}
      * @return the entry from the private INSTRUCTIONS table
      */
+    @Pure
     public static Instruction getInstruction(final int index) {
         return INSTRUCTIONS[index];
     }

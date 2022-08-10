@@ -22,6 +22,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * @since 6.0
  */
@@ -74,11 +76,13 @@ public class EnumElementValue extends ElementValue
         return cu8.getBytes();
     }
 
+    @Pure
     public int getValueIndex()
     {
         return valueIdx;
     }
 
+    @Pure
     public int getTypeIndex()
     {
         return typeIdx;

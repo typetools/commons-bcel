@@ -24,6 +24,8 @@ import java.io.IOException;
 import org.apache.bcel.Const;
 import org.apache.bcel.Constants;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This class represents an entry in the exception table of the <em>Code</em>
  * attribute and is used only there. It contains a range in which a
@@ -112,6 +114,7 @@ public final class CodeException implements Cloneable, Node, Constants {
      * @return 0, if the handler catches any exception, otherwise it points to
      * the exception class which is to be caught.
      */
+    @Pure
     public int getCatchType() {
         return catchType;
     }
@@ -120,6 +123,7 @@ public final class CodeException implements Cloneable, Node, Constants {
     /**
      * @return Exclusive end index of the region where the handler is active.
      */
+    @Pure
     public int getEndPC() {
         return endPc;
     }
@@ -128,6 +132,7 @@ public final class CodeException implements Cloneable, Node, Constants {
     /**
      * @return Starting address of exception handler, relative to the code.
      */
+    @Pure
     public int getHandlerPC() {
         return handlerPc;
     }
@@ -136,6 +141,7 @@ public final class CodeException implements Cloneable, Node, Constants {
     /**
      * @return Inclusive start index of the region where the handler is active.
      */
+    @Pure
     public int getStartPC() {
         return startPc;
     }
