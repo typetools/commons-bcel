@@ -486,7 +486,7 @@ public final class Pass3aVerifier extends PassVerifier{
          * Utility method to return the max_locals value of the method verified
          * by the surrounding Pass3aVerifier instance.
          */
-        private int max_locals() {
+        private @NonNegative int max_locals() {
            try {
             return Repository.lookupClass(myOwner.getClassName()).getMethods()[methodNo].getCode().getMaxLocals();
             } catch (final ClassNotFoundException e) {

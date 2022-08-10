@@ -146,7 +146,7 @@ public @UsesObjectEquals class InstructionHandle {
      * @param max_offset the maximum offset that may be caused by these instructions
      * @return additional offset caused by possible change of this instruction's length
      */
-    protected int updatePosition( final int offset, final int max_offset ) {
+    protected @NonNegative int updatePosition( final @NonNegative int offset, final @NonNegative int max_offset ) {
         i_position += offset;
         return 0;
     }

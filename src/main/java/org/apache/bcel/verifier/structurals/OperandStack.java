@@ -18,9 +18,6 @@
 package org.apache.bcel.verifier.structurals;
 
 
-import org.checkerframework.dataflow.qual.Pure;
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 import java.util.ArrayList;
 
 import org.apache.bcel.generic.ObjectType;
@@ -28,6 +25,10 @@ import org.apache.bcel.generic.ReferenceType;
 import org.apache.bcel.generic.Type;
 import org.apache.bcel.verifier.exc.AssertionViolatedException;
 import org.apache.bcel.verifier.exc.StructuralCodeConstraintException;
+
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * This class implements a stack used for symbolic JVM stack simulation.
@@ -41,12 +42,12 @@ public class OperandStack implements Cloneable {
     private ArrayList<Type> stack = new ArrayList<>();
 
     /** The maximum number of stack slots this OperandStack instance may hold. */
-    private final int maxStack;
+    private final @NonNegative int maxStack;
 
     /**
      * Creates an empty stack with a maximum of maxStack slots.
      */
-    public OperandStack(final int maxStack) {
+    public OperandStack(final @NonNegative int maxStack) {
         this.maxStack = maxStack;
     }
 
@@ -54,7 +55,7 @@ public class OperandStack implements Cloneable {
      * Creates an otherwise empty stack with a maximum of maxStack slots and
      * the ObjectType 'obj' at the top.
      */
-    public OperandStack(final int maxStack, final ObjectType obj) {
+    public OperandStack(final @NonNegative int maxStack, final ObjectType obj) {
         this.maxStack = maxStack;
         this.push(obj);
     }
@@ -117,7 +118,7 @@ public class OperandStack implements Cloneable {
     /**
      * Returns the number of stack slots this stack can hold.
      */
-    public int maxStack() {
+    public @NonNegative int maxStack() {
         return this.maxStack;
     }
 
@@ -177,7 +178,7 @@ public class OperandStack implements Cloneable {
      * Returns the size of this OperandStack; that means, how many Type objects there are.
      */
     @Pure
-    public int size() {
+    public @NonNegative int size() {
         return stack.size();
     }
 
@@ -185,7 +186,7 @@ public class OperandStack implements Cloneable {
      * Returns the number of stack slots used.
      * @see #maxStack()
      */
-    public int slotsUsed() {
+    public @NonNegative int slotsUsed() {
         /*  XXX change this to a better implementation using a variable
             that keeps track of the actual slotsUsed()-value monitoring
             all push()es and pop()s.

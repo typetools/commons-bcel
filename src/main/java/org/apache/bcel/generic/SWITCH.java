@@ -72,7 +72,7 @@ public final class SWITCH implements CompoundInstruction {
     }
 
 
-    private void fillup( final int max_gap, final InstructionHandle target ) {
+    private void fillup( final @NonNegative int max_gap, final InstructionHandle target ) {
         final @NonNegative int max_size = matchLength + matchLength * max_gap;
         final int[] m_vec = new int[max_size];
         final InstructionHandle[] t_vec = new InstructionHandle[max_size];

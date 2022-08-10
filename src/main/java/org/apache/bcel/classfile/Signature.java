@@ -68,7 +68,7 @@ public final class Signature extends Attribute {
      * @param signatureIndex Index in constant pool to CONSTANT_Utf8
      * @param constant_pool Array of constants
      */
-    public Signature(final @NonNegative int name_index, final @NonNegative int length, final int signatureIndex, final ConstantPool constant_pool) {
+    public Signature(final @NonNegative int name_index, final @NonNegative int length, final @NonNegative int signatureIndex, final ConstantPool constant_pool) {
         super(Const.ATTR_SIGNATURE, name_index, length, constant_pool);
         this.signatureIndex = signatureIndex;
     }

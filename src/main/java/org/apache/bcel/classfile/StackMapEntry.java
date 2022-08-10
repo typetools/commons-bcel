@@ -38,7 +38,7 @@ public final class StackMapEntry implements Node, Cloneable
 {
 
     private int frameType;
-    private int byteCodeOffset;
+    private @NonNegative int byteCodeOffset;
     private StackMapType[] typesOfLocals;
     private StackMapType[] typesOfStackItems;
     private ConstantPool constantPool;
@@ -232,7 +232,7 @@ public final class StackMapEntry implements Node, Cloneable
      * Calculate stack map entry size
      *
      */
-    int getMapEntrySize() {
+    @NonNegative int getMapEntrySize() {
         if (frameType >= Const.SAME_FRAME && frameType <= Const.SAME_FRAME_MAX) {
             return 1;
         } else if (frameType >= Const.SAME_LOCALS_1_STACK_ITEM_FRAME &&

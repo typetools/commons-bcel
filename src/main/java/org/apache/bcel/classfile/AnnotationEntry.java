@@ -112,7 +112,7 @@ public class AnnotationEntry implements Node {
     /**
      * @return the number of element value pairs in this annotation entry
      */
-    public final int getNumElementValuePairs() {
+    public final @NonNegative int getNumElementValuePairs() {
         return elementValuePairs.size();
     }
 

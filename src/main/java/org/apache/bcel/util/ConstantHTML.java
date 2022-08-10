@@ -33,6 +33,7 @@ import org.apache.bcel.classfile.ConstantString;
 import org.apache.bcel.classfile.Method;
 import org.apache.bcel.classfile.Utility;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -224,7 +225,7 @@ final class ConstantHTML {
     }
 
 
-    private int getMethodNumber( final String str ) {
+    private @GTENegativeOne int getMethodNumber( final String str ) {
         for (int i = 0; i < methods.length; i++) {
             final String cmp = methods[i].getName() + methods[i].getSignature();
             if (cmp.equals(str)) {

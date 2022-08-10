@@ -30,6 +30,8 @@ import org.apache.bcel.classfile.Field;
 import org.apache.bcel.classfile.Method;
 import org.apache.bcel.classfile.Utility;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Convert methods and fields into HTML file.
  *
@@ -100,7 +102,7 @@ final class MethodHTML {
     }
 
 
-    private void writeMethod( final Method method, final int method_number ) {
+    private void writeMethod( final Method method, final @NonNegative int method_number ) {
         // Get raw signature
         final String signature = method.getSignature();
         // Get array of strings containing the argument types

@@ -37,6 +37,7 @@ import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.classfile.ConstantString;
 import org.apache.bcel.classfile.ConstantUtf8;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 import org.checkerframework.checker.signature.qual.FieldDescriptor;
@@ -582,14 +583,14 @@ public @UsesObjectEquals class ConstantPoolGen {
      * @param signature return and argument types
      * @return index on success, -1 otherwise
      */
-    public int lookupMethodref( final String class_name, final String method_name, final String signature ) {
+    public @GTENegativeOne int lookupMethodref( final String class_name, final String method_name, final String signature ) {
         final Index index = cpTable.get(class_name + METHODREF_DELIM + method_name
                 + METHODREF_DELIM + signature);
         return (index != null) ? index.index : -1;
     }
 
 
-    public int lookupMethodref( final MethodGen method ) {
+    public @GTENegativeOne int lookupMethodref( final MethodGen method ) {
         return lookupMethodref(method.getClassName(), method.getName(), method.getSignature());
     }
 
@@ -623,7 +624,7 @@ public @UsesObjectEquals class ConstantPoolGen {
     }
 
 
-    public int addMethodref( final MethodGen method ) {
+    public @NonNegative int addMethodref( final MethodGen method ) {
         return addMethodref(method.getClassName(), method.getName(), method.getSignature());
     }
 
@@ -636,14 +637,14 @@ public @UsesObjectEquals class ConstantPoolGen {
      * @param signature return and argument types
      * @return index on success, -1 otherwise
      */
-    public int lookupInterfaceMethodref( final String class_name, final String method_name, final String signature ) {
+    public @GTENegativeOne int lookupInterfaceMethodref( final String class_name, final String method_name, final String signature ) {
         final Index index = cpTable.get(class_name + IMETHODREF_DELIM + method_name
                 + IMETHODREF_DELIM + signature);
         return (index != null) ? index.index : -1;
     }
 
 
-    public int lookupInterfaceMethodref( final MethodGen method ) {
+    public @GTENegativeOne int lookupInterfaceMethodref( final MethodGen method ) {
         return lookupInterfaceMethodref(method.getClassName(), method.getName(), method
                 .getSignature());
     }
@@ -678,7 +679,7 @@ public @UsesObjectEquals class ConstantPoolGen {
     }
 
 
-    public int addInterfaceMethodref( final MethodGen method ) {
+    public @NonNegative int addInterfaceMethodref( final MethodGen method ) {
         return addInterfaceMethodref(method.getClassName(), method.getName(), method.getSignature());
     }
 
@@ -691,7 +692,7 @@ public @UsesObjectEquals class ConstantPoolGen {
      * @param signature return and argument types
      * @return index on success, -1 otherwise
      */
-    public int lookupFieldref( final String class_name, final String field_name, final String signature ) {
+    public @GTENegativeOne int lookupFieldref( final String class_name, final String field_name, final String signature ) {
         final Index index = cpTable.get(class_name + FIELDREF_DELIM + field_name
                 + FIELDREF_DELIM + signature);
         return (index != null) ? index.index : -1;

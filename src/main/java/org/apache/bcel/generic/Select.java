@@ -126,7 +126,7 @@ public abstract class Select extends BranchInstruction implements VariableLength
      * @return additional offset caused by possible change of this instruction's length
      */
     @Override
-    protected int updatePosition( final @NonNegative int offset, final @NonNegative int max_offset ) {
+    protected @NonNegative int updatePosition( final @NonNegative int offset, final @NonNegative int max_offset ) {
         setPosition(getPosition() + offset); // Additional offset caused by preceding SWITCHs, GOTOs, etc.
         final short old_length = (short) super.getLength();
         /* Alignment on 4-byte-boundary, + 1, because of tag byte.

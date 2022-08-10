@@ -498,7 +498,7 @@ final class CodeHTML {
     /**
      * Write a single method with the byte code associated with it.
      */
-    private void writeMethod( @UnknownInitialization(CodeHTML.class) CodeHTML this, final Method method, final int method_number ) throws IOException {
+    private void writeMethod( @UnknownInitialization(CodeHTML.class) CodeHTML this, final Method method, final @NonNegative int method_number ) throws IOException {
         // Get raw signature
         final String signature = method.getSignature();
         // Get array of strings containing the argument types

@@ -158,7 +158,7 @@ public final class LineNumberTable extends Attribute {
      * @param pos byte code offset
      * @return corresponding line in source code
      */
-    public int getSourceLine( final @NonNegative int pos ) {
+    public @NonNegative int getSourceLine( final @NonNegative int pos ) {
         int l = 0;
         int r = lineNumberTable.length - 1;
         if (r < 0) {

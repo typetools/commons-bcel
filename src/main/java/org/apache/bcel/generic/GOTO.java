@@ -20,6 +20,8 @@ package org.apache.bcel.generic;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * GOTO - Branch always (to relative offset, not absolute address)
  *
@@ -66,7 +68,7 @@ public class GOTO extends GotoInstruction implements VariableLengthInstruction {
      * @return additional offset caused by possible change of this instruction's length
      */
     @Override
-    protected int updatePosition( final int offset, final int max_offset ) {
+    protected @NonNegative int updatePosition( final @NonNegative int offset, final @NonNegative int max_offset ) {
         final int i = getTargetOffset(); // Depending on old position value
         setPosition(getPosition() + offset); // Position may be shifted by preceding expansions
         if (Math.abs(i) >= (Short.MAX_VALUE - max_offset)) { // to large for short (estimate)

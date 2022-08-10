@@ -450,12 +450,12 @@ public class ClassGen extends AccessFlags implements Cloneable {
     }
 
 
-    public void setMethodAt( final Method method, final int pos ) {
+    public void setMethodAt( final Method method, final @NonNegative int pos ) {
         methodList.set(pos, method);
     }
 
 
-    public Method getMethodAt( final int pos ) {
+    public Method getMethodAt( final @NonNegative int pos ) {
         return methodList.get(pos);
     }
 

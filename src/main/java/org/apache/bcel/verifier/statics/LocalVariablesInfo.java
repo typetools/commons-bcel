@@ -22,6 +22,8 @@ import org.apache.bcel.generic.Type;
 import org.apache.bcel.verifier.exc.AssertionViolatedException;
 import org.apache.bcel.verifier.exc.LocalVariableInfoInconsistentException;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * A utility class holding the information about
  * the names and the types of the local variables in
@@ -33,7 +35,7 @@ public class LocalVariablesInfo{
     private final LocalVariableInfo[] localVariableInfos;
 
     /** The constructor. */
-    LocalVariablesInfo(final int max_locals) {
+    LocalVariablesInfo(final @NonNegative int max_locals) {
         localVariableInfos = new LocalVariableInfo[max_locals];
         for (int i=0; i<max_locals; i++) {
             localVariableInfos[i] = new LocalVariableInfo();
@@ -46,7 +48,7 @@ public class LocalVariablesInfo{
      * @param slot Slot to query.
      * @return The LocalVariableInfo for the given slot.
      */
-    public LocalVariableInfo getLocalVariableInfo(final int slot) {
+    public LocalVariableInfo getLocalVariableInfo(final @NonNegative int slot) {
         if (slot < 0 || slot >= localVariableInfos.length) {
             throw new AssertionViolatedException("Slot number for local variable information out of range.");
         }
@@ -64,7 +66,7 @@ public class LocalVariablesInfo{
      * @throws LocalVariableInfoInconsistentException if the new information conflicts
      *         with already gathered information.
      */
-    public void add(final int slot, final String name, final int startPc, final int length, final Type type) throws LocalVariableInfoInconsistentException{
+    public void add(final @NonNegative int slot, final String name, final int startPc, final int length, final Type type) throws LocalVariableInfoInconsistentException{
         // The add operation on LocalVariableInfo may throw the '...Inconsistent...' exception, we don't throw it explicitely here.
 
         if (slot < 0 || slot >= localVariableInfos.length) {

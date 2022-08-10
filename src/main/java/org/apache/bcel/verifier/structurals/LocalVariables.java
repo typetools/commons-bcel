@@ -42,7 +42,7 @@ public class LocalVariables implements Cloneable {
      *
      * @param localVariableCount local variable count.
      */
-    public LocalVariables(final int localVariableCount) {
+    public LocalVariables(final @NonNegative int localVariableCount) {
         locals = new Type[localVariableCount];
         for (int i=0; i<localVariableCount; i++) {
             locals[i] = Type.UNKNOWN;
@@ -90,7 +90,7 @@ public class LocalVariables implements Cloneable {
      * @return the number of local variable slots.
      */
     @Pure
-    public int maxLocals() {
+    public @NonNegative int maxLocals() {
         return locals.length;
     }
 

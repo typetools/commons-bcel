@@ -1202,7 +1202,7 @@ public abstract class Utility {
     }
 
 
-    private static int countBrackets( final String brackets ) {
+    private static @NonNegative int countBrackets( final String brackets ) {
         final char[] chars = brackets.toCharArray();
         int count = 0;
         boolean open = false;

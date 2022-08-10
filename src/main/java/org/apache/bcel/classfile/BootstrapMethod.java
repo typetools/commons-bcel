@@ -68,7 +68,7 @@ public class BootstrapMethod implements Cloneable {
     }
 
     // helper method
-    private BootstrapMethod(final @NonNegative int bootstrap_method_ref, final int num_bootstrap_arguments) {
+    private BootstrapMethod(final @NonNegative int bootstrap_method_ref, final @NonNegative int num_bootstrap_arguments) {
         this(bootstrap_method_ref, new int[num_bootstrap_arguments]);
     }
 
