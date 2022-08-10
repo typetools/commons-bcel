@@ -262,6 +262,7 @@ public abstract class Select extends BranchInstruction implements VariableLength
     /**
      * @return array of match indices
      */
+    @Pure
     public int[] getMatchs() {
         return match;
     }
@@ -270,6 +271,7 @@ public abstract class Select extends BranchInstruction implements VariableLength
     /**
      * @return array of match target offsets
      */
+    @Pure
     public int[] getIndices() {
         return indices;
     }
@@ -278,6 +280,7 @@ public abstract class Select extends BranchInstruction implements VariableLength
     /**
      * @return array of match targets
      */
+    @Pure
     public InstructionHandle[] getTargets() {
         return targets;
     }

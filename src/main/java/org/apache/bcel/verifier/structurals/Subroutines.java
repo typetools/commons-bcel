@@ -613,6 +613,7 @@ public class Subroutines{
      * @see Subroutine#getEnteringJsrInstructions()
      * @see Subroutine#getLeavingRET()
      */
+    @Pure
     public Subroutine getTopLevel() {
         return TOPLEVEL;
     }

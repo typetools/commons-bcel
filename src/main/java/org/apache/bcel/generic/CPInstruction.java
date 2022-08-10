@@ -123,6 +123,7 @@ public abstract class CPInstruction extends Instruction implements TypedInstruct
      * @return index in constant pool referred by this instruction.
      */
     @Override
+    @Pure
     public final @NonNegative int getIndex() {
         return index;
     }

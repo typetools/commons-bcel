@@ -181,6 +181,7 @@ public class SimpleElementValueGen extends ElementValueGen
         return new SimpleElementValue(super.getElementValueType(), idx, getConstantPool().getConstantPool());
     }
 
+    @Pure
     public @NonNegative int getIndex()
     {
         return idx;

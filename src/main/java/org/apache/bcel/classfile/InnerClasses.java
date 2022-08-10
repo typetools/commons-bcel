@@ -115,6 +115,7 @@ public final class InnerClasses extends Attribute {
     /**
      * @return array of inner class "records"
      */
+    @Pure
     public InnerClass[] getInnerClasses() {
         return innerClasses;
     }

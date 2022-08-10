@@ -90,6 +90,7 @@ public final class ConstantMethodType extends Constant {
     }
 
 
+    @Pure
     public @NonNegative int getDescriptorIndex() {
         return descriptorIndex;
     }

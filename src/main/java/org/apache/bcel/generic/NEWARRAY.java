@@ -68,6 +68,7 @@ public class NEWARRAY extends Instruction implements AllocationInstruction, Exce
     /**
      * @return numeric code for basic element type
      */
+    @Pure
     public final byte getTypecode() {
         return type;
     }

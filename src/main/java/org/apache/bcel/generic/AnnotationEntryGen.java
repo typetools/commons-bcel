@@ -134,6 +134,7 @@ public class AnnotationEntryGen {
         evs.add(evp);
     }
 
+    @Pure
     public @NonNegative int getTypeIndex() {
         return typeIndex;
     }
@@ -153,6 +154,7 @@ public class AnnotationEntryGen {
     /**
      * Returns list of ElementNameValuePair objects
      */
+    @Pure
     public List<ElementValuePairGen> getValues() {
         return evs;
     }

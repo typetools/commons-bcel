@@ -79,6 +79,7 @@ public class AnnotationElementValueGen extends ElementValueGen
                 getConstantPool().getConstantPool());
     }
 
+    @Pure
     public AnnotationEntryGen getAnnotation()
     {
         return a;

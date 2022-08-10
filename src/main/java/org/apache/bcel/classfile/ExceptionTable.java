@@ -114,6 +114,7 @@ public final class ExceptionTable extends Attribute {
     /**
      * @return Array of indices into constant pool of thrown exceptions.
      */
+    @Pure
     public int[] getExceptionIndexTable() {
         return exceptionIndexTable;
     }
@@ -122,6 +123,7 @@ public final class ExceptionTable extends Attribute {
     /**
      * @return Length of exception table.
      */
+    @Pure
     public @NonNegative int getNumberOfExceptions() {
         return exceptionIndexTable == null ? 0 : exceptionIndexTable.length;
     }

@@ -276,6 +276,7 @@ public class ConstantPool implements Cloneable, Node {
      * @return Array of constants.
      * @see    Constant
      */
+    @Pure
     public Constant[] getConstantPool() {
         return constantPool;
     }
@@ -329,6 +330,7 @@ public class ConstantPool implements Cloneable, Node {
     /**
      * @return Length of constant pool.
      */
+    @Pure
     public int getLength() {
         return constantPool == null ? 0 : constantPool.length;
     }

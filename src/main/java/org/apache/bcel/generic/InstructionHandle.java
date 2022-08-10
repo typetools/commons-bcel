@@ -74,16 +74,19 @@ public @UsesObjectEquals class InstructionHandle {
         // noop
     }
 
+    @Pure
     public final InstructionHandle getNext() {
         return next;
     }
 
 
+    @Pure
     public final InstructionHandle getPrev() {
         return prev;
     }
 
 
+    @Pure
     public final Instruction getInstruction() {
         return instruction;
     }
@@ -156,6 +159,7 @@ public @UsesObjectEquals class InstructionHandle {
      * instruction. This is accurate only after
      * InstructionList.setPositions() has been called.
      */
+    @Pure
     public @NonNegative int getPosition() {
         return i_position;
     }

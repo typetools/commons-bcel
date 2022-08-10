@@ -65,6 +65,7 @@ public class ParameterAnnotationEntry implements Node {
     /**
      * returns the array of annotation entries in this annotation
      */
+    @Pure
     public AnnotationEntry[] getAnnotationEntries() {
         return annotationTable;
     }

@@ -97,10 +97,12 @@ public class LocalVariableTypeTable extends Attribute {
         }
     }
 
+    @Pure
     public final LocalVariable[] getLocalVariableTypeTable() {
         return localVariableTypeTable;
     }
 
+    @Pure
     public final @Nullable LocalVariable getLocalVariable(final @NonNegative int index) {
         for (final LocalVariable variable : localVariableTypeTable) {
             if (variable.getIndex() == index) {
@@ -149,6 +151,7 @@ public class LocalVariableTypeTable extends Attribute {
         return c;
     }
 
+    @Pure
     public final int getTableLength() {
         return localVariableTypeTable == null ? 0 : localVariableTypeTable.length;
     }

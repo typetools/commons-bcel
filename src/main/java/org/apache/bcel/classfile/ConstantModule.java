@@ -125,6 +125,7 @@ public final class ConstantModule extends Constant implements ConstantObject {
 
     /** @return dereferenced string
      */
+    @Pure
     public String getBytes( final ConstantPool cp ) {
         return (String) getConstantValue(cp);
     }

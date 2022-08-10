@@ -110,11 +110,13 @@ public class ArrayElementValueGen extends ElementValueGen
         return sb.toString();
     }
 
+    @Pure
     public List<ElementValueGen> getElementValues()
     {
         return evalues;
     }
 
+    @Pure
     public int getElementValuesSize()
     {
         return evalues.size();

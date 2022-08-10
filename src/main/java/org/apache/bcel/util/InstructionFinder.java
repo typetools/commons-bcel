@@ -286,6 +286,7 @@ public class InstructionFinder {
     /**
      * @return the inquired instruction list
      */
+    @Pure
     public final InstructionList getInstructionList() {
         return il;
     }

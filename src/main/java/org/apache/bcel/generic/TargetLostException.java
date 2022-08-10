@@ -59,6 +59,7 @@ public final class TargetLostException extends Exception {
     /**
      * @return list of instructions still being targeted.
      */
+    @Pure
     public InstructionHandle[] getTargets() {
         return targets;
     }

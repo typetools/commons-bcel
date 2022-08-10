@@ -1042,6 +1042,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
      *
      * @return array containing all instruction's offset in byte code
      */
+    @Pure
     public int[] getInstructionPositions() {
         return bytePositions;
     }

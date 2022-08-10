@@ -80,6 +80,7 @@ public final class ConstantInvokeDynamic extends ConstantCP {
      * for use by ConstantInvokeDynamic.
      * @since 6.0
      */
+    @Pure
     public @NonNegative int getBootstrapMethodAttrIndex() {
         return super.getClassIndex();  // AKA bootstrap_method_attr_index
     }

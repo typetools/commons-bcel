@@ -31,6 +31,7 @@ public class DCMPG extends Instruction implements TypedInstruction, StackProduce
     /** @return Type.DOUBLE
      */
     @Override
+    @Pure
     public Type getType( final ConstantPoolGen cp ) {
         return Type.DOUBLE;
     }

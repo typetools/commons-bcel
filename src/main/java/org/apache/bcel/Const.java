@@ -377,6 +377,7 @@ public final class Const {
    * @return the ACCESS_NAMES entry at the given index
    * @since 6.0
    */
+  @Pure
   public static String getAccessName(final @NonNegative int index) {
       return ACCESS_NAMES[index];
   }
@@ -524,6 +525,7 @@ public final class Const {
    * @return the CONSTANT_NAMES entry at the given index
    * @since 6.0
    */
+  @Pure
   public static String getConstantName(final @NonNegative int index) {
       return CONSTANT_NAMES[index];
   }
@@ -1907,6 +1909,7 @@ public final class Const {
    * @return the type name
    * @since 6.0
    */
+  @Pure
   public static String getTypeName(final @NonNegative int index) {
       return TYPE_NAMES[index];
   }
@@ -1929,6 +1932,7 @@ public final class Const {
    * @return the class name
    * @since 6.0
    */
+  @Pure
   public static String getClassTypeName(final @NonNegative int index) {
       return CLASS_TYPE_NAMES[index];
   }
@@ -1948,6 +1952,7 @@ public final class Const {
    * @return the short type name
    * @since 6.0
    */
+  @Pure
   public static @FieldDescriptor String getShortTypeName(final @NonNegative int index) {
       return SHORT_TYPE_NAMES[index];
   }
@@ -2025,6 +2030,7 @@ public final class Const {
    * @return Number of byte code operands
    * @since 6.0
    */
+  @Pure
   public static short getNoOfOperands(final @NonNegative int index) {
       return NO_OF_OPERANDS[index];
   }
@@ -2101,6 +2107,7 @@ public final class Const {
   /**
    * @since 6.0
    */
+  @Pure
   public static short getOperandType(final int opcode, final @NonNegative int index) {
       return TYPE_OF_OPERANDS[opcode][index];
   }
@@ -2108,6 +2115,7 @@ public final class Const {
   /**
    * @since 6.0
    */
+  @Pure
   public static long getOperandTypeCount(final int opcode) {
       return TYPE_OF_OPERANDS[opcode].length;
   }
@@ -2173,6 +2181,7 @@ public final class Const {
   /**
    * @since 6.0
    */
+  @Pure
   public static String getOpcodeName(final @NonNegative int index) {
       return OPCODE_NAMES[index];
   }
@@ -2239,6 +2248,7 @@ public final class Const {
    * @return Number of words consumed on operand stack
    * @since 6.0
    */
+  @Pure
   public static int getConsumeStack(final @NonNegative int index) {
       return CONSUME_STACK[index];
   }
@@ -2306,6 +2316,7 @@ public final class Const {
    * @return Number of words produced onto operand stack
    * @since 6.0
    */
+  @Pure
   public static int getProduceStack(final @NonNegative int index) {
       return PRODUCE_STACK[index];
   }
@@ -2361,6 +2372,7 @@ public final class Const {
    * @return the attribute name
    * @since 6.0
    */
+  @Pure
   public static String getAttributeName(final @NonNegative int index) {
       return ATTRIBUTE_NAMES[index];
   }
@@ -2388,6 +2400,7 @@ public final class Const {
    * @return the item name
    * @since 6.0
    */
+  @Pure
   public static String getItemName(final @NonNegative int index) {
       return ITEM_NAMES[index];
   }
@@ -2439,6 +2452,7 @@ public final class Const {
    * @return the method handle name
    * @since 6.0
    */
+  @Pure
   public static String getMethodHandleName(final @NonNegative int index) {
       return METHODHANDLE_NAMES[index];
   }

@@ -338,6 +338,7 @@ public abstract class Attribute implements Cloneable, Node {
      * @return Name of attribute
      * @since 6.0
      */
+    @Pure
     public String getName()
     {
         final ConstantUtf8 c = (ConstantUtf8) constant_pool.getConstant(name_index, Const.CONSTANT_Utf8);

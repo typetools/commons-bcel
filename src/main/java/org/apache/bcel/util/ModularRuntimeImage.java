@@ -145,6 +145,7 @@ public class ModularRuntimeImage implements Closeable {
         return list(PACKAGES_PATH);
     }
 
+    @Pure
     public FileSystem getFileSystem() {
         return fileSystem;
     }

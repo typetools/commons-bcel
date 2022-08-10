@@ -71,14 +71,17 @@ public class AnnotationEntry implements Node {
         this.isRuntimeVisible = isRuntimeVisible;
     }
 
+    @Pure
     public @NonNegative int getTypeIndex() {
         return typeIndex;
     }
 
+    @Pure
     public ConstantPool getConstantPool() {
         return constantPool;
     }
 
+    @Pure
     public boolean isRuntimeVisible() {
         return isRuntimeVisible;
     }
@@ -97,6 +100,7 @@ public class AnnotationEntry implements Node {
     /**
      * @return the annotation type name
      */
+    @Pure
     public String getAnnotationType() {
         final ConstantUtf8 c = (ConstantUtf8) constantPool.getConstant(typeIndex, Const.CONSTANT_Utf8);
         return c.getBytes();
@@ -105,6 +109,7 @@ public class AnnotationEntry implements Node {
     /**
      * @return the annotation type index
      */
+    @Pure
     public @NonNegative int getAnnotationTypeIndex() {
         return typeIndex;
     }
@@ -112,6 +117,7 @@ public class AnnotationEntry implements Node {
     /**
      * @return the number of element value pairs in this annotation entry
      */
+    @Pure
     public final int getNumElementValuePairs() {
         return elementValuePairs.size();
     }

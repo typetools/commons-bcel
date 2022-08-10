@@ -70,6 +70,7 @@ public final class AssertionViolatedException extends RuntimeException{
      * @return the error message string of this AssertionViolatedException.
      */
     @Override
+    @Pure
     public String getMessage() {
         return detailMessage;
     }

@@ -84,6 +84,7 @@ public class Frame{
     /**
      *
      */
+    @Pure
     public LocalVariables getLocals() {
         return locals;
     }
@@ -91,6 +92,7 @@ public class Frame{
     /**
      *
      */
+    @Pure
     public OperandStack getStack() {
         return stack;
     }
@@ -128,6 +130,7 @@ public class Frame{
      * @return the _this
      * @since 6.0
      */
+    @Pure
     public static UninitializedObjectType getThis() {
         return _this;
     }

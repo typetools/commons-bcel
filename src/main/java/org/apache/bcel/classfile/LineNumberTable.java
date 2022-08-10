@@ -115,6 +115,7 @@ public final class LineNumberTable extends Attribute {
     /**
      * @return Array of (pc offset, line number) pairs.
      */
+    @Pure
     public LineNumber[] getLineNumberTable() {
         return lineNumberTable;
     }
@@ -214,6 +215,7 @@ public final class LineNumberTable extends Attribute {
     }
 
 
+    @Pure
     public @NonNegative int getTableLength() {
         return lineNumberTable == null ? 0 : lineNumberTable.length;
     }

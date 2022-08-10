@@ -104,6 +104,7 @@ public final class ConstantValue extends Attribute {
     /**
      * @return Index in constant pool of constant value.
      */
+    @Pure
     public @NonNegative int getConstantValueIndex() {
         return constantValueIndex;
     }

@@ -55,6 +55,7 @@ public class ElementValuePair
         return c.getBytes();
     }
 
+    @Pure
     public final ElementValue getValue()
     {
         return elementValue;

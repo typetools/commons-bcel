@@ -96,6 +96,7 @@ public class ControlFlowGraph{
 
         /* Satisfies InstructionContext.getTag(). */
         @Override
+        @Pure
         public int getTag() {
             return TAG;
         }
@@ -282,6 +283,7 @@ public class ControlFlowGraph{
          * Fulfils the contract of InstructionContext.getInstruction().
          */
         @Override
+        @Pure
         public InstructionHandle getInstruction() {
             return instruction;
         }

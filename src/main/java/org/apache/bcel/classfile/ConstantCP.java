@@ -104,6 +104,7 @@ public abstract class ConstantCP extends Constant {
     /**
      * @return Reference (index) to class this constant refers to.
      */
+    @Pure
     public final @NonNegative int getClassIndex() {
         return class_index;
     }
@@ -120,6 +121,7 @@ public abstract class ConstantCP extends Constant {
     /**
      * @return Reference (index) to signature of the field.
      */
+    @Pure
     public final @NonNegative int getNameAndTypeIndex() {
         return name_and_type_index;
     }

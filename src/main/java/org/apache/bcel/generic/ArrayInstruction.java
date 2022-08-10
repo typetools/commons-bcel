@@ -51,6 +51,7 @@ public abstract class ArrayInstruction extends Instruction implements ExceptionT
     /** @return type associated with the instruction
      */
     @Override
+    @Pure
     public Type getType( final ConstantPoolGen cp ) {
         final short _opcode = super.getOpcode();
         switch (_opcode) {

@@ -107,6 +107,7 @@ public final class InnerClass implements Cloneable, Node {
     /**
      * @return access flags of inner class.
      */
+    @Pure
     public int getInnerAccessFlags() {
         return innerAccessFlags;
     }
@@ -115,6 +116,7 @@ public final class InnerClass implements Cloneable, Node {
     /**
      * @return class index of inner class.
      */
+    @Pure
     public @NonNegative int getInnerClassIndex() {
         return innerClassIndex;
     }
@@ -123,6 +125,7 @@ public final class InnerClass implements Cloneable, Node {
     /**
      * @return name index of inner class.
      */
+    @Pure
     public @NonNegative int getInnerNameIndex() {
         return innerNameIndex;
     }
@@ -131,6 +134,7 @@ public final class InnerClass implements Cloneable, Node {
     /**
      * @return class index of outer class.
      */
+    @Pure
     public @NonNegative int getOuterClassIndex() {
         return outerClassIndex;
     }

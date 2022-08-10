@@ -792,6 +792,7 @@ public class InstructionFactory implements InstructionConstants {
     }
 
 
+    @Pure
     public @Nullable ClassGen getClassGen() {
         return cg;
     }
@@ -802,6 +803,7 @@ public class InstructionFactory implements InstructionConstants {
     }
 
 
+    @Pure
     public ConstantPoolGen getConstantPool() {
         return cp;
     }

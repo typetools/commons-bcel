@@ -134,11 +134,13 @@ public class EnumElementValueGen extends ElementValueGen
         // ((ConstantUtf8)getConstantPool().getConstant(cu8.getStringIndex())).getBytes();
     }
 
+    @Pure
     public @NonNegative int getValueIndex()
     {
         return valueIdx;
     }
 
+    @Pure
     public @NonNegative int getTypeIndex()
     {
         return typeIdx;

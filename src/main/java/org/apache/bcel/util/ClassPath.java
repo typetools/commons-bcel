@@ -99,11 +99,13 @@ public class ClassPath implements Closeable {
                 }
 
                 @Override
+                @Pure
                 public long getSize() {
                     return entry.getSize();
                 }
 
                 @Override
+                @Pure
                 public long getTime() {
                     return entry.getTime();
                 }
@@ -191,6 +193,7 @@ public class ClassPath implements Closeable {
             return file.exists() ? new ClassFile() {
 
                 @Override
+                @Pure
                 public String getBase() {
                     return dir;
                 }
@@ -210,6 +213,7 @@ public class ClassPath implements Closeable {
                 }
 
                 @Override
+                @Pure
                 public long getSize() {
                     return file.length();
                 }

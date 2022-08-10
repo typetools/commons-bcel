@@ -79,6 +79,7 @@ public class MethodParameter implements Cloneable {
         return ((ConstantUtf8) constant_pool.getConstant(nameIndex, Const.CONSTANT_Utf8)).getBytes();
        }
 
+    @Pure
     public @Unsigned int getAccessFlags() {
         return accessFlags;
     }

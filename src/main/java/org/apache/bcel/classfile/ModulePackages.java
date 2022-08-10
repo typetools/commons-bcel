@@ -110,6 +110,7 @@ public final class ModulePackages extends Attribute {
     /**
      * @return array of indices into constant pool of package names.
      */
+    @Pure
     public int[] getPackageIndexTable() {
         return packageIndexTable;
     }
@@ -118,6 +119,7 @@ public final class ModulePackages extends Attribute {
     /**
      * @return Length of package table.
      */
+    @Pure
     public @NonNegative int getNumberOfPackages() {
         return packageIndexTable == null ? 0 : packageIndexTable.length;
     }

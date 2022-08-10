@@ -95,6 +95,7 @@ public final class ConstantString extends Constant implements ConstantObject {
     /**
      * @return Index in constant pool of the string (ConstantUtf8).
      */
+    @Pure
     public @NonNegative int getStringIndex() {
         return stringIndex;
     }

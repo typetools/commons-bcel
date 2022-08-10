@@ -80,6 +80,7 @@ public class AnnotationDefault extends Attribute {
     /**
      * @return the default value
      */
+    @Pure
     public final ElementValue getDefaultValue() {
         return defaultValue;
     }

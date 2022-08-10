@@ -100,6 +100,7 @@ public class RET extends Instruction implements IndexedInstruction, TypedInstruc
      * @return index of local variable containg the return address
      */
     @Override
+    @Pure
     public final @NonNegative int getIndex() {
         return index;
     }
@@ -130,6 +131,7 @@ public class RET extends Instruction implements IndexedInstruction, TypedInstruc
     /** @return return address type
      */
     @Override
+    @Pure
     public Type getType( final ConstantPoolGen cp ) {
         return ReturnaddressType.NO_TARGET;
     }

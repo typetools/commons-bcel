@@ -77,12 +77,14 @@ public class VerificationResult {
      * Returns one of the {@link #VERIFIED_OK}, {@link #VERIFIED_NOTYET},
      * {@link #VERIFIED_REJECTED} constants.
      */
+    @Pure
     public int getStatus() {
         return numeric;
     }
 
 
     /** Returns a detailed message. */
+    @Pure
     public String getMessage() {
         return detailMessage;
     }

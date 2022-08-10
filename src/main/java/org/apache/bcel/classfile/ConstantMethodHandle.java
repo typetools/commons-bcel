@@ -93,6 +93,7 @@ public final class ConstantMethodHandle extends Constant {
     }
 
 
+    @Pure
     public @NonNegative int getReferenceKind() {
         return referenceKind;
     }
@@ -103,6 +104,7 @@ public final class ConstantMethodHandle extends Constant {
     }
 
 
+    @Pure
     public @NonNegative int getReferenceIndex() {
         return referenceIndex;
     }

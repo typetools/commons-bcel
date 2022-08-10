@@ -77,6 +77,7 @@ public class ClassElementValueGen extends ElementValueGen
         }
     }
 
+    @Pure
     public @NonNegative int getIndex()
     {
         return idx;

@@ -42,6 +42,7 @@ public class SimpleElementValue extends ElementValue
     /**
      * @return Value entry index in the cpool
      */
+    @Pure
     public @NonNegative int getIndex()
     {
         return index;
@@ -63,6 +64,7 @@ public class SimpleElementValue extends ElementValue
         return c.getBytes();
     }
 
+    @Pure
     public int getValueInt()
     {
         if (super.getType() != PRIMITIVE_INT) {
@@ -74,6 +76,7 @@ public class SimpleElementValue extends ElementValue
         return c.getBytes();
     }
 
+    @Pure
     public byte getValueByte()
     {
         if (super.getType() != PRIMITIVE_BYTE) {
@@ -86,6 +89,7 @@ public class SimpleElementValue extends ElementValue
     }
 
     @SuppressWarnings("signedness:cast.unsafe") // code tests for type char before cast
+    @Pure
     public char getValueChar()
     {
         if (super.getType() != PRIMITIVE_CHAR) {
@@ -97,6 +101,7 @@ public class SimpleElementValue extends ElementValue
         return (char) c.getBytes();
     }
 
+    @Pure
     public long getValueLong()
     {
         if (super.getType() != PRIMITIVE_LONG) {
@@ -107,6 +112,7 @@ public class SimpleElementValue extends ElementValue
         return j.getBytes();
     }
 
+    @Pure
     public float getValueFloat()
     {
         if (super.getType() != PRIMITIVE_FLOAT) {
@@ -117,6 +123,7 @@ public class SimpleElementValue extends ElementValue
         return f.getBytes();
     }
 
+    @Pure
     public double getValueDouble()
     {
         if (super.getType() != PRIMITIVE_DOUBLE) {
@@ -127,6 +134,7 @@ public class SimpleElementValue extends ElementValue
         return d.getBytes();
     }
 
+    @Pure
     public boolean getValueBoolean()
     {
         if (super.getType() != PRIMITIVE_BOOLEAN) {
@@ -137,6 +145,7 @@ public class SimpleElementValue extends ElementValue
         return bo.getBytes() != 0;
     }
 
+    @Pure
     public short getValueShort()
     {
         if (super.getType() != PRIMITIVE_SHORT) {

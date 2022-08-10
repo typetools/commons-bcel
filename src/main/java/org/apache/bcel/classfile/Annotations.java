@@ -94,6 +94,7 @@ public abstract class Annotations extends Attribute {
     /**
      * @return the number of annotation entries in this annotation
      */
+    @Pure
     public final @NonNegative int getNumAnnotations() {
         if (annotationTable == null) {
             return 0;

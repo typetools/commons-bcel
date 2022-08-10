@@ -398,6 +398,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     /**
      * @return `LocalVariableTypeTable' attribute of this method.
      */
+    @Pure
     public LocalVariableTypeTable getLocalVariableTypeTable() {
         return localVariableTypeTable;
     }
@@ -876,6 +877,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
 
+    @Pure
     public Type getReturnType() {
         return getType();
     }
@@ -1310,6 +1312,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     /**
      * @return Comparison strategy object
      */
+    @Pure
     public static BCELComparator getComparator() {
         return bcelComparator;
     }

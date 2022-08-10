@@ -50,6 +50,7 @@ public abstract class ElementValue
         this.cpool = cpool;
     }
 
+    @Pure
     public int getElementValueType()
     {
         return type;

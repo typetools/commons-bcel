@@ -103,6 +103,7 @@ public final class ModuleMainClass extends Attribute {
     /**
      * @return index into constant pool of host class name.
      */
+    @Pure
     public @NonNegative int getHostClassIndex() {
         return mainClassIndex;
     }

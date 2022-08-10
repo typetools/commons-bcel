@@ -58,6 +58,7 @@ public class ObjectType extends ReferenceType {
 
     /** @return name of referenced class
      */
+    @Pure
     public @BinaryName String getClassName() {
         return className;
     }

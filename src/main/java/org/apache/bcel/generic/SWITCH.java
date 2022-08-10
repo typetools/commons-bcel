@@ -153,6 +153,7 @@ public final class SWITCH implements CompoundInstruction {
     }
 
 
+    @Pure
     public Instruction getInstruction() {
         return instruction;
     }

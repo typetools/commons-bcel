@@ -194,6 +194,7 @@ public abstract @UsesObjectEquals class BranchInstruction extends Instruction im
     /**
      * @return target offset in byte code
      */
+    @Pure
     public final int getIndex() {
         return index;
     }
@@ -202,6 +203,7 @@ public abstract @UsesObjectEquals class BranchInstruction extends Instruction im
     /**
      * @return target of branch instruction
      */
+    @Pure
     public InstructionHandle getTarget() {
         return target;
     }

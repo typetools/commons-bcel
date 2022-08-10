@@ -64,6 +64,7 @@ public class VerifierFactoryListModel implements VerifierFactoryObserver, javax.
     }
 
     @Override
+    @Pure
     public synchronized int getSize() {
         return cache.size();
     }

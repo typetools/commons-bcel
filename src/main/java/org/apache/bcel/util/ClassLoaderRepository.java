@@ -118,6 +118,7 @@ public class ClassLoaderRepository implements Repository {
      * @return null
      */
     @Override
+    @Pure
     public @Nullable ClassPath getClassPath() {
         return null;
     }

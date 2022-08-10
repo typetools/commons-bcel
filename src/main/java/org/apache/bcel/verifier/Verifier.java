@@ -122,6 +122,7 @@ public class Verifier {
      * Verifier by the getVerifiers() method of the VerifierFactory.
      * @see VerifierFactory
      */
+    @Pure
     public final @FullyQualifiedName String getClassName() {
         return classname;
     }

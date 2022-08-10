@@ -56,6 +56,7 @@ public class ICONST extends Instruction implements ConstantPushInstruction {
     /** @return Type.INT
      */
     @Override
+    @Pure
     public Type getType( final ConstantPoolGen cp ) {
         return Type.INT;
     }

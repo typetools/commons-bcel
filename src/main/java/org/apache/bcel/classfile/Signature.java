@@ -104,6 +104,7 @@ public final class Signature extends Attribute {
     /**
      * @return Index in constant pool of source file name.
      */
+    @Pure
     public @NonNegative int getSignatureIndex() {
         return signatureIndex;
     }

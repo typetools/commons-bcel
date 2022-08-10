@@ -71,10 +71,12 @@ public class EnclosingMethod extends Attribute {
     }
 
     // Accessors
+    @Pure
     public final @NonNegative int getEnclosingClassIndex() {
         return classIndex;
     }
 
+    @Pure
     public final @NonNegative int getEnclosingMethodIndex() {
         return methodIndex;
     }

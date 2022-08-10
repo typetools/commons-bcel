@@ -41,6 +41,7 @@ public final class ByteSequence extends DataInputStream {
     }
 
 
+    @Pure
     public @NonNegative int getIndex() {
         return byteStream.getPosition();
     }

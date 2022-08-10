@@ -78,11 +78,13 @@ public class EnumElementValue extends ElementValue
         return cu8.getBytes();
     }
 
+    @Pure
     public @NonNegative int getValueIndex()
     {
         return valueIdx;
     }
 
+    @Pure
     public @NonNegative int getTypeIndex()
     {
         return typeIdx;

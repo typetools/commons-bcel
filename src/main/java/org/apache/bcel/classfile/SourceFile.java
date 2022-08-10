@@ -111,6 +111,7 @@ public final class SourceFile extends Attribute {
     /**
      * @return Index in constant pool of source file name.
      */
+    @Pure
     public @NonNegative int getSourceFileIndex() {
         return sourceFileIndex;
     }

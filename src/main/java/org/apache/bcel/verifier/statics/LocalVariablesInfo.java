@@ -46,6 +46,7 @@ public class LocalVariablesInfo{
      * @param slot Slot to query.
      * @return The LocalVariableInfo for the given slot.
      */
+    @Pure
     public LocalVariableInfo getLocalVariableInfo(final int slot) {
         if (slot < 0 || slot >= localVariableInfos.length) {
             throw new AssertionViolatedException("Slot number for local variable information out of range.");

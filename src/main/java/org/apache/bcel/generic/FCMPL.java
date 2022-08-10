@@ -32,6 +32,7 @@ public class FCMPL extends Instruction implements TypedInstruction, StackProduce
     /** @return Type.FLOAT
      */
     @Override
+    @Pure
     public Type getType( final ConstantPoolGen cp ) {
         return Type.FLOAT;
     }

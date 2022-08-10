@@ -294,6 +294,7 @@ public final class InstructionConst {
      * @param index the index, e.g. {@link Const#RETURN}
      * @return the entry from the private INSTRUCTIONS table
      */
+    @Pure
     public static Instruction getInstruction(final @NonNegative int index) {
         return INSTRUCTIONS[index];
     }

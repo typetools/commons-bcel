@@ -104,6 +104,7 @@ public final class NestHost extends Attribute {
     /**
      * @return index into constant pool of host class name.
      */
+    @Pure
     public @NonNegative int getHostClassIndex() {
         return hostClassIndex;
     }

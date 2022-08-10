@@ -245,6 +245,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
     /**
      * @return major version number of class file
      */
+    @Pure
     public int getMajor() {
         return major;
     }
@@ -268,6 +269,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
     /**
      * @return minor version number of class file
      */
+    @Pure
     public int getMinor() {
         return minor;
     }
@@ -410,16 +412,19 @@ public class ClassGen extends AccessFlags implements Cloneable {
     }
 
 
+    @Pure
     public @BinaryName String getClassName() {
         return className;
     }
 
 
+    @Pure
     public @BinaryName String getSuperclassName() {
         return superClassName;
     }
 
 
+    @Pure
     public String getFileName() {
         return fileName;
     }
@@ -455,6 +460,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
     }
 
 
+    @Pure
     public Method getMethodAt( final int pos ) {
         return methodList.get(pos);
     }
@@ -493,6 +499,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
     }
 
 
+    @Pure
     public ConstantPoolGen getConstantPool() {
         return cp;
     }
@@ -517,11 +524,13 @@ public class ClassGen extends AccessFlags implements Cloneable {
     }
 
 
+    @Pure
     public @NonNegative int getSuperclassNameIndex() {
         return superclass_name_index;
     }
 
 
+    @Pure
     public @NonNegative int getClassNameIndex() {
         return classNameIndex;
     }
@@ -574,6 +583,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
     /**
      * @return Comparison strategy object
      */
+    @Pure
     public static BCELComparator getComparator() {
         return bcelComparator;
     }

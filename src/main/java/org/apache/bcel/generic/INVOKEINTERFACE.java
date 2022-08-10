@@ -77,6 +77,7 @@ public final class INVOKEINTERFACE extends InvokeInstruction {
      * The <B>count</B> argument according to the Java Language Specification,
      * Second Edition.
      */
+    @Pure
     public @NonNegative int getCount() {
         return nargs;
     }

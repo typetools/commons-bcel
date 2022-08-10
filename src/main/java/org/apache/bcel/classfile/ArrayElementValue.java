@@ -85,6 +85,7 @@ public class ArrayElementValue extends ElementValue
         return elementValues;
     }
 
+    @Pure
     public int getElementValuesArraySize()
     {
         return elementValues.length;

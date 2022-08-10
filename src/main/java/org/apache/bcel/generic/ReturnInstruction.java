@@ -43,6 +43,7 @@ public abstract class ReturnInstruction extends Instruction implements Exception
     }
 
 
+    @Pure
     public Type getType() {
         final short _opcode = super.getOpcode();
         switch (_opcode) {

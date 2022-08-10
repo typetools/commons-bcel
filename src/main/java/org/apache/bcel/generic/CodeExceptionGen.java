@@ -143,6 +143,7 @@ public final class CodeExceptionGen implements InstructionTargeter, Cloneable {
 
 
     /** Gets the type of the Exception to catch, 'null' for ANY. */
+    @Pure
     public ObjectType getCatchType() {
         return catchType;
     }
@@ -150,6 +151,7 @@ public final class CodeExceptionGen implements InstructionTargeter, Cloneable {
 
     /** @return start of handled region (inclusive)
      */
+    @Pure
     public InstructionHandle getStartPC() {
         return startPc;
     }
@@ -157,6 +159,7 @@ public final class CodeExceptionGen implements InstructionTargeter, Cloneable {
 
     /** @return end of handled region (inclusive)
      */
+    @Pure
     public InstructionHandle getEndPC() {
         return endPc;
     }
@@ -164,6 +167,7 @@ public final class CodeExceptionGen implements InstructionTargeter, Cloneable {
 
     /** @return start of handler
      */
+    @Pure
     public InstructionHandle getHandlerPC() {
         return handlerPc;
     }

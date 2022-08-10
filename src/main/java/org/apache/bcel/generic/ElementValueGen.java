@@ -57,6 +57,7 @@ public abstract class ElementValueGen
      */
     public abstract ElementValue getElementValue();
 
+    @Pure
     public int getElementValueType()
     {
         return type;

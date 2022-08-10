@@ -98,6 +98,7 @@ public final class ConstantClass extends Constant implements ConstantObject {
      * @return Name index in constant pool of class name.
      */
     @Pure
+    @Pure
     public @NonNegative int getNameIndex() {
         return nameIndex;
     }
@@ -122,6 +123,7 @@ public final class ConstantClass extends Constant implements ConstantObject {
 
     /** @return dereferenced string
      */
+    @Pure
     public String getBytes( final ConstantPool cp ) {
         return (String) getConstantValue(cp);
     }

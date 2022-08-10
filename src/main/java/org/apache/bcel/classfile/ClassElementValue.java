@@ -42,11 +42,13 @@ public class ClassElementValue extends ElementValue
         this.idx = idx;
     }
 
+    @Pure
     public @NonNegative int getIndex()
     {
         return idx;
     }
 
+    @Pure
     public String getClassString()
     {
         final ConstantUtf8 c = (ConstantUtf8) super.getConstantPool().getConstant(idx,

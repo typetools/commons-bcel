@@ -133,6 +133,7 @@ abstract class AbstractClassPathRepository implements Repository {
     }
 
     @Override
+    @Pure
     public ClassPath getClassPath() {
         return _path;
     }

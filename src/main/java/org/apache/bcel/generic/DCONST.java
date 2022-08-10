@@ -58,6 +58,7 @@ public class DCONST extends Instruction implements ConstantPushInstruction {
     /** @return Type.DOUBLE
      */
     @Override
+    @Pure
     public Type getType( final ConstantPoolGen cp ) {
         return Type.DOUBLE;
     }

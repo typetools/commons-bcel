@@ -283,6 +283,7 @@ public final class StackMapEntry implements Node, Cloneable
     }
 
 
+    @Pure
     public int getFrameType() {
         return frameType;
     }
@@ -333,6 +334,7 @@ public final class StackMapEntry implements Node, Cloneable
     }
 
 
+    @Pure
     public @NonNegative int getByteCodeOffset() {
         return byteCodeOffset;
     }
@@ -347,6 +349,7 @@ public final class StackMapEntry implements Node, Cloneable
     }
 
 
+    @Pure
     public @NonNegative int getNumberOfLocals() {
         return typesOfLocals.length;
     }
@@ -357,6 +360,7 @@ public final class StackMapEntry implements Node, Cloneable
     }
 
 
+    @Pure
     public StackMapType[] getTypesOfLocals() {
         return typesOfLocals;
     }
@@ -371,6 +375,7 @@ public final class StackMapEntry implements Node, Cloneable
     }
 
 
+    @Pure
     public @NonNegative int getNumberOfStackItems() {
         return typesOfStackItems.length;
     }
@@ -381,6 +386,7 @@ public final class StackMapEntry implements Node, Cloneable
     }
 
 
+    @Pure
     public StackMapType[] getTypesOfStackItems() {
         return typesOfStackItems;
     }
@@ -425,6 +431,7 @@ public final class StackMapEntry implements Node, Cloneable
     /**
      * @return Constant pool used by this object.
      */
+    @Pure
     public ConstantPool getConstantPool() {
         return constantPool;
     }

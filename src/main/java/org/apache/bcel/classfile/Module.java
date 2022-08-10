@@ -112,6 +112,7 @@ public final class Module extends Attribute {
      * @return table of required modules
      * @see ModuleRequires
      */
+    @Pure
     public ModuleRequires[] getRequiresTable() {
         return requiresTable;
     }
@@ -121,6 +122,7 @@ public final class Module extends Attribute {
      * @return table of exported interfaces
      * @see ModuleExports
      */
+    @Pure
     public ModuleExports[] getExportsTable() {
         return exportsTable;
     }
@@ -130,6 +132,7 @@ public final class Module extends Attribute {
      * @return table of provided interfaces
      * @see ModuleOpens
      */
+    @Pure
     public ModuleOpens[] getOpensTable() {
         return opensTable;
     }
@@ -139,6 +142,7 @@ public final class Module extends Attribute {
      * @return table of provided interfaces
      * @see ModuleProvides
      */
+    @Pure
     public ModuleProvides[] getProvidesTable() {
         return providesTable;
     }

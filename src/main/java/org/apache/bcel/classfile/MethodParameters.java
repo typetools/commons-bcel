@@ -48,6 +48,7 @@ public class MethodParameters extends Attribute {
         }
     }
 
+    @Pure
     public MethodParameter[] getParameters() {
         return parameters;
     }

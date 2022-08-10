@@ -156,6 +156,7 @@ public abstract class LocalVariableInstruction extends Instruction implements Ty
      * @return local variable index (n) referred by this instruction.
      */
     @Override
+    @Pure
     public final @NonNegative int getIndex() {
         return n;
     }
@@ -190,6 +191,7 @@ public abstract class LocalVariableInstruction extends Instruction implements Ty
 
     /** @return canonical tag for instruction, e.g., ALOAD for ALOAD_0
      */
+    @Pure
     public short getCanonicalTag() {
         return canonTag;
     }
@@ -204,6 +206,7 @@ public abstract class LocalVariableInstruction extends Instruction implements Ty
      * @return type associated with the instruction
      */
     @Override
+    @Pure
     public @InternedDistinct Type getType( final ConstantPoolGen cp ) {
         switch (canonTag) {
             case Const.ILOAD:

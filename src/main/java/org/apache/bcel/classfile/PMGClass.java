@@ -108,6 +108,7 @@ public final class PMGClass extends Attribute {
     /**
      * @return Index in constant pool of source file name.
      */
+    @Pure
     public @NonNegative int getPMGClassIndex() {
         return pmgClassIndex;
     }
@@ -124,6 +125,7 @@ public final class PMGClass extends Attribute {
     /**
      * @return Index in constant pool of source file name.
      */
+    @Pure
     public @NonNegative int getPMGIndex() {
         return pmgIndex;
     }

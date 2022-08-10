@@ -98,6 +98,7 @@ public class LineNumberGen implements InstructionTargeter, Cloneable {
     }
 
 
+    @Pure
     public InstructionHandle getInstruction() {
         return ih;
     }
@@ -108,6 +109,7 @@ public class LineNumberGen implements InstructionTargeter, Cloneable {
     }
 
 
+    @Pure
     public @NonNegative int getSourceLine() {
         return srcLine;
     }

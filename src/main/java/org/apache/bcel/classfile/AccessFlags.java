@@ -47,6 +47,7 @@ public abstract class AccessFlags {
     /**
      * @return Access flags of the object aka. "modifiers".
      */
+    @Pure
     public final int getAccessFlags() {
         return access_flags;
     }
@@ -54,6 +55,7 @@ public abstract class AccessFlags {
     /**
      * @return Access flags of the object aka. "modifiers".
      */
+    @Pure
     public final int getModifiers() {
         return access_flags;
     }

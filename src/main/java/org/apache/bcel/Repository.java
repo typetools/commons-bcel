@@ -42,6 +42,7 @@ public abstract class Repository {
     /**
      * @return currently used repository instance
      */
+    @Pure
     public static org.apache.bcel.util.Repository getRepository() {
         return repository;
     }

@@ -85,6 +85,7 @@ public class SIPUSH extends Instruction implements ConstantPushInstruction {
     /** @return Type.SHORT
      */
     @Override
+    @Pure
     public Type getType( final ConstantPoolGen cp ) {
         return Type.SHORT;
     }

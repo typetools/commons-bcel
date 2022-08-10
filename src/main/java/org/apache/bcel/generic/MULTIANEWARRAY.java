@@ -83,6 +83,7 @@ public class MULTIANEWARRAY extends CPInstruction implements LoadClass, Allocati
     /**
      * @return number of dimensions to be created
      */
+    @Pure
     public final @NonNegative short getDimensions() {
         return dimensions;
     }

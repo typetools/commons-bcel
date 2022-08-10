@@ -58,6 +58,7 @@ public class LCONST extends Instruction implements ConstantPushInstruction {
     /** @return Type.LONG
      */
     @Override
+    @Pure
     public Type getType( final ConstantPoolGen cp ) {
         return Type.LONG;
     }

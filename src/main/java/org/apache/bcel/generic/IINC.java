@@ -136,6 +136,7 @@ public class IINC extends LocalVariableInstruction {
     /**
      * @return increment factor
      */
+    @Pure
     public final int getIncrement() {
         return c;
     }
@@ -153,6 +154,7 @@ public class IINC extends LocalVariableInstruction {
     /** @return int type
      */
     @Override
+    @Pure
     public @InternedDistinct Type getType( final ConstantPoolGen cp ) {
         return Type.INT;
     }

@@ -102,6 +102,7 @@ public final class LineNumber implements Cloneable, Node {
     /**
      * @return Corresponding source line
      */
+    @Pure
     public @NonNegative int getLineNumber() {
         return lineNumber & 0xffff;
     }
@@ -110,6 +111,7 @@ public final class LineNumber implements Cloneable, Node {
     /**
      * @return PC in code
      */
+    @Pure
     public @NonNegative int getStartPC() {
         return  startPc & 0xffff;
     }

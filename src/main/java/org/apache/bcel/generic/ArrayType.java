@@ -89,6 +89,7 @@ public final class ArrayType extends ReferenceType {
     /**
      * @return basic type of array, i.e., for int[][][] the basic type is int
      */
+    @Pure
     public Type getBasicType() {
         return basicType;
     }
@@ -107,6 +108,7 @@ public final class ArrayType extends ReferenceType {
 
     /** @return number of dimensions of array
      */
+    @Pure
     public int getDimensions() {
         return dimensions;
     }

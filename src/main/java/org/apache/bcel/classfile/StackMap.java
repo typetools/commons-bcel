@@ -95,6 +95,7 @@ public final class StackMap extends Attribute {
     /**
      * @return Array of stack map entries
      */
+    @Pure
     public StackMapEntry[] getStackMap() {
         return map;
     }
@@ -158,6 +159,7 @@ public final class StackMap extends Attribute {
     }
 
 
+    @Pure
     public @NonNegative int getMapLength() {
         return map == null ? 0 : map.length;
     }

@@ -58,6 +58,7 @@ public class AnnotationElementValue extends ElementValue
                 return stringifyValue();
         }
 
+        @Pure
         public AnnotationEntry getAnnotationEntry()
         {
                 return annotationEntry;
