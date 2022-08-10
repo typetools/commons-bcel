@@ -832,9 +832,6 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
 
-    /**
-     * @return maxLocals for this method
-     */
     @Pure
     public @NonNegative int getMaxLocals() {
         return maxLocals;
@@ -849,17 +846,13 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
 
-    /**
-     * @return maxStack for this method
-     */
     @Pure
     public @NonNegative int getMaxStack() {
         return maxStack;
     }
 
 
-    /**
-     * @return class that contains this method
+    /** @return class that contains this method
      */
     @Pure
     public @BinaryName String getClassName() {
@@ -898,10 +891,6 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
 
-    /**
-     * @param i argument to inspect
-     * @return type of ith argument
-     */
     @Pure
     public Type getArgumentType( final @NonNegative int i ) {
         return argTypes[i];
@@ -923,19 +912,12 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
 
-    /**
-     * @param i argument to inspect
-     * @return name of ith argument
-     */
     @Pure
     public String getArgumentName( final @NonNegative int i ) {
         return argNames[i];
     }
 
 
-    /**
-     * @return instruction list for this method
-     */
     @Pure
     public InstructionList getInstructionList() {
         return il;
