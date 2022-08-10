@@ -1234,7 +1234,7 @@ public final class Pass3aVerifier extends PassVerifier{
                     if (! (o.getMethodName(constantPoolGen).equals(Const.CONSTRUCTOR_NAME) )) {
                         // Special lookup procedure for ACC_SUPER classes.
 
-                        @NonNegative int supidx = 1; // dummy non zero value; will be replaced
+                        @NonNegative int supidx = 1; // dummy non-zero value; will be replaced
 
                         Method meth = null;
                         while (supidx != 0) {

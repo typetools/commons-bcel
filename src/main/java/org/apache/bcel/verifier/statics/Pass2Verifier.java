@@ -197,7 +197,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
         try {
         final Set<String> hs = new HashSet<>(); // save class names to detect circular inheritance
         JavaClass jc = Repository.lookupClass(myOwner.getClassName());
-        @NonNegative int supidx = 1; // dummy non zero value; will be replaced
+        @NonNegative int supidx = 1; // dummy non-zero value; will be replaced
 
         while (supidx != 0) {
             supidx = jc.getSuperclassNameIndex();
@@ -250,7 +250,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
         final Map<String, String> hashmap = new HashMap<>();
         JavaClass jc = Repository.lookupClass(myOwner.getClassName());
 
-        @NonNegative int supidx = 1; // dummy non zero value; will be replaced
+        @NonNegative int supidx = 1; // dummy non-zero value; will be replaced
         while (supidx != 0) {
             supidx = jc.getSuperclassNameIndex();
 

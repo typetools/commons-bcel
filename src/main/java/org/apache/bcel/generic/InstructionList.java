@@ -118,7 +118,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
          * Do a binary search since the pos array is orderd.
          */
         do {
-            // count <= 65536 so arithmetic shift same as logical shift and no checker warning
+            // count <= 65536 so arithmetic shift same as logical shift and no Signedness Checker warning
             final int i = (l + r) >> 1;
             final int j = pos[i];
             if (j == target) {
