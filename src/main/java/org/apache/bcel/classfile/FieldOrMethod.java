@@ -302,3 +302,4 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
         return signatureAttributeString;
     }
 }
+

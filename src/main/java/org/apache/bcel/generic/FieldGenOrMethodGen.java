@@ -25,6 +25,7 @@ import org.apache.bcel.classfile.AccessFlags;
 import org.apache.bcel.classfile.Attribute;
 
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Super class for FieldGen and MethodGen objects, since they have

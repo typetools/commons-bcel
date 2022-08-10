@@ -20,6 +20,8 @@ package org.apache.bcel.generic;
 import org.apache.bcel.Const;
 import org.apache.bcel.ExceptionConst;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * Super class for the xRETURN family of instructions.
  *

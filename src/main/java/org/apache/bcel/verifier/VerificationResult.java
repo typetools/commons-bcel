@@ -19,6 +19,7 @@ package org.apache.bcel.verifier;
 
 import org.checkerframework.checker.interning.qual.InternedDistinct;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * A VerificationResult is what a PassVerifier returns

@@ -23,6 +23,8 @@ import java.io.IOException;
 import org.apache.bcel.classfile.AnnotationElementValue;
 import org.apache.bcel.classfile.ElementValue;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * @since 6.0
  */

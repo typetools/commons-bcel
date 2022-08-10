@@ -20,6 +20,7 @@ package org.apache.bcel.generic;
 import org.apache.bcel.Const;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Denotes basic type such as int.

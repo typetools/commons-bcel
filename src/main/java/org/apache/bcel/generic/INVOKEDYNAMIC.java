@@ -147,3 +147,4 @@ public class INVOKEDYNAMIC extends InvokeInstruction {
         return new ObjectType(Object.class.getName());
     }
 }
+

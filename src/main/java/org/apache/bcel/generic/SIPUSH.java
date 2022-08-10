@@ -22,6 +22,8 @@ import java.io.IOException;
 
 import org.apache.bcel.util.ByteSequence;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * SIPUSH - Push short
  *

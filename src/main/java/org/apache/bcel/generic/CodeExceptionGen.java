@@ -19,6 +19,8 @@ package org.apache.bcel.generic;
 
 import org.apache.bcel.classfile.CodeException;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This class represents an exception handler, i.e., specifies the  region where
  * a handler is active and an instruction where the actual handling is done.

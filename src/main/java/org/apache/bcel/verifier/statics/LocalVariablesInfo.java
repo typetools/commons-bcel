@@ -22,6 +22,8 @@ import org.apache.bcel.generic.Type;
 import org.apache.bcel.verifier.exc.AssertionViolatedException;
 import org.apache.bcel.verifier.exc.LocalVariableInfoInconsistentException;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * A utility class holding the information about
  * the names and the types of the local variables in

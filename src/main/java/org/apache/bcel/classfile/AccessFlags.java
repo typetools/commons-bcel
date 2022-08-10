@@ -20,6 +20,7 @@ package org.apache.bcel.classfile;
 import org.apache.bcel.Const;
 
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Super class for all objects that have modifiers like private, final, ... I.e. classes, fields, and methods.

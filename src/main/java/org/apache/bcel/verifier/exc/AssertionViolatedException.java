@@ -19,6 +19,8 @@ package org.apache.bcel.verifier.exc;
 
 import java.util.Arrays;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * Instances of this class should never be thrown. When such an instance is thrown,
  * this is due to an INTERNAL ERROR of BCEL's class file verifier &quot;JustIce&quot;.

@@ -21,6 +21,8 @@ package org.apache.bcel.verifier.structurals;
 import org.apache.bcel.generic.InstructionHandle;
 import org.apache.bcel.generic.ObjectType;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * This class represents an exception handler; that is, an ObjectType
  * representing a subclass of java.lang.Throwable and the instruction

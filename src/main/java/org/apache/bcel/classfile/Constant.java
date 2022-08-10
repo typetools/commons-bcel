@@ -26,6 +26,7 @@ import org.apache.bcel.Const;
 import org.apache.bcel.util.BCELComparator;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Abstract superclass for classes to represent the different constant types

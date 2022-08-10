@@ -19,6 +19,8 @@ package org.apache.bcel.generic;
 
 import org.apache.bcel.ExceptionConst;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * Super class for instructions dealing with array access such as IALOAD.
  *

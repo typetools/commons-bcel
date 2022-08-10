@@ -21,6 +21,7 @@ import org.apache.bcel.Const;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.ClassGetName;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Denotes array type, such as int[][]

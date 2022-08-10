@@ -17,8 +17,8 @@
  */
 package org.apache.bcel.verifier.structurals;
 
-
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * This class represents a JVM execution frame; that means,

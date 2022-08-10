@@ -17,6 +17,8 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * Thrown by InstructionList.remove() when one or multiple disposed instructions
  * are still being referenced by an InstructionTargeter object. I.e. the

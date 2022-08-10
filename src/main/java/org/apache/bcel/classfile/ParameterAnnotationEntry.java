@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * represents one parameter annotation in the parameter annotation table
  *

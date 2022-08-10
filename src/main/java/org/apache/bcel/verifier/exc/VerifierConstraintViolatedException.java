@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.verifier.exc;
 
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Instances of this class are thrown by BCEL's class file verifier "JustIce"

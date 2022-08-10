@@ -22,6 +22,7 @@ import java.util.Objects;
 import org.apache.bcel.classfile.LineNumber;
 
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**

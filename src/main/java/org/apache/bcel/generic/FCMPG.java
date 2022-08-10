@@ -17,6 +17,8 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.dataflow.qual.Pure;
+
 /**
  * FCMPG - Compare floats: value1 &gt; value2
  * <PRE>Stack: ..., value1, value2 -&gt; ..., result</PRE>
