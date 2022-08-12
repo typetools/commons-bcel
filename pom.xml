@@ -41,6 +41,7 @@
   <inceptionYear>2004</inceptionYear>
 
   <properties>
+    <!-- To use a locally-built version of the Checker Framework, see `README-typetools.txt`. -->
     <checkerFrameworkVersion>3.23.0</checkerFrameworkVersion>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
