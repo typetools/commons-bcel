@@ -35,6 +35,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.checkerframework.checker.calledmethods.qual.EnsuresCalledMethods;
+import org.checkerframework.checker.mustcall.qual.Owning;
 import org.checkerframework.dataflow.qual.Pure;
 
 /**
@@ -47,8 +49,8 @@ public class ModularRuntimeImage implements Closeable {
     static final String MODULES_PATH = File.separator + "modules";
     static final String PACKAGES_PATH = File.separator + "packages";
 
-    private final URLClassLoader classLoader;
-    private final FileSystem fileSystem;
+    private final @Owning URLClassLoader classLoader;
+    private final @Owning FileSystem fileSystem;
 
     /**
      * Constructs a default instance.
@@ -82,13 +84,19 @@ public class ModularRuntimeImage implements Closeable {
         this.fileSystem = fs;
     }
 
+    @SuppressWarnings("builder:contracts.postcondition")  // I think it's satisfied.  Checker bug?
     @Override
+    @EnsuresCalledMethods(value={"classLoader", "fileSystem"}, methods="close")
     public void close() throws IOException {
-        if (classLoader != null) {
-            classLoader.close();
-        }
-        if (fileSystem != null) {
-            fileSystem.close();
+        try {
+            if (classLoader != null) {
+                classLoader.close();
+            }
+        } catch (IOException e) {
+            if (fileSystem != null) {
+                fileSystem.close();
+            }
+            throw e;
         }
     }
 

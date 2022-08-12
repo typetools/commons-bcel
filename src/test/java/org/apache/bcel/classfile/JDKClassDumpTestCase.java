@@ -53,6 +53,7 @@ public class JDKClassDumpTestCase {
     }
 
 
+    @SuppressWarnings("builder")  // test code
     private void testJar(final File file) throws Exception {
         System.out.println("parsing " + file);
         try (JarFile jar = new JarFile(file)) {

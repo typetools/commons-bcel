@@ -36,6 +36,7 @@ import org.junit.runners.Parameterized.Parameters;
 /**
  * Tests {@link ModularRuntimeImage}.
  */
+@SuppressWarnings("builder")  // test code
 @RunWith(Parameterized.class)
 public class ModularRuntimeImageTestCase {
 

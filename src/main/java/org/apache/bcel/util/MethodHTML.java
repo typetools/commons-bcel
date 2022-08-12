@@ -48,22 +48,23 @@ final class MethodHTML {
         this.className = class_name;
         this.attribute_html = attribute_html;
         this.constantHtml = constant_html;
-        file = new PrintWriter(new FileOutputStream(dir + class_name + "_methods.html"));
-        file.println("<HTML><BODY BGCOLOR=\"#C0C0C0\"><TABLE BORDER=0>");
-        file.println("<TR><TH ALIGN=LEFT>Access&nbsp;flags</TH><TH ALIGN=LEFT>Type</TH>"
-                + "<TH ALIGN=LEFT>Field&nbsp;name</TH></TR>");
-        for (final Field field : fields) {
-            writeField(field);
+        try (PrintWriter printWriter = new PrintWriter(new FileOutputStream(dir + class_name + "_methods.html"))) {
+            file = printWriter;
+            file.println("<HTML><BODY BGCOLOR=\"#C0C0C0\"><TABLE BORDER=0>");
+            file.println("<TR><TH ALIGN=LEFT>Access&nbsp;flags</TH><TH ALIGN=LEFT>Type</TH>"
+                    + "<TH ALIGN=LEFT>Field&nbsp;name</TH></TR>");
+            for (final Field field : fields) {
+                writeField(field);
+            }
+            file.println("</TABLE>");
+            file.println("<TABLE BORDER=0><TR><TH ALIGN=LEFT>Access&nbsp;flags</TH>"
+                    + "<TH ALIGN=LEFT>Return&nbsp;type</TH><TH ALIGN=LEFT>Method&nbsp;name</TH>"
+                    + "<TH ALIGN=LEFT>Arguments</TH></TR>");
+            for (int i = 0; i < methods.length; i++) {
+                writeMethod(methods[i], i);
+            }
+            file.println("</TABLE></BODY></HTML>");
         }
-        file.println("</TABLE>");
-        file.println("<TABLE BORDER=0><TR><TH ALIGN=LEFT>Access&nbsp;flags</TH>"
-                + "<TH ALIGN=LEFT>Return&nbsp;type</TH><TH ALIGN=LEFT>Method&nbsp;name</TH>"
-                + "<TH ALIGN=LEFT>Arguments</TH></TR>");
-        for (int i = 0; i < methods.length; i++) {
-            writeMethod(methods[i], i);
-        }
-        file.println("</TABLE></BODY></HTML>");
-        file.close();
     }
 
 

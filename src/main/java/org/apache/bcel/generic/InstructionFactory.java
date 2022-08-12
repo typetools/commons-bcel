@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.mustcall.qual.MustCall;
 import org.apache.bcel.Const;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -626,7 +627,9 @@ public class InstructionFactory implements InstructionConstants {
             } catch (final Exception e) {
                 throw new IllegalArgumentException("Could not find instruction: " + name, e);
             }
-            return i;
+            @SuppressWarnings("mustcall:assignment") // reflection
+            @MustCall Instruction result = i;
+            return result;
         } else if ((src_type instanceof ReferenceType) && (dest_type instanceof ReferenceType)) {
             if (dest_type instanceof ArrayType) {
                 return new CHECKCAST(cp.addArrayClass((ArrayType) dest_type));

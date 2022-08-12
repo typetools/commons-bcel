@@ -42,7 +42,9 @@ public class JavaWrapper {
     private final java.lang.ClassLoader loader;
 
 
-    @SuppressWarnings("signature") // if bcel.classloader isn't a @ClassGetName, error is thrown
+    @SuppressWarnings({"signature", // if bcel.classloader isn't a @ClassGetName, error is thrown
+                    "mustcall:return" // reflection
+                    })
     private static java.lang.ClassLoader getClassLoader() {
         final String s = System.getProperty("bcel.classloader");
         if ((s == null) || "".equals(s)) {

@@ -499,6 +499,10 @@
     </dependency>
   </dependencies>
 
+  <!-- To typecheck commons-bcel, build with `-Pcheckerframework` command-line option. For example:
+         mvn -e -B clean && mvn -e -B verify -Pcheckerframework
+       There is also `-Pcheckerframework-local`.
+  -->
   <profiles>
     <profile>
       <id>checkerframework</id>
@@ -537,6 +541,11 @@
                 <!-- <arg>-AuseDefaultsForUncheckedCode=source</arg> -->
                 <!-- Make type-checking errors into warnings. -->
                 <arg>-Awarns</arg>
+                <!-- To test one typechecker, comment out all other typecheckers above,
+                     comment out -Awarns, and uncomment these lines.
+		<arg>-AwarnUnneededSuppressions</arg>
+		<arg>-ArequirePrefixInWarningSuppressions</arg>
+                -->
               </compilerArgs>
               <testExcludes>
                 <testExclude>**/*Benchmark*</testExclude>

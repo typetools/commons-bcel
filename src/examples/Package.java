@@ -169,8 +169,7 @@ public class Package {
             final String name = dependents.firstKey();
             final String from = dependents.remove(name);
             if (allClasses.get(name) == null) {
-                try {
-                    final InputStream is = classPath.getInputStream(name);
+                try (final InputStream is = classPath.getInputStream(name)) {
                     clazz = new ClassParser(is, name).parse();
                     addDependents(clazz);
                 } catch (final IOException e) {

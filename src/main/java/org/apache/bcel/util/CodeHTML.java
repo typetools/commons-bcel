@@ -65,13 +65,14 @@ final class CodeHTML {
 //        this.methods = methods;
         this.constantPool = constant_pool;
         this.constantHtml = constant_html;
-        file = new PrintWriter(new FileOutputStream(dir + class_name + "_code.html"));
-        file.println("<HTML><BODY BGCOLOR=\"#C0C0C0\">");
-        for (int i = 0; i < methods.length; i++) {
-            writeMethod(methods[i], i);
+        try (PrintWriter pw = new PrintWriter(new FileOutputStream(dir + class_name + "_code.html"))) {
+            file = pw;
+            file.println("<HTML><BODY BGCOLOR=\"#C0C0C0\">");
+            for (int i = 0; i < methods.length; i++) {
+                writeMethod(methods[i], i);
+            }
+            file.println("</BODY></HTML>");
         }
-        file.println("</BODY></HTML>");
-        file.close();
     }
 
 

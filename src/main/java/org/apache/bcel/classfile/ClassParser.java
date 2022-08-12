@@ -48,7 +48,7 @@ import org.apache.bcel.Const;
 @InheritableMustCall("parse")
 public final class ClassParser {
 
-    private @Owning DataInputStream dataInputStream;
+    private DataInputStream dataInputStream;
     private final boolean fileOwned;
     private final String fileName;
     private String zipFile;
@@ -69,10 +69,10 @@ public final class ClassParser {
     /**
      * Parses class from the given stream.
      *
-     * @param inputStream Input stream
+     * @param inputStream Input stream; the client should close it
      * @param fileName File name
      */
-    public ClassParser(final @Owning InputStream inputStream, final String fileName) {
+    public ClassParser(final InputStream inputStream, final String fileName) {
         this.fileName = fileName;
         fileOwned = false;
         final String clazz = inputStream.getClass().getName(); // Not a very clean solution ...
@@ -120,7 +120,11 @@ public final class ClassParser {
      * @throws  IOException
      * @throws  ClassFormatException
      */
-    @EnsuresCalledMethods(value="dataInputStream", methods="close")
+    @SuppressWarnings({"builder:contracts.postcondition",  
+                    "builder:required.method.not.called"}
+        // ownership of fields depends on varibale `fileOwned`
+        )
+    // @EnsuresCalledMethods(value="dataInputStream", methods="close") // only if `fileOwned` is true
     public JavaClass parse() throws IOException, ClassFormatException {
         ZipFile zip = null;
         try {

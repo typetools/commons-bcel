@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.util;
 
+import org.checkerframework.checker.mustcall.qual.MustCall;
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.JavaClass;
 
@@ -74,8 +75,8 @@ abstract class AbstractClassPathRepository implements Repository {
         if (clazz != null) {
             return clazz;
         }
-        try {
-            return loadClass(_path.getInputStream(className), className);
+        try (InputStream inputStream = _path.getInputStream(className)) {
+            return loadClass(inputStream, className);
         } catch (final IOException e) {
             throw new ClassNotFoundException("Exception while looking for class " + className + ": " + e, e);
         }
@@ -136,7 +137,8 @@ abstract class AbstractClassPathRepository implements Repository {
 
     @Override
     @Pure
-    public ClassPath getClassPath() {
+    @SuppressWarnings("mustcall:return")  // this ClassPath should not be closed
+    public @MustCall() ClassPath getClassPath() {
         return _path;
     }
 }

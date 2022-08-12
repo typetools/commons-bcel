@@ -18,6 +18,7 @@
 
 package org.apache.bcel;
 
+import java.io.IOException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,9 +111,12 @@ public abstract class AbstractTestCase extends TestCase
 
     public SyntheticRepository createRepos(final String cpentry)
     {
-        final ClassPath cp = new ClassPath("target" + File.separator + "testdata"
-                + File.separator + cpentry + File.separator);
-        return SyntheticRepository.getInstance(cp);
+        try (final ClassPath cp = new ClassPath("target" + File.separator + "testdata"
+                + File.separator + cpentry + File.separator)) {
+            return SyntheticRepository.getInstance(cp);
+        } catch (IOException e) {
+            throw new Error(e);
+        }
     }
 
     protected Attribute[] findAttribute(final String name, final JavaClass clazz)

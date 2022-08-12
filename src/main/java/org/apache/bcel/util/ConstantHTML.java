@@ -56,24 +56,25 @@ final class ConstantHTML {
         this.constantPool = constant_pool;
         this.methods = methods;
         constants = constant_pool.getConstantPool();
-        file = new PrintWriter(new FileOutputStream(dir + class_name + "_cp.html"));
-        constantRef = new String[constants.length];
-        constantRef[0] = "&lt;unknown&gt;";
-        file.println("<HTML><BODY BGCOLOR=\"#C0C0C0\"><TABLE BORDER=0>");
-        // Loop through constants, constants[0] is reserved
-        for (int i = 1; i < constants.length; i++) {
-            if (i % 2 == 0) {
-                file.print("<TR BGCOLOR=\"#C0C0C0\"><TD>");
-            } else {
-                file.print("<TR BGCOLOR=\"#A0A0A0\"><TD>");
+        try (PrintWriter printWriter = new PrintWriter(new FileOutputStream(dir + class_name + "_cp.html"))) {
+            file = printWriter;
+            constantRef = new String[constants.length];
+            constantRef[0] = "&lt;unknown&gt;";
+            file.println("<HTML><BODY BGCOLOR=\"#C0C0C0\"><TABLE BORDER=0>");
+            // Loop through constants, constants[0] is reserved
+            for (int i = 1; i < constants.length; i++) {
+                if (i % 2 == 0) {
+                    file.print("<TR BGCOLOR=\"#C0C0C0\"><TD>");
+                } else {
+                    file.print("<TR BGCOLOR=\"#A0A0A0\"><TD>");
+                }
+                if (constants[i] != null) {
+                    writeConstant(i);
+                }
+                file.print("</TD></TR>\n");
             }
-            if (constants[i] != null) {
-                writeConstant(i);
-            }
-            file.print("</TD></TR>\n");
+            file.println("</TABLE></BODY></HTML>");
         }
-        file.println("</TABLE></BODY></HTML>");
-        file.close();
     }
 
 

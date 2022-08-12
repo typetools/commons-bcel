@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.util;
 
+import org.checkerframework.checker.calledmethods.qual.EnsuresCalledMethods;
 import java.io.Closeable;
 import java.io.DataInputStream;
 import java.io.File;
@@ -40,6 +41,7 @@ import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.checkerframework.checker.mustcall.qual.Owning;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 
@@ -353,8 +355,8 @@ public class ClassPath implements Closeable {
 
     private static class JrtModules extends AbstractPathEntry {
 
-        private final ModularRuntimeImage modularRuntimeImage;
-        private final JrtModule[] modules;
+        private final @Owning ModularRuntimeImage modularRuntimeImage;
+        private final @Owning JrtModule[] modules;
 
         public JrtModules(final String path) throws IOException {
             this.modularRuntimeImage = new ModularRuntimeImage();
@@ -366,6 +368,10 @@ public class ClassPath implements Closeable {
         }
 
         @Override
+        @SuppressWarnings({"builder:contracts.postcondition", // Called on each *element* of `modules`
+                        "builder:destructor.exceptional.postcondition" // might not close everything
+                        })
+        @EnsuresCalledMethods(value = {"modules", "modularRuntimeImage"}, methods = "close")
         public void close() throws IOException {
             if (modules != null) {
                 // don't use a for each loop to avoid creating an iterator for the GC to collect.
@@ -444,6 +450,7 @@ public class ClassPath implements Closeable {
         return name.endsWith(".jmod");
     };
 
+    @SuppressWarnings("builder:required.method.not.called")  // static field, never closed
     public static final ClassPath SYSTEM_CLASS_PATH = new ClassPath(getClassPath());
 
     private static void addJdkModules(final String javaHome, final List<String> list) {
@@ -532,7 +539,7 @@ public class ClassPath implements Closeable {
 
     private ClassPath parent;
 
-    private final AbstractPathEntry[] paths;
+    private final @Owning AbstractPathEntry[] paths;
 
     /**
      * Search for classes in CLASSPATH.
@@ -554,7 +561,7 @@ public class ClassPath implements Closeable {
      *
      * @param classPath
      */
-    @SuppressWarnings("resource")
+    @SuppressWarnings("builder:required.method.not.called") // list of @Owning elements
     public ClassPath(final String classPath) {
         this.classPath = classPath;
         final List<AbstractPathEntry> list = new ArrayList<>();
