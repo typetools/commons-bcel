@@ -57,5 +57,5 @@ public interface AttributeReader {
 
      @see Attribute#addAttributeReader( String, AttributeReader )
      */
-    Attribute createAttribute( @NonNegative int name_index, int length, java.io.DataInputStream file, ConstantPool constant_pool );
+    Attribute createAttribute( @NonNegative int name_index, @NonNegative int length, java.io.DataInputStream file, ConstantPool constant_pool );
 }

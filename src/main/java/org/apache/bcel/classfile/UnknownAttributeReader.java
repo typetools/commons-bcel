@@ -47,5 +47,5 @@ public interface UnknownAttributeReader {
      *
      * @see Attribute#addAttributeReader(String, UnknownAttributeReader)
      */
-    Attribute createAttribute( @NonNegative int name_index, int length, java.io.DataInput file, ConstantPool constant_pool );
+    Attribute createAttribute( @NonNegative int name_index, @NonNegative int length, java.io.DataInput file, ConstantPool constant_pool );
 }
