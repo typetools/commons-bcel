@@ -23,6 +23,7 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.signedness.qual.SignedPositive;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -158,7 +159,7 @@ public final class LineNumberTable extends Attribute {
      * @param pos byte code offset
      * @return corresponding line in source code
      */
-    public @NonNegative int getSourceLine( final @NonNegative int pos ) {
+    public @GTENegativeOne int getSourceLine( final @NonNegative int pos ) {
         int l = 0;
         int r = lineNumberTable.length - 1;
         if (r < 0) {
