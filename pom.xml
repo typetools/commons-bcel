@@ -499,6 +499,7 @@
     </dependency>
   </dependencies>
 
+  <!-- To use a locally-installed version of the Checker Framework, see `README-typetools.txt`. -->
   <profiles>
     <profile>
       <id>checkerframework</id>
@@ -611,29 +612,6 @@
              Version 1.19 is broken:  https://github.com/mojohaus/animal-sniffer/issues/76. -->
         <animal.sniffer.skip>true</animal.sniffer.skip>
       </properties>
-    </profile>
-
-    <!-- Profile to use the version of Checker Framework installed locally.
-         Run mvn with `-Pcheckerframework-local`.
-    -->
-    <profile>
-      <id>checkerframework-local</id>
-      <dependencies>
-        <dependency>
-          <groupId>org.checkerframework</groupId>
-          <artifactId>checker-qual</artifactId>
-          <version>0.0.0</version>
-          <scope>system</scope>
-          <systemPath>${env.CHECKERFRAMEWORK}/checker/dist/checker-qual.jar</systemPath>
-        </dependency>
-        <dependency>
-          <groupId>org.checkerframework</groupId>
-          <artifactId>checker</artifactId>
-          <version>0.0.0</version>
-          <scope>system</scope>
-          <systemPath>${env.CHECKERFRAMEWORK}/checker/dist/checker.jar</systemPath>
-        </dependency>
-      </dependencies>
     </profile>
 
     <!-- Profile to build and run PerformanceTest. Use 'mvn test -Pjdk-rt' -->
