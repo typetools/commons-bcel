@@ -17,6 +17,8 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * BranchHandle is returned by specialized InstructionList.append() whenever a
  * BranchInstruction is appended. This is useful when the target of this
@@ -51,13 +53,13 @@ public final class BranchHandle extends InstructionHandle {
      * be prevented.
      */
     @Override
-    public int getPosition() {
+    public @NonNegative int getPosition() {
         return bi.getPosition();
     }
 
 
     @Override
-    void setPosition( final int pos ) {
+    void setPosition( final @NonNegative int pos ) {
         // Original code: i_position = bi.position = pos;
         bi.setPosition(pos);
         super.setPosition(pos);
@@ -65,7 +67,7 @@ public final class BranchHandle extends InstructionHandle {
 
 
     @Override
-    protected int updatePosition( final int offset, final int max_offset ) {
+    protected @NonNegative int updatePosition( final @NonNegative int offset, final @NonNegative int max_offset ) {
         final int x = bi.updatePosition(offset, max_offset);
         super.setPosition(bi.getPosition());
         return x;

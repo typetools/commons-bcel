@@ -33,9 +33,10 @@ import org.apache.bcel.classfile.Field;
 import org.apache.bcel.classfile.Utility;
 import org.apache.bcel.util.BCELComparator;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
-
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Template class for building up a field.  The only extraordinary thing
@@ -44,6 +45,7 @@ import org.checkerframework.dataflow.qual.Pure;
  *
  * @see Field
  */
+@AnnotatedFor({"signedness"})
 public class FieldGen extends FieldGenOrMethodGen {
 
     private Object value = null;
@@ -109,7 +111,7 @@ public class FieldGen extends FieldGenOrMethodGen {
     }
 
 
-    private void setValue( final int index ) {
+    private void setValue( final @NonNegative int index ) {
         final ConstantPool cp = super.getConstantPool().getConstantPool();
         final Constant c = cp.getConstant(index);
         value = ((ConstantObject) c).getConstantValue(cp);
@@ -218,11 +220,11 @@ public class FieldGen extends FieldGenOrMethodGen {
      */
     public Field getField() {
         final String signature = getSignature();
-        final int name_index = super.getConstantPool().addUtf8(super.getName());
-        final int signature_index = super.getConstantPool().addUtf8(signature);
+        final @NonNegative int name_index = super.getConstantPool().addUtf8(super.getName());
+        final @NonNegative int signature_index = super.getConstantPool().addUtf8(signature);
         if (value != null) {
             checkType(super.getType());
-            final int index = addConstant();
+            final @NonNegative int index = addConstant();
             addAttribute(new ConstantValue(super.getConstantPool().addUtf8("ConstantValue"), 2, index,
                     super.getConstantPool().getConstantPool())); // sic
         }
@@ -239,7 +241,7 @@ public class FieldGen extends FieldGenOrMethodGen {
       }
 
 
-    private int addConstant() {
+    private @NonNegative int addConstant() {
         switch (super.getType().getType()) { // sic
             case Const.T_INT:
             case Const.T_CHAR:

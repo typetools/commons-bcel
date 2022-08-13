@@ -22,13 +22,16 @@ import java.io.IOException;
 
 import org.apache.bcel.util.ByteSequence;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.interning.qual.InternedDistinct;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * IINC - Increment local variable by constant
  *
  */
+@AnnotatedFor({"signedness"})
 public class IINC extends LocalVariableInstruction {
 
     private boolean wide;
@@ -47,7 +50,7 @@ public class IINC extends LocalVariableInstruction {
      * @param n index of local variable
      * @param c increment factor
      */
-    public IINC(final int n, final int c) {
+    public IINC(final @NonNegative int n, final int c) {
         super(); // Default behavior of LocalVariableInstruction causes error
         super.setOpcode(org.apache.bcel.Const.IINC);
         super.setLength((short) 3);
@@ -122,7 +125,7 @@ public class IINC extends LocalVariableInstruction {
      * Set index of local variable.
      */
     @Override
-    public final void setIndex( final int n ) {
+    public final void setIndex( final @NonNegative int n ) {
         if (n < 0) {
             throw new ClassGenException("Negative index value: " + n);
         }

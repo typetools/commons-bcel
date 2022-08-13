@@ -23,6 +23,8 @@ import java.util.Hashtable;
 import org.apache.bcel.generic.Type;
 import org.apache.bcel.verifier.exc.LocalVariableInfoInconsistentException;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * A utility class holding the information about
  * the name and the type of a local variable in
@@ -41,7 +43,7 @@ public class LocalVariableInfo{
      * Adds a name of a local variable and a certain slot to our 'names'
      * (Hashtable) database.
      */
-    private void setName(final int offset, final String name) {
+    private void setName(final @NonNegative int offset, final String name) {
         names.put(Integer.toString(offset), name);
     }
 
@@ -49,7 +51,7 @@ public class LocalVariableInfo{
      * Adds a type of a local variable and a certain slot to our 'types'
      * (Hashtable) database.
      */
-    private void setType(final int offset, final Type t) {
+    private void setType(final @NonNegative int offset, final Type t) {
         types.put(Integer.toString(offset), t);
     }
 
@@ -61,7 +63,7 @@ public class LocalVariableInfo{
      * @param offset bytecode offset.
      * @return the type of the local variable that uses this local variable slot at the given bytecode offset.
      */
-    public Type getType(final int offset) {
+    public Type getType(final @NonNegative int offset) {
         return types.get(Integer.toString(offset));
     }
 
@@ -73,7 +75,7 @@ public class LocalVariableInfo{
      * @param offset bytecode offset.
      * @return the name of the local variable that uses this local variable slot at the given bytecode offset.
      */
-    public String getName(final int offset) {
+    public String getName(final @NonNegative int offset) {
         return names.get(Integer.toString(offset));
     }
 
@@ -101,7 +103,7 @@ public class LocalVariableInfo{
      * @throws LocalVariableInfoInconsistentException if the new information conflicts
      *         with already gathered information.
      */
-    private void add(final int offset, final String name, final Type t) throws LocalVariableInfoInconsistentException {
+    private void add(final @NonNegative int offset, final String name, final Type t) throws LocalVariableInfoInconsistentException {
         if (getName(offset) != null) {
             if (!getName(offset).equals(name)) {
                 throw new LocalVariableInfoInconsistentException("At bytecode offset '" + offset

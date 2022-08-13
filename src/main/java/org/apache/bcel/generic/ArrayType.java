@@ -19,6 +19,7 @@ package org.apache.bcel.generic;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.ClassGetName;
 import org.checkerframework.dataflow.qual.Pure;
@@ -29,7 +30,7 @@ import org.checkerframework.dataflow.qual.Pure;
  */
 public final class ArrayType extends ReferenceType {
 
-    private int dimensions;
+    private @NonNegative int dimensions;
     private Type basicType;
 
 
@@ -38,7 +39,7 @@ public final class ArrayType extends ReferenceType {
      *
      * @param type array type, e.g. T_INT
      */
-    public ArrayType(final byte type, final int dimensions) {
+    public ArrayType(final byte type, final @NonNegative int dimensions) {
         this(BasicType.getType(type), dimensions);
     }
 
@@ -48,7 +49,7 @@ public final class ArrayType extends ReferenceType {
      *
      * @param class_name complete name of class (java.lang.String, e.g.)
      */
-    public ArrayType(final @ClassGetName String class_name, final int dimensions) {
+    public ArrayType(final @ClassGetName String class_name, final @NonNegative int dimensions) {
         this(ObjectType.getInstance(class_name), dimensions);
     }
 
@@ -59,7 +60,7 @@ public final class ArrayType extends ReferenceType {
      * @param type type of array (may be an array itself)
      */
     @SuppressWarnings("signature") // string concatenation
-    public ArrayType(final Type type, final int dimensions) {
+    public ArrayType(final Type type, final @NonNegative int dimensions) {
         // <dummy> will be overridden by setSignature below!
         super(Const.T_ARRAY, "<dummy, will be replaced before end of constructor>");
         if ((dimensions < 1) || (dimensions > Const.MAX_BYTE)) {
@@ -110,7 +111,7 @@ public final class ArrayType extends ReferenceType {
     /** @return number of dimensions of array
      */
     @Pure
-    public int getDimensions() {
+    public @NonNegative int getDimensions() {
         return dimensions;
     }
 

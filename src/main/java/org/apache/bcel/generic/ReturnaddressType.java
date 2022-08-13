@@ -30,6 +30,7 @@ import org.checkerframework.dataflow.qual.Pure;
  */
 public class ReturnaddressType extends Type {
 
+    @SuppressWarnings("interning:cast.unsafe")
     public static final @InternedDistinct ReturnaddressType NO_TARGET = new @InternedDistinct ReturnaddressType();
     private InstructionHandle returnTarget;
 

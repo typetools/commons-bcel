@@ -17,12 +17,16 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * LDC2_W - Push long or double from constant pool
  *
  * <PRE>Stack: ... -&gt; ..., item.word1, item.word2</PRE>
  *
  */
+@AnnotatedFor({"signedness"})
 public class LDC2_W extends CPInstruction implements PushInstruction {
 
     /**
@@ -33,7 +37,7 @@ public class LDC2_W extends CPInstruction implements PushInstruction {
     }
 
 
-    public LDC2_W(final int index) {
+    public LDC2_W(final @NonNegative int index) {
         super(org.apache.bcel.Const.LDC2_W, index);
     }
 

@@ -25,9 +25,11 @@ import org.apache.bcel.classfile.ConstantClass;
 import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.util.ByteSequence;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Abstract super class for instructions that use an index into the
@@ -38,6 +40,7 @@ import org.checkerframework.dataflow.qual.Pure;
  * @see INVOKEVIRTUAL
  *
  */
+@AnnotatedFor({"signedness"})
 public abstract class CPInstruction extends Instruction implements TypedInstruction,
         IndexedInstruction {
 
@@ -45,7 +48,7 @@ public abstract class CPInstruction extends Instruction implements TypedInstruct
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
      */
     @Deprecated
-    protected int index; // index to constant pool
+    protected @NonNegative int index; // index to constant pool
 
 
     /**
@@ -59,7 +62,7 @@ public abstract class CPInstruction extends Instruction implements TypedInstruct
     /**
      * @param index to constant pool
      */
-    protected CPInstruction(final short opcode, final int index) {
+    protected CPInstruction(final short opcode, final @NonNegative int index) {
         super(opcode, (short) 3);
         setIndex(index);
     }
@@ -122,7 +125,7 @@ public abstract class CPInstruction extends Instruction implements TypedInstruct
      */
     @Override
     @Pure
-    public final int getIndex() {
+    public final @NonNegative int getIndex() {
         return index;
     }
 
@@ -132,7 +135,7 @@ public abstract class CPInstruction extends Instruction implements TypedInstruct
      * @param index in  constant pool.
      */
     @Override
-    public void setIndex( @UnderInitialization CPInstruction this,  final int index ) { // TODO could be package-protected?
+    public void setIndex( @UnderInitialization CPInstruction this,  final @NonNegative int index ) { // TODO could be package-protected?
         if (index < 0) {
             throw new ClassGenException("Negative index value: " + index);
         }

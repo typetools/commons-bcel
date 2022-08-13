@@ -23,6 +23,7 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -38,7 +39,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @see     Constant
  * @see     org.apache.bcel.generic.ConstantPoolGen
  */
-@AnnotatedFor({"nullness"})
+@AnnotatedFor({"nullness","signedness"})
 public class ConstantPool implements Cloneable, Node {
 
     private Constant[] constantPool;
@@ -211,7 +212,7 @@ public class ConstantPool implements Cloneable, Node {
      * @param  tag expected type
      * @return String representation
      */
-    public String constantToString( final int index, final byte tag ) throws ClassFormatException {
+    public String constantToString( final @NonNegative int index, final byte tag ) throws ClassFormatException {
         final Constant c = getConstant(index, tag);
         return constantToString(c);
     }
@@ -239,7 +240,7 @@ public class ConstantPool implements Cloneable, Node {
      * @see    Constant
      */
     @Pure
-    public Constant getConstant( final int index ) {
+    public Constant getConstant( final @NonNegative int index ) {
         if (index >= constantPool.length || index < 0) {
             throw new ClassFormatException("Invalid constant pool reference: " + index
                     + ". Constant pool size is: " + constantPool.length);
@@ -258,7 +259,7 @@ public class ConstantPool implements Cloneable, Node {
      * @throws  ClassFormatException
      */
     @Pure
-    public Constant getConstant( final int index, final byte tag ) throws ClassFormatException {
+    public Constant getConstant( final @NonNegative int index, final byte tag ) throws ClassFormatException {
         Constant c;
         c = getConstant(index);
         if (c == null) {
@@ -293,7 +294,7 @@ public class ConstantPool implements Cloneable, Node {
      * @see    ConstantString
      * @throws  ClassFormatException
      */
-    public String getConstantString( final int index, final byte tag ) throws ClassFormatException {
+    public String getConstantString( final @NonNegative int index, final byte tag ) throws ClassFormatException {
         Constant c;
         int i;
         c = getConstant(index, tag);
@@ -338,7 +339,7 @@ public class ConstantPool implements Cloneable, Node {
     /**
      * @param constant Constant to set
      */
-    public void setConstant( final int index, final Constant constant ) {
+    public void setConstant( final @NonNegative int index, final Constant constant ) {
         constantPool[index] = constant;
     }
 

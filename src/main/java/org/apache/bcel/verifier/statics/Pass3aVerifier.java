@@ -100,6 +100,7 @@ import org.apache.bcel.verifier.exc.StaticCodeConstraintException;
 import org.apache.bcel.verifier.exc.StaticCodeInstructionConstraintException;
 import org.apache.bcel.verifier.exc.StaticCodeInstructionOperandConstraintException;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 
@@ -488,7 +489,7 @@ public final class Pass3aVerifier extends PassVerifier{
          * Utility method to return the max_locals value of the method verified
          * by the surrounding Pass3aVerifier instance.
          */
-        private int max_locals() {
+        private @NonNegative int max_locals() {
            try {
             return Repository.lookupClass(myOwner.getClassName()).getMethods()[methodNo].getCode().getMaxLocals();
             } catch (final ClassNotFoundException e) {
@@ -508,7 +509,7 @@ public final class Pass3aVerifier extends PassVerifier{
          * A utility method to raise an exception if the index is not
          * a valid constant pool index.
          */
-        private void indexValid(final Instruction i, final int idx) {
+        private void indexValid(final Instruction i, final @NonNegative int idx) {
             if (idx < 0 || idx >= constantPoolGen.getSize()) {
                 constraintViolated(i, "Illegal constant pool index '"+idx+"'.");
             }
@@ -844,7 +845,7 @@ public final class Pass3aVerifier extends PassVerifier{
         /** Checks if the constraints of operands of the said instruction(s) are satisfied. */
         @Override
         public void visitILOAD(final ILOAD o) {
-            final int idx = o.getIndex();
+            final @NonNegative int idx = o.getIndex();
             if (idx < 0) {
                 constraintViolated(o, "Index '"+idx+"' must be non-negative.");
             }
@@ -859,7 +860,7 @@ public final class Pass3aVerifier extends PassVerifier{
         /** Checks if the constraints of operands of the said instruction(s) are satisfied. */
         @Override
         public void visitFLOAD(final FLOAD o) {
-            final int idx = o.getIndex();
+            final @NonNegative int idx = o.getIndex();
             if (idx < 0) {
                 constraintViolated(o, "Index '"+idx+"' must be non-negative.");
             }
@@ -874,7 +875,7 @@ public final class Pass3aVerifier extends PassVerifier{
         /** Checks if the constraints of operands of the said instruction(s) are satisfied. */
         @Override
         public void visitALOAD(final ALOAD o) {
-            final int idx = o.getIndex();
+            final @NonNegative int idx = o.getIndex();
             if (idx < 0) {
                 constraintViolated(o, "Index '"+idx+"' must be non-negative.");
             }
@@ -889,7 +890,7 @@ public final class Pass3aVerifier extends PassVerifier{
         /** Checks if the constraints of operands of the said instruction(s) are satisfied. */
         @Override
         public void visitISTORE(final ISTORE o) {
-            final int idx = o.getIndex();
+            final @NonNegative int idx = o.getIndex();
             if (idx < 0) {
                 constraintViolated(o, "Index '"+idx+"' must be non-negative.");
             }
@@ -904,7 +905,7 @@ public final class Pass3aVerifier extends PassVerifier{
         /** Checks if the constraints of operands of the said instruction(s) are satisfied. */
         @Override
         public void visitFSTORE(final FSTORE o) {
-            final int idx = o.getIndex();
+            final @NonNegative int idx = o.getIndex();
             if (idx < 0) {
                 constraintViolated(o, "Index '"+idx+"' must be non-negative.");
             }
@@ -919,7 +920,7 @@ public final class Pass3aVerifier extends PassVerifier{
         /** Checks if the constraints of operands of the said instruction(s) are satisfied. */
         @Override
         public void visitASTORE(final ASTORE o) {
-            final int idx = o.getIndex();
+            final @NonNegative int idx = o.getIndex();
             if (idx < 0) {
                 constraintViolated(o, "Index '"+idx+"' must be non-negative.");
             }
@@ -934,7 +935,7 @@ public final class Pass3aVerifier extends PassVerifier{
         /** Checks if the constraints of operands of the said instruction(s) are satisfied. */
         @Override
         public void visitIINC(final IINC o) {
-            final int idx = o.getIndex();
+            final @NonNegative int idx = o.getIndex();
             if (idx < 0) {
                 constraintViolated(o, "Index '"+idx+"' must be non-negative.");
             }
@@ -949,7 +950,7 @@ public final class Pass3aVerifier extends PassVerifier{
         /** Checks if the constraints of operands of the said instruction(s) are satisfied. */
         @Override
         public void visitRET(final RET o) {
-            final int idx = o.getIndex();
+            final @NonNegative int idx = o.getIndex();
             if (idx < 0) {
                 constraintViolated(o, "Index '"+idx+"' must be non-negative.");
             }
@@ -964,7 +965,7 @@ public final class Pass3aVerifier extends PassVerifier{
         /** Checks if the constraints of operands of the said instruction(s) are satisfied. */
         @Override
         public void visitLLOAD(final LLOAD o) {
-            final int idx = o.getIndex();
+            final @NonNegative int idx = o.getIndex();
             if (idx < 0) {
                 constraintViolated(o, "Index '"+idx+"' must be non-negative."+
                     " [Constraint by JustIce as an analogon to the single-slot xLOAD/xSTORE instructions; may not happen anyway.]");
@@ -980,7 +981,7 @@ public final class Pass3aVerifier extends PassVerifier{
         /** Checks if the constraints of operands of the said instruction(s) are satisfied. */
         @Override
         public void visitDLOAD(final DLOAD o) {
-            final int idx = o.getIndex();
+            final @NonNegative int idx = o.getIndex();
             if (idx < 0) {
                 constraintViolated(o, "Index '"+idx+"' must be non-negative."+
                     " [Constraint by JustIce as an analogon to the single-slot xLOAD/xSTORE instructions; may not happen anyway.]");
@@ -996,7 +997,7 @@ public final class Pass3aVerifier extends PassVerifier{
         /** Checks if the constraints of operands of the said instruction(s) are satisfied. */
         @Override
         public void visitLSTORE(final LSTORE o) {
-            final int idx = o.getIndex();
+            final @NonNegative int idx = o.getIndex();
             if (idx < 0) {
                 constraintViolated(o, "Index '"+idx+"' must be non-negative."+
                     " [Constraint by JustIce as an analogon to the single-slot xLOAD/xSTORE instructions; may not happen anyway.]");
@@ -1012,7 +1013,7 @@ public final class Pass3aVerifier extends PassVerifier{
         /** Checks if the constraints of operands of the said instruction(s) are satisfied. */
         @Override
         public void visitDSTORE(final DSTORE o) {
-            final int idx = o.getIndex();
+            final @NonNegative int idx = o.getIndex();
             if (idx < 0) {
                 constraintViolated(o, "Index '"+idx+"' must be non-negative."+
                     " [Constraint by JustIce as an analogon to the single-slot xLOAD/xSTORE instructions; may not happen anyway.]");
@@ -1236,7 +1237,7 @@ public final class Pass3aVerifier extends PassVerifier{
                     if (! (o.getMethodName(constantPoolGen).equals(Const.CONSTRUCTOR_NAME) )) {
                         // Special lookup procedure for ACC_SUPER classes.
 
-                        int supidx = -1;
+                        @NonNegative int supidx = 1; // dummy non zero value; will be replaced
 
                         Method meth = null;
                         while (supidx != 0) {

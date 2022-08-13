@@ -23,12 +23,16 @@ import java.io.IOException;
 import org.apache.bcel.ExceptionConst;
 import org.apache.bcel.util.ByteSequence;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * LDC - Push item from constant pool.
  *
  * <PRE>Stack: ... -&gt; ..., item</PRE>
  *
  */
+@AnnotatedFor({"signedness"})
 public class LDC extends CPInstruction implements PushInstruction, ExceptionThrower {
 
     /**
@@ -39,7 +43,7 @@ public class LDC extends CPInstruction implements PushInstruction, ExceptionThro
     }
 
 
-    public LDC(final int index) {
+    public LDC(final @NonNegative int index) {
         super(org.apache.bcel.Const.LDC_W, index);
         setSize();
     }
@@ -76,7 +80,7 @@ public class LDC extends CPInstruction implements PushInstruction, ExceptionThro
      * Set the index to constant pool and adjust size.
      */
     @Override
-    public final void setIndex( final int index ) {
+    public final void setIndex( final @NonNegative int index ) {
         super.setIndex(index);
         setSize();
     }

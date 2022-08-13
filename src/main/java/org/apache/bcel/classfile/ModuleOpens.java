@@ -23,6 +23,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * This class represents an entry in the opens table of the Module attribute.
  * Each entry describes a package which the parent module opens.
@@ -32,9 +34,9 @@ import org.apache.bcel.Const;
  */
 public final class ModuleOpens implements Cloneable, Node {
 
-    private final int opensIndex;  // points to CONSTANT_Package_info
+    private final @NonNegative int opensIndex;  // points to CONSTANT_Package_info
     private final int opensFlags;
-    private final int opensToCount;
+    private final @NonNegative int opensToCount;
     private final int[] opensToIndex;  // points to CONSTANT_Module_info
 
 

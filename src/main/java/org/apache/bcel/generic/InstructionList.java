@@ -31,8 +31,10 @@ import org.apache.bcel.Const;
 import org.apache.bcel.classfile.Constant;
 import org.apache.bcel.util.ByteSequence;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class is a container for a list of <a href="Instruction.html">Instruction</a> objects. Instructions can be appended, inserted, moved, deleted, etc..
@@ -45,11 +47,12 @@ import org.checkerframework.dataflow.qual.Pure;
  * @see InstructionHandle
  * @see BranchHandle
  */
+@AnnotatedFor({"signedness"})
 public class InstructionList implements Iterable<InstructionHandle> {
 
     private InstructionHandle start = null;
     private InstructionHandle end = null;
-    private int length = 0; // number of elements in list
+    private @NonNegative int length = 0; // number of elements in list
     private int[] bytePositions; // byte code offsets corresponding to instructions
 
     /**
@@ -108,14 +111,15 @@ public class InstructionList implements Iterable<InstructionHandle> {
      *            target position to search for
      * @return target position's instruction handle if available
      */
-    public static @Nullable InstructionHandle findHandle(final InstructionHandle[] ihs, final int[] pos, final int count, final int target) {
-        int l = 0;
-        int r = count - 1;
+    public static @Nullable InstructionHandle findHandle(final InstructionHandle[] ihs, final int[] pos, final @NonNegative int count, final @NonNegative int target) {
+        @NonNegative int l = 0;
+        @NonNegative int r = count - 1;
         /*
          * Do a binary search since the pos array is orderd.
          */
         do {
-            final int i = (l + r) >>> 1;
+            // count <= 65536 so arithmetic shift same as logical shift and no checker warning
+            final int i = (l + r) >> 1;
             final int j = pos[i];
             if (j == target) {
                 return ihs[i];
@@ -136,7 +140,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
      *            byte code position to search for
      * @return target position's instruction handle if available
      */
-    public @Nullable InstructionHandle findHandle(final int pos) {
+    public @Nullable InstructionHandle findHandle(final @NonNegative int pos) {
         final int[] positions = bytePositions;
         InstructionHandle ih = start;
         for (int i = 0; i < length; i++) {
@@ -155,7 +159,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
      *            byte array containing the instructions
      */
     public InstructionList(final byte[] code) {
-        int count = 0; // Contains actual length
+        @NonNegative int count = 0; // Contains actual length
         int[] pos;
         InstructionHandle[] ihs;
         try (ByteSequence bytes = new ByteSequence(code)) {
@@ -166,7 +170,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
              */
             while (bytes.available() > 0) {
                 // Remember byte offset and associate it with the instruction
-                final int off = bytes.getIndex();
+                final @NonNegative int off = bytes.getIndex();
                 pos[count] = off;
                 /*
                  * Read one instruction from the byte stream, the byte position is set accordingly.
@@ -193,7 +197,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
         for (int i = 0; i < count; i++) {
             if (ihs[i] instanceof BranchHandle) {
                 final BranchInstruction bi = (BranchInstruction) ihs[i].getInstruction();
-                int target = bi.getPosition() + bi.getIndex(); /*
+                @NonNegative int target = bi.getPosition() + bi.getIndex(); /*
                                                                 * Byte code position: relative -> absolute.
                                                                 */
                 // Search for target position
@@ -858,8 +862,8 @@ public class InstructionList implements Iterable<InstructionHandle> {
     public void setPositions(final boolean check) { // called by code in other packages
         int max_additional_bytes = 0;
         int additional_bytes = 0;
-        int index = 0;
-        int count = 0;
+        @NonNegative int index = 0;
+        @NonNegative int count = 0;
         final int[] pos = new int[length];
         /*
          * Pass 0: Sanity checks
@@ -1143,7 +1147,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
      * @return length of list (Number of instructions, not bytes)
      */
     @Pure
-    public int getLength() {
+    public @NonNegative int getLength() {
         return length;
     }
 
@@ -1151,7 +1155,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
      * @return length of list (Number of instructions, not bytes)
      */
     @Pure
-    public int size() {
+    public @NonNegative int size() {
         return length;
     }
 

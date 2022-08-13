@@ -23,7 +23,9 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class is derived from the abstract {@link Constant}
@@ -32,10 +34,11 @@ import org.checkerframework.dataflow.qual.Pure;
  * @see     Constant
  * @since 6.0
  */
+@AnnotatedFor({"signedness"})
 public final class ConstantMethodHandle extends Constant {
 
-    private int referenceKind;
-    private int referenceIndex;
+    private @NonNegative int referenceKind;
+    private @NonNegative int referenceIndex;
 
 
     /**
@@ -57,7 +60,7 @@ public final class ConstantMethodHandle extends Constant {
     }
 
 
-    public ConstantMethodHandle(final int reference_kind, final int reference_index) {
+    public ConstantMethodHandle(final @NonNegative int reference_kind, final @NonNegative int reference_index) {
         super(Const.CONSTANT_MethodHandle);
         this.referenceKind = reference_kind;
         this.referenceIndex = reference_index;
@@ -92,23 +95,23 @@ public final class ConstantMethodHandle extends Constant {
 
 
     @Pure
-    public int getReferenceKind() {
+    public @NonNegative int getReferenceKind() {
         return referenceKind;
     }
 
 
-    public void setReferenceKind(final int reference_kind) {
+    public void setReferenceKind(final @NonNegative int reference_kind) {
         this.referenceKind = reference_kind;
     }
 
 
     @Pure
-    public int getReferenceIndex() {
+    public @NonNegative int getReferenceIndex() {
         return referenceIndex;
     }
 
 
-    public void setReferenceIndex(final int reference_index) {
+    public void setReferenceIndex(final @NonNegative int reference_index) {
         this.referenceIndex = reference_index;
     }
 

@@ -23,7 +23,9 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class is derived from <em>Attribute</em> and records the classes and interfaces that
@@ -32,6 +34,7 @@ import org.checkerframework.dataflow.qual.Pure;
  *
  * @see     Attribute
  */
+@AnnotatedFor({"signedness"})
 public final class NestMembers extends Attribute {
 
     private int[] classes;
@@ -52,7 +55,7 @@ public final class NestMembers extends Attribute {
      * @param classes Table of indices in constant pool
      * @param constant_pool Array of constants
      */
-    public NestMembers(final int name_index, final int length, final int[] classes,
+    public NestMembers(final @NonNegative int name_index, final @NonNegative int length, final int[] classes,
             final ConstantPool constant_pool) {
         super(Const.ATTR_NEST_MEMBERS, name_index, length, constant_pool);
         this.classes = classes != null ? classes : new int[0];
@@ -67,7 +70,7 @@ public final class NestMembers extends Attribute {
      * @param constant_pool Array of constants
      * @throws IOException
      */
-    NestMembers(final int name_index, final int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
+    NestMembers(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
         this(name_index, length, (int[]) null, constant_pool);
         final int number_of_classes = input.readUnsignedShort();
         classes = new int[number_of_classes];
@@ -119,7 +122,7 @@ public final class NestMembers extends Attribute {
      * @return Length of classes table.
      */
     @Pure
-    public int getNumberClasses() {
+    public @NonNegative int getNumberClasses() {
         return classes == null ? 0 : classes.length;
     }
 

@@ -18,7 +18,6 @@
 package org.apache.bcel.verifier.structurals;
 
 
-import org.checkerframework.checker.index.qual.NonNegative;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -47,6 +46,7 @@ import org.apache.bcel.verifier.exc.AssertionViolatedException;
 import org.apache.bcel.verifier.exc.StructuralCodeConstraintException;
 import org.apache.bcel.verifier.exc.VerifierConstraintViolatedException;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 
 /**

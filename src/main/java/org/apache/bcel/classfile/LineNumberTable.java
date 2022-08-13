@@ -23,7 +23,11 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.signedness.qual.SignedPositive;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class represents a table of line numbers for debugging
@@ -33,6 +37,7 @@ import org.checkerframework.dataflow.qual.Pure;
  * @see     Code
  * @see LineNumber
  */
+@AnnotatedFor({"signedness"})
 public final class LineNumberTable extends Attribute {
 
     private static final int MAX_LINE_LENGTH = 72;
@@ -54,7 +59,7 @@ public final class LineNumberTable extends Attribute {
      * @param lineNumberTable Table of line/numbers pairs
      * @param constant_pool Array of constants
      */
-    public LineNumberTable(final int name_index, final int length, final LineNumber[] line_number_table,
+    public LineNumberTable(final @NonNegative int name_index, final @NonNegative int length, final LineNumber[] line_number_table,
             final ConstantPool constant_pool) {
         super(Const.ATTR_LINE_NUMBER_TABLE, name_index, length, constant_pool);
         this.lineNumberTable = line_number_table;
@@ -69,7 +74,7 @@ public final class LineNumberTable extends Attribute {
      * @param constant_pool Array of constants
      * @throws IOException if an I/O Exception occurs in readUnsignedShort
      */
-    LineNumberTable(final int name_index, final int length, final DataInput input, final ConstantPool constant_pool)
+    LineNumberTable(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool)
             throws IOException {
         this(name_index, length, (LineNumber[]) null, constant_pool);
         final int line_number_table_length = input.readUnsignedShort();
@@ -156,7 +161,7 @@ public final class LineNumberTable extends Attribute {
      * @param pos byte code offset
      * @return corresponding line in source code
      */
-    public int getSourceLine( final int pos ) {
+    public @GTENegativeOne int getSourceLine( final @NonNegative int pos ) {
         int l = 0;
         int r = lineNumberTable.length - 1;
         if (r < 0) {
@@ -168,7 +173,7 @@ public final class LineNumberTable extends Attribute {
          */
         do {
             final int i = (l + r) >>> 1;
-            final int j = lineNumberTable[i].getStartPC();
+            final @NonNegative int j = lineNumberTable[i].getStartPC();
             if (j == pos) {
                 return lineNumberTable[i].getLineNumber();
             } else if (pos < j) {
@@ -213,7 +218,7 @@ public final class LineNumberTable extends Attribute {
 
 
     @Pure
-    public int getTableLength() {
+    public @NonNegative int getTableLength() {
         return lineNumberTable == null ? 0 : lineNumberTable.length;
     }
 }

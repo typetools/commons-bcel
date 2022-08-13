@@ -22,16 +22,19 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * @since 6.0
  */
+@AnnotatedFor({"signedness"})
 public class SimpleElementValue extends ElementValue
 {
-    private int index;
+    private @NonNegative int index;
 
-    public SimpleElementValue(final int type, final int index, final ConstantPool cpool)
+    public SimpleElementValue(final int type, final @NonNegative int index, final ConstantPool cpool)
     {
         super(type, cpool);
         this.index = index;
@@ -41,12 +44,12 @@ public class SimpleElementValue extends ElementValue
      * @return Value entry index in the cpool
      */
     @Pure
-    public int getIndex()
+    public @NonNegative int getIndex()
     {
         return index;
     }
 
-    public void setIndex(final int index)
+    public void setIndex(final @NonNegative int index)
     {
         this.index = index;
     }
@@ -86,6 +89,7 @@ public class SimpleElementValue extends ElementValue
         return (byte) c.getBytes();
     }
 
+    @SuppressWarnings("signedness:cast.unsafe") // code tests for type char before cast
     @Pure
     public char getValueChar()
     {
@@ -194,7 +198,9 @@ public class SimpleElementValue extends ElementValue
         case PRIMITIVE_CHAR:
             final ConstantInteger ch = (ConstantInteger) cpool.getConstant(
                     getIndex(), Const.CONSTANT_Integer);
-            return String.valueOf((char)ch.getBytes());
+            @SuppressWarnings("signedness:cast.unsafe") // code tests for type char before cast
+            final char chChar = (char) ch.getBytes();
+            return String.valueOf(chChar);
         case PRIMITIVE_BOOLEAN:
             final ConstantInteger bo = (ConstantInteger) cpool.getConstant(
                     getIndex(), Const.CONSTANT_Integer);

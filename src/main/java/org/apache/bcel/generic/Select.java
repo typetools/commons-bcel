@@ -22,8 +22,10 @@ import java.io.IOException;
 
 import org.apache.bcel.util.ByteSequence;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Select - Abstract super class for LOOKUPSWITCH and TABLESWITCH instructions.
@@ -34,6 +36,7 @@ import org.checkerframework.dataflow.qual.Pure;
  * @see TABLESWITCH
  * @see InstructionList
  */
+@AnnotatedFor({"signedness"})
 public abstract class Select extends BranchInstruction implements VariableLengthInstruction,
         StackConsumer /* @since 6.0 */, StackProducer {
 
@@ -59,19 +62,19 @@ public abstract class Select extends BranchInstruction implements VariableLength
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
      */
     @Deprecated
-    protected int fixed_length; // fixed length defined by subclasses TODO could be package-protected?
+    protected @NonNegative int fixed_length; // fixed length defined by subclasses TODO could be package-protected?
 
     /**
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
      */
     @Deprecated
-    protected int match_length; // number of cases TODO could be package-protected?
+    protected @NonNegative int match_length; // number of cases TODO could be package-protected?
 
     /**
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
      */
     @Deprecated
-    protected int padding = 0; // number of pad bytes for alignment TODO could be package-protected?
+    protected @NonNegative int padding = 0; // number of pad bytes for alignment TODO could be package-protected?
 
 
     /**
@@ -124,7 +127,7 @@ public abstract class Select extends BranchInstruction implements VariableLength
      * @return additional offset caused by possible change of this instruction's length
      */
     @Override
-    protected int updatePosition( final int offset, final int max_offset ) {
+    protected @NonNegative int updatePosition( final @NonNegative int offset, final @NonNegative int max_offset ) {
         setPosition(getPosition() + offset); // Additional offset caused by preceding SWITCHs, GOTOs, etc.
         final short old_length = (short) super.getLength();
         /* Alignment on 4-byte-boundary, + 1, because of tag byte.
@@ -189,7 +192,7 @@ public abstract class Select extends BranchInstruction implements VariableLength
     /**
      * Set branch target for `i'th case
      */
-    public void setTarget( final int i, final InstructionHandle target ) { // TODO could be package-protected?
+    public void setTarget( final @NonNegative int i, final InstructionHandle target ) { // TODO could be package-protected?
         notifyTarget(targets[i], target, this);
         targets[i] = target;
     }
@@ -287,7 +290,7 @@ public abstract class Select extends BranchInstruction implements VariableLength
      * @return match entry
      * @since 6.0
      */
-    final int getMatch(final int index) {
+    final int getMatch(final @NonNegative int index) {
         return match[index];
     }
 
@@ -296,7 +299,7 @@ public abstract class Select extends BranchInstruction implements VariableLength
      * @return index entry from indices
      * @since 6.0
      */
-    final int getIndices(final int index) {
+    final int getIndices(final @NonNegative int index) {
         return indices[index];
     }
 
@@ -304,7 +307,7 @@ public abstract class Select extends BranchInstruction implements VariableLength
      * @return target entry
      * @since 6.0
      */
-    final InstructionHandle getTarget(final int index) {
+    final InstructionHandle getTarget(final @NonNegative int index) {
         return targets[index];
     }
 
@@ -313,7 +316,7 @@ public abstract class Select extends BranchInstruction implements VariableLength
      * @return the fixed_length
      * @since 6.0
      */
-    final int getFixed_length() {
+    final @NonNegative int getFixed_length() {
         return fixed_length;
     }
 
@@ -322,7 +325,7 @@ public abstract class Select extends BranchInstruction implements VariableLength
      * @param fixed_length the fixed_length to set
      * @since 6.0
      */
-    final void setFixed_length(final int fixed_length) {
+    final void setFixed_length(final @NonNegative int fixed_length) {
         this.fixed_length = fixed_length;
     }
 
@@ -331,7 +334,7 @@ public abstract class Select extends BranchInstruction implements VariableLength
      * @return the match_length
      * @since 6.0
      */
-    final int getMatch_length() {
+    final @NonNegative int getMatch_length() {
         return match_length;
     }
 
@@ -340,7 +343,7 @@ public abstract class Select extends BranchInstruction implements VariableLength
      * @param match_length the match_length to set
      * @since 6.0
      */
-    final int setMatch_length(final int match_length) {
+    final @NonNegative int setMatch_length(final @NonNegative int match_length) {
         this.match_length = match_length;
         return match_length;
     }
@@ -351,7 +354,7 @@ public abstract class Select extends BranchInstruction implements VariableLength
      * @param value
      * @since 6.0
      */
-    final void setMatch(final int index, final int value) {
+    final void setMatch(final @NonNegative int index, final int value) {
         match[index] = value;
     }
 
@@ -387,13 +390,13 @@ public abstract class Select extends BranchInstruction implements VariableLength
      * @return the padding
      * @since 6.0
      */
-    final int getPadding() {
+    final @NonNegative int getPadding() {
         return padding;
     }
 
 
     /** @since 6.0 */
-    final int setIndices(final int i, final int value) {
+    final int setIndices(final @NonNegative int i, final int value) {
         indices[i] = value;
         return value;  // Allow use in nested calls
     }

@@ -21,13 +21,16 @@ import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * base class for parameter annotations
  *
  * @since 6.0
  */
+@AnnotatedFor({"signedness"})
 public abstract class ParameterAnnotations extends Attribute {
 
     /** Table of parameter annotations */
@@ -40,7 +43,7 @@ public abstract class ParameterAnnotations extends Attribute {
      * @param input Input stream
      * @param constant_pool Array of constants
      */
-    ParameterAnnotations(final byte parameter_annotation_type, final int name_index, final int length,
+    ParameterAnnotations(final byte parameter_annotation_type, final @NonNegative int name_index, final @NonNegative int length,
             final DataInput input, final ConstantPool constant_pool) throws IOException {
         this(parameter_annotation_type, name_index, length, (ParameterAnnotationEntry[]) null,
                 constant_pool);
@@ -59,7 +62,7 @@ public abstract class ParameterAnnotations extends Attribute {
      * @param parameterAnnotationTable the actual parameter annotations
      * @param constantPool Array of constants
      */
-    public ParameterAnnotations(final byte parameterAnnotationType, final int nameIndex, final int length,
+    public ParameterAnnotations(final byte parameterAnnotationType, final @NonNegative int nameIndex, final @NonNegative int length,
             final ParameterAnnotationEntry[] parameterAnnotationTable, final ConstantPool constantPool) {
         super(parameterAnnotationType, nameIndex, length, constantPool);
         this.parameterAnnotationTable = parameterAnnotationTable;

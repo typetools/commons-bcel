@@ -281,7 +281,7 @@ public class InstructionFinder {
      * Convert opcode number to char.
      */
     private static char makeChar( final short opcode ) {
-        return (char) (opcode + OFFSET);
+        return (char) ((opcode + OFFSET) & 0xffff);
     }
 
 

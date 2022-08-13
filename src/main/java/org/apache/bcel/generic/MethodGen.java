@@ -64,14 +64,14 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @see     InstructionList
  * @see     Method
  */
-@AnnotatedFor({"nullness"})
+@AnnotatedFor({"nullness","signedness"})
 public class MethodGen extends FieldGenOrMethodGen {
 
     private @BinaryName String className;
     private Type[] argTypes;
     private String[] argNames;
     private @NonNegative int maxLocals;
-    private int maxStack;
+    private @NonNegative int maxStack;
     private InstructionList il;
     private boolean stripAttributes;
     private @Nullable LocalVariableTypeTable localVariableTypeTable = null;
@@ -149,7 +149,7 @@ public class MethodGen extends FieldGenOrMethodGen {
             }
         }
         if (argTypes != null) {
-            final int size = argTypes.length;
+            final @NonNegative int size = argTypes.length;
             for (final Type arg_type : argTypes) {
                 if (Type.VOID == arg_type) {
                     throw new ClassGenException("'void' is an illegal argument type for a method");
@@ -207,8 +207,8 @@ public class MethodGen extends FieldGenOrMethodGen {
                             final @ClassGetName String cen = method.getConstantPool().getConstantString(type, Const.CONSTANT_Class);
                             c_type = ObjectType.getInstance(cen);
                         }
-                        final int end_pc = ce.getEndPC();
-                        final int length = getByteCodes(method).length;
+                        final @NonNegative int end_pc = ce.getEndPC();
+                        final @NonNegative int length = getByteCodes(method).length;
                         InstructionHandle end;
                         if (length == end_pc) { // May happen, because end_pc is exclusive
                             end = il.getEnd();
@@ -278,11 +278,11 @@ public class MethodGen extends FieldGenOrMethodGen {
      * @return new local variable object
      * @see LocalVariable
      */
-    public LocalVariableGen addLocalVariable( final String name, final Type type, final int slot,
-            final InstructionHandle start, final InstructionHandle end, final int orig_index ) {
+    public LocalVariableGen addLocalVariable( final String name, final Type type, final @NonNegative int slot,
+            final InstructionHandle start, final InstructionHandle end, final @NonNegative int orig_index ) {
         final byte t = type.getType();
         if (t != Const.T_ADDRESS) {
-            final int add = type.getSize();
+            final @NonNegative int add = type.getSize();
             if (slot + add > maxLocals) {
                 maxLocals = slot + add;
             }
@@ -312,7 +312,7 @@ public class MethodGen extends FieldGenOrMethodGen {
      * @return new local variable object
      * @see LocalVariable
      */
-    public LocalVariableGen addLocalVariable( final String name, final Type type, final int slot,
+    public LocalVariableGen addLocalVariable( final String name, final Type type, final @NonNegative int slot,
             final InstructionHandle start, final InstructionHandle end ) {
         return addLocalVariable(name, type, slot, start, end, slot);
     }
@@ -363,7 +363,7 @@ public class MethodGen extends FieldGenOrMethodGen {
      * @return array of declared local variables sorted by index
      */
     public LocalVariableGen[] getLocalVariables() {
-        final int size = variableList.size();
+        final @NonNegative int size = variableList.size();
         final LocalVariableGen[] lg = new LocalVariableGen[size];
         variableList.toArray(lg);
         for (int i = 0; i < size; i++) {
@@ -386,7 +386,7 @@ public class MethodGen extends FieldGenOrMethodGen {
      */
     public LocalVariableTable getLocalVariableTable( final ConstantPoolGen cp ) {
         final LocalVariableGen[] lg = getLocalVariables();
-        final int size = lg.length;
+        final @NonNegative int size = lg.length;
         final LocalVariable[] lv = new LocalVariable[size];
         for (int i = 0; i < size; i++) {
             lv[i] = lg[i].getLocalVariable(cp);
@@ -410,7 +410,7 @@ public class MethodGen extends FieldGenOrMethodGen {
      * @return new line number object
      * @see LineNumber
      */
-    public LineNumberGen addLineNumber( final InstructionHandle ih, final int srcLine ) {
+    public LineNumberGen addLineNumber( final InstructionHandle ih, final @NonNegative int srcLine ) {
         final LineNumberGen l = new LineNumberGen(ih, srcLine);
         lineNumberList.add(l);
         return l;
@@ -447,7 +447,7 @@ public class MethodGen extends FieldGenOrMethodGen {
      * @return `LineNumberTable' attribute of all the local variables of this method.
      */
     public LineNumberTable getLineNumberTable( final ConstantPoolGen cp ) {
-        final int size = lineNumberList.size();
+        final @NonNegative int size = lineNumberList.size();
         final LineNumber[] ln = new LineNumber[size];
         for (int i = 0; i < size; i++) {
             ln[i] = lineNumberList.get(i).getLineNumber();
@@ -509,7 +509,7 @@ public class MethodGen extends FieldGenOrMethodGen {
      * @return code exceptions for `Code' attribute
      */
     private CodeException[] getCodeExceptions() {
-        final int size = exceptionList.size();
+        final @NonNegative int size = exceptionList.size();
         final CodeException[] c_exc = new CodeException[size];
         for (int i = 0; i < size; i++) {
             final CodeExceptionGen c =  exceptionList.get(i);
@@ -559,7 +559,7 @@ public class MethodGen extends FieldGenOrMethodGen {
      * @return `Exceptions' attribute of all the exceptions thrown by this method.
      */
     private ExceptionTable getExceptionTable( final ConstantPoolGen cp ) {
-        final int size = throwsList.size();
+        final @NonNegative int size = throwsList.size();
         final int[] ex = new int[size];
         for (int i = 0; i < size; i++) {
             ex[i] = cp.addClass(throwsList.get(i));
@@ -681,8 +681,8 @@ public class MethodGen extends FieldGenOrMethodGen {
     public Method getMethod() {
         final String signature = getSignature();
         final ConstantPoolGen _cp = super.getConstantPool();
-        final int name_index = _cp.addUtf8(super.getName());
-        final int signature_index = _cp.addUtf8(signature);
+        final @NonNegative int name_index = _cp.addUtf8(super.getName());
+        final @NonNegative int signature_index = _cp.addUtf8(signature);
         /* Also updates positions of instructions, i.e., their indices
          */
         byte[] byte_code = null;
@@ -710,12 +710,12 @@ public class MethodGen extends FieldGenOrMethodGen {
         final Attribute[] code_attrs = getCodeAttributes();
         /* Each attribute causes 6 additional header bytes
          */
-        int attrs_len = 0;
+        @NonNegative int attrs_len = 0;
         for (final Attribute code_attr : code_attrs) {
             attrs_len += code_attr.getLength() + 6;
         }
         final CodeException[] c_exc = getCodeExceptions();
-        final int exc_len = c_exc.length * 8; // Every entry takes 8 bytes
+        final @NonNegative int exc_len = c_exc.length * 8; // Every entry takes 8 bytes
         Code code = null;
         if ((il != null) && !isAbstract() && !isNative()) {
             // Remove any stale code attribute
@@ -827,7 +827,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     /**
      * Set maximum number of local variables.
      */
-    public void setMaxLocals( final int m ) {
+    public void setMaxLocals( final @NonNegative int m ) {
         maxLocals = m;
     }
 
@@ -841,18 +841,19 @@ public class MethodGen extends FieldGenOrMethodGen {
     /**
      * Set maximum stack size for this method.
      */
-    public void setMaxStack( final int m ) { // TODO could be package-protected?
+    public void setMaxStack( final @NonNegative int m ) { // TODO could be package-protected?
         maxStack = m;
     }
 
 
     @Pure
-    public int getMaxStack() {
+    public @NonNegative int getMaxStack() {
         return maxStack;
     }
 
 
-    /** @return class that contains this method
+    /**
+     * @return class that contains this method
      */
     @Pure
     public @BinaryName String getClassName() {
@@ -886,13 +887,13 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
 
-    public void setArgumentType( final int i, final Type type ) {
+    public void setArgumentType( final @NonNegative int i, final Type type ) {
         argTypes[i] = type;
     }
 
 
     @Pure
-    public Type getArgumentType( final int i ) {
+    public Type getArgumentType( final @NonNegative int i ) {
         return argTypes[i];
     }
 
@@ -907,13 +908,13 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
 
-    public void setArgumentName( final int i, final String name ) {
+    public void setArgumentName( final @NonNegative int i, final String name ) {
         argNames[i] = name;
     }
 
 
     @Pure
-    public String getArgumentName( final int i ) {
+    public String getArgumentName( final @NonNegative int i ) {
         return argNames[i];
     }
 
@@ -952,7 +953,7 @@ public class MethodGen extends FieldGenOrMethodGen {
      */
     public void setMaxLocals() { // TODO could be package-protected? (some tests would need repackaging)
         if (il != null) {
-            int max = isStatic() ? 0 : 1;
+            @NonNegative int max = isStatic() ? 0 : 1;
             if (argTypes != null) {
                 for (final Type arg_type : argTypes) {
                     max += arg_type.getSize();
@@ -962,7 +963,7 @@ public class MethodGen extends FieldGenOrMethodGen {
                 final Instruction ins = ih.getInstruction();
                 if ((ins instanceof LocalVariableInstruction) || (ins instanceof RET)
                         || (ins instanceof IINC)) {
-                    final int index = ((IndexedInstruction) ins).getIndex()
+                    final @NonNegative int index = ((IndexedInstruction) ins).getIndex()
                             + ((TypedInstruction) ins).getType(super.getConstantPool()).getSize();
                     if (index > max) {
                         max = index;
@@ -986,10 +987,10 @@ public class MethodGen extends FieldGenOrMethodGen {
     static final class BranchTarget {
 
         final InstructionHandle target;
-        final int stackDepth;
+        final @NonNegative int stackDepth;
 
 
-        BranchTarget(final InstructionHandle target, final int stackDepth) {
+        BranchTarget(final InstructionHandle target, final @NonNegative int stackDepth) {
             this.target = target;
             this.stackDepth = stackDepth;
         }
@@ -1001,7 +1002,7 @@ public class MethodGen extends FieldGenOrMethodGen {
         private final Hashtable<InstructionHandle, BranchTarget> visitedTargets = new Hashtable<>();
 
 
-        public void push( final InstructionHandle target, final int stackDepth ) {
+        public void push( final InstructionHandle target, final @NonNegative int stackDepth ) {
             if (visited(target)) {
                 return;
             }
@@ -1018,7 +1019,7 @@ public class MethodGen extends FieldGenOrMethodGen {
         }
 
 
-        private BranchTarget visit( final InstructionHandle target, final int stackDepth ) {
+        private BranchTarget visit( final InstructionHandle target, final @NonNegative int stackDepth ) {
             final BranchTarget bt = new BranchTarget(target, stackDepth);
             visitedTargets.put(target, bt);
             return bt;
@@ -1036,7 +1037,7 @@ public class MethodGen extends FieldGenOrMethodGen {
      *
      * @return maximum stack depth used by method
      */
-    public static int getMaxStack( final ConstantPoolGen cp, final InstructionList il, final CodeExceptionGen[] et ) {
+    public static @NonNegative int getMaxStack( final ConstantPoolGen cp, final InstructionList il, final CodeExceptionGen[] et ) {
         final BranchStack branchTargets = new BranchStack();
         /* Initially, populate the branch stack with the exception
          * handlers, because these aren't (necessarily) branched to
@@ -1049,8 +1050,8 @@ public class MethodGen extends FieldGenOrMethodGen {
                 branchTargets.push(handler_pc, 1);
             }
         }
-        int stackDepth = 0;
-        int maxStackDepth = 0;
+        @NonNegative int stackDepth = 0;
+        @NonNegative int maxStackDepth = 0;
         InstructionHandle ih = il.getStart();
         while (ih != null) {
             final Instruction instruction = ih.getInstruction();
@@ -1188,7 +1189,7 @@ public class MethodGen extends FieldGenOrMethodGen {
      * Return a list of AnnotationGen objects representing parameter annotations
      * @since 6.0
      */
-    public @Nullable List<AnnotationEntryGen> getAnnotationsOnParameter(final int i) {
+    public @Nullable List<AnnotationEntryGen> getAnnotationsOnParameter(final @NonNegative int i) {
         ensureExistingParameterAnnotationsUnpacked();
         if (!hasParameterAnnotations || i>argTypes.length) {
             return null;
@@ -1264,7 +1265,7 @@ public class MethodGen extends FieldGenOrMethodGen {
         return result;
     }
 
-    public void addParameterAnnotation(final int parameterIndex,
+    public void addParameterAnnotation(final @NonNegative int parameterIndex,
             final AnnotationEntryGen annotation)
     {
         ensureExistingParameterAnnotationsUnpacked();

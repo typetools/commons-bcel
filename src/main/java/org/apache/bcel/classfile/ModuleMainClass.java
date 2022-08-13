@@ -23,7 +23,9 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class is derived from <em>Attribute</em> and indicates the main class of a module.
@@ -31,9 +33,10 @@ import org.checkerframework.dataflow.qual.Pure;
  *
  * @see     Attribute
  */
+@AnnotatedFor({"signedness"})
 public final class ModuleMainClass extends Attribute {
 
-    private int mainClassIndex;
+    private @NonNegative int mainClassIndex;
 
 
     /**
@@ -51,7 +54,7 @@ public final class ModuleMainClass extends Attribute {
      * @param mainClassIndex Host class index
      * @param constantPool Array of constants
      */
-    public ModuleMainClass(final int name_index, final int length, final int mainClassIndex,
+    public ModuleMainClass(final @NonNegative int name_index, final @NonNegative int length, final @NonNegative int mainClassIndex,
             final ConstantPool constantPool) {
         super(Const.ATTR_NEST_MEMBERS, name_index, length, constantPool);
         this.mainClassIndex = mainClassIndex;
@@ -66,7 +69,7 @@ public final class ModuleMainClass extends Attribute {
      * @param constantPool Array of constants
      * @throws IOException
      */
-    ModuleMainClass(final int nameIndex, final int length, final DataInput input, final ConstantPool constantPool) throws IOException {
+    ModuleMainClass(final @NonNegative int nameIndex, final @NonNegative int length, final DataInput input, final ConstantPool constantPool) throws IOException {
         this(nameIndex, length, 0, constantPool);
         mainClassIndex = input.readUnsignedShort();
     }
@@ -102,7 +105,7 @@ public final class ModuleMainClass extends Attribute {
      * @return index into constant pool of host class name.
      */
     @Pure
-    public int getHostClassIndex() {
+    public @NonNegative int getHostClassIndex() {
         return mainClassIndex;
     }
 
@@ -110,7 +113,7 @@ public final class ModuleMainClass extends Attribute {
     /**
      * @param mainClassIndex the host class index
      */
-    public void setHostClassIndex( final int mainClassIndex ) {
+    public void setHostClassIndex( final @NonNegative int mainClassIndex ) {
         this.mainClassIndex = mainClassIndex;
     }
 

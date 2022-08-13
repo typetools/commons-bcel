@@ -22,10 +22,14 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * This class represents a constant pool reference to a field.
  *
  */
+@AnnotatedFor({"signedness"})
 public final class ConstantFieldref extends ConstantCP {
 
     /**
@@ -51,7 +55,7 @@ public final class ConstantFieldref extends ConstantCP {
      * @param class_index Reference to the class containing the Field
      * @param name_and_type_index and the Field signature
      */
-    public ConstantFieldref(final int class_index, final int name_and_type_index) {
+    public ConstantFieldref(final @NonNegative int class_index, final @NonNegative int name_and_type_index) {
         super(Const.CONSTANT_Fieldref, class_index, name_and_type_index);
     }
 

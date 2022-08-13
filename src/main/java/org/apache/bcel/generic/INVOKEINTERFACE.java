@@ -25,7 +25,9 @@ import org.apache.bcel.ExceptionConst;
 import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.util.ByteSequence;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * INVOKEINTERFACE - Invoke interface method
@@ -35,9 +37,10 @@ import org.checkerframework.dataflow.qual.Pure;
  * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokeinterface">
  * The invokeinterface instruction in The Java Virtual Machine Specification</a>
  */
+@AnnotatedFor({"signedness"})
 public final class INVOKEINTERFACE extends InvokeInstruction {
 
-    private int nargs; // Number of arguments on stack (number of stack slots), called "count" in vmspec2
+    private @NonNegative int nargs; // Number of arguments on stack (number of stack slots), called "count" in vmspec2
 
 
     /**
@@ -48,7 +51,7 @@ public final class INVOKEINTERFACE extends InvokeInstruction {
     }
 
 
-    public INVOKEINTERFACE(final int index, final int nargs) {
+    public INVOKEINTERFACE(final @NonNegative int index, final @NonNegative int nargs) {
         super(Const.INVOKEINTERFACE, index);
         super.setLength(5);
         if (nargs < 1) {
@@ -76,7 +79,7 @@ public final class INVOKEINTERFACE extends InvokeInstruction {
      * Second Edition.
      */
     @Pure
-    public int getCount() {
+    public @NonNegative int getCount() {
         return nargs;
     }
 
@@ -103,7 +106,7 @@ public final class INVOKEINTERFACE extends InvokeInstruction {
 
 
     @Override
-    public int consumeStack( final ConstantPoolGen cpg ) { // nargs is given in byte-code
+    public @NonNegative int consumeStack( final ConstantPoolGen cpg ) { // nargs is given in byte-code
         return nargs; // nargs includes this reference
     }
 

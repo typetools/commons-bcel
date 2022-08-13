@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.verifier.structurals;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 
@@ -52,7 +53,7 @@ public class Frame{
     /**
      *
      */
-    public Frame(final int maxLocals, final int maxStack) {
+    public Frame(final @NonNegative int maxLocals, final @NonNegative int maxStack) {
         locals = new LocalVariables(maxLocals);
         stack = new OperandStack(maxStack);
     }

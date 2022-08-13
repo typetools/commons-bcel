@@ -20,6 +20,9 @@ package org.apache.bcel.generic;
 import org.apache.bcel.Const;
 import org.apache.bcel.ExceptionConst;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * GETFIELD - Fetch field from object
  * <PRE>Stack: ..., objectref -&gt; ..., value</PRE>
@@ -27,6 +30,7 @@ import org.apache.bcel.ExceptionConst;
  * <PRE>Stack: ..., objectref -&gt; ..., value.word1, value.word2</PRE>
  *
  */
+@AnnotatedFor({"signedness"})
 public class GETFIELD extends FieldInstruction implements ExceptionThrower, StackConsumer,
         StackProducer {
 
@@ -38,13 +42,13 @@ public class GETFIELD extends FieldInstruction implements ExceptionThrower, Stac
     }
 
 
-    public GETFIELD(final int index) {
+    public GETFIELD(final @NonNegative int index) {
         super(Const.GETFIELD, index);
     }
 
 
     @Override
-    public int produceStack( final ConstantPoolGen cpg ) {
+    public @NonNegative int produceStack( final ConstantPoolGen cpg ) {
         return getFieldSize(cpg);
     }
 

@@ -20,8 +20,10 @@ package org.apache.bcel.generic;
 import org.apache.bcel.Const;
 import org.apache.bcel.classfile.LocalVariable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Represents a local variable within a method. It contains its
@@ -32,14 +34,15 @@ import org.checkerframework.dataflow.qual.Pure;
  * @see     LocalVariable
  * @see     MethodGen
  */
+@AnnotatedFor({"signedness"})
 public class LocalVariableGen implements InstructionTargeter, NamedAndTyped, Cloneable {
 
-    private int index;
+    private @NonNegative int index;
     private String name;
     private Type type;
     private InstructionHandle start;
     private InstructionHandle end;
-    private int origIndex; // never changes; used to match up with LocalVariableTypeTable entries
+    private @NonNegative int origIndex; // never changes; used to match up with LocalVariableTypeTable entries
     private boolean liveToEnd;
 
 
@@ -53,7 +56,7 @@ public class LocalVariableGen implements InstructionTargeter, NamedAndTyped, Clo
      * @param start from where the instruction is valid (null means from the start)
      * @param end until where the instruction is valid (null means to the end)
      */
-    public LocalVariableGen(final int index, final String name, final Type type, final InstructionHandle start,
+    public LocalVariableGen(final @NonNegative int index, final String name, final Type type, final InstructionHandle start,
             final InstructionHandle end) {
         if ((index < 0) || (index > Const.MAX_SHORT)) {
             throw new ClassGenException("Invalid index index: " + index);
@@ -79,8 +82,8 @@ public class LocalVariableGen implements InstructionTargeter, NamedAndTyped, Clo
      * @param end until where the instruction is valid (null means to the end)
      * @param origIndex index of local variable prior to any changes to index
      */
-    public LocalVariableGen(final int index, final String name, final Type type, final InstructionHandle start,
-            final InstructionHandle end, final int origIndex) {
+    public LocalVariableGen(final @NonNegative int index, final String name, final Type type, final InstructionHandle start,
+            final InstructionHandle end, final @NonNegative int origIndex) {
         this(index, name, type, start, end);
         this.origIndex = origIndex;
     }
@@ -101,8 +104,8 @@ public class LocalVariableGen implements InstructionTargeter, NamedAndTyped, Clo
      * @param cp constant pool
      */
     public LocalVariable getLocalVariable( final ConstantPoolGen cp ) {
-        int start_pc = 0;
-        int length = 0;
+        @NonNegative int start_pc = 0;
+        @NonNegative int length = 0;
         if ((start != null) && (end != null)) {
             start_pc = start.getPosition();
             length = end.getPosition() - start_pc;
@@ -110,26 +113,26 @@ public class LocalVariableGen implements InstructionTargeter, NamedAndTyped, Clo
                 length += end.getInstruction().getLength();
             }
         }
-        final int name_index = cp.addUtf8(name);
-        final int signature_index = cp.addUtf8(type.getSignature());
+        final @NonNegative int name_index = cp.addUtf8(name);
+        final @NonNegative int signature_index = cp.addUtf8(type.getSignature());
         return new LocalVariable(start_pc, length, name_index, signature_index, index, cp
                 .getConstantPool(), origIndex);
     }
 
 
-    public void setIndex( final int index ) {
+    public void setIndex( final @NonNegative int index ) {
         this.index = index;
     }
 
 
     @Pure
-    public int getIndex() {
+    public @NonNegative int getIndex() {
         return index;
     }
 
 
     @Pure
-    public int getOrigIndex() {
+    public @NonNegative int getOrigIndex() {
         return origIndex;
     }
 

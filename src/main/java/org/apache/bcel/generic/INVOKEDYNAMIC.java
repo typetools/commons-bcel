@@ -27,6 +27,9 @@ import org.apache.bcel.classfile.ConstantNameAndType;
 import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.util.ByteSequence;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * Class for INVOKEDYNAMIC. Not an instance of InvokeInstruction, since that class
  * expects to be able to get the class of the method. Ignores the bootstrap
@@ -37,6 +40,7 @@ import org.apache.bcel.util.ByteSequence;
  * The invokedynamic instruction in The Java Virtual Machine Specification</a>
  * @since 6.0
  */
+@AnnotatedFor({"signedness"})
 public class INVOKEDYNAMIC extends InvokeInstruction {
 
     /**
@@ -47,7 +51,7 @@ public class INVOKEDYNAMIC extends InvokeInstruction {
     }
 
 
-    public INVOKEDYNAMIC(final int index) {
+    public INVOKEDYNAMIC(final @NonNegative int index) {
         super(Const.INVOKEDYNAMIC, index);
     }
 

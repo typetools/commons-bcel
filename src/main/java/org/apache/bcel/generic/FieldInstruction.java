@@ -19,10 +19,14 @@ package org.apache.bcel.generic;
 
 import org.apache.bcel.classfile.ConstantPool;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * Super class for the GET/PUTxxx family of instructions.
  *
  */
+@AnnotatedFor({"signedness"})
 public abstract class FieldInstruction extends FieldOrMethod {
 
     /**
@@ -36,7 +40,7 @@ public abstract class FieldInstruction extends FieldOrMethod {
     /**
      * @param index to constant pool
      */
-    protected FieldInstruction(final short opcode, final int index) {
+    protected FieldInstruction(final short opcode, final @NonNegative int index) {
         super(opcode, index);
     }
 
@@ -53,7 +57,7 @@ public abstract class FieldInstruction extends FieldOrMethod {
 
     /** @return size of field (1 or 2)
      */
-    protected int getFieldSize( final ConstantPoolGen cpg ) {
+    protected @NonNegative int getFieldSize( final ConstantPoolGen cpg ) {
         return Type.size(Type.getTypeSize(getSignature(cpg)));
     }
 

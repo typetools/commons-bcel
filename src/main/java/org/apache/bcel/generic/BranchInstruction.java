@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import org.apache.bcel.util.ByteSequence;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
@@ -57,7 +58,7 @@ public abstract @UsesObjectEquals class BranchInstruction extends Instruction im
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
      */
     @Deprecated
-    protected int position; // Byte code offset
+    protected @NonNegative int position; // Byte code offset
 
 
     /**
@@ -130,7 +131,7 @@ public abstract @UsesObjectEquals class BranchInstruction extends Instruction im
      * @param max_offset the maximum offset that may be caused by these instructions
      * @return additional offset caused by possible change of this instruction's length
      */
-    protected int updatePosition( final int offset, final int max_offset ) {
+    protected @NonNegative int updatePosition( final @NonNegative int offset, final @NonNegative int max_offset ) {
         position += offset;
         return 0;
     }
@@ -274,7 +275,7 @@ public abstract @UsesObjectEquals class BranchInstruction extends Instruction im
      * @return the position
      * @since 6.0
      */
-    protected int getPosition() {
+    protected @NonNegative int getPosition() {
         return position;
     }
 
@@ -283,7 +284,7 @@ public abstract @UsesObjectEquals class BranchInstruction extends Instruction im
      * @param position the position to set
      * @since 6.0
      */
-    protected void setPosition(final int position) {
+    protected void setPosition(final @NonNegative int position) {
         this.position = position;
     }
 

@@ -24,6 +24,7 @@ import org.apache.bcel.Const;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class represents a stack map entry recording the types of
@@ -33,11 +34,12 @@ import org.checkerframework.dataflow.qual.Pure;
  * @see     StackMap
  * @see     StackMapType
  */
+@AnnotatedFor({"signedness"})
 public final class StackMapEntry implements Node, Cloneable
 {
 
     private int frameType;
-    private int byteCodeOffset;
+    private @NonNegative int byteCodeOffset;
     private StackMapType[] typesOfLocals;
     private StackMapType[] typesOfStackItems;
     private ConstantPool constantPool;
@@ -105,8 +107,8 @@ public final class StackMapEntry implements Node, Cloneable
      * instead
      */
     @java.lang.Deprecated
-    public StackMapEntry(final int byteCodeOffset, final int numberOfLocals,
-            final StackMapType[] typesOfLocals, final int numberOfStackItems,
+    public StackMapEntry(final @NonNegative int byteCodeOffset, final @NonNegative int numberOfLocals,
+            final StackMapType[] typesOfLocals, final @NonNegative int numberOfStackItems,
             final StackMapType[] typesOfStackItems, final ConstantPool constantPool) {
         this.byteCodeOffset = byteCodeOffset;
         this.typesOfLocals = typesOfLocals != null ? typesOfLocals : new StackMapType[0];
@@ -123,7 +125,7 @@ public final class StackMapEntry implements Node, Cloneable
      * @param typesOfStackItems array ot {@link StackMapType}s of stack items
      * @param constantPool the constant pool
      */
-    public StackMapEntry(final int tag, final int byteCodeOffset,
+    public StackMapEntry(final int tag, final @NonNegative int byteCodeOffset,
             final StackMapType[] typesOfLocals,
             final StackMapType[] typesOfStackItems, final ConstantPool constantPool) {
         this.frameType = tag;
@@ -231,7 +233,7 @@ public final class StackMapEntry implements Node, Cloneable
      * Calculate stack map entry size
      *
      */
-    int getMapEntrySize() {
+    @NonNegative int getMapEntrySize() {
         if (frameType >= Const.SAME_FRAME && frameType <= Const.SAME_FRAME_MAX) {
             return 1;
         } else if (frameType >= Const.SAME_LOCALS_1_STACK_ITEM_FRAME &&
@@ -288,7 +290,7 @@ public final class StackMapEntry implements Node, Cloneable
     }
 
 
-    public void setByteCodeOffset( final int new_offset ) {
+    public void setByteCodeOffset( final @NonNegative int new_offset ) {
         if (new_offset < 0 || new_offset > 32767) {
             throw new IllegalArgumentException("Invalid StackMap offset: " + new_offset);
         }
@@ -334,7 +336,7 @@ public final class StackMapEntry implements Node, Cloneable
 
 
     @Pure
-    public int getByteCodeOffset() {
+    public @NonNegative int getByteCodeOffset() {
         return byteCodeOffset;
     }
 
@@ -344,7 +346,7 @@ public final class StackMapEntry implements Node, Cloneable
      * @deprecated since 6.0
      */
     @java.lang.Deprecated
-    public void setNumberOfLocals( final int n ) { // TODO unused
+    public void setNumberOfLocals( final @NonNegative int n ) { // TODO unused
     }
 
 
@@ -370,12 +372,12 @@ public final class StackMapEntry implements Node, Cloneable
      * @deprecated since 6.0
      */
     @java.lang.Deprecated
-    public void setNumberOfStackItems( final int n ) { // TODO unused
+    public void setNumberOfStackItems( final @NonNegative int n ) { // TODO unused
     }
 
 
     @Pure
-    public int getNumberOfStackItems() {
+    public @NonNegative int getNumberOfStackItems() {
         return typesOfStackItems.length;
     }
 

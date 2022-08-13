@@ -75,8 +75,8 @@ abstract class AbstractClassPathRepository implements Repository {
         if (clazz != null) {
             return clazz;
         }
-        try (InputStream inputStream = _path.getInputStream(className)) {
-            return loadClass(inputStream, className);
+        try (InputStream clsStream = _path.getInputStream(className)) {
+            return loadClass(clsStream, className);
         } catch (final IOException e) {
             throw new ClassNotFoundException("Exception while looking for class " + className + ": " + e, e);
         }

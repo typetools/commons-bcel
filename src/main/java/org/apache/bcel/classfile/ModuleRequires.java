@@ -23,6 +23,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * This class represents an entry in the requires table of the Module attribute.
  * Each entry describes a module on which the parent module depends.
@@ -32,9 +34,9 @@ import org.apache.bcel.Const;
  */
 public final class ModuleRequires implements Cloneable, Node {
 
-    private final int requiresIndex;  // points to CONSTANT_Module_info
+    private final @NonNegative int requiresIndex;  // points to CONSTANT_Module_info
     private final int requiresFlags;
-    private final int requiresVersionIndex;  // either 0 or points to CONSTANT_Utf8_info
+    private final @NonNegative int requiresVersionIndex;  // either 0 or points to CONSTANT_Utf8_info
 
 
     /**

@@ -22,12 +22,16 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * Represents a parameter annotation that is represented in the class file
  * but is not provided to the JVM.
  *
  * @since 6.0
  */
+@AnnotatedFor({"signedness"})
 public class RuntimeInvisibleParameterAnnotations extends ParameterAnnotations {
 
     /**
@@ -36,7 +40,7 @@ public class RuntimeInvisibleParameterAnnotations extends ParameterAnnotations {
      * @param input Input stream
      * @param constant_pool Array of constants
      */
-    public RuntimeInvisibleParameterAnnotations(final int name_index, final int length, final DataInput input, final ConstantPool constant_pool)
+    public RuntimeInvisibleParameterAnnotations(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool)
             throws IOException {
         super(Const.ATTR_RUNTIME_INVISIBLE_PARAMETER_ANNOTATIONS, name_index, length, input, constant_pool);
     }

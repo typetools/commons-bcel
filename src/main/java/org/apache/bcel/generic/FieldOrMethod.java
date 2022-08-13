@@ -23,6 +23,7 @@ import org.apache.bcel.classfile.ConstantNameAndType;
 import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.classfile.ConstantUtf8;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.signature.qual.BinaryName;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -31,7 +32,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * some methods in common!
  *
  */
-@AnnotatedFor({"signature"})
+@AnnotatedFor({"signature","signedness"})
 public abstract class FieldOrMethod extends CPInstruction implements LoadClass {
 
     /**
@@ -46,7 +47,7 @@ public abstract class FieldOrMethod extends CPInstruction implements LoadClass {
     /**
      * @param index to constant pool
      */
-    protected FieldOrMethod(final short opcode, final int index) {
+    protected FieldOrMethod(final short opcode, final @NonNegative int index) {
         super(opcode, index);
     }
 

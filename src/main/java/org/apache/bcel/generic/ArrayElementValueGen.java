@@ -25,6 +25,7 @@ import java.util.List;
 import org.apache.bcel.classfile.ArrayElementValue;
 import org.apache.bcel.classfile.ElementValue;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 
 /**
@@ -119,7 +120,7 @@ public class ArrayElementValueGen extends ElementValueGen
     }
 
     @Pure
-    public int getElementValuesSize()
+    public @NonNegative int getElementValuesSize()
     {
         return evalues.size();
     }

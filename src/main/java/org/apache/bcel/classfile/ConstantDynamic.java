@@ -22,7 +22,9 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class is derived from the abstract {@link Constant}
@@ -33,6 +35,7 @@ import org.checkerframework.dataflow.qual.Pure;
  * Change request for JEP 309</a>
  * @since 6.3
  */
+@AnnotatedFor({"signedness"})
 public final class ConstantDynamic extends ConstantCP {
 
     /**
@@ -54,7 +57,7 @@ public final class ConstantDynamic extends ConstantCP {
     }
 
 
-    public ConstantDynamic(final int bootstrap_method_attr_index, final int name_and_type_index) {
+    public ConstantDynamic(final @NonNegative int bootstrap_method_attr_index, final @NonNegative int name_and_type_index) {
         super(Const.CONSTANT_Dynamic, bootstrap_method_attr_index, name_and_type_index);
     }
 
@@ -79,7 +82,7 @@ public final class ConstantDynamic extends ConstantCP {
      * @since 6.0
      */
     @Pure
-    public int getBootstrapMethodAttrIndex() {
+    public @NonNegative int getBootstrapMethodAttrIndex() {
         return super.getClassIndex();  // AKA bootstrap_method_attr_index
     }
 

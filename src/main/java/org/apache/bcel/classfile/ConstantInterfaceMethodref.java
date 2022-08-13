@@ -22,10 +22,14 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * This class represents a constant pool reference to an interface method.
  *
  */
+@AnnotatedFor({"signedness"})
 public final class ConstantInterfaceMethodref extends ConstantCP {
 
     /**
@@ -51,7 +55,7 @@ public final class ConstantInterfaceMethodref extends ConstantCP {
      * @param class_index Reference to the class containing the method
      * @param name_and_type_index and the method signature
      */
-    public ConstantInterfaceMethodref(final int class_index, final int name_and_type_index) {
+    public ConstantInterfaceMethodref(final @NonNegative int class_index, final @NonNegative int name_and_type_index) {
         super(Const.CONSTANT_InterfaceMethodref, class_index, name_and_type_index);
     }
 

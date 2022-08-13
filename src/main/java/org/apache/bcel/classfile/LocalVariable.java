@@ -24,8 +24,10 @@ import java.io.IOException;
 import org.apache.bcel.Const;
 import org.apache.bcel.Constants;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.signature.qual.FieldDescriptor;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class represents a local variable within a method. It contains its
@@ -40,19 +42,20 @@ import org.checkerframework.dataflow.qual.Pure;
  * @see     LocalVariableTable
  * @see     LocalVariableTypeTable
  */
+@AnnotatedFor({"signedness"})
 public final class LocalVariable implements Cloneable, Node, Constants {
 
-    private int startPc; // Range in which the variable is valid
-    private int length;
-    private int nameIndex; // Index in constant pool of variable name
+    private @NonNegative int startPc; // Range in which the variable is valid
+    private @NonNegative int length;
+    private @NonNegative int nameIndex; // Index in constant pool of variable name
     // Technically, a decscriptor_index for a local variable table entry
     // and a signatureIndex for a local variable type table entry.
-    private int signatureIndex; // Index of variable signature
-    private int index; /* Variable is index'th local variable on
+    private @NonNegative int signatureIndex; // Index of variable signature
+    private @NonNegative int index; /* Variable is index'th local variable on
      * this method's frame.
      */
     private ConstantPool constantPool;
-    private int origIndex; // never changes; used to match up with LocalVariableTypeTable entries
+    private @NonNegative int origIndex; // never changes; used to match up with LocalVariableTypeTable entries
 
 
     /**
@@ -86,7 +89,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
      * @param index Variable is `index'th local variable on the method's frame
      * @param constantPool Array of constants
      */
-    public LocalVariable(final int startPc, final int length, final int nameIndex, final int signatureIndex, final int index,
+    public LocalVariable(final @NonNegative int startPc, final @NonNegative int length, final @NonNegative int nameIndex, final @NonNegative int signatureIndex, final @NonNegative int index,
             final ConstantPool constantPool) {
         this.startPc = startPc;
         this.length = length;
@@ -107,8 +110,8 @@ public final class LocalVariable implements Cloneable, Node, Constants {
      * @param constantPool Array of constants
      * @param origIndex Variable is `index'th local variable on the method's frame prior to any changes
      */
-    public LocalVariable(final int startPc, final int length, final int nameIndex, final int signatureIndex, final int index,
-            final ConstantPool constantPool, final int origIndex) {
+    public LocalVariable(final @NonNegative int startPc, final @NonNegative int length, final @NonNegative int nameIndex, final @NonNegative int signatureIndex, final @NonNegative int index,
+            final ConstantPool constantPool, final @NonNegative int origIndex) {
         this.startPc = startPc;
         this.length = length;
         this.nameIndex = nameIndex;
@@ -160,7 +163,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
      * @return Variable is valid within getStartPC() .. getStartPC()+getLength()
      */
     @Pure
-    public int getLength() {
+    public @NonNegative int getLength() {
         return length;
     }
 
@@ -179,7 +182,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
      * @return Index in constant pool of variable name.
      */
     @Pure
-    public int getNameIndex() {
+    public @NonNegative int getNameIndex() {
         return nameIndex;
     }
 
@@ -198,7 +201,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
      * @return Index in constant pool of variable signature.
      */
     @Pure
-    public int getSignatureIndex() {
+    public @NonNegative int getSignatureIndex() {
         return signatureIndex;
     }
 
@@ -207,7 +210,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
      * @return index of register where variable is stored
      */
     @Pure
-    public int getIndex() {
+    public @NonNegative int getIndex() {
         return index;
     }
 
@@ -216,7 +219,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
      * @return index of register where variable was originally stored
      */
     @Pure
-    public int getOrigIndex() {
+    public @NonNegative int getOrigIndex() {
         return origIndex;
     }
 
@@ -225,7 +228,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
      * @return Start of range where the variable is valid
      */
     @Pure
-    public int getStartPC() {
+    public @NonNegative int getStartPC() {
         return startPc;
     }
 
@@ -253,7 +256,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
     /**
      * @param length the length of this local variable
      */
-    public void setLength( final int length ) {
+    public void setLength( final @NonNegative int length ) {
         this.length = length;
     }
 
@@ -261,7 +264,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
     /**
      * @param nameIndex the index into the constant pool for the name of this variable
      */
-    public void setNameIndex( final int nameIndex ) { // TODO unused
+    public void setNameIndex( final @NonNegative int nameIndex ) { // TODO unused
         this.nameIndex = nameIndex;
     }
 
@@ -269,7 +272,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
     /**
      * @param signatureIndex the index into the constant pool for the signature of this variable
      */
-    public void setSignatureIndex( final int signatureIndex ) { // TODO unused
+    public void setSignatureIndex( final @NonNegative int signatureIndex ) { // TODO unused
         this.signatureIndex = signatureIndex;
     }
 
@@ -277,7 +280,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
     /**
      * @param index the index in the local variable table of this variable
      */
-    public void setIndex( final int index ) { // TODO unused
+    public void setIndex( final @NonNegative int index ) { // TODO unused
         this.index = index;
     }
 
@@ -285,7 +288,7 @@ public final class LocalVariable implements Cloneable, Node, Constants {
     /**
      * @param startPc Specify range where the local variable is valid.
      */
-    public void setStartPC( final int startPc ) { // TODO unused
+    public void setStartPC( final @NonNegative int startPc ) { // TODO unused
         this.startPc = startPc;
     }
 

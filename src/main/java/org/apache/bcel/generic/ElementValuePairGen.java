@@ -24,14 +24,17 @@ import org.apache.bcel.classfile.ConstantUtf8;
 import org.apache.bcel.classfile.ElementValue;
 import org.apache.bcel.classfile.ElementValuePair;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * @since 6.0
  */
+@AnnotatedFor({"signedness"})
 public class ElementValuePairGen
 {
-    private int nameIdx;
+    private @NonNegative int nameIdx;
 
     private final ElementValueGen value;
 
@@ -70,7 +73,7 @@ public class ElementValuePairGen
                 .getConstantPool());
     }
 
-    protected ElementValuePairGen(final int idx, final ElementValueGen value,
+    protected ElementValuePairGen(final @NonNegative int idx, final ElementValueGen value,
             final ConstantPoolGen cpool)
     {
         this.nameIdx = idx;
@@ -93,7 +96,7 @@ public class ElementValuePairGen
     }
 
     @Pure
-    public int getNameIndex()
+    public @NonNegative int getNameIndex()
     {
         return nameIdx;
     }

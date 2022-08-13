@@ -22,7 +22,9 @@ import java.io.IOException;
 
 import org.apache.bcel.util.ByteSequence;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * RET - Return from subroutine
@@ -30,10 +32,11 @@ import org.checkerframework.dataflow.qual.Pure;
  * <PRE>Stack: ... -&gt; ...</PRE>
  *
  */
+@AnnotatedFor({"signedness"})
 public class RET extends Instruction implements IndexedInstruction, TypedInstruction {
 
     private boolean wide;
-    private int index; // index to local variable containg the return address
+    private @NonNegative int index; // index to local variable containg the return address
 
 
     /**
@@ -44,7 +47,7 @@ public class RET extends Instruction implements IndexedInstruction, TypedInstruc
     }
 
 
-    public RET(final int index) {
+    public RET(final @NonNegative int index) {
         super(org.apache.bcel.Const.RET, (short) 2);
         setIndex(index); // May set wide as side effect
     }
@@ -99,7 +102,7 @@ public class RET extends Instruction implements IndexedInstruction, TypedInstruc
      */
     @Override
     @Pure
-    public final int getIndex() {
+    public final @NonNegative int getIndex() {
         return index;
     }
 
@@ -108,7 +111,7 @@ public class RET extends Instruction implements IndexedInstruction, TypedInstruc
      * Set index of local variable containg the return address
      */
     @Override
-    public final void setIndex( final int n ) {
+    public final void setIndex( final @NonNegative int n ) {
         if (n < 0) {
             throw new ClassGenException("Negative index value: " + n);
         }

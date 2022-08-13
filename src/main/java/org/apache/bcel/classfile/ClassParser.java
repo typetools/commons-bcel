@@ -32,6 +32,8 @@ import java.util.zip.ZipFile;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Wrapper class that parses a given Java .class file. The method <A
  * href ="#parse">parse</A> returns a <A href ="JavaClass.html">
@@ -52,8 +54,8 @@ public final class ClassParser {
     private final boolean fileOwned;
     private final String fileName;
     private String zipFile;
-    private int classNameIndex;
-    private int superclassNameIndex;
+    private @NonNegative int classNameIndex;
+    private @NonNegative int superclassNameIndex;
     private int major; // Compiler version
     private int minor; // Compiler version
     private int accessFlags; // Access rights of parsed class

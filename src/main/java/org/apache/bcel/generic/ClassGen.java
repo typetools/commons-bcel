@@ -35,6 +35,7 @@ import org.apache.bcel.classfile.RuntimeVisibleAnnotations;
 import org.apache.bcel.classfile.SourceFile;
 import org.apache.bcel.util.BCELComparator;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.BinaryName;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -46,7 +47,7 @@ import org.checkerframework.dataflow.qual.Pure;
  *
  * @see JavaClass
  */
-@AnnotatedFor({"nullness","signature"})
+@AnnotatedFor({"nullness","signature","signedness"})
 public class ClassGen extends AccessFlags implements Cloneable {
 
     /* Corresponds to the fields found in a JavaClass object.
@@ -54,8 +55,8 @@ public class ClassGen extends AccessFlags implements Cloneable {
     private @BinaryName String className;
     private @BinaryName String superClassName;
     private final String fileName;
-    private int classNameIndex = -1;
-    private int superclass_name_index = -1;
+    private @NonNegative int classNameIndex;
+    private @NonNegative int superclass_name_index;
     private int major = Const.MAJOR_1_1;
     private int minor = Const.MINOR_1_1;
     private ConstantPoolGen cp; // Template for building up constant pool
@@ -455,13 +456,13 @@ public class ClassGen extends AccessFlags implements Cloneable {
     }
 
 
-    public void setMethodAt( final Method method, final int pos ) {
+    public void setMethodAt( final Method method, final @NonNegative int pos ) {
         methodList.set(pos, method);
     }
 
 
     @Pure
-    public Method getMethodAt( final int pos ) {
+    public Method getMethodAt( final @NonNegative int pos ) {
         return methodList.get(pos);
     }
 
@@ -510,14 +511,14 @@ public class ClassGen extends AccessFlags implements Cloneable {
     }
 
 
-    public void setClassNameIndex( final int class_name_index ) {
+    public void setClassNameIndex( final @NonNegative int class_name_index ) {
         this.classNameIndex = class_name_index;
         className = cp.getConstantPool().getConstantString(class_name_index,
                 Const.CONSTANT_Class).replace('/', '.');
     }
 
 
-    public void setSuperclassNameIndex( final int superclass_name_index ) {
+    public void setSuperclassNameIndex( final @NonNegative int superclass_name_index ) {
         this.superclass_name_index = superclass_name_index;
         superClassName = cp.getConstantPool().getConstantString(superclass_name_index,
                 Const.CONSTANT_Class).replace('/', '.');
@@ -525,13 +526,13 @@ public class ClassGen extends AccessFlags implements Cloneable {
 
 
     @Pure
-    public int getSuperclassNameIndex() {
+    public @NonNegative int getSuperclassNameIndex() {
         return superclass_name_index;
     }
 
 
     @Pure
-    public int getClassNameIndex() {
+    public @NonNegative int getClassNameIndex() {
         return classNameIndex;
     }
 

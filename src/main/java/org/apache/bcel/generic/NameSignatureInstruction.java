@@ -22,19 +22,23 @@ import org.apache.bcel.classfile.ConstantNameAndType;
 import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.classfile.ConstantUtf8;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * Super class for FieldOrMethod and INVOKEDYNAMIC, since they both have
  * names and signatures
  *
  * @since 6.0
  */
+@AnnotatedFor({"signedness"})
 public abstract class NameSignatureInstruction extends CPInstruction {
 
     public NameSignatureInstruction() {
         super();
     }
 
-    public NameSignatureInstruction(final short opcode, final int index) {
+    public NameSignatureInstruction(final short opcode, final @NonNegative int index) {
         super(opcode, index);
     }
 

@@ -33,11 +33,16 @@ import org.apache.bcel.classfile.ConstantString;
 import org.apache.bcel.classfile.Method;
 import org.apache.bcel.classfile.Utility;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * Convert constant pool into HTML file.
  *
  *
  */
+@AnnotatedFor({"signedness"})
 final class ConstantHTML {
 
     private final String className; // name of current class
@@ -78,15 +83,15 @@ final class ConstantHTML {
     }
 
 
-    String referenceConstant( final int index ) {
+    String referenceConstant( final @NonNegative int index ) {
         return constantRef[index];
     }
 
 
-    private void writeConstant( final int index ) {
+    private void writeConstant( final @NonNegative int index ) {
         final byte tag = constants[index].getTag();
-        int class_index;
-        int name_index;
+        @NonNegative int class_index;
+        @NonNegative int name_index;
         String ref;
         // The header is always the same
         file.println("<H4> <A NAME=cp" + index + ">" + index + "</A> " + Const.getConstantName(tag)
@@ -221,7 +226,7 @@ final class ConstantHTML {
     }
 
 
-    private int getMethodNumber( final String str ) {
+    private @GTENegativeOne int getMethodNumber( final String str ) {
         for (int i = 0; i < methods.length; i++) {
             final String cmp = methods[i].getName() + methods[i].getSignature();
             if (cmp.equals(str)) {

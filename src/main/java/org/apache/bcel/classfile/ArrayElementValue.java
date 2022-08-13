@@ -20,6 +20,7 @@ package org.apache.bcel.classfile;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 
 /**
@@ -88,7 +89,7 @@ public class ArrayElementValue extends ElementValue
     }
 
     @Pure
-    public int getElementValuesArraySize()
+    public @NonNegative int getElementValuesArraySize()
     {
         return elementValues.length;
     }

@@ -21,7 +21,10 @@ import java.util.Objects;
 
 import org.apache.bcel.classfile.LineNumber;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class represents a line number within a method, i.e., give an instruction
@@ -30,17 +33,18 @@ import org.checkerframework.dataflow.qual.Pure;
  * @see     LineNumber
  * @see     MethodGen
  */
+@AnnotatedFor({"signedness"})
 public class LineNumberGen implements InstructionTargeter, Cloneable {
 
     private InstructionHandle ih;
-    private int srcLine;
+    private @NonNegative int srcLine;
 
     /**
      * Create a line number.
      *
      * @param ih instruction handle to reference
      */
-    public LineNumberGen(final InstructionHandle ih, final int src_line) {
+    public LineNumberGen(final InstructionHandle ih, final @NonNegative int src_line) {
         setInstruction(ih);
         setSourceLine(src_line);
     }
@@ -102,13 +106,13 @@ public class LineNumberGen implements InstructionTargeter, Cloneable {
     }
 
 
-    public void setSourceLine( final int src_line ) { // TODO could be package-protected?
+    public void setSourceLine( final @NonNegative int src_line ) { // TODO could be package-protected?
         this.srcLine = src_line;
     }
 
 
     @Pure
-    public int getSourceLine() {
+    public @GTENegativeOne int getSourceLine() {
         return srcLine;
     }
 }

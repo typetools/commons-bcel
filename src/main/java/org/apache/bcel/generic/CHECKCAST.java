@@ -19,11 +19,15 @@ package org.apache.bcel.generic;
 
 import org.apache.bcel.ExceptionConst;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * CHECKCAST - Check whether object is of given type
  * <PRE>Stack: ..., objectref -&gt; ..., objectref</PRE>
  *
  */
+@AnnotatedFor({"signedness"})
 public class CHECKCAST extends CPInstruction implements LoadClass, ExceptionThrower, StackProducer,
         StackConsumer {
 
@@ -38,7 +42,7 @@ public class CHECKCAST extends CPInstruction implements LoadClass, ExceptionThro
     /** Check whether object is of given type
      * @param index index to class in constant pool
      */
-    public CHECKCAST(final int index) {
+    public CHECKCAST(final @NonNegative int index) {
         super(org.apache.bcel.Const.CHECKCAST, index);
     }
 

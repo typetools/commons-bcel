@@ -62,6 +62,7 @@ public final class ConstantUtf8 extends Constant {
 
         private static final boolean BCEL_STATISTICS = Boolean.getBoolean(SYS_PROP_STATISTICS);
         private static final int MAX_ENTRIES = Integer.getInteger(SYS_PROP_CACHE_MAX_ENTRIES, 0).intValue();
+        @SuppressWarnings({"value:cast.unsafe", "signedness:cast.unsafe"}) // cast float to int
         private static final int INITIAL_CAPACITY = (int) (MAX_ENTRIES / 0.75);
 
         private static final HashMap<String, ConstantUtf8> CACHE = new LinkedHashMap<String, ConstantUtf8>(

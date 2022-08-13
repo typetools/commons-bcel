@@ -19,11 +19,15 @@ package org.apache.bcel.generic;
 
 import org.apache.bcel.ExceptionConst;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * NEW - Create new object
  * <PRE>Stack: ... -&gt; ..., objectref</PRE>
  *
  */
+@AnnotatedFor({"signedness"})
 public class NEW extends CPInstruction implements LoadClass, AllocationInstruction,
         ExceptionThrower, StackProducer {
 
@@ -35,7 +39,7 @@ public class NEW extends CPInstruction implements LoadClass, AllocationInstructi
     }
 
 
-    public NEW(final int index) {
+    public NEW(final @NonNegative int index) {
         super(org.apache.bcel.Const.NEW, index);
     }
 

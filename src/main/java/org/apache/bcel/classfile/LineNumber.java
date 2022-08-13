@@ -21,7 +21,11 @@ import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.signedness.qual.SignedPositive;
+import org.checkerframework.checker.signedness.qual.Unsigned;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class represents a (PC offset, line number) pair, i.e., a line number in
@@ -30,13 +34,14 @@ import org.checkerframework.dataflow.qual.Pure;
  *
  * @see     LineNumberTable
  */
+@AnnotatedFor({"signedness"})
 public final class LineNumber implements Cloneable, Node {
 
     /** Program Counter (PC) corresponds to line */
-    private short startPc;
+    private @Unsigned short startPc;
 
     /** number in source file */
-    private short lineNumber;
+    private @Unsigned short lineNumber;
 
     /**
      * Initialize from another object.
@@ -63,7 +68,7 @@ public final class LineNumber implements Cloneable, Node {
      * @param startPc Program Counter (PC) corresponds to
      * @param lineNumber line number in source file
      */
-    public LineNumber(final int startPc, final int lineNumber) {
+    public LineNumber(final @Unsigned int startPc, final @Unsigned int lineNumber) {
         this.startPc = (short) startPc;
         this.lineNumber = (short)lineNumber;
     }
@@ -88,6 +93,7 @@ public final class LineNumber implements Cloneable, Node {
      * @param file Output file stream
      * @throws IOException if an I/O Exception occurs in writeShort
      */
+    @SuppressWarnings("signedness:argument") // writeShort only writes low 16 bits
     public void dump( final DataOutputStream file ) throws IOException {
         file.writeShort(startPc);
         file.writeShort(lineNumber);
@@ -98,8 +104,8 @@ public final class LineNumber implements Cloneable, Node {
      * @return Corresponding source line
      */
     @Pure
-    public int getLineNumber() {
-        return 0xffff & lineNumber;
+    public @NonNegative int getLineNumber() {
+        return lineNumber & 0xffff;
     }
 
 
@@ -107,15 +113,15 @@ public final class LineNumber implements Cloneable, Node {
      * @return PC in code
      */
     @Pure
-    public int getStartPC() {
-        return  0xffff & startPc;
+    public @NonNegative int getStartPC() {
+        return  startPc & 0xffff;
     }
 
 
     /**
      * @param lineNumber the source line number
      */
-    public void setLineNumber( final int lineNumber ) {
+    public void setLineNumber( final @NonNegative int lineNumber ) {
         this.lineNumber = (short) lineNumber;
     }
 
@@ -123,7 +129,7 @@ public final class LineNumber implements Cloneable, Node {
     /**
      * @param startPc the pc for this line number
      */
-    public void setStartPC( final int startPc ) {
+    public void setStartPC( final @NonNegative int startPc ) {
         this.startPc = (short) startPc;
     }
 
@@ -133,7 +139,7 @@ public final class LineNumber implements Cloneable, Node {
      */
     @Override
     public String toString() {
-        return "LineNumber(" + startPc + ", " + lineNumber + ")";
+        return "LineNumber(" + getStartPC() + ", " + getLineNumber() + ")";
     }
 
 

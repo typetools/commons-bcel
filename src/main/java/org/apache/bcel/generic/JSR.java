@@ -20,10 +20,14 @@ package org.apache.bcel.generic;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * JSR - Jump to subroutine
  *
  */
+@AnnotatedFor({"signedness"})
 public class JSR extends JsrInstruction implements VariableLengthInstruction {
 
     /**
@@ -57,7 +61,7 @@ public class JSR extends JsrInstruction implements VariableLengthInstruction {
 
 
     @Override
-    protected int updatePosition( final int offset, final int max_offset ) {
+    protected @NonNegative int updatePosition( final @NonNegative int offset, final @NonNegative int max_offset ) {
         final int i = getTargetOffset(); // Depending on old position value
         setPosition(getPosition() + offset); // Position may be shifted by preceding expansions
         if (Math.abs(i) >= (Short.MAX_VALUE - max_offset)) { // to large for short (estimate)

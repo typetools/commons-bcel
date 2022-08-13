@@ -23,7 +23,9 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class represents a MethodParameters attribute.
@@ -32,11 +34,12 @@ import org.checkerframework.dataflow.qual.Pure;
  * The class File Format : The MethodParameters Attribute</a>
  * @since 6.0
  */
+@AnnotatedFor({"signedness"})
 public class MethodParameters extends Attribute {
 
     private MethodParameter[] parameters = new MethodParameter[0];
 
-    MethodParameters(final int name_index, final int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
+    MethodParameters(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
         super(Const.ATTR_METHOD_PARAMETERS, name_index, length, constant_pool);
 
         final int parameters_count = input.readUnsignedByte();

@@ -23,7 +23,9 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class represents the type of a local variable or item on stack
@@ -33,10 +35,11 @@ import org.checkerframework.dataflow.qual.Pure;
  * @see     StackMap
  * @see     Const
  */
+@AnnotatedFor({"signedness"})
 public final class StackMapType implements Cloneable {
 
     private byte type;
-    private int index = -1; // Index to CONSTANT_Class or offset
+    private @NonNegative int index; // Index to CONSTANT_Class or offset
     private ConstantPool constantPool;
 
 
@@ -58,7 +61,7 @@ public final class StackMapType implements Cloneable {
      * @param type type tag as defined in the Constants interface
      * @param index index to constant pool, or byte code offset
      */
-    public StackMapType(final byte type, final int index, final ConstantPool constant_pool) {
+    public StackMapType(final byte type, final @NonNegative int index, final ConstantPool constant_pool) {
         if ((type < Const.ITEM_Bogus) || (type > Const.ITEM_NewObject)) {
             throw new IllegalArgumentException("Illegal type for StackMapType: " + type);
         }
@@ -82,7 +85,7 @@ public final class StackMapType implements Cloneable {
     }
 
 
-    public void setIndex( final int t ) {
+    public void setIndex( final @NonNegative int t ) {
         index = t;
     }
 
@@ -91,7 +94,7 @@ public final class StackMapType implements Cloneable {
      * in byte code, if type == ITEM_NewObject, and -1 otherwise
      */
     @Pure
-    public int getIndex() {
+    public @NonNegative int getIndex() {
         return index;
     }
 

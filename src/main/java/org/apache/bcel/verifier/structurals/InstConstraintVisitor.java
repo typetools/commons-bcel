@@ -39,6 +39,7 @@ import org.apache.bcel.verifier.VerifierFactory;
 import org.apache.bcel.verifier.exc.AssertionViolatedException;
 import org.apache.bcel.verifier.exc.StructuralCodeConstraintException;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * A Visitor class testing for valid preconditions of JVM instructions.
@@ -266,7 +267,7 @@ public class InstConstraintVisitor extends EmptyVisitor{
      */
     @Override
     public void visitCPInstruction(final CPInstruction o) {
-        final int idx = o.getIndex();
+        final @NonNegative int idx = o.getIndex();
         if ((idx < 0) || (idx >= cpg.getSize())) {
             throw new AssertionViolatedException(
                 "Huh?! Constant pool index of instruction '"+o+"' illegal? Pass 3a should have checked this!");

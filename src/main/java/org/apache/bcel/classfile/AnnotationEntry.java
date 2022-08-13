@@ -26,16 +26,19 @@ import java.util.List;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * represents one annotation in the annotation table
  *
  * @since 6.0
  */
+@AnnotatedFor({"signedness"})
 public class AnnotationEntry implements Node {
 
-    private final int typeIndex;
+    private final @NonNegative int typeIndex;
     private final ConstantPool constantPool;
     private final boolean isRuntimeVisible;
 
@@ -63,14 +66,14 @@ public class AnnotationEntry implements Node {
         return annotationEntry;
     }
 
-    public AnnotationEntry(final int type_index, final ConstantPool constant_pool, final boolean isRuntimeVisible) {
+    public AnnotationEntry(final @NonNegative int type_index, final ConstantPool constant_pool, final boolean isRuntimeVisible) {
         this.typeIndex = type_index;
         this.constantPool = constant_pool;
         this.isRuntimeVisible = isRuntimeVisible;
     }
 
     @Pure
-    public int getTypeIndex() {
+    public @NonNegative int getTypeIndex() {
         return typeIndex;
     }
 
@@ -107,7 +110,7 @@ public class AnnotationEntry implements Node {
      * @return the annotation type index
      */
     @Pure
-    public int getAnnotationTypeIndex() {
+    public @NonNegative int getAnnotationTypeIndex() {
         return typeIndex;
     }
 
@@ -115,7 +118,7 @@ public class AnnotationEntry implements Node {
      * @return the number of element value pairs in this annotation entry
      */
     @Pure
-    public final int getNumElementValuePairs() {
+    public final @NonNegative int getNumElementValuePairs() {
         return elementValuePairs.size();
     }
 

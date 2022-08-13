@@ -22,22 +22,25 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * an annotation's element value pair
  *
  * @since 6.0
  */
+@AnnotatedFor({"signedness"})
 public class ElementValuePair
 {
     private final ElementValue elementValue;
 
     private final ConstantPool constantPool;
 
-    private final int elementNameIndex;
+    private final @NonNegative int elementNameIndex;
 
-    public ElementValuePair(final int elementNameIndex, final ElementValue elementValue,
+    public ElementValuePair(final @NonNegative int elementNameIndex, final ElementValue elementValue,
             final ConstantPool constantPool)
     {
         this.elementValue = elementValue;
@@ -59,7 +62,7 @@ public class ElementValuePair
     }
 
     @Pure
-    public int getNameIndex()
+    public @NonNegative int getNameIndex()
     {
         return elementNameIndex;
     }

@@ -24,25 +24,28 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Abstract super class for fields and methods.
  *
  */
+@AnnotatedFor({"signedness"})
 public abstract class FieldOrMethod extends AccessFlags implements Cloneable, Node {
 
     /**
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
      */
     @java.lang.Deprecated
-    protected int name_index; // Points to field name in constant pool
+    protected @NonNegative int name_index; // Points to field name in constant pool
 
     /**
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
      */
     @java.lang.Deprecated
-    protected int signature_index; // Points to encoded signature
+    protected @NonNegative int signature_index; // Points to encoded signature
 
     /**
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
@@ -54,7 +57,7 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
      * @deprecated (since 6.0) will be removed (not needed)
      */
     @java.lang.Deprecated
-    protected int attributes_count; // No. of attributes
+    protected @NonNegative int attributes_count; // No. of attributes
 
     // @since 6.0
     private AnnotationEntry[] annotationEntries; // annotations defined on the field or method
@@ -104,7 +107,7 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
     protected FieldOrMethod(final DataInput file, final ConstantPool constant_pool) throws IOException, ClassFormatException {
         this(file.readUnsignedShort(), file.readUnsignedShort(), file.readUnsignedShort(), null,
                 constant_pool);
-        final int attributes_count = file.readUnsignedShort();
+        final @NonNegative int attributes_count = file.readUnsignedShort();
         attributes = new Attribute[attributes_count];
         for (int i = 0; i < attributes_count; i++) {
             attributes[i] = Attribute.readAttribute(file, constant_pool);
@@ -120,7 +123,7 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
      * @param attributes Collection of attributes
      * @param constant_pool Array of constants
      */
-    protected FieldOrMethod(final int access_flags, final int name_index, final int signature_index,
+    protected FieldOrMethod(final int access_flags, final @NonNegative int name_index, final @NonNegative int signature_index,
             final Attribute[] attributes, final ConstantPool constant_pool) {
         super(access_flags);
         this.name_index = name_index;
@@ -188,7 +191,7 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
      * @return Index in constant pool of object's name.
      */
     @Pure
-    public final int getNameIndex() {
+    public final @NonNegative int getNameIndex() {
         return name_index;
     }
 
@@ -196,7 +199,7 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
     /**
      * @param name_index Index in constant pool of object's name.
      */
-    public final void setNameIndex( final int name_index ) {
+    public final void setNameIndex( final @NonNegative int name_index ) {
         this.name_index = name_index;
     }
 
@@ -205,7 +208,7 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
      * @return Index in constant pool of field signature.
      */
     @Pure
-    public final int getSignatureIndex() {
+    public final @NonNegative int getSignatureIndex() {
         return signature_index;
     }
 
@@ -213,7 +216,7 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
     /**
      * @param signature_index Index in constant pool of field signature.
      */
-    public final void setSignatureIndex( final int signature_index ) {
+    public final void setSignatureIndex( final @NonNegative int signature_index ) {
         this.signature_index = signature_index;
     }
 

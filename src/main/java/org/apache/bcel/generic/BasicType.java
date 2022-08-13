@@ -82,6 +82,9 @@ public final class BasicType extends Type {
      */
     @Override
     public boolean equals( final @Nullable Object _type ) {
-        return (_type instanceof BasicType) ? ((BasicType) _type).getType() == this.getType() : false;
+        if (_type instanceof BasicType) {
+            return ((BasicType) _type).getType() == this.getType();
+        }
+        return false;
     }
 }

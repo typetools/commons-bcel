@@ -23,13 +23,16 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Represents the default value of a annotation for a method info
  *
  * @since 6.0
  */
+@AnnotatedFor({"signedness"})
 public class AnnotationDefault extends Attribute {
 
     private ElementValue defaultValue;
@@ -40,7 +43,7 @@ public class AnnotationDefault extends Attribute {
      * @param input         Input stream
      * @param constant_pool Array of constants
      */
-    AnnotationDefault(final int name_index, final int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
+    AnnotationDefault(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
         this(name_index, length, (ElementValue) null, constant_pool);
         defaultValue = ElementValue.readElementValue(input, constant_pool);
     }
@@ -51,7 +54,7 @@ public class AnnotationDefault extends Attribute {
      * @param defaultValue  the annotation's default value
      * @param constant_pool Array of constants
      */
-    public AnnotationDefault(final int name_index, final int length, final ElementValue defaultValue, final ConstantPool constant_pool) {
+    public AnnotationDefault(final @NonNegative int name_index, final @NonNegative int length, final ElementValue defaultValue, final ConstantPool constant_pool) {
         super(Const.ATTR_ANNOTATION_DEFAULT, name_index, length, constant_pool);
         this.defaultValue = defaultValue;
     }

@@ -20,7 +20,9 @@ package org.apache.bcel.util;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Utility class that implements a sequence of bytes which can be read
@@ -28,6 +30,7 @@ import org.checkerframework.dataflow.qual.Pure;
  * Java byte code stream to gain some more readability.
  *
  */
+@AnnotatedFor({"signedness"})
 public final class ByteSequence extends DataInputStream {
 
     private final ByteArrayStream byteStream;
@@ -40,7 +43,7 @@ public final class ByteSequence extends DataInputStream {
 
 
     @Pure
-    public int getIndex() {
+    public @NonNegative int getIndex() {
         return byteStream.getPosition();
     }
 
@@ -55,7 +58,7 @@ public final class ByteSequence extends DataInputStream {
             super(bytes);
         }
 
-        int getPosition() {
+        @NonNegative int getPosition() {
             // pos is protected in ByteArrayInputStream
             return pos;
         }

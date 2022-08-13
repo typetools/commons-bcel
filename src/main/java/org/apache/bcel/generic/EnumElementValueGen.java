@@ -24,24 +24,27 @@ import org.apache.bcel.classfile.ConstantUtf8;
 import org.apache.bcel.classfile.ElementValue;
 import org.apache.bcel.classfile.EnumElementValue;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * @since 6.0
  */
+@AnnotatedFor({"signedness"})
 public class EnumElementValueGen extends ElementValueGen
 {
     // For enum types, these two indices point to the type and value
-    private int typeIdx;
+    private @NonNegative int typeIdx;
 
-    private int valueIdx;
+    private @NonNegative int valueIdx;
 
     /**
      * This ctor assumes the constant pool already contains the right type and
      * value - as indicated by typeIdx and valueIdx. This ctor is used for
      * deserialization
      */
-    protected EnumElementValueGen(final int typeIdx, final int valueIdx,
+    protected EnumElementValueGen(final @NonNegative int typeIdx, final @NonNegative int valueIdx,
             final ConstantPoolGen cpool)
     {
         super(ElementValueGen.ENUM_CONSTANT, cpool);
@@ -133,13 +136,13 @@ public class EnumElementValueGen extends ElementValueGen
     }
 
     @Pure
-    public int getValueIndex()
+    public @NonNegative int getValueIndex()
     {
         return valueIdx;
     }
 
     @Pure
-    public int getTypeIndex()
+    public @NonNegative int getTypeIndex()
     {
         return typeIdx;
     }

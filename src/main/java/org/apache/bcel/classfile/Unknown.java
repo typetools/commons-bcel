@@ -25,7 +25,9 @@ import java.util.Map;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class represents a reference to an unknown (i.e.,
@@ -39,6 +41,7 @@ import org.checkerframework.dataflow.qual.Pure;
  * @see Attribute
  * @see UnknownAttributeReader
  */
+@AnnotatedFor({"signedness"})
 public final class Unknown extends Attribute {
 
     private byte[] bytes;
@@ -73,7 +76,7 @@ public final class Unknown extends Attribute {
      * @param bytes Attribute contents
      * @param constant_pool Array of constants
      */
-    public Unknown(final int name_index, final int length, final byte[] bytes, final ConstantPool constant_pool) {
+    public Unknown(final @NonNegative int name_index, final @NonNegative int length, final byte[] bytes, final ConstantPool constant_pool) {
         super(Const.ATTR_UNKNOWN, name_index, length, constant_pool);
         this.bytes = bytes;
         name = ((ConstantUtf8) constant_pool.getConstant(name_index, Const.CONSTANT_Utf8))
@@ -91,7 +94,7 @@ public final class Unknown extends Attribute {
      * @param constant_pool Array of constants
      * @throws IOException
      */
-    Unknown(final int name_index, final int length, final DataInput input, final ConstantPool constant_pool)
+    Unknown(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool)
             throws IOException {
         this(name_index, length, (byte[]) null, constant_pool);
         if (length > 0) {

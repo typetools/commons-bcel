@@ -23,14 +23,17 @@ import java.io.IOException;
 import org.apache.bcel.Const;
 import org.apache.bcel.util.ByteSequence;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.interning.qual.InternedDistinct;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Abstract super class for instructions dealing with local variables.
  *
  */
+@AnnotatedFor({"signedness"})
 public abstract class LocalVariableInstruction extends Instruction implements TypedInstruction,
         IndexedInstruction {
 
@@ -38,7 +41,7 @@ public abstract class LocalVariableInstruction extends Instruction implements Ty
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
      */
     @Deprecated
-    protected int n = -1; // index of referenced variable
+    protected @NonNegative int n; // index of referenced variable
 
     private short cTag = -1; // compact version, such as ILOAD_0
     private short canonTag = -1; // canonical tag such as ILOAD
@@ -74,7 +77,7 @@ public abstract class LocalVariableInstruction extends Instruction implements Ty
      * @param cTag Instruction number for compact version, ALOAD_0, e.g.
      * @param n local variable index (unsigned short)
      */
-    protected LocalVariableInstruction(final short opcode, final short cTag, final int n) {
+    protected LocalVariableInstruction(final short opcode, final short cTag, final @NonNegative int n) {
         super(opcode, (short) 2);
         this.cTag = cTag;
         canonTag = opcode;
@@ -155,7 +158,7 @@ public abstract class LocalVariableInstruction extends Instruction implements Ty
      */
     @Override
     @Pure
-    public final int getIndex() {
+    public final @NonNegative int getIndex() {
         return n;
     }
 
@@ -167,7 +170,7 @@ public abstract class LocalVariableInstruction extends Instruction implements Ty
      * @see #setIndexOnly(int)
      */
     @Override
-    public void setIndex( @UnknownInitialization(LocalVariableInstruction.class) LocalVariableInstruction this, final int n ) { // TODO could be package-protected?
+    public void setIndex( @UnknownInitialization(LocalVariableInstruction.class) LocalVariableInstruction this, final @NonNegative int n ) { // TODO could be package-protected?
         if ((n < 0) || (n > Const.MAX_SHORT)) {
             throw new ClassGenException("Illegal value: " + n);
         }
@@ -232,7 +235,7 @@ public abstract class LocalVariableInstruction extends Instruction implements Ty
      * @since 6.0
      * @see #setIndex(int)
      */
-    final void setIndexOnly(final int n) {
+    final void setIndexOnly(final @NonNegative int n) {
         this.n = n;
     }
 }

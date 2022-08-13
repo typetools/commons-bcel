@@ -23,8 +23,10 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class represents colection of local variables in a
@@ -33,6 +35,7 @@ import org.checkerframework.dataflow.qual.Pure;
  * @see     Code
  * @see LocalVariable
  */
+@AnnotatedFor({"signedness"})
 public class LocalVariableTable extends Attribute {
 
     private LocalVariable[] localVariableTable; // variables
@@ -53,7 +56,7 @@ public class LocalVariableTable extends Attribute {
      * @param localVariableTable Table of local variables
      * @param constantPool Array of constants
      */
-    public LocalVariableTable(final int nameIndex, final int length, final LocalVariable[] localVariableTable,
+    public LocalVariableTable(final @NonNegative int nameIndex, final @NonNegative int length, final LocalVariable[] localVariableTable,
             final ConstantPool constantPool) {
         super(Const.ATTR_LOCAL_VARIABLE_TABLE, nameIndex, length, constantPool);
         this.localVariableTable = localVariableTable;
@@ -68,7 +71,7 @@ public class LocalVariableTable extends Attribute {
      * @param constant_pool Array of constants
      * @throws IOException
      */
-    LocalVariableTable(final int name_index, final int length, final DataInput input, final ConstantPool constant_pool)
+    LocalVariableTable(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool)
             throws IOException {
         this(name_index, length, (LocalVariable[]) null, constant_pool);
         final int local_variable_table_length = input.readUnsignedShort();
@@ -128,7 +131,7 @@ public class LocalVariableTable extends Attribute {
      */
     @java.lang.Deprecated
     @Pure
-    public final @Nullable LocalVariable getLocalVariable( final int index ) {
+    public final @Nullable LocalVariable getLocalVariable( final @NonNegative int index ) {
         for (final LocalVariable variable : localVariableTable) {
             if (variable.getIndex() == index) {
                 return variable;
@@ -146,7 +149,7 @@ public class LocalVariableTable extends Attribute {
      * @return the LocalVariable that matches or null if not found
      */
     @Pure
-    public final @Nullable LocalVariable getLocalVariable( final int index, final int pc ) {
+    public final @Nullable LocalVariable getLocalVariable( final @NonNegative int index, final int pc ) {
         for (final LocalVariable variable : localVariableTable) {
             if (variable.getIndex() == index) {
                 final int start_pc = variable.getStartPC();

@@ -23,6 +23,8 @@ import java.util.Map;
 
 import org.apache.bcel.classfile.JavaClass;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Maintains a least-recently-used (LRU) cache of {@link JavaClass} with maximum size {@code cacheSize}.
  *
@@ -37,7 +39,7 @@ public class LruCacheClassPathRepository extends AbstractClassPathRepository {
 
     private final LinkedHashMap<String, JavaClass> loadedClasses;
 
-    public LruCacheClassPathRepository(final ClassPath path, final int cacheSize) {
+    public LruCacheClassPathRepository(final ClassPath path, final @NonNegative int cacheSize) {
         super(path);
 
         if (cacheSize < 1) {

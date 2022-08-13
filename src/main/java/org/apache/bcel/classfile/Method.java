@@ -25,6 +25,7 @@ import org.apache.bcel.Const;
 import org.apache.bcel.generic.Type;
 import org.apache.bcel.util.BCELComparator;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -35,7 +36,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * A method has access flags, a name, a signature and a number of attributes.
  *
  */
-@AnnotatedFor({"nullness"})
+@AnnotatedFor({"nullness","signedness"})
 public final class Method extends FieldOrMethod {
 
     private static BCELComparator bcelComparator = new BCELComparator() {
@@ -95,7 +96,7 @@ public final class Method extends FieldOrMethod {
      * @param attributes Collection of attributes
      * @param constant_pool Array of constants
      */
-    public Method(final int access_flags, final int name_index, final int signature_index, final Attribute[] attributes,
+    public Method(final int access_flags, final @NonNegative int name_index, final @NonNegative int signature_index, final Attribute[] attributes,
             final ConstantPool constant_pool) {
         super(access_flags, name_index, signature_index, attributes, constant_pool);
     }

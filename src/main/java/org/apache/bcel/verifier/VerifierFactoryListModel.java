@@ -25,6 +25,7 @@ import java.util.TreeSet;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 
 /**
@@ -67,12 +68,12 @@ public class VerifierFactoryListModel implements VerifierFactoryObserver, javax.
 
     @Override
     @Pure
-    public synchronized int getSize() {
+    public synchronized @NonNegative int getSize() {
         return cache.size();
     }
 
     @Override
-    public synchronized String getElementAt(final int index) {
+    public synchronized String getElementAt(final @NonNegative int index) {
         return cache.toArray(new String[cache.size()])[index];
     }
 

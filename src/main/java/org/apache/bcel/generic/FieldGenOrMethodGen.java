@@ -24,6 +24,7 @@ import org.apache.bcel.Const;
 import org.apache.bcel.classfile.AccessFlags;
 import org.apache.bcel.classfile.Attribute;
 
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.dataflow.qual.Pure;
 
 /**
@@ -69,6 +70,7 @@ public abstract class FieldGenOrMethodGen extends AccessFlags implements NamedAn
     }
 
     @Override
+    @EnsuresNonNull("this.type")
     public void setType( final Type type ) { // TODO could be package-protected?
         if (type.getType() == Const.T_ADDRESS) {
             throw new IllegalArgumentException("Type can not be " + type);

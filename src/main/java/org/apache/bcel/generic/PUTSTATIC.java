@@ -20,6 +20,9 @@ package org.apache.bcel.generic;
 import org.apache.bcel.Const;
 import org.apache.bcel.ExceptionConst;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * PUTSTATIC - Put static field in class
  * <PRE>Stack: ..., value -&gt; ...</PRE>
@@ -27,6 +30,7 @@ import org.apache.bcel.ExceptionConst;
  * <PRE>Stack: ..., value.word1, value.word2 -&gt; ...</PRE>
  *
  */
+@AnnotatedFor({"signedness"})
 public class PUTSTATIC extends FieldInstruction implements ExceptionThrower, PopInstruction {
 
     /**
@@ -37,13 +41,13 @@ public class PUTSTATIC extends FieldInstruction implements ExceptionThrower, Pop
     }
 
 
-    public PUTSTATIC(final int index) {
+    public PUTSTATIC(final @NonNegative int index) {
         super(Const.PUTSTATIC, index);
     }
 
 
     @Override
-    public int consumeStack( final ConstantPoolGen cpg ) {
+    public @NonNegative int consumeStack( final ConstantPoolGen cpg ) {
         return getFieldSize(cpg);
     }
 

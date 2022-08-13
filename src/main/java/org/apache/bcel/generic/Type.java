@@ -24,6 +24,7 @@ import org.apache.bcel.Const;
 import org.apache.bcel.classfile.ClassFormatException;
 import org.apache.bcel.classfile.Utility;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.interning.qual.InternedDistinct;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -39,7 +40,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  *
  */
 @SuppressWarnings("interning")  // sets constants
-@AnnotatedFor({"nullness","signature"})
+@AnnotatedFor({"nullness","signature","signedness"})
 public abstract class Type {
 
     /**
@@ -150,7 +151,7 @@ public abstract class Type {
      * @return stack size of this type (2 for long and double, 0 for void, 1 otherwise)
      */
     @Pure
-    public int getSize() {
+    public @NonNegative int getSize() {
         switch (type) {
             case Const.T_DOUBLE:
             case Const.T_LONG:
@@ -232,7 +233,7 @@ public abstract class Type {
             wrap(consumed_chars, 1);
             return BasicType.getType(type);
         } else if (type == Const.T_ARRAY) {
-            int dim = 0;
+            @NonNegative int dim = 0;
             do { // Count dimensions
                 dim++;
             } while (signature.charAt(dim) == '[');
@@ -375,20 +376,20 @@ public abstract class Type {
         return sb.toString();
     }
 
-    static int size(final int coded) {
+    static @NonNegative int size(final int coded) {
         return coded & 3;
     }
 
-    static int consumed(final int coded) {
+    static @NonNegative int consumed(final int coded) {
         return coded >> 2;
     }
 
-    static int encode(final int size, final int consumed) {
+    static @NonNegative int encode(final @NonNegative int size, final @NonNegative int consumed) {
         return consumed << 2 | size;
     }
 
-    static int getArgumentTypesSize( final String signature ) {
-        int res = 0;
+    static @NonNegative int getArgumentTypesSize( final String signature ) {
+        @NonNegative int res = 0;
         int index;
         try {
             // Skip any type arguments to read argument declarations between `(' and `)'
@@ -407,12 +408,12 @@ public abstract class Type {
         return res;
     }
 
-    static int getTypeSize( final String signature ) throws StringIndexOutOfBoundsException {
+    static @NonNegative int getTypeSize( final String signature ) throws StringIndexOutOfBoundsException {
         final byte type = Utility.typeOfSignature(signature);
         if (type <= Const.T_VOID) {
             return encode(BasicType.getType(type).getSize(), 1);
         } else if (type == Const.T_ARRAY) {
-            int dim = 0;
+            @NonNegative int dim = 0;
             do { // Count dimensions
                 dim++;
             } while (signature.charAt(dim) == '[');
@@ -429,7 +430,7 @@ public abstract class Type {
     }
 
 
-    static int getReturnTypeSize(final String signature) {
+    static @NonNegative int getReturnTypeSize(final String signature) {
         final int index = signature.lastIndexOf(')') + 1;
         return Type.size(getTypeSize(signature.substring(index)));
     }

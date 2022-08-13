@@ -23,6 +23,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * This class represents an entry in the provides table of the Module attribute.
  * Each entry describes a service implementation that the parent module provides.
@@ -32,8 +34,8 @@ import org.apache.bcel.Const;
  */
 public final class ModuleProvides implements Cloneable, Node {
 
-    private final int providesIndex;  // points to CONSTANT_Class_info
-    private final int providesWithCount;
+    private final @NonNegative int providesIndex;  // points to CONSTANT_Class_info
+    private final @NonNegative int providesWithCount;
     private final int[] providesWithIndex;  // points to CONSTANT_Class_info
 
 

@@ -22,26 +22,29 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * @since 6.0
  */
+@AnnotatedFor({"signedness"})
 public class ClassElementValue extends ElementValue
 {
     // For primitive types and string type, this points to the value entry in
     // the cpool
     // For 'class' this points to the class entry in the cpool
-    private final int idx;
+    private final @NonNegative int idx;
 
-    public ClassElementValue(final int type, final int idx, final ConstantPool cpool)
+    public ClassElementValue(final int type, final @NonNegative int idx, final ConstantPool cpool)
     {
         super(type, cpool);
         this.idx = idx;
     }
 
     @Pure
-    public int getIndex()
+    public @NonNegative int getIndex()
     {
         return idx;
     }

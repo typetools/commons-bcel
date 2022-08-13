@@ -77,9 +77,10 @@ public class ObjectType extends ReferenceType {
      */
     @Override
     public boolean equals( final @Nullable Object type ) {
-        return (type instanceof ObjectType)
-                ? ((ObjectType) type).className.equals(className)
-                : false;
+        if (type instanceof ObjectType) {
+            return ((ObjectType) type).className.equals(className);
+        }
+        return false;
     }
 
 

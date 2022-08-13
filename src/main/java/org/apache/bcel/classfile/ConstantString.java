@@ -23,7 +23,9 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class is derived from the abstract {@link Constant}
@@ -31,9 +33,10 @@ import org.checkerframework.dataflow.qual.Pure;
  *
  * @see     Constant
  */
+@AnnotatedFor({"signedness"})
 public final class ConstantString extends Constant implements ConstantObject {
 
-    private int stringIndex; // Identical to ConstantClass except for this name
+    private @NonNegative int stringIndex; // Identical to ConstantClass except for this name
 
 
     /**
@@ -58,7 +61,7 @@ public final class ConstantString extends Constant implements ConstantObject {
     /**
      * @param stringIndex Index of Constant_Utf8 in constant pool
      */
-    public ConstantString(final int stringIndex) {
+    public ConstantString(final @NonNegative int stringIndex) {
         super(Const.CONSTANT_String);
         this.stringIndex = stringIndex;
     }
@@ -94,7 +97,7 @@ public final class ConstantString extends Constant implements ConstantObject {
      * @return Index in constant pool of the string (ConstantUtf8).
      */
     @Pure
-    public int getStringIndex() {
+    public @NonNegative int getStringIndex() {
         return stringIndex;
     }
 
@@ -102,7 +105,7 @@ public final class ConstantString extends Constant implements ConstantObject {
     /**
      * @param stringIndex the index into the constant of the string value
      */
-    public void setStringIndex( final int stringIndex ) {
+    public void setStringIndex( final @NonNegative int stringIndex ) {
         this.stringIndex = stringIndex;
     }
 

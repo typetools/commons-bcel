@@ -19,11 +19,15 @@ package org.apache.bcel.generic;
 
 import org.apache.bcel.ExceptionConst;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * ANEWARRAY -  Create new array of references
  * <PRE>Stack: ..., count -&gt; ..., arrayref</PRE>
  *
  */
+@AnnotatedFor({"signedness"})
 public class ANEWARRAY extends CPInstruction implements LoadClass, AllocationInstruction,
         ExceptionThrower, StackConsumer, StackProducer {
 
@@ -35,7 +39,7 @@ public class ANEWARRAY extends CPInstruction implements LoadClass, AllocationIns
     }
 
 
-    public ANEWARRAY(final int index) {
+    public ANEWARRAY(final @NonNegative int index) {
         super(org.apache.bcel.Const.ANEWARRAY, index);
     }
 

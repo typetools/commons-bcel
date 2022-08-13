@@ -35,13 +35,16 @@ import org.apache.bcel.classfile.RuntimeInvisibleParameterAnnotations;
 import org.apache.bcel.classfile.RuntimeVisibleAnnotations;
 import org.apache.bcel.classfile.RuntimeVisibleParameterAnnotations;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * @since 6.0
  */
+@AnnotatedFor({"signedness"})
 public class AnnotationEntryGen {
-    private int typeIndex;
+    private @NonNegative int typeIndex;
 
     private List<ElementValuePairGen> evs;
 
@@ -133,7 +136,7 @@ public class AnnotationEntryGen {
     }
 
     @Pure
-    public int getTypeIndex() {
+    public @NonNegative int getTypeIndex() {
         return typeIndex;
     }
 

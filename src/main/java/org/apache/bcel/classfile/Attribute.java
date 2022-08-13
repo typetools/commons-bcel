@@ -26,7 +26,9 @@ import java.util.Map;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Abstract super class for <em>Attribute</em> objects. Currently the
@@ -48,6 +50,7 @@ import org.checkerframework.dataflow.qual.Pure;
  * @see Deprecated
  * @see Signature
  */
+@AnnotatedFor({"signedness"})
 public abstract class Attribute implements Cloneable, Node {
 
     private static final boolean debug = Boolean.getBoolean(Attribute.class.getCanonicalName() + ".debug"); // Debugging on/off
@@ -108,12 +111,12 @@ public abstract class Attribute implements Cloneable, Node {
     {
         byte tag = Const.ATTR_UNKNOWN; // Unknown attribute
         // Get class name from constant pool via `name_index' indirection
-        final int name_index = file.readUnsignedShort();
+        final @NonNegative int name_index = file.readUnsignedShort();
         final ConstantUtf8 c = (ConstantUtf8) constant_pool.getConstant(name_index, Const.CONSTANT_Utf8);
         final String name = c.getBytes();
 
         // Length of data in bytes
-        final int length = file.readInt();
+        final @NonNegative int length = file.readInt();
 
         // Compare strings to find known attribute
         for (byte i = 0; i < Const.KNOWN_ATTRIBUTES; i++)
@@ -234,13 +237,13 @@ public abstract class Attribute implements Cloneable, Node {
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
      */
     @java.lang.Deprecated
-    protected int name_index; // Points to attribute name in constant pool TODO make private (has getter & setter)
+    protected @NonNegative int name_index; // Points to attribute name in constant pool TODO make private (has getter & setter)
 
     /**
      * @deprecated (since 6.0) (since 6.0) will be made private; do not access directly, use getter/setter
      */
     @java.lang.Deprecated
-    protected int length; // Content length of attribute field TODO make private (has getter & setter)
+    protected @NonNegative int length; // Content length of attribute field TODO make private (has getter & setter)
 
     /**
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
@@ -254,7 +257,7 @@ public abstract class Attribute implements Cloneable, Node {
     @java.lang.Deprecated
     protected ConstantPool constant_pool; // TODO make private (has getter & setter)
 
-    protected Attribute(final byte tag, final int name_index, final int length, final ConstantPool constant_pool)
+    protected Attribute(final byte tag, final @NonNegative int name_index, final @NonNegative int length, final ConstantPool constant_pool)
     {
         this.tag = tag;
         this.name_index = name_index;
@@ -326,7 +329,7 @@ public abstract class Attribute implements Cloneable, Node {
      * @return Length of attribute field in bytes.
      */
     @Pure
-    public final int getLength()
+    public final @NonNegative int getLength()
     {
         return length;
     }
@@ -345,7 +348,7 @@ public abstract class Attribute implements Cloneable, Node {
      * @return Name index in constant pool of attribute name.
      */
     @Pure
-    public final int getNameIndex()
+    public final @NonNegative int getNameIndex()
     {
         return name_index;
     }
@@ -371,7 +374,7 @@ public abstract class Attribute implements Cloneable, Node {
     /**
      * @param length length in bytes.
      */
-    public final void setLength(final int length)
+    public final void setLength(final @NonNegative int length)
     {
         this.length = length;
     }
@@ -379,7 +382,7 @@ public abstract class Attribute implements Cloneable, Node {
     /**
      * @param name_index of attribute.
      */
-    public final void setNameIndex(final int name_index)
+    public final void setNameIndex(final @NonNegative int name_index)
     {
         this.name_index = name_index;
     }

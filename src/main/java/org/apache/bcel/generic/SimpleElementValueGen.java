@@ -28,17 +28,20 @@ import org.apache.bcel.classfile.ConstantUtf8;
 import org.apache.bcel.classfile.ElementValue;
 import org.apache.bcel.classfile.SimpleElementValue;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * @since 6.0
  */
+@AnnotatedFor({"signedness"})
 public class SimpleElementValueGen extends ElementValueGen
 {
     // For primitive types and string type, this points to the value entry in
     // the cpGen
     // For 'class' this points to the class entry in the cpGen
-    private int idx;
+    private @NonNegative int idx;
 
     // ctors for each supported type... type could be inferred but for now lets
     // force it to be passed
@@ -46,7 +49,7 @@ public class SimpleElementValueGen extends ElementValueGen
      * Protected ctor used for deserialization, doesn't *put* an entry in the
      * constant pool, assumes the one at the supplied index is correct.
      */
-    protected SimpleElementValueGen(final int type, final int idx, final ConstantPoolGen cpGen)
+    protected SimpleElementValueGen(final int type, final @NonNegative int idx, final ConstantPoolGen cpGen)
     {
         super(type, cpGen);
         this.idx = idx;
@@ -180,7 +183,7 @@ public class SimpleElementValueGen extends ElementValueGen
     }
 
     @Pure
-    public int getIndex()
+    public @NonNegative int getIndex()
     {
         return idx;
     }

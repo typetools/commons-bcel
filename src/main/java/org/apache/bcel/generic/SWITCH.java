@@ -17,7 +17,9 @@
  */
 package org.apache.bcel.generic;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * SWITCH - Branch depending on int value, generates either LOOKUPSWITCH or
@@ -25,6 +27,7 @@ import org.checkerframework.dataflow.qual.Pure;
  * sorted with no gaps between the numbers.
  *
  */
+@AnnotatedFor({"signedness"})
 public final class SWITCH implements CompoundInstruction {
 
     private int[] match;
@@ -48,7 +51,7 @@ public final class SWITCH implements CompoundInstruction {
      * @param target the default target
      * @param max_gap maximum gap that may between case branches
      */
-    public SWITCH(final int[] match, final InstructionHandle[] targets, final InstructionHandle target, final int max_gap) {
+    public SWITCH(final int[] match, final InstructionHandle[] targets, final InstructionHandle target, final @NonNegative int max_gap) {
         this.match = match.clone();
         this.targets = targets.clone();
         if ((matchLength = match.length) < 2) {
@@ -70,11 +73,11 @@ public final class SWITCH implements CompoundInstruction {
     }
 
 
-    private void fillup( final int max_gap, final InstructionHandle target ) {
-        final int max_size = matchLength + matchLength * max_gap;
+    private void fillup( final @NonNegative int max_gap, final InstructionHandle target ) {
+        final @NonNegative int max_size = matchLength + matchLength * max_gap;
         final int[] m_vec = new int[max_size];
         final InstructionHandle[] t_vec = new InstructionHandle[max_size];
-        int count = 1;
+        @NonNegative int count = 1;
         m_vec[0] = match[0];
         t_vec[0] = targets[0];
         for (int i = 1; i < matchLength; i++) {
@@ -99,9 +102,9 @@ public final class SWITCH implements CompoundInstruction {
     /**
      * Sort match and targets array with QuickSort.
      */
-    private void sort( final int l, final int r ) {
-        int i = l;
-        int j = r;
+    private void sort( final @NonNegative int l, final @NonNegative int r ) {
+        @NonNegative int i = l;
+        @NonNegative int j = r;
         int h;
         final int m = match[(l + r) >>> 1];
         InstructionHandle h2;
@@ -135,7 +138,7 @@ public final class SWITCH implements CompoundInstruction {
     /**
      * @return match is sorted in ascending order with no gap bigger than max_gap?
      */
-    private boolean matchIsOrdered( final int max_gap ) {
+    private boolean matchIsOrdered( final @NonNegative int max_gap ) {
         for (int i = 1; i < matchLength; i++) {
             if (match[i] - match[i - 1] > max_gap) {
                 return false;

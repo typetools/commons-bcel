@@ -23,7 +23,9 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class is derived from the abstract {@link Constant}
@@ -32,10 +34,11 @@ import org.checkerframework.dataflow.qual.Pure;
  *
  * @see     Constant
  */
+@AnnotatedFor({"signedness"})
 public final class ConstantNameAndType extends Constant {
 
-    private int nameIndex; // Name of field/method
-    private int signatureIndex; // and its signature.
+    private @NonNegative int nameIndex; // Name of field/method
+    private @NonNegative int signatureIndex; // and its signature.
 
 
     /**
@@ -61,7 +64,7 @@ public final class ConstantNameAndType extends Constant {
      * @param nameIndex Name of field/method
      * @param signatureIndex and its signature
      */
-    public ConstantNameAndType(final int nameIndex, final int signatureIndex) {
+    public ConstantNameAndType(final @NonNegative int nameIndex, final @NonNegative int signatureIndex) {
         super(Const.CONSTANT_NameAndType);
         this.nameIndex = nameIndex;
         this.signatureIndex = signatureIndex;
@@ -99,7 +102,7 @@ public final class ConstantNameAndType extends Constant {
      * @return Name index in constant pool of field/method name.
      */
     @Pure
-    public int getNameIndex() {
+    public @NonNegative int getNameIndex() {
         return nameIndex;
     }
 
@@ -115,7 +118,7 @@ public final class ConstantNameAndType extends Constant {
      * @return Index in constant pool of field/method signature.
      */
     @Pure
-    public int getSignatureIndex() {
+    public @NonNegative int getSignatureIndex() {
         return signatureIndex;
     }
 
@@ -130,7 +133,7 @@ public final class ConstantNameAndType extends Constant {
     /**
      * @param nameIndex the name index of this constant
      */
-    public void setNameIndex( final int nameIndex ) {
+    public void setNameIndex( final @NonNegative int nameIndex ) {
         this.nameIndex = nameIndex;
     }
 
@@ -138,7 +141,7 @@ public final class ConstantNameAndType extends Constant {
     /**
      * @param signatureIndex the signature index in the constant pool of this type
      */
-    public void setSignatureIndex( final int signatureIndex ) {
+    public void setSignatureIndex( final @NonNegative int signatureIndex ) {
         this.signatureIndex = signatureIndex;
     }
 

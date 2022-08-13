@@ -37,17 +37,20 @@ import java.util.zip.GZIPOutputStream;
 import org.apache.bcel.Const;
 import org.apache.bcel.util.ByteSequence;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.BinaryName;
 import org.checkerframework.checker.signature.qual.FieldDescriptor;
 import org.checkerframework.checker.signature.qual.FullyQualifiedName;
 import org.checkerframework.checker.signature.qual.InternalForm;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Utility functions that do not really belong to any class in particular.
  *
  */
 // @since 6.0 methods are no longer final
+@AnnotatedFor({"signedness"})
 public abstract class Utility {
 
     private static int unwrap( final ThreadLocal<Integer> tl ) {
@@ -150,8 +153,8 @@ public abstract class Utility {
      * @param  verbose be verbose, e.g. print constant pool index
      * @return String representation of byte codes
      */
-    public static String codeToString( final byte[] code, final ConstantPool constant_pool, final int index,
-            final int length, final boolean verbose ) {
+    public static String codeToString( final byte[] code, final ConstantPool constant_pool, final @NonNegative int index,
+            final @NonNegative int length, final boolean verbose ) {
         final StringBuilder buf = new StringBuilder(code.length * 20); // Should be sufficient // CHECKSTYLE IGNORE MagicNumber
         try (ByteSequence stream = new ByteSequence(code)) {
             for (int i = 0; i < index; i++) {
@@ -170,7 +173,7 @@ public abstract class Utility {
     }
 
 
-    public static String codeToString( final byte[] code, final ConstantPool constant_pool, final int index, final int length ) {
+    public static String codeToString( final byte[] code, final ConstantPool constant_pool, final @NonNegative int index, final @NonNegative int length ) {
         return codeToString(code, constant_pool, index, length, true);
     }
 
@@ -193,13 +196,13 @@ public abstract class Utility {
         int low;
         int high;
         int npairs;
-        int index;
-        int vindex;
+        @NonNegative int index;
+        @NonNegative int vindex;
         int constant;
         int[] match;
         int[] jump_table;
         int no_pad_bytes = 0;
-        int offset;
+        @NonNegative int offset;
         final StringBuilder buf = new StringBuilder(Const.getOpcodeName(opcode));
         /* Special case: Skip (0-3) padding bytes, i.e., the
          * following bytes are 4-byte-aligned
@@ -1199,7 +1202,7 @@ public abstract class Utility {
     }
 
 
-    private static int countBrackets( final String brackets ) {
+    private static @NonNegative int countBrackets( final String brackets ) {
         final char[] chars = brackets.toCharArray();
         int count = 0;
         boolean open = false;
@@ -1407,12 +1410,12 @@ public abstract class Utility {
     }
 
 
-    public static String printArray( final Object[] obj ) {
+    public static @Nullable String printArray( final Object[] obj ) {
         return printArray(obj, true);
     }
 
 
-    public static String printArray( final Object[] obj, final boolean braces ) {
+    public static @Nullable String printArray( final Object[] obj, final boolean braces ) {
         return printArray(obj, braces, false);
     }
 
@@ -1587,7 +1590,9 @@ public abstract class Utility {
         @Override
         public int read( final char[] cbuf, final int off, final int len ) throws IOException {
             for (int i = 0; i < len; i++) {
-                cbuf[off + i] = (char) read();
+                @SuppressWarnings("signedness:cast.unsafe") // result of read() is range x'00' to x'ff'
+                char temp = (char)read();
+                cbuf[off + i] = temp;
             }
             return len;
         }
@@ -1604,9 +1609,10 @@ public abstract class Utility {
         }
 
 
+        @SuppressWarnings("signedness:argument") // b is guaranteed in range x'00' to x'ff'
         @Override
         public void write( final int b ) throws IOException {
-            if (isJavaIdentifierPart((char) b) && (b != ESCAPE_CHAR)) {
+            if (Character.isJavaIdentifierPart(b) && (b != ESCAPE_CHAR)) {
                 out.write(b);
             } else {
                 out.write(ESCAPE_CHAR); // Escape character
@@ -1614,14 +1620,10 @@ public abstract class Utility {
                 if (b >= 0 && b < FREE_CHARS) {
                     out.write(CHAR_MAP[b]);
                 } else { // Normal escape
-                    final char[] tmp = Integer.toHexString(b).toCharArray();
-                    if (tmp.length == 1) {
-                        out.write('0');
-                        out.write(tmp[0]);
-                    } else {
-                        out.write(tmp[0]);
-                        out.write(tmp[1]);
-                    }
+                    /* b is guaranteed in range x'30' to x'ff' */
+                    final String tmp = Integer.toHexString(b);
+                    out.write(tmp.charAt(0));
+                    out.write(tmp.charAt(1));
                 }
             }
         }

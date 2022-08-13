@@ -20,6 +20,9 @@ package org.apache.bcel.generic;
 import org.apache.bcel.Const;
 import org.apache.bcel.ExceptionConst;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * PUTFIELD - Put field in object
  * <PRE>Stack: ..., objectref, value -&gt; ...</PRE>
@@ -27,6 +30,7 @@ import org.apache.bcel.ExceptionConst;
  * <PRE>Stack: ..., objectref, value.word1, value.word2 -&gt; ...</PRE>
  *
  */
+@AnnotatedFor({"signedness"})
 public class PUTFIELD extends FieldInstruction implements PopInstruction, ExceptionThrower {
 
     /**
@@ -37,13 +41,13 @@ public class PUTFIELD extends FieldInstruction implements PopInstruction, Except
     }
 
 
-    public PUTFIELD(final int index) {
+    public PUTFIELD(final @NonNegative int index) {
         super(Const.PUTFIELD, index);
     }
 
 
     @Override
-    public int consumeStack( final ConstantPoolGen cpg ) {
+    public @NonNegative int consumeStack( final ConstantPoolGen cpg ) {
         return getFieldSize(cpg) + 1;
     }
 

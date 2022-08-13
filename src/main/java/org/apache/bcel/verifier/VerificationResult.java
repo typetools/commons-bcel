@@ -53,9 +53,11 @@ public class VerificationResult {
      * Canonical VerificationResult for not-yet-tried verifications.
      * This happens if some earlier verification pass did not return {@link #VERIFIED_OK}.
      */
+    @SuppressWarnings("interning:cast.unsafe")
     public static final @InternedDistinct VerificationResult VR_NOTYET = new @InternedDistinct VerificationResult(VERIFIED_NOTYET, VERIFIED_NOTYET_MSG);
 
     /** Canonical VerificationResult for passed verifications. */
+    @SuppressWarnings("interning:cast.unsafe")
     public static final @InternedDistinct VerificationResult VR_OK = new @InternedDistinct VerificationResult(VERIFIED_OK, VERIFIED_OK_MSG);
 
     /** The numeric status. */

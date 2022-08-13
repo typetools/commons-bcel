@@ -23,7 +23,9 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class represents the table of exceptions that are thrown by a
@@ -35,6 +37,7 @@ import org.checkerframework.dataflow.qual.Pure;
  *
  * @see     Code
  */
+@AnnotatedFor({"signedness"})
 public final class ExceptionTable extends Attribute {
 
     private int[] exceptionIndexTable; // constant pool
@@ -55,7 +58,7 @@ public final class ExceptionTable extends Attribute {
      * @param exceptionIndexTable Table of indices in constant pool
      * @param constant_pool Array of constants
      */
-    public ExceptionTable(final int name_index, final int length, final int[] exceptionIndexTable,
+    public ExceptionTable(final @NonNegative int name_index, final @NonNegative int length, final int[] exceptionIndexTable,
             final ConstantPool constant_pool) {
         super(Const.ATTR_EXCEPTIONS, name_index, length, constant_pool);
         this.exceptionIndexTable = exceptionIndexTable != null ? exceptionIndexTable : new int[0];
@@ -70,7 +73,7 @@ public final class ExceptionTable extends Attribute {
      * @param constantPool Array of constants
      * @throws IOException
      */
-    ExceptionTable(final int nameIndex, final int length, final DataInput input, final ConstantPool constantPool) throws IOException {
+    ExceptionTable(final @NonNegative int nameIndex, final @NonNegative int length, final DataInput input, final ConstantPool constantPool) throws IOException {
         this(nameIndex, length, (int[]) null, constantPool);
         final int number_of_exceptions = input.readUnsignedShort();
         exceptionIndexTable = new int[number_of_exceptions];
@@ -122,7 +125,7 @@ public final class ExceptionTable extends Attribute {
      * @return Length of exception table.
      */
     @Pure
-    public int getNumberOfExceptions() {
+    public @NonNegative int getNumberOfExceptions() {
         return exceptionIndexTable == null ? 0 : exceptionIndexTable.length;
     }
 

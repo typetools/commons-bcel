@@ -23,8 +23,11 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.Unsigned;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Entry of the parameters table.
@@ -33,13 +36,14 @@ import org.checkerframework.dataflow.qual.Pure;
  * The class File Format : The MethodParameters Attribute</a>
  * @since 6.0
  */
+@AnnotatedFor({"signedness"})
 public class MethodParameter implements Cloneable {
 
     /** Index of the CONSTANT_Utf8_info structure in the constant_pool table representing the name of the parameter */
-    private int nameIndex;
+    private @NonNegative int nameIndex;
 
     /** The access flags */
-    private int accessFlags;
+    private @Unsigned int accessFlags;
 
     public MethodParameter() {
     }
@@ -57,11 +61,11 @@ public class MethodParameter implements Cloneable {
     }
 
     @Pure
-    public int getNameIndex() {
+    public @NonNegative int getNameIndex() {
         return nameIndex;
     }
 
-    public void setNameIndex(final int name_index) {
+    public void setNameIndex(final @NonNegative int name_index) {
         this.nameIndex = name_index;
     }
 
@@ -76,11 +80,11 @@ public class MethodParameter implements Cloneable {
        }
 
     @Pure
-    public int getAccessFlags() {
+    public @Unsigned int getAccessFlags() {
         return accessFlags;
     }
 
-    public void setAccessFlags(final int access_flags) {
+    public void setAccessFlags(final @Unsigned int access_flags) {
         this.accessFlags = access_flags;
     }
 
@@ -106,6 +110,7 @@ public class MethodParameter implements Cloneable {
      * @param file Output file stream
      * @throws IOException
      */
+    @SuppressWarnings("argument") // writeShort only writes low 16 bits
     public final void dump(final DataOutputStream file) throws IOException {
         file.writeShort(nameIndex);
         file.writeShort(accessFlags);

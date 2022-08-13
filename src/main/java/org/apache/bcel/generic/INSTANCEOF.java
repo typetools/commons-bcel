@@ -19,11 +19,15 @@ package org.apache.bcel.generic;
 
 import org.apache.bcel.ExceptionConst;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * INSTANCEOF - Determine if object is of given type
  * <PRE>Stack: ..., objectref -&gt; ..., result</PRE>
  *
  */
+@AnnotatedFor({"signedness"})
 public class INSTANCEOF extends CPInstruction implements LoadClass, ExceptionThrower,
         StackProducer, StackConsumer {
 
@@ -35,7 +39,7 @@ public class INSTANCEOF extends CPInstruction implements LoadClass, ExceptionThr
     }
 
 
-    public INSTANCEOF(final int index) {
+    public INSTANCEOF(final @NonNegative int index) {
         super(org.apache.bcel.Const.INSTANCEOF, index);
     }
 

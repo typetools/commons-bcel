@@ -23,6 +23,9 @@ import java.io.IOException;
 import org.apache.bcel.Const;
 import org.apache.bcel.ExceptionConst;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * INVOKESTATIC - Invoke a class (static) method
  *
@@ -32,6 +35,7 @@ import org.apache.bcel.ExceptionConst;
  * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokestatic">
  * The invokestatic instruction in The Java Virtual Machine Specification</a>
  */
+@AnnotatedFor({"signedness"})
 public class INVOKESTATIC extends InvokeInstruction {
 
     /**
@@ -42,7 +46,7 @@ public class INVOKESTATIC extends InvokeInstruction {
     }
 
 
-    public INVOKESTATIC(final int index) {
+    public INVOKESTATIC(final @NonNegative int index) {
         super(Const.INVOKESTATIC, index);
     }
 

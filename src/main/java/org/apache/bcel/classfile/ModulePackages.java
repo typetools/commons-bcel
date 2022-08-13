@@ -23,7 +23,9 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class is derived from <em>Attribute</em> and represents the list of packages that are exported or opened by the Module attribute.
@@ -31,6 +33,7 @@ import org.checkerframework.dataflow.qual.Pure;
  *
  * @see     Attribute
  */
+@AnnotatedFor({"signedness"})
 public final class ModulePackages extends Attribute {
 
     private int[] packageIndexTable;
@@ -51,7 +54,7 @@ public final class ModulePackages extends Attribute {
      * @param packageIndexTable Table of indices in constant pool
      * @param constantPool Array of constants
      */
-    public ModulePackages(final int nameIndex, final int length, final int[] packageIndexTable,
+    public ModulePackages(final @NonNegative int nameIndex, final @NonNegative int length, final int[] packageIndexTable,
             final ConstantPool constantPool) {
         super(Const.ATTR_MODULE_PACKAGES, nameIndex, length, constantPool);
         this.packageIndexTable = packageIndexTable != null ? packageIndexTable : new int[0];
@@ -66,7 +69,7 @@ public final class ModulePackages extends Attribute {
      * @param constant_pool Array of constants
      * @throws IOException
      */
-    ModulePackages(final int name_index, final int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
+    ModulePackages(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
         this(name_index, length, (int[]) null, constant_pool);
         final int number_of_packages = input.readUnsignedShort();
         packageIndexTable = new int[number_of_packages];
@@ -118,7 +121,7 @@ public final class ModulePackages extends Attribute {
      * @return Length of package table.
      */
     @Pure
-    public int getNumberOfPackages() {
+    public @NonNegative int getNumberOfPackages() {
         return packageIndexTable == null ? 0 : packageIndexTable.length;
     }
 

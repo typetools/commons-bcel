@@ -23,6 +23,8 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * This class represents an entry in the exports table of the Module attribute.
  * Each entry describes a package which may open the parent module.
@@ -32,9 +34,9 @@ import org.apache.bcel.Const;
  */
 public final class ModuleExports implements Cloneable, Node {
 
-    private final int exportsIndex;  // points to CONSTANT_Package_info
+    private final @NonNegative int exportsIndex;  // points to CONSTANT_Package_info
     private final int exportsFlags;
-    private final int exportsToCount;
+    private final @NonNegative int exportsToCount;
     private final int[] exportsToIndex;  // points to CONSTANT_Module_info
 
 

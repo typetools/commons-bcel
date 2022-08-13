@@ -24,12 +24,15 @@ import org.apache.bcel.classfile.Constant;
 import org.apache.bcel.classfile.ConstantCP;
 import org.apache.bcel.classfile.ConstantPool;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.signature.qual.ClassGetName;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Super class for the INVOKExxx family of instructions.
  *
  */
+@AnnotatedFor({"signedness"})
 public abstract class InvokeInstruction extends FieldOrMethod implements ExceptionThrower,
         StackConsumer, StackProducer {
 
@@ -44,7 +47,7 @@ public abstract class InvokeInstruction extends FieldOrMethod implements Excepti
     /**
      * @param index to constant pool
      */
-    protected InvokeInstruction(final short opcode, final int index) {
+    protected InvokeInstruction(final short opcode, final @NonNegative int index) {
         super(opcode, index);
     }
 
@@ -78,8 +81,8 @@ public abstract class InvokeInstruction extends FieldOrMethod implements Excepti
      * @return Number of words consumed from stack by this instruction
      */
     @Override
-    public int consumeStack( final ConstantPoolGen cpg ) {
-        int sum;
+    public @NonNegative int consumeStack( final ConstantPoolGen cpg ) {
+        @NonNegative int sum;
         if ((super.getOpcode() == Const.INVOKESTATIC) || (super.getOpcode() == Const.INVOKEDYNAMIC)) {
             sum = 0;
         } else {
@@ -98,7 +101,7 @@ public abstract class InvokeInstruction extends FieldOrMethod implements Excepti
      * @return Number of words produced onto stack by this instruction
      */
     @Override
-    public int produceStack( final ConstantPoolGen cpg ) {
+    public @NonNegative int produceStack( final ConstantPoolGen cpg ) {
         final String signature = getSignature(cpg);
         return Type.getReturnTypeSize(signature);
     }

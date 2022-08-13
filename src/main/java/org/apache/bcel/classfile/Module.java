@@ -23,7 +23,9 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class is derived from <em>Attribute</em> and represents the list of modules required, exported, opened or provided by a module.
@@ -32,16 +34,17 @@ import org.checkerframework.dataflow.qual.Pure;
  * @see   Attribute
  * @since 6.4.0
  */
+@AnnotatedFor({"signedness"})
 public final class Module extends Attribute {
 
-    private final int moduleNameIndex;
+    private final @NonNegative int moduleNameIndex;
     private final int moduleFlags;
-    private final int moduleVersionIndex;
+    private final @NonNegative int moduleVersionIndex;
 
     private ModuleRequires[] requiresTable;
     private ModuleExports[] exportsTable;
     private ModuleOpens[] opensTable;
-    private final int usesCount;
+    private final @NonNegative int usesCount;
     private final int[] usesIndex;
     private ModuleProvides[] providesTable;
 
@@ -53,7 +56,7 @@ public final class Module extends Attribute {
      * @param constant_pool Array of constants
      * @throws IOException
      */
-    Module(final int name_index, final int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
+    Module(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
         super(Const.ATTR_MODULE, name_index, length, constant_pool);
 
         moduleNameIndex = input.readUnsignedShort();

@@ -17,6 +17,8 @@
 
 package org.apache.bcel.classfile;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Unknown (non-standard) attributes may be read via user-defined factory
  * objects that can be registered with the Attribute.addAttributeReader
@@ -45,5 +47,5 @@ public interface UnknownAttributeReader {
      *
      * @see Attribute#addAttributeReader(String, UnknownAttributeReader)
      */
-    Attribute createAttribute( int name_index, int length, java.io.DataInput file, ConstantPool constant_pool );
+    Attribute createAttribute( @NonNegative int name_index, @NonNegative int length, java.io.DataInput file, ConstantPool constant_pool );
 }

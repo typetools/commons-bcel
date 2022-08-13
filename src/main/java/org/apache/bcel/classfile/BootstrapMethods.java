@@ -23,6 +23,9 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * This class represents a BootstrapMethods attribute.
  *
@@ -30,6 +33,7 @@ import org.apache.bcel.Const;
  * The class File Format : The BootstrapMethods Attribute</a>
  * @since 6.0
  */
+@AnnotatedFor({"signedness"})
 public class BootstrapMethods extends Attribute {
 
     private BootstrapMethod[] bootstrapMethods;  // TODO this could be made final (setter is not used)
@@ -49,7 +53,7 @@ public class BootstrapMethods extends Attribute {
      * @param bootstrapMethods array of bootstrap methods
      * @param constant_pool Array of constants
      */
-    public BootstrapMethods(final int name_index, final int length, final BootstrapMethod[] bootstrapMethods, final ConstantPool constant_pool) {
+    public BootstrapMethods(final @NonNegative int name_index, final @NonNegative int length, final BootstrapMethod[] bootstrapMethods, final ConstantPool constant_pool) {
         super(Const.ATTR_BOOTSTRAP_METHODS, name_index, length, constant_pool);
         this.bootstrapMethods = bootstrapMethods;
     }
@@ -63,7 +67,7 @@ public class BootstrapMethods extends Attribute {
      * @param constant_pool Array of constants
      * @throws IOException
      */
-    BootstrapMethods(final int name_index, final int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
+    BootstrapMethods(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
         this(name_index, length, (BootstrapMethod[]) null, constant_pool);
 
         final int num_bootstrap_methods = input.readUnsignedShort();

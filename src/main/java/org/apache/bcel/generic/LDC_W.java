@@ -21,12 +21,16 @@ import java.io.IOException;
 
 import org.apache.bcel.util.ByteSequence;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * LDC_W - Push item from constant pool (wide index)
  *
  * <PRE>Stack: ... -&gt; ..., item.word1, item.word2</PRE>
  *
  */
+@AnnotatedFor({"signedness"})
 public class LDC_W extends LDC {
 
     /**
@@ -37,7 +41,7 @@ public class LDC_W extends LDC {
     }
 
 
-    public LDC_W(final int index) {
+    public LDC_W(final @NonNegative int index) {
         super(index);
     }
 

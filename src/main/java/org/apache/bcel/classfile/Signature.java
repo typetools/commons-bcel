@@ -24,7 +24,9 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class is derived from <em>Attribute</em> and represents a reference
@@ -32,9 +34,10 @@ import org.checkerframework.dataflow.qual.Pure;
  *
  * @see     Attribute
  */
+@AnnotatedFor({"signedness"})
 public final class Signature extends Attribute {
 
-    private int signatureIndex;
+    private @NonNegative int signatureIndex;
 
 
     /**
@@ -54,7 +57,7 @@ public final class Signature extends Attribute {
      * @param constant_pool Array of constants
      * @throws IOException
      */
-    Signature(final int name_index, final int length, final DataInput input, final ConstantPool constant_pool)
+    Signature(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool)
             throws IOException {
         this(name_index, length, input.readUnsignedShort(), constant_pool);
     }
@@ -66,7 +69,7 @@ public final class Signature extends Attribute {
      * @param signatureIndex Index in constant pool to CONSTANT_Utf8
      * @param constant_pool Array of constants
      */
-    public Signature(final int name_index, final int length, final int signatureIndex, final ConstantPool constant_pool) {
+    public Signature(final @NonNegative int name_index, final @NonNegative int length, final @NonNegative int signatureIndex, final ConstantPool constant_pool) {
         super(Const.ATTR_SIGNATURE, name_index, length, constant_pool);
         this.signatureIndex = signatureIndex;
     }
@@ -103,7 +106,7 @@ public final class Signature extends Attribute {
      * @return Index in constant pool of source file name.
      */
     @Pure
-    public int getSignatureIndex() {
+    public @NonNegative int getSignatureIndex() {
         return signatureIndex;
     }
 
@@ -111,7 +114,7 @@ public final class Signature extends Attribute {
     /**
      * @param signatureIndex the index info the constant pool of this signature
      */
-    public void setSignatureIndex( final int signatureIndex ) {
+    public void setSignatureIndex( final @NonNegative int signatureIndex ) {
         this.signatureIndex = signatureIndex;
     }
 
@@ -153,6 +156,7 @@ public final class Signature extends Attribute {
     }
 
 
+    @SuppressWarnings("signedness:cast.unsafe") // read() in range -1 to 255; we test for eof(-1)
     private static void matchIdent( final MyByteArrayInputStream in, final StringBuilder buf ) {
         int ch;
         if ((ch = in.read()) == -1) {
@@ -163,7 +167,7 @@ public final class Signature extends Attribute {
         if (!identStart(ch)) {
             final StringBuilder buf2 = new StringBuilder();
             int count = 1;
-            while (Character.isJavaIdentifierPart((char) ch)) {
+            while (Character.isJavaIdentifierPart(ch)) {
                 buf2.append((char) ch);
                 count++;
                 ch = in.read();
@@ -227,7 +231,7 @@ public final class Signature extends Attribute {
             in.unread();
             return;
         } else if (ch != ';') {
-            throw new IllegalArgumentException("Illegal signature: " + in.getData() + " read " + (char) ch);
+            throw new IllegalArgumentException("Illegal signature: " + in.getData() + " read " + ch);
         }
     }
 

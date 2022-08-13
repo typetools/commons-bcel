@@ -36,9 +36,11 @@ import org.apache.bcel.util.BCELComparator;
 import org.apache.bcel.util.ClassQueue;
 import org.apache.bcel.util.SyntheticRepository;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Represents a Java class, i.e., the data structures, constant pool,
@@ -50,13 +52,14 @@ import org.checkerframework.dataflow.qual.Pure;
 
  * @see org.apache.bcel.generic.ClassGen
  */
+@AnnotatedFor({"signedness"})
 public class JavaClass extends AccessFlags implements Cloneable, Node, Comparable<JavaClass> {
 
     private String fileName;
     private String packageName;
     private String sourceFileName = "<Unknown>";
-    private int classNameIndex;
-    private int superclassNameIndex;
+    private @NonNegative int classNameIndex;
+    private @NonNegative int superclassNameIndex;
     private String className;
     private String superclassName;
     private int major;
@@ -120,7 +123,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
      * @param attributes Class attributes
      * @param source Read from file or generated in memory?
      */
-    public JavaClass(final int classNameIndex, final int superclassNameIndex, final String fileName, final int major,
+    public JavaClass(final @NonNegative int classNameIndex, final @NonNegative int superclassNameIndex, final String fileName, final int major,
             final int minor, final int access_flags, final ConstantPool constantPool, int[] interfaces,
             Field[] fields, Method[] methods, Attribute[] attributes, final byte source) {
         super(access_flags);
@@ -197,7 +200,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
      * @param methods Class methods
      * @param attributes Class attributes
      */
-    public JavaClass(final int classNameIndex, final int superclassNameIndex, final String fileName, final int major,
+    public JavaClass(final @NonNegative int classNameIndex, final @NonNegative int superclassNameIndex, final String fileName, final int major,
             final int minor, final int access_flags, final ConstantPool constantPool, final int[] interfaces,
             final Field[] fields, final Method[] methods, final Attribute[] attributes) {
         this(classNameIndex, superclassNameIndex, fileName, major, minor, access_flags,
@@ -373,7 +376,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
      * @return Class name index.
      */
     @Pure
-    public int getClassNameIndex() {
+    public @NonNegative int getClassNameIndex() {
         return classNameIndex;
     }
 
@@ -494,7 +497,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
      * @return Class name index.
      */
     @Pure
-    public int getSuperclassNameIndex() {
+    public @NonNegative int getSuperclassNameIndex() {
         return superclassNameIndex;
     }
 
@@ -517,7 +520,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     /**
      * @param classNameIndex .
      */
-    public void setClassNameIndex( final int classNameIndex ) {
+    public void setClassNameIndex( final @NonNegative int classNameIndex ) {
         this.classNameIndex = classNameIndex;
     }
 
@@ -605,7 +608,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     /**
      * @param superclassNameIndex .
      */
-    public void setSuperclassNameIndex( final int superclassNameIndex ) {
+    public void setSuperclassNameIndex( final @NonNegative int superclassNameIndex ) {
         this.superclassNameIndex = superclassNameIndex;
     }
 

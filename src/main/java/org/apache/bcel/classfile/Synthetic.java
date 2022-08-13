@@ -23,7 +23,9 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class is derived from <em>Attribute</em> and declares this class as
@@ -36,6 +38,7 @@ import org.checkerframework.dataflow.qual.Pure;
  *
  * @see     Attribute
  */
+@AnnotatedFor({"signedness"})
 public final class Synthetic extends Attribute {
 
     private byte[] bytes;
@@ -58,7 +61,7 @@ public final class Synthetic extends Attribute {
      * @param constant_pool The constant pool this attribute is associated
      * with.
      */
-    public Synthetic(final int name_index, final int length, final byte[] bytes, final ConstantPool constant_pool) {
+    public Synthetic(final @NonNegative int name_index, final @NonNegative int length, final byte[] bytes, final ConstantPool constant_pool) {
         super(Const.ATTR_SYNTHETIC, name_index, length, constant_pool);
         this.bytes = bytes;
     }
@@ -73,7 +76,7 @@ public final class Synthetic extends Attribute {
      * @param constant_pool Array of constants
      * @throws IOException
      */
-    Synthetic(final int name_index, final int length, final DataInput input, final ConstantPool constant_pool)
+    Synthetic(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool)
             throws IOException {
         this(name_index, length, (byte[]) null, constant_pool);
         if (length > 0) {

@@ -22,6 +22,8 @@ import java.util.List;
 
 import org.apache.bcel.classfile.JavaClass;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Utility class implementing a (typesafe) collection of JavaClass
  * objects. Contains the most important methods of a Vector.
@@ -42,12 +44,12 @@ public class ClassVector implements java.io.Serializable {
     }
 
 
-    public JavaClass elementAt( final int index ) {
+    public JavaClass elementAt( final @NonNegative int index ) {
         return vec.get(index);
     }
 
 
-    public void removeElementAt( final int index ) {
+    public void removeElementAt( final @NonNegative int index ) {
         vec.remove(index);
     }
 

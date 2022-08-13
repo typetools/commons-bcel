@@ -33,6 +33,9 @@ import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.classfile.Method;
 import org.apache.bcel.classfile.Utility;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * Read class file(s) and convert them into HTML files.
  *
@@ -53,6 +56,7 @@ import org.apache.bcel.classfile.Utility;
  * the Code frame.
  *
  */
+@AnnotatedFor({"signedness"})
 public class Class2HTML implements Constants {
 
     private final JavaClass java_class; // current class object
@@ -166,7 +170,7 @@ public class Class2HTML implements Constants {
      * Utility method that converts a class reference in the constant pool,
      * i.e., an index to a string.
      */
-    static String referenceClass( final int index ) {
+    static String referenceClass( final @NonNegative int index ) {
         String str = constant_pool.getConstantString(index, Const.CONSTANT_Class);
         str = Utility.compactClassName(str);
         str = Utility.compactClassName(str, class_package + ".", true);

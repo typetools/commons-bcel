@@ -25,14 +25,17 @@ import org.apache.bcel.Const;
 import org.apache.bcel.generic.Type;
 import org.apache.bcel.util.BCELComparator;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class represents the field info structure, i.e., the representation
  * for a variable in the class. See JVM specification for details.
  *
  */
+@AnnotatedFor({"signedness"})
 public final class Field extends FieldOrMethod {
 
     private static BCELComparator bcelComparator = new BCELComparator() {
@@ -80,7 +83,7 @@ public final class Field extends FieldOrMethod {
      * @param attributes Collection of attributes
      * @param constant_pool Array of constants
      */
-    public Field(final int access_flags, final int name_index, final int signature_index, final Attribute[] attributes,
+    public Field(final int access_flags, final @NonNegative int name_index, final @NonNegative int signature_index, final Attribute[] attributes,
             final ConstantPool constant_pool) {
         super(access_flags, name_index, signature_index, attributes, constant_pool);
     }

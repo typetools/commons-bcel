@@ -23,6 +23,9 @@ import java.io.IOException;
 import org.apache.bcel.Const;
 import org.apache.bcel.ExceptionConst;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * INVOKESPECIAL - Invoke instance method; special handling for superclass, private
  * and instance initialization method invocations
@@ -33,6 +36,7 @@ import org.apache.bcel.ExceptionConst;
  * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokespecial">
  * The invokespecial instruction in The Java Virtual Machine Specification</a>
  */
+@AnnotatedFor({"signedness"})
 public class INVOKESPECIAL extends InvokeInstruction {
 
     /**
@@ -43,7 +47,7 @@ public class INVOKESPECIAL extends InvokeInstruction {
     }
 
 
-    public INVOKESPECIAL(final int index) {
+    public INVOKESPECIAL(final @NonNegative int index) {
         super(Const.INVOKESPECIAL, index);
     }
 

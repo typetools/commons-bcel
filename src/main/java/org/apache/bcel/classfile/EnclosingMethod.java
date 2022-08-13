@@ -22,8 +22,10 @@ import java.io.IOException;
 
 import org.apache.bcel.Const;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This attribute exists for local or
@@ -31,11 +33,12 @@ import org.checkerframework.dataflow.qual.Pure;
  *
  * @since 6.0
  */
+@AnnotatedFor({"signedness"})
 public class EnclosingMethod extends Attribute {
 
     // Pointer to the CONSTANT_Class_info structure representing the
     // innermost class that encloses the declaration of the current class.
-    private int classIndex;
+    private @NonNegative int classIndex;
 
     // If the current class is not immediately enclosed by a method or
     // constructor, then the value of the method_index item must be zero.
@@ -45,14 +48,14 @@ public class EnclosingMethod extends Attribute {
     // to in the class_index.  *It is the compiler responsibility* to
     // ensure that the method identified by this index is the closest
     // lexically enclosing method that includes the local/anonymous class.
-    private int methodIndex;
+    private @NonNegative int methodIndex;
 
     // Ctors - and code to read an attribute in.
-    EnclosingMethod(final int nameIndex, final int len, final DataInput input, final ConstantPool cpool) throws IOException {
+    EnclosingMethod(final @NonNegative int nameIndex, final @NonNegative int len, final DataInput input, final ConstantPool cpool) throws IOException {
         this(nameIndex, len, input.readUnsignedShort(), input.readUnsignedShort(), cpool);
     }
 
-    private EnclosingMethod(final int nameIndex, final int len, final int classIdx,final int methodIdx, final ConstantPool cpool) {
+    private EnclosingMethod(final @NonNegative int nameIndex, final @NonNegative int len, final @NonNegative int classIdx, final @NonNegative int methodIdx, final ConstantPool cpool) {
         super(Const.ATTR_ENCLOSING_METHOD, nameIndex, len, cpool);
         classIndex  = classIdx;
         methodIndex = methodIdx;
@@ -70,20 +73,20 @@ public class EnclosingMethod extends Attribute {
 
     // Accessors
     @Pure
-    public final int getEnclosingClassIndex() {
+    public final @NonNegative int getEnclosingClassIndex() {
         return classIndex;
     }
 
     @Pure
-    public final int getEnclosingMethodIndex() {
+    public final @NonNegative int getEnclosingMethodIndex() {
         return methodIndex;
     }
 
-    public final void setEnclosingClassIndex(final int idx) {
+    public final void setEnclosingClassIndex(final @NonNegative int idx) {
         classIndex = idx;
     }
 
-    public final void setEnclosingMethodIndex(final int idx) {
+    public final void setEnclosingMethodIndex(final @NonNegative int idx) {
         methodIndex = idx;
     }
 
