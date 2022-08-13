@@ -124,7 +124,7 @@ public final class ClassParser {
      */
     @SuppressWarnings({"builder:contracts.postcondition",  
                     "builder:required.method.not.called"}
-        // ownership of fields depends on varibale `fileOwned`
+        // ownership of fields depends on variable `fileOwned`
         )
     // @EnsuresCalledMethods(value="dataInputStream", methods="close") // only if `fileOwned` is true
     public JavaClass parse() throws IOException, ClassFormatException {
