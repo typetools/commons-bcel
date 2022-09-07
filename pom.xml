@@ -80,12 +80,12 @@
     <commons.spotbugs.impl.version>4.7.1</commons.spotbugs.impl.version>    
     <biz.aQute.bndlib.version>6.2.0</biz.aQute.bndlib.version>
     <!-- default checkerframework annotation processors and compiler arguments -->
-    <ap1>org.checkerframework.checker.interning.InterningChecker</ap1>
-    <ap2>org.checkerframework.checker.nullness.NullnessChecker</ap2>
-    <ap3>org.checkerframework.checker.signature.SignatureChecker</ap3>
-    <ap4>org.checkerframework.checker.signedness.SignednessChecker</ap4>
-    <ap5>org.checkerframework.checker.resourceleak.ResourceLeakChecker</ap5>
-    <carg1>-Awarns</carg1> <!-- Make type-checking errors into warnings. -->
+    <annotationProcessor1>org.checkerframework.checker.interning.InterningChecker</annotationProcessor1>
+    <annotationProcessor2>org.checkerframework.checker.nullness.NullnessChecker</annotationProcessor2>
+    <annotationProcessor3>org.checkerframework.checker.signature.SignatureChecker</annotationProcessor3>
+    <annotationProcessor4>org.checkerframework.checker.signedness.SignednessChecker</annotationProcessor4>
+    <annotationProcessor5>org.checkerframework.checker.resourceleak.ResourceLeakChecker</annotationProcessor5>
+    <compilerArgument1>-Awarns</compilerArgument1> <!-- Make type-checking errors into warnings. -->
   </properties>
 
   <!-- Cannot be added to Commons Parent, see https://issues.apache.org/jira/browse/COMMONSSITE-26 -->
@@ -512,12 +512,12 @@
          run by default; add -PsuceedingTypecheckers to the mvn command line to invoke this profile. -->
       <id>suceedingTypecheckers</id>
       <properties>
-        <ap1>org.checkerframework.checker.signedness.SignednessChecker</ap1>
-        <ap2>org.checkerframework.common.util.report.DoNothingChecker</ap2>
-        <ap3>org.checkerframework.common.util.report.DoNothingChecker</ap3>
-        <ap4>org.checkerframework.common.util.report.DoNothingChecker</ap4>
-        <ap5>org.checkerframework.common.util.report.DoNothingChecker</ap5>
-        <carg1></carg1> <!-- Keep type-checking errors as errors. -->
+        <annotationProcessor1>org.checkerframework.checker.signedness.SignednessChecker</annotationProcessor1>
+        <annotationProcessor2>org.checkerframework.common.util.report.DoNothingChecker</annotationProcessor2>
+        <annotationProcessor3>org.checkerframework.common.util.report.DoNothingChecker</annotationProcessor3>
+        <annotationProcessor4>org.checkerframework.common.util.report.DoNothingChecker</annotationProcessor4>
+        <annotationProcessor5>org.checkerframework.common.util.report.DoNothingChecker</annotationProcessor5>
+        <compilerArgument></compilerArgument> <!-- Keep type-checking errors as errors. -->
       </properties>
     </profile>
 
@@ -549,11 +549,11 @@
                 </path>
               </annotationProcessorPaths>
               <annotationProcessors>
-                <annotationProcessor>${ap1}</annotationProcessor>
-                <annotationProcessor>${ap2}</annotationProcessor>
-                <annotationProcessor>${ap3}</annotationProcessor>
-                <annotationProcessor>${ap4}</annotationProcessor>
-                <annotationProcessor>${ap5}</annotationProcessor>
+                <annotationProcessor>${annotationProcessor1}</annotationProcessor>
+                <annotationProcessor>${annotationProcessor2}</annotationProcessor>
+                <annotationProcessor>${annotationProcessor3}</annotationProcessor>
+                <annotationProcessor>${annotationProcessor4}</annotationProcessor>
+                <annotationProcessor>${annotationProcessor5}</annotationProcessor>
               </annotationProcessors>
               <compilerArgs>
                 <arg>-ArequirePrefixInWarningSuppressions</arg>
@@ -561,7 +561,7 @@
                      any library that uses an unannotated part of BCEL. -->
                 <!-- <arg>-AuseDefaultsForUncheckedCode=source</arg> -->
                 <!-- Indicate if type-checking errors should be warnings. -->
-                <arg>${carg1}</arg>
+                <arg>${compilerArgument1}</arg>
                 <arg>-AshowSuppressWarningsStrings</arg>
               </compilerArgs>
               <testExcludes>
