@@ -95,7 +95,7 @@ public class MethodParameter implements Cloneable {
         return (accessFlags & Const.ACC_SYNTHETIC) != 0;
     }
 
-    //@SuppressWarnings("signedness:operation.mixed.unsignedrhs") // ACC_MANDATED is 0x8000
+    @SuppressWarnings("signedness:operation.mixed.unsignedrhs") // ACC_MANDATED is 0x8000
     public boolean isMandated() {
         return (accessFlags & Const.ACC_MANDATED) != 0;
     }
