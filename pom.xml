@@ -507,10 +507,10 @@
   <!-- To use a locally-installed version of the Checker Framework, see `README-typetools.txt`. -->
   <profiles>
     <profile>
-    <!-- This profile is for running the subset of Checker Framework checkers that we expect to
-         have no errors or warnings.  Currently, this is only the SignednessChecker. This profile
-         is not run by default; add -Prungood to the mvn command like to invoke this profile. -->
-      <id>rungood</id>
+    <!-- This profile is for running the subset of Checker Framework checkers that we expect to have
+         no errors or warnings.  Currently, this is only the SignednessChecker. This profile is not
+         run by default; add -PsuceedingTypecheckers to the mvn command line to invoke this profile. -->
+      <id>suceedingTypecheckers</id>
       <properties>
         <ap1>org.checkerframework.checker.signedness.SignednessChecker</ap1>
         <ap2>org.checkerframework.common.util.report.DoNothingChecker</ap2>
