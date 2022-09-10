@@ -28,6 +28,7 @@
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
     <version>53</version>
+    <relativePath></relativePath>
   </parent>
 
   <groupId>org.apache.bcel</groupId>
@@ -42,7 +43,7 @@
 
   <properties>
     <!-- To use a locally-built version of the Checker Framework, see `README-typetools.txt`. -->
-    <checkerFrameworkVersion>3.23.0</checkerFrameworkVersion>
+    <checkerFrameworkVersion>3.25.0</checkerFrameworkVersion>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -78,6 +79,13 @@
     <commons.spotbugs.plugin.version>4.7.1.1</commons.spotbugs.plugin.version>
     <commons.spotbugs.impl.version>4.7.1</commons.spotbugs.impl.version>    
     <biz.aQute.bndlib.version>6.2.0</biz.aQute.bndlib.version>
+    <!-- default checkerframework annotation processors and compiler arguments -->
+    <annotationProcessor1>org.checkerframework.checker.interning.InterningChecker</annotationProcessor1>
+    <annotationProcessor2>org.checkerframework.checker.nullness.NullnessChecker</annotationProcessor2>
+    <annotationProcessor3>org.checkerframework.checker.signature.SignatureChecker</annotationProcessor3>
+    <annotationProcessor4>org.checkerframework.checker.signedness.SignednessChecker</annotationProcessor4>
+    <annotationProcessor5>org.checkerframework.checker.resourceleak.ResourceLeakChecker</annotationProcessor5>
+    <compilerArgument1>-Awarns</compilerArgument1> <!-- Make type-checking errors into warnings. -->
   </properties>
 
   <!-- Cannot be added to Commons Parent, see https://issues.apache.org/jira/browse/COMMONSSITE-26 -->
@@ -343,6 +351,20 @@
         </configuration>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-help-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>show-profiles</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>active-profiles</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>com.github.siom79.japicmp</groupId>
         <artifactId>japicmp-maven-plugin</artifactId>
       </plugin>    
@@ -485,6 +507,23 @@
   <!-- To use a locally-installed version of the Checker Framework, see `README-typetools.txt`. -->
   <profiles>
     <profile>
+    <!-- This profile is for running the subset of Checker Framework checkers that we expect to have
+         no errors or warnings.  Currently, this is only the SignednessChecker. This profile is not
+         run by default; add -PsuceedingTypecheckers to the mvn command line to invoke this profile. -->
+      <id>suceedingTypecheckers</id>
+      <properties>
+        <annotationProcessor1>org.checkerframework.checker.signedness.SignednessChecker</annotationProcessor1>
+        <annotationProcessor2>org.checkerframework.common.util.report.DoNothingChecker</annotationProcessor2>
+        <annotationProcessor3>org.checkerframework.common.util.report.DoNothingChecker</annotationProcessor3>
+        <annotationProcessor4>org.checkerframework.common.util.report.DoNothingChecker</annotationProcessor4>
+        <annotationProcessor5>org.checkerframework.common.util.report.DoNothingChecker</annotationProcessor5>
+        <compilerArgument></compilerArgument> <!-- Keep type-checking errors as errors. -->
+      </properties>
+    </profile>
+
+    <profile>
+    <!-- This is the base profile for running the Checker Framework.  It will always be run,
+         assuming the Java JDK is > 1.7.  (Which is must be for the Checker to work.) -->
       <id>checkerframework</id>
       <activation>
         <jdk>[1.8,)</jdk>
@@ -510,21 +549,22 @@
                 </path>
               </annotationProcessorPaths>
               <annotationProcessors>
-                <annotationProcessor>org.checkerframework.checker.interning.InterningChecker</annotationProcessor>
-                <annotationProcessor>org.checkerframework.checker.nullness.NullnessChecker</annotationProcessor>
-                <annotationProcessor>org.checkerframework.checker.signature.SignatureChecker</annotationProcessor>
-                <annotationProcessor>org.checkerframework.checker.signedness.SignednessChecker</annotationProcessor>
-                <annotationProcessor>org.checkerframework.checker.resourceleak.ResourceLeakChecker</annotationProcessor>
+                <annotationProcessor>${annotationProcessor1}</annotationProcessor>
+                <annotationProcessor>${annotationProcessor2}</annotationProcessor>
+                <annotationProcessor>${annotationProcessor3}</annotationProcessor>
+                <annotationProcessor>${annotationProcessor4}</annotationProcessor>
+                <annotationProcessor>${annotationProcessor5}</annotationProcessor>
               </annotationProcessors>
               <compilerArgs>
-		<arg>-ArequirePrefixInWarningSuppressions</arg>
+                <arg>-ArequirePrefixInWarningSuppressions</arg>
                 <!-- -AuseDefaultsForUncheckedCode=source causes compilation errors in
                      any library that uses an unannotated part of BCEL. -->
                 <!-- <arg>-AuseDefaultsForUncheckedCode=source</arg> -->
-                <!-- Make type-checking errors into warnings. -->
-                <arg>-Awarns</arg>
+                <!-- Indicate if type-checking errors should be warnings. -->
+                <arg>${compilerArgument1}</arg>
+                <arg>-AshowSuppressWarningsStrings</arg>
                 <!-- To test one typechecker, comment out all other typecheckers above,
-                     comment out -Awarns, and uncomment these lines.
+                     comment out -Awarns and/or ${compilerArgument1}, and uncomment these lines.
 		<arg>-AwarnUnneededSuppressions</arg>
 		<arg>-ArequirePrefixInWarningSuppressions</arg>
                 -->
@@ -546,6 +586,8 @@
     </profile>
 
     <profile>
+    <!-- This profile is for running the Checker Framework on Java JDK 1.8. It identifies
+         the compiler and arguments to be used with the base profile. -->
       <id>checkerframework-jdk8</id>
       <activation>
         <jdk>1.8</jdk>
@@ -579,6 +621,8 @@
     </profile>
 
     <profile>
+    <!-- This profile is for running the Checker Framework on Java JDK > 1.8. It identifies
+         the compiler and arguments to be used with the base profile. -->
       <id>checkerframework-jdk9orlater</id>
       <activation>
         <jdk>[9,)</jdk>

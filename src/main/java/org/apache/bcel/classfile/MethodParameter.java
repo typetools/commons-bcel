@@ -25,7 +25,6 @@ import org.apache.bcel.Const;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.signedness.qual.Unsigned;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -43,7 +42,7 @@ public class MethodParameter implements Cloneable {
     private @NonNegative int nameIndex;
 
     /** The access flags */
-    private @Unsigned int accessFlags;
+    private int accessFlags;
 
     public MethodParameter() {
     }
@@ -80,11 +79,11 @@ public class MethodParameter implements Cloneable {
        }
 
     @Pure
-    public @Unsigned int getAccessFlags() {
+    public int getAccessFlags() {
         return accessFlags;
     }
 
-    public void setAccessFlags(final @Unsigned int access_flags) {
+    public void setAccessFlags(final int access_flags) {
         this.accessFlags = access_flags;
     }
 
@@ -96,6 +95,7 @@ public class MethodParameter implements Cloneable {
         return (accessFlags & Const.ACC_SYNTHETIC) != 0;
     }
 
+    @SuppressWarnings("signedness:operation.mixed.unsignedrhs") // ACC_MANDATED is 0x8000
     public boolean isMandated() {
         return (accessFlags & Const.ACC_MANDATED) != 0;
     }
