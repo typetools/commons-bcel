@@ -33,6 +33,6 @@ jobs:
         distribution: 'temurin'
         java-version: ${{ matrix.java }}
     - name: compile with passing checkers
-      run: mvn -V apache-rat:check -PsuceedingTypecheckers compile --file pom.xml
+      run: mvn -V apache-rat:check -PsucceedingTypecheckers compile --file pom.xml
     - name: Build with Maven
       run: mvn -V apache-rat:check clean package --file pom.xml
