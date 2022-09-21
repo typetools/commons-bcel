@@ -86,6 +86,7 @@
     <annotationProcessor4>org.checkerframework.checker.signedness.SignednessChecker</annotationProcessor4>
     <annotationProcessor5>org.checkerframework.checker.resourceleak.ResourceLeakChecker</annotationProcessor5>
     <compilerArgument1>-Awarns</compilerArgument1> <!-- Make type-checking errors into warnings. -->
+    <compilerArgument2></compilerArgument2> <!-- Don't warn about uneeded suppressions. -->
   </properties>
 
   <!-- Cannot be added to Commons Parent, see https://issues.apache.org/jira/browse/COMMONSSITE-26 -->
@@ -509,15 +510,16 @@
     <profile>
     <!-- This profile is for running the subset of Checker Framework checkers that we expect to have
          no errors or warnings.  Currently, this is only the SignednessChecker. This profile is not
-         run by default; add -PsuceedingTypecheckers to the mvn command line to invoke this profile. -->
-      <id>suceedingTypecheckers</id>
+         run by default; add -PsucceedingTypecheckers to the mvn command line to invoke this profile. -->
+      <id>succeedingTypecheckers</id>
       <properties>
         <annotationProcessor1>org.checkerframework.checker.signedness.SignednessChecker</annotationProcessor1>
         <annotationProcessor2>org.checkerframework.common.util.report.DoNothingChecker</annotationProcessor2>
         <annotationProcessor3>org.checkerframework.common.util.report.DoNothingChecker</annotationProcessor3>
         <annotationProcessor4>org.checkerframework.common.util.report.DoNothingChecker</annotationProcessor4>
         <annotationProcessor5>org.checkerframework.common.util.report.DoNothingChecker</annotationProcessor5>
-        <compilerArgument></compilerArgument> <!-- Keep type-checking errors as errors. -->
+        <compilerArgument1></compilerArgument1> <!-- Keep type-checking errors as errors. -->
+        <compilerArgument2>-AwarnUnneededSuppressions</compilerArgument2> <!-- Warn if uneeded supporessions. -->
       </properties>
     </profile>
 
@@ -557,12 +559,13 @@
               </annotationProcessors>
               <compilerArgs>
                 <arg>-ArequirePrefixInWarningSuppressions</arg>
+                <arg>-AshowSuppressWarningsStrings</arg>
                 <!-- -AuseDefaultsForUncheckedCode=source causes compilation errors in
                      any library that uses an unannotated part of BCEL. -->
-                <!-- <arg>-AuseDefaultsForUncheckedCode=source</arg> -->
                 <!-- Indicate if type-checking errors should be warnings. -->
                 <arg>${compilerArgument1}</arg>
-                <arg>-AshowSuppressWarningsStrings</arg>
+                <!-- Indicate if unneeded suppressions should be warnings. -->
+                <arg>${compilerArgument2}</arg>
                 <!-- To test one typechecker, comment out all other typecheckers above,
                      comment out -Awarns and/or ${compilerArgument1}, and uncomment these lines.
 		<arg>-AwarnUnneededSuppressions</arg>
@@ -611,7 +614,6 @@
             <configuration>
               <fork>true</fork>
               <compilerArgs combine.children="append">
-                <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
                 <arg>-J-Xbootclasspath/p:${settings.localRepository}/com/google/errorprone/javac/${javac.version}/javac-${javac.version}.jar</arg>
               </compilerArgs>
             </configuration>

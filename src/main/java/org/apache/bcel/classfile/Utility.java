@@ -1609,7 +1609,6 @@ public abstract class Utility {
         }
 
 
-        @SuppressWarnings("signedness:argument") // b is guaranteed in range x'00' to x'ff'
         @Override
         public void write( final int b ) throws IOException {
             if (Character.isJavaIdentifierPart(b) && (b != ESCAPE_CHAR)) {
