@@ -513,11 +513,11 @@
          run by default; add -PsucceedingTypecheckers to the mvn command line to invoke this profile. -->
       <id>succeedingTypecheckers</id>
       <properties>
-        <annotationProcessor1>org.checkerframework.checker.signedness.SignednessChecker</annotationProcessor1>
+        <annotationProcessor1>org.checkerframework.checker.interning.InterningChecker</annotationProcessor1>
         <annotationProcessor2>org.checkerframework.common.util.report.DoNothingChecker</annotationProcessor2>
         <annotationProcessor3>org.checkerframework.common.util.report.DoNothingChecker</annotationProcessor3>
-        <annotationProcessor4>org.checkerframework.common.util.report.DoNothingChecker</annotationProcessor4>
-        <annotationProcessor5>org.checkerframework.common.util.report.DoNothingChecker</annotationProcessor5>
+        <annotationProcessor4>org.checkerframework.checker.signedness.SignednessChecker</annotationProcessor4>
+        <annotationProcessor5>org.checkerframework.checker.resourceleak.ResourceLeakChecker</annotationProcessor5>
         <compilerArgument1></compilerArgument1> <!-- Keep type-checking errors as errors. -->
         <compilerArgument2>-AwarnUnneededSuppressions</compilerArgument2> <!-- Warn if uneeded supporessions. -->
       </properties>
@@ -568,8 +568,8 @@
                 <arg>${compilerArgument2}</arg>
                 <!-- To test one typechecker, comment out all other typecheckers above,
                      comment out -Awarns and/or ${compilerArgument1}, and uncomment these lines.
-		<arg>-AwarnUnneededSuppressions</arg>
-		<arg>-ArequirePrefixInWarningSuppressions</arg>
+                <arg>-AwarnUnneededSuppressions</arg>
+                <arg>-ArequirePrefixInWarningSuppressions</arg>
                 -->
               </compilerArgs>
               <testExcludes>

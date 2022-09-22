@@ -91,7 +91,6 @@ public class ClassLoaderRepository implements Repository {
             if (is == null) {
                 throw new ClassNotFoundException(className + " not found.");
             }
-            @SuppressWarnings("builder:required.method.not.called") // parse *is* called.  Why the error?
             final ClassParser parser = new ClassParser(is, className);
             RC = parser.parse();
             storeClass(RC);
