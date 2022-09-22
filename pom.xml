@@ -568,8 +568,8 @@
                 <arg>${compilerArgument2}</arg>
                 <!-- To test one typechecker, comment out all other typecheckers above,
                      comment out -Awarns and/or ${compilerArgument1}, and uncomment these lines.
-		<arg>-AwarnUnneededSuppressions</arg>
-		<arg>-ArequirePrefixInWarningSuppressions</arg>
+                <arg>-AwarnUnneededSuppressions</arg>
+                <arg>-ArequirePrefixInWarningSuppressions</arg>
                 -->
               </compilerArgs>
               <testExcludes>

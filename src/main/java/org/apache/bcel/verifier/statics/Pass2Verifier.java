@@ -192,7 +192,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
      *
      * @throws ClassConstraintException otherwise.
      */
-    @SuppressWarnings("interned") // looking up same string in Repository
+    @SuppressWarnings("interning:not.interned") // looking up same string in Repository
     private void every_class_has_an_accessible_superclass() {
         try {
         final Set<String> hs = new HashSet<>(); // save class names to detect circular inheritance
@@ -203,7 +203,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
             supidx = jc.getSuperclassNameIndex();
 
             if (supidx == 0) {
-                if (!jc.equals(Repository.lookupClass(Type.OBJECT.getClassName()))) {
+                if (jc != Repository.lookupClass(Type.OBJECT.getClassName())) {
                     throw new ClassConstraintException("Superclass of '"+jc.getClassName()+
                             "' missing but not "+Type.OBJECT.getClassName()+" itself!");
                 }
