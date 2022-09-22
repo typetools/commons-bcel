@@ -203,7 +203,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
             supidx = jc.getSuperclassNameIndex();
 
             if (supidx == 0) {
-                if (jc != Repository.lookupClass(Type.OBJECT.getClassName())) {
+                if (!jc.equals(Repository.lookupClass(Type.OBJECT.getClassName()))) {
                     throw new ClassConstraintException("Superclass of '"+jc.getClassName()+
                             "' missing but not "+Type.OBJECT.getClassName()+" itself!");
                 }

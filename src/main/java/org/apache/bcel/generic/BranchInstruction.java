@@ -37,7 +37,7 @@ import org.checkerframework.dataflow.qual.Pure;
  *
  * @see InstructionList
  */
-@SuppressWarnings("superclass.notannotated") // @UsesObjectEquals because InstructionComparator returns false for BranchInstruction comparisons.
+@SuppressWarnings("interning:superclass.notannotated") // @UsesObjectEquals because InstructionComparator returns false for BranchInstruction comparisons.
 public abstract @UsesObjectEquals class BranchInstruction extends Instruction implements InstructionTargeter {
 
     /**
