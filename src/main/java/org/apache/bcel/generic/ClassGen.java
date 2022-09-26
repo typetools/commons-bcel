@@ -150,7 +150,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
         final AnnotationEntryGen[] annotations = unpackAnnotations(attributes);
         final Method[] methods = clazz.getMethods();
         final Field[] fields = clazz.getFields();
-        final String[] interfaces = clazz.getInterfaceNames();
+        final @BinaryName String[] interfaces = clazz.getInterfaceNames();
         for (final String interface1 : interfaces) {
             addInterface(interface1);
         }
@@ -432,12 +432,14 @@ public class ClassGen extends AccessFlags implements Cloneable {
 
 
     public void setClassName( final @BinaryName String name ) {
+        // should not be in internal form
         className = name.replace('/', '.');
         classNameIndex = cp.addClass(name);
     }
 
 
     public void setSuperclassName( final @BinaryName String name ) {
+        // should not be in internal form
         superClassName = name.replace('/', '.');
         superclass_name_index = cp.addClass(name);
     }
@@ -467,9 +469,9 @@ public class ClassGen extends AccessFlags implements Cloneable {
     }
 
 
-    public String[] getInterfaceNames() {
+    public @BinaryName String[] getInterfaceNames() {
         final int size = interfaceList.size();
-        final String[] interfaces = new String[size];
+        final @BinaryName String[] interfaces = new String[size];
         interfaceList.toArray(interfaces);
         return interfaces;
     }

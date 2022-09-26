@@ -39,6 +39,8 @@ import org.apache.bcel.util.SyntheticRepository;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signature.qual.BinaryName;
+import org.checkerframework.checker.signature.qual.InternalForm;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -60,13 +62,13 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     private String sourceFileName = "<Unknown>";
     private @NonNegative int classNameIndex;
     private @NonNegative int superclassNameIndex;
-    private String className;
-    private String superclassName;
+    private @BinaryName String className;
+    private @BinaryName String superclassName;
     private int major;
     private int minor; // Compiler version
     private ConstantPool constantPool; // Constant pool
     private int[] interfaces; // implemented interfaces
-    private String[] interfaceNames;
+    private @BinaryName String[] interfaceNames;
     private Field[] fields; // Fields, i.e., variables of class
     private Method[] methods; // methods defined in the class
     private Attribute[] attributes; // attributes defined in the class
@@ -358,7 +360,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
      * @return Class name.
      */
     @Pure
-    public String getClassName() {
+    public @BinaryName String getClassName() {
         return className;
     }
 
@@ -414,7 +416,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
      * @return Names of implemented interfaces.
      */
     @Pure
-    public String[] getInterfaceNames() {
+    public @BinaryName String[] getInterfaceNames() {
         return interfaceNames;
     }
 
@@ -488,7 +490,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
      * @return Superclass name.
      */
     @Pure
-    public String getSuperclassName() {
+    public @BinaryName String getSuperclassName() {
         return superclassName;
     }
 
@@ -512,7 +514,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     /**
      * @param className .
      */
-    public void setClassName( final String className ) {
+    public void setClassName( final @BinaryName String className ) {
         this.className = className;
     }
 
@@ -552,7 +554,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     /**
      * @param interfaceNames .
      */
-    public void setInterfaceNames( final String[] interfaceNames ) {
+    public void setInterfaceNames( final @BinaryName String[] interfaceNames ) {
         this.interfaceNames = interfaceNames;
     }
 
@@ -600,7 +602,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     /**
      * @param superclassName .
      */
-    public void setSuperclassName( final String superclassName ) {
+    public void setSuperclassName( final @BinaryName String superclassName ) {
         this.superclassName = superclassName;
     }
 
@@ -623,7 +625,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
         final StringBuilder buf = new StringBuilder(128);
         buf.append(access).append(Utility.classOrInterface(super.getAccessFlags())).append(" ").append(
                 className).append(" extends ").append(
-                Utility.compactClassName(superclassName, false)).append('\n');
+                superclassName).append('\n');
         final int size = interfaces.length;
         if (size > 0) {
             buf.append("implements\t\t");
@@ -744,7 +746,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
                   final InnerClass[] innerClasses = ((InnerClasses) attribute).getInnerClasses();
                   for (final InnerClass innerClasse : innerClasses) {
                       boolean innerClassAttributeRefersToMe = false;
-                      String inner_class_name = constantPool.getConstantString(innerClasse.getInnerClassIndex(),
+                      @InternalForm String inner_class_name = constantPool.getConstantString(innerClasse.getInnerClassIndex(),
                                  Const.CONSTANT_Class);
                       inner_class_name = Utility.compactClassName(inner_class_name, false);
                       if (inner_class_name.equals(getClassName())) {
@@ -868,7 +870,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
      * Get interfaces directly implemented by this JavaClass.
      */
     public JavaClass[] getInterfaces() throws ClassNotFoundException {
-        final String[] _interfaces = getInterfaceNames();
+        final @BinaryName String[] _interfaces = getInterfaceNames();
         final JavaClass[] classes = new JavaClass[_interfaces.length];
         for (int i = 0; i < _interfaces.length; i++) {
             classes[i] = repository.loadClass(_interfaces[i]);
