@@ -24,31 +24,29 @@ package Mini;
  *
  */
 public class ASTTerm extends ASTExpr {
-  // Generated methods
-  ASTTerm(final int id) {
-    super(id);
-  }
+    public static Node jjtCreate(final MiniParser p, final int id) {
+        return new ASTTerm(p, id);
+    }
 
-  ASTTerm(final MiniParser p, final int id) {
-    super(p, id);
-  }
+    // Generated methods
+    ASTTerm(final int id) {
+        super(id);
+    }
 
-  public static Node jjtCreate(final MiniParser p, final int id) {
-    return new ASTTerm(p, id);
-  }
+    ASTTerm(final MiniParser p, final int id) {
+        super(p, id);
+    }
 
-  // Inherited closeNode(), dump()
+    // Inherited closeNode(), dump()
 
-  /**
-   * Drop this node, if kind == -1, because then it has just one child node
-   * and may be safely replaced with it.
-   */
-  @Override
-  public ASTExpr traverse(final Environment env) {
-    if(kind == -1) {
-        return exprs[0].traverse(env);
-    } else {
+    /**
+     * Drop this node, if kind == -1, because then it has just one child node and may be safely replaced with it.
+     */
+    @Override
+    public ASTExpr traverse(final Environment env) {
+        if (kind == -1) {
+            return exprs[0].traverse(env);
+        }
         return new ASTExpr(exprs, kind, line, column).traverse(env);
     }
-  }
 }

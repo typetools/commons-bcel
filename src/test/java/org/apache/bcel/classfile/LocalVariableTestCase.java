@@ -17,7 +17,8 @@
  */
 package org.apache.bcel.classfile;
 
-import org.junit.Test;
+import org.apache.bcel.Constants;
+import org.junit.jupiter.api.Test;
 
 public class LocalVariableTestCase {
 
@@ -27,7 +28,6 @@ public class LocalVariableTestCase {
     @Test
     public void testReferenceToConstant() {
         @SuppressWarnings("unused")
-        final
-        short referenceToConstant = LocalVariable.AALOAD;
+        final short referenceToConstant = Constants.AALOAD;
     }
 }

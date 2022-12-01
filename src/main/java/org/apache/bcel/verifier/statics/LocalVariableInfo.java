@@ -17,7 +17,6 @@
  */
 package org.apache.bcel.verifier.statics;
 
-
 import java.util.Hashtable;
 
 import org.apache.bcel.generic.Type;
@@ -26,12 +25,10 @@ import org.apache.bcel.verifier.exc.LocalVariableInfoInconsistentException;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
- * A utility class holding the information about
- * the name and the type of a local variable in
- * a given slot (== index). This information
- * often changes in course of byte code offsets.
+ * A utility class holding the information about the name and the type of a local variable in a given slot (== index).
+ * This information often changes in course of byte code offsets.
  */
-public class LocalVariableInfo{
+public class LocalVariableInfo {
 
     /** The types database. KEY: String representing the offset integer. */
     private final Hashtable<String, Type> types = new Hashtable<>();
@@ -40,31 +37,37 @@ public class LocalVariableInfo{
     private final Hashtable<String, String> names = new Hashtable<>();
 
     /**
-     * Adds a name of a local variable and a certain slot to our 'names'
-     * (Hashtable) database.
-     */
-    private void setName(final @NonNegative int offset, final String name) {
-        names.put(Integer.toString(offset), name);
-    }
-
-    /**
-     * Adds a type of a local variable and a certain slot to our 'types'
-     * (Hashtable) database.
-     */
-    private void setType(final @NonNegative int offset, final Type t) {
-        types.put(Integer.toString(offset), t);
-    }
-
-    /**
-     * Returns the type of the local variable that uses this local variable slot at the given bytecode offset. Care for
-     * legal bytecode offsets yourself, otherwise the return value might be wrong. May return 'null' if nothing is known
-     * about the type of this local variable slot at the given bytecode offset.
+     * Adds information about name and type for a given offset.
      *
-     * @param offset bytecode offset.
-     * @return the type of the local variable that uses this local variable slot at the given bytecode offset.
+     * @throws LocalVariableInfoInconsistentException if the new information conflicts with already gathered information.
      */
-    public Type getType(final @NonNegative int offset) {
-        return types.get(Integer.toString(offset));
+    private void add(final @NonNegative int offset, final String name, final Type t) throws LocalVariableInfoInconsistentException {
+        if (getName(offset) != null && !getName(offset).equals(name)) {
+            throw new LocalVariableInfoInconsistentException(
+                "At bytecode offset '" + offset + "' a local variable has two different names: '" + getName(offset) + "' and '" + name + "'.");
+        }
+        if (getType(offset) != null && !getType(offset).equals(t)) {
+            throw new LocalVariableInfoInconsistentException(
+                "At bytecode offset '" + offset + "' a local variable has two different types: '" + getType(offset) + "' and '" + t + "'.");
+        }
+        setName(offset, name);
+        setType(offset, t);
+    }
+
+    /**
+     * Adds some information about this local variable (slot).
+     *
+     * @param name variable name
+     * @param startPc Range in which the variable is valid.
+     * @param length length of ...
+     * @param type variable type
+     *
+     * @throws LocalVariableInfoInconsistentException if the new information conflicts with already gathered information.
+     */
+    public void add(final String name, final @NonNegative int startPc, final @NonNegative int length, final Type type) throws LocalVariableInfoInconsistentException {
+        for (int i = startPc; i <= startPc + length; i++) { // incl/incl-notation!
+            add(i, name, type);
+        }
     }
 
     /**
@@ -80,43 +83,28 @@ public class LocalVariableInfo{
     }
 
     /**
-     * Adds some information about this local variable (slot).
+     * Returns the type of the local variable that uses this local variable slot at the given bytecode offset. Care for
+     * legal bytecode offsets yourself, otherwise the return value might be wrong. May return 'null' if nothing is known
+     * about the type of this local variable slot at the given bytecode offset.
      *
-     * @param name variable name
-     * @param startPc Range in which the variable is valid.
-     * @param length length of ...
-     * @param type variable type
-     *
-     * @throws LocalVariableInfoInconsistentException if the new information conflicts
-     *         with already gathered information.
+     * @param offset bytecode offset.
+     * @return the type of the local variable that uses this local variable slot at the given bytecode offset.
      */
-    public void add(final String name, final int startPc, final int length, final Type type)
-            throws LocalVariableInfoInconsistentException {
-        for (int i = startPc; i <= startPc + length; i++) { // incl/incl-notation!
-            add(i, name, type);
-        }
+    public Type getType(final @NonNegative int offset) {
+        return types.get(Integer.toString(offset));
     }
 
     /**
-     * Adds information about name and type for a given offset.
-     *
-     * @throws LocalVariableInfoInconsistentException if the new information conflicts
-     *         with already gathered information.
+     * Adds a name of a local variable and a certain slot to our 'names' (Hashtable) database.
      */
-    private void add(final @NonNegative int offset, final String name, final Type t) throws LocalVariableInfoInconsistentException {
-        if (getName(offset) != null) {
-            if (!getName(offset).equals(name)) {
-                throw new LocalVariableInfoInconsistentException("At bytecode offset '" + offset
-                        + "' a local variable has two different names: '" + getName(offset) + "' and '" + name + "'.");
-            }
-        }
-        if (getType(offset) != null) {
-            if (!getType(offset).equals(t)) {
-                throw new LocalVariableInfoInconsistentException("At bytecode offset '" + offset
-                        + "' a local variable has two different types: '" + getType(offset) + "' and '" + t + "'.");
-            }
-        }
-        setName(offset, name);
-        setType(offset, t);
+    private void setName(final @NonNegative int offset, final String name) {
+        names.put(Integer.toString(offset), name);
+    }
+
+    /**
+     * Adds a type of a local variable and a certain slot to our 'types' (Hashtable) database.
+     */
+    private void setType(final @NonNegative int offset, final Type t) {
+        types.put(Integer.toString(offset), t);
     }
 }

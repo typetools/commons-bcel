@@ -17,22 +17,16 @@
  */
 package org.apache.bcel.verifier.statics;
 
-
 import org.apache.bcel.Const;
 import org.apache.bcel.generic.Type;
 
 /**
  * This class represents the upper half of a DOUBLE variable.
  */
-public final class DOUBLE_Upper extends Type{
+public final class DOUBLE_Upper extends Type {
 
     /** The one and only instance of this class. */
     private static final DOUBLE_Upper singleton = new DOUBLE_Upper();
-
-    /** The constructor; this class must not be instantiated from the outside. */
-    private DOUBLE_Upper() {
-        super(Const.T_UNKNOWN, "Double_Upper");
-    }
 
     /**
      * Gets the single instance of this class.
@@ -41,5 +35,11 @@ public final class DOUBLE_Upper extends Type{
      */
     public static DOUBLE_Upper theInstance() {
         return singleton;
+    }
+
+    /** The constructor; this class must not be instantiated from the outside. */
+    @SuppressWarnings("signature") // special case, signature will not be used
+    private DOUBLE_Upper() {
+        super(Const.T_UNKNOWN, "Double_Upper");
     }
 }

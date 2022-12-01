@@ -16,7 +16,6 @@
  *
  */
 
-import org.apache.bcel.Constants;
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.Code;
 import org.apache.bcel.classfile.ConstantClass;
@@ -35,16 +34,74 @@ import org.apache.bcel.generic.MethodGen;
 import org.apache.bcel.generic.PUSH;
 
 /**
- * Read class file(s) and patch all of its methods, so that they print
- * "hello" and their name and signature before doing anything else.
+ * Read class file(s) and patch all of its methods, so that they print "hello" and their name and signature before doing
+ * anything else.
  *
  */
-public final class helloify implements Constants {
+public final class helloify {
 
-    private static String class_name;
+    private static String className;
     private static ConstantPoolGen cp;
-    private static int out;     // reference to System.out
+    private static int out; // reference to System.out
     private static int println; // reference to PrintStream.println
+
+    /**
+     * Change class name to <old_name>_hello
+     */
+    private static void helloifyClassName(final JavaClass java_class) {
+        className = java_class.getClassName() + "_hello";
+        int index = java_class.getClassNameIndex();
+
+        index = ((ConstantClass) cp.getConstant(index)).getNameIndex();
+        cp.setConstant(index, new ConstantUtf8(className.replace('.', '/')));
+    }
+
+    /**
+     * Patch a method.
+     */
+    private static Method helloifyMethod(Method m) {
+        final Code code = m.getCode();
+        final int flags = m.getAccessFlags();
+        final String name = m.getName();
+
+        // Sanity check
+        if (m.isNative() || m.isAbstract() || code == null) {
+            return m;
+        }
+
+        // Create instruction list to be inserted at method start.
+        final String mesg = "Hello from " + Utility.methodSignatureToString(m.getSignature(), name, Utility.accessToString(flags));
+        final InstructionList patch = new InstructionList();
+        patch.append(new GETSTATIC(out));
+        patch.append(new PUSH(cp, mesg));
+        patch.append(new INVOKEVIRTUAL(println));
+
+        final MethodGen mg = new MethodGen(m, className, cp);
+        final InstructionList il = mg.getInstructionList();
+        final InstructionHandle[] ihs = il.getInstructionHandles();
+
+        if (name.equals("<init>")) { // First let the super or other constructor be called
+            for (int j = 1; j < ihs.length; j++) {
+                if (ihs[j].getInstruction() instanceof INVOKESPECIAL) {
+                    il.append(ihs[j], patch); // Should check: method name == "<init>"
+                    break;
+                }
+            }
+        } else {
+            il.insert(ihs[0], patch);
+        }
+
+        // Stack size must be at least 2, since the println method takes 2 argument.
+        if (code.getMaxStack() < 2) {
+            mg.setMaxStack(2);
+        }
+
+        m = mg.getMethod();
+
+        il.dispose(); // Reuse instruction handles
+
+        return m;
+    }
 
     public static void main(final String[] argv) throws Exception {
         for (final String arg : argv) {
@@ -70,65 +127,5 @@ public final class helloify implements Constants {
                 java_class.dump(file_name);
             }
         }
-    }
-
-    /**
-     * Change class name to <old_name>_hello
-     */
-    private static void helloifyClassName(final JavaClass java_class) {
-        class_name = java_class.getClassName() + "_hello";
-        int index = java_class.getClassNameIndex();
-
-        index = ((ConstantClass) cp.getConstant(index)).getNameIndex();
-        cp.setConstant(index, new ConstantUtf8(class_name.replace('.', '/')));
-    }
-
-    /**
-     * Patch a method.
-     */
-    private static Method helloifyMethod(Method m) {
-        final Code code = m.getCode();
-        final int flags = m.getAccessFlags();
-        final String name = m.getName();
-
-        // Sanity check
-        if (m.isNative() || m.isAbstract() || (code == null)) {
-            return m;
-        }
-
-        // Create instruction list to be inserted at method start.
-        final String mesg = "Hello from " + Utility.methodSignatureToString(m.getSignature(),
-                name,
-                Utility.accessToString(flags));
-        final InstructionList patch = new InstructionList();
-        patch.append(new GETSTATIC(out));
-        patch.append(new PUSH(cp, mesg));
-        patch.append(new INVOKEVIRTUAL(println));
-
-        final MethodGen mg = new MethodGen(m, class_name, cp);
-        final InstructionList il = mg.getInstructionList();
-        final InstructionHandle[] ihs = il.getInstructionHandles();
-
-        if (name.equals("<init>")) { // First let the super or other constructor be called
-            for (int j = 1; j < ihs.length; j++) {
-                if (ihs[j].getInstruction() instanceof INVOKESPECIAL) {
-                    il.append(ihs[j], patch); // Should check: method name == "<init>"
-                    break;
-                }
-            }
-        } else {
-            il.insert(ihs[0], patch);
-        }
-
-        // Stack size must be at least 2, since the println method takes 2 argument.
-        if (code.getMaxStack() < 2) {
-            mg.setMaxStack(2);
-        }
-
-        m = mg.getMethod();
-
-        il.dispose(); // Reuse instruction handles
-
-        return m;
     }
 }

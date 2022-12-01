@@ -28,12 +28,11 @@ import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
- * This class represents the type of a local variable or item on stack
- * used in the StackMap entries.
+ * This class represents the type of a local variable or item on stack used in the StackMap entries.
  *
- * @see     StackMapEntry
- * @see     StackMap
- * @see     Const
+ * @see StackMapEntry
+ * @see StackMap
+ * @see Const
  */
 @AnnotatedFor({"signedness"})
 public final class StackMapType implements Cloneable {
@@ -42,11 +41,24 @@ public final class StackMapType implements Cloneable {
     private @NonNegative int index; // Index to CONSTANT_Class or offset
     private ConstantPool constantPool;
 
+    /**
+     * @param type type tag as defined in the Constants interface
+     * @param index index to constant pool, or byte code offset
+     */
+    public StackMapType(final byte type, final @NonNegative int index, final ConstantPool constant_pool) {
+        if (type < Const.ITEM_Bogus || type > Const.ITEM_NewObject) {
+            throw new IllegalArgumentException("Illegal type for StackMapType: " + type);
+        }
+        this.type = type;
+        this.index = index;
+        this.constantPool = constant_pool;
+    }
 
     /**
      * Construct object from file stream.
+     *
      * @param file Input stream
-     * @throws IOException
+     * @throws IOException if an I/O error occurs.
      */
     StackMapType(final DataInput file, final ConstantPool constant_pool) throws IOException {
         this(file.readByte(), -1, constant_pool);
@@ -55,93 +67,6 @@ public final class StackMapType implements Cloneable {
         }
         this.constantPool = constant_pool;
     }
-
-
-    /**
-     * @param type type tag as defined in the Constants interface
-     * @param index index to constant pool, or byte code offset
-     */
-    public StackMapType(final byte type, final @NonNegative int index, final ConstantPool constant_pool) {
-        if ((type < Const.ITEM_Bogus) || (type > Const.ITEM_NewObject)) {
-            throw new IllegalArgumentException("Illegal type for StackMapType: " + type);
-        }
-        this.type = type;
-        this.index = index;
-        this.constantPool = constant_pool;
-    }
-
-
-    public void setType( final byte t ) {
-        if ((t < Const.ITEM_Bogus) || (t > Const.ITEM_NewObject)) {
-            throw new IllegalArgumentException("Illegal type for StackMapType: " + t);
-        }
-        type = t;
-    }
-
-
-    @Pure
-    public byte getType() {
-        return type;
-    }
-
-
-    public void setIndex( final @NonNegative int t ) {
-        index = t;
-    }
-
-
-    /** @return index to constant pool if type == ITEM_Object, or offset
-     * in byte code, if type == ITEM_NewObject, and -1 otherwise
-     */
-    @Pure
-    public @NonNegative int getIndex() {
-        return index;
-    }
-
-
-    /**
-     * Dump type entries to file.
-     *
-     * @param file Output file stream
-     * @throws IOException
-     */
-    public void dump( final DataOutputStream file ) throws IOException {
-        file.writeByte(type);
-        if (hasIndex()) {
-            file.writeShort(getIndex());
-        }
-    }
-
-
-    /** @return true, if type is either ITEM_Object or ITEM_NewObject
-     */
-    public boolean hasIndex() {
-        return type == Const.ITEM_Object || type == Const.ITEM_NewObject;
-    }
-
-
-    private String printIndex() {
-        if (type == Const.ITEM_Object) {
-            if (index < 0) {
-                return ", class=<unknown>";
-            }
-            return ", class=" + constantPool.constantToString(index, Const.CONSTANT_Class);
-        } else if (type == Const.ITEM_NewObject) {
-            return ", offset=" + index;
-        } else {
-            return "";
-        }
-    }
-
-
-    /**
-     * @return String representation
-     */
-    @Override
-    public String toString() {
-        return "(type=" + Const.getItemName(type) + printIndex() + ")";
-    }
-
 
     /**
      * @return deep copy of this object
@@ -156,6 +81,18 @@ public final class StackMapType implements Cloneable {
         return null;
     }
 
+    /**
+     * Dump type entries to file.
+     *
+     * @param file Output file stream
+     * @throws IOException if an I/O error occurs.
+     */
+    public void dump(final DataOutputStream file) throws IOException {
+        file.writeByte(type);
+        if (hasIndex()) {
+            file.writeShort(getIndex());
+        }
+    }
 
     /**
      * @return Constant pool used by this object.
@@ -165,11 +102,63 @@ public final class StackMapType implements Cloneable {
         return constantPool;
     }
 
+    /**
+     * @return index to constant pool if type == ITEM_Object, or offset in byte code, if type == ITEM_NewObject, and -1
+     *         otherwise
+     */
+    @Pure
+    public @NonNegative int getIndex() {
+        return index;
+    }
+
+    @Pure
+    public byte getType() {
+        return type;
+    }
+
+    /**
+     * @return true, if type is either ITEM_Object or ITEM_NewObject
+     */
+    public boolean hasIndex() {
+        return type == Const.ITEM_Object || type == Const.ITEM_NewObject;
+    }
+
+    private String printIndex() {
+        if (type == Const.ITEM_Object) {
+            if (index < 0) {
+                return ", class=<unknown>";
+            }
+            return ", class=" + constantPool.constantToString(index, Const.CONSTANT_Class);
+        }
+        if (type == Const.ITEM_NewObject) {
+            return ", offset=" + index;
+        }
+        return "";
+    }
 
     /**
      * @param constantPool Constant pool to be used for this object.
      */
-    public void setConstantPool( final ConstantPool constantPool ) {
+    public void setConstantPool(final ConstantPool constantPool) {
         this.constantPool = constantPool;
+    }
+
+    public void setIndex(final @NonNegative int t) {
+        index = t;
+    }
+
+    public void setType(final byte t) {
+        if (t < Const.ITEM_Bogus || t > Const.ITEM_NewObject) {
+            throw new IllegalArgumentException("Illegal type for StackMapType: " + t);
+        }
+        type = t;
+    }
+
+    /**
+     * @return String representation
+     */
+    @Override
+    public String toString() {
+        return "(type=" + Const.getItemName(type) + printIndex() + ")";
     }
 }

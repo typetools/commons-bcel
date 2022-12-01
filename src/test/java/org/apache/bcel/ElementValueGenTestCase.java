@@ -18,6 +18,9 @@
 
 package org.apache.bcel;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -31,184 +34,9 @@ import org.apache.bcel.generic.ElementValueGen;
 import org.apache.bcel.generic.EnumElementValueGen;
 import org.apache.bcel.generic.ObjectType;
 import org.apache.bcel.generic.SimpleElementValueGen;
+import org.junit.jupiter.api.Test;
 
-public class ElementValueGenTestCase extends AbstractTestCase
-{
-    private ClassGen createClassGen(final String classname)
-    {
-        return new ClassGen(classname, "java.lang.Object", "<generated>",
-                Const.ACC_PUBLIC | Const.ACC_SUPER, null);
-    }
-
-    /**
-     * Create primitive element values
-     */
-    public void testCreateIntegerElementValue() throws Exception
-    {
-        final ClassGen cg = createClassGen("HelloWorld");
-        final ConstantPoolGen cp = cg.getConstantPool();
-        final SimpleElementValueGen evg = new SimpleElementValueGen(
-                ElementValueGen.PRIMITIVE_INT, cp, 555);
-        // Creation of an element like that should leave a new entry in the
-        // cpool
-        assertTrue("Should have the same index in the constantpool but "
-                + evg.getIndex() + "!=" + cp.lookupInteger(555),
-                evg.getIndex() == cp.lookupInteger(555));
-        checkSerialize(evg, cp);
-    }
-
-    public void testCreateFloatElementValue() throws Exception
-    {
-        final ClassGen cg = createClassGen("HelloWorld");
-        final ConstantPoolGen cp = cg.getConstantPool();
-        final SimpleElementValueGen evg = new SimpleElementValueGen(
-                ElementValueGen.PRIMITIVE_FLOAT, cp, 111.222f);
-        // Creation of an element like that should leave a new entry in the
-        // cpool
-        assertTrue("Should have the same index in the constantpool but "
-                + evg.getIndex() + "!=" + cp.lookupFloat(111.222f), evg
-                .getIndex() == cp.lookupFloat(111.222f));
-        checkSerialize(evg, cp);
-    }
-
-    public void testCreateDoubleElementValue() throws Exception
-    {
-        final ClassGen cg = createClassGen("HelloWorld");
-        final ConstantPoolGen cp = cg.getConstantPool();
-        final SimpleElementValueGen evg = new SimpleElementValueGen(
-                ElementValueGen.PRIMITIVE_DOUBLE, cp, 333.44);
-        // Creation of an element like that should leave a new entry in the
-        // cpool
-        final int idx = cp.lookupDouble(333.44);
-        assertTrue("Should have the same index in the constantpool but "
-                + evg.getIndex() + "!=" + idx, evg.getIndex() == idx);
-        checkSerialize(evg, cp);
-    }
-
-    public void testCreateLongElementValue() throws Exception
-    {
-        final ClassGen cg = createClassGen("HelloWorld");
-        final ConstantPoolGen cp = cg.getConstantPool();
-        final SimpleElementValueGen evg = new SimpleElementValueGen(
-                ElementValueGen.PRIMITIVE_LONG, cp, 3334455L);
-        // Creation of an element like that should leave a new entry in the
-        // cpool
-        final int idx = cp.lookupLong(3334455L);
-        assertTrue("Should have the same index in the constantpool but "
-                + evg.getIndex() + "!=" + idx, evg.getIndex() == idx);
-        checkSerialize(evg, cp);
-    }
-
-    public void testCreateCharElementValue() throws Exception
-    {
-        final ClassGen cg = createClassGen("HelloWorld");
-        final ConstantPoolGen cp = cg.getConstantPool();
-        final SimpleElementValueGen evg = new SimpleElementValueGen(
-                ElementValueGen.PRIMITIVE_CHAR, cp, 't');
-        // Creation of an element like that should leave a new entry in the
-        // cpool
-        final int idx = cp.lookupInteger('t');
-        assertTrue("Should have the same index in the constantpool but "
-                + evg.getIndex() + "!=" + idx, evg.getIndex() == idx);
-        checkSerialize(evg, cp);
-    }
-
-    public void testCreateByteElementValue() throws Exception
-    {
-        final ClassGen cg = createClassGen("HelloWorld");
-        final ConstantPoolGen cp = cg.getConstantPool();
-        final SimpleElementValueGen evg = new SimpleElementValueGen(
-                ElementValueGen.PRIMITIVE_CHAR, cp, (byte) 'z');
-        // Creation of an element like that should leave a new entry in the
-        // cpool
-        final int idx = cp.lookupInteger((byte) 'z');
-        assertTrue("Should have the same index in the constantpool but "
-                + evg.getIndex() + "!=" + idx, evg.getIndex() == idx);
-        checkSerialize(evg, cp);
-    }
-
-    public void testCreateBooleanElementValue() throws Exception
-    {
-        final ClassGen cg = createClassGen("HelloWorld");
-        final ConstantPoolGen cp = cg.getConstantPool();
-        final SimpleElementValueGen evg = new SimpleElementValueGen(
-                ElementValueGen.PRIMITIVE_BOOLEAN, cp, true);
-        // Creation of an element like that should leave a new entry in the
-        // cpool
-        final int idx = cp.lookupInteger(1); // 1 == true
-        assertTrue("Should have the same index in the constantpool but "
-                + evg.getIndex() + "!=" + idx, evg.getIndex() == idx);
-        checkSerialize(evg, cp);
-    }
-
-    public void testCreateShortElementValue() throws Exception
-    {
-        final ClassGen cg = createClassGen("HelloWorld");
-        final ConstantPoolGen cp = cg.getConstantPool();
-        final SimpleElementValueGen evg = new SimpleElementValueGen(
-                ElementValueGen.PRIMITIVE_SHORT, cp, (short) 42);
-        // Creation of an element like that should leave a new entry in the
-        // cpool
-        final int idx = cp.lookupInteger(42);
-        assertTrue("Should have the same index in the constantpool but "
-                + evg.getIndex() + "!=" + idx, evg.getIndex() == idx);
-        checkSerialize(evg, cp);
-    }
-
-    // //
-    // Create string element values
-    public void testCreateStringElementValue() throws Exception
-    {
-        // Create HelloWorld
-        final ClassGen cg = createClassGen("HelloWorld");
-        final ConstantPoolGen cp = cg.getConstantPool();
-        final SimpleElementValueGen evg = new SimpleElementValueGen(
-                ElementValueGen.STRING, cp, "hello");
-        // Creation of an element like that should leave a new entry in the
-        // cpool
-        assertTrue("Should have the same index in the constantpool but "
-                + evg.getIndex() + "!=" + cp.lookupUtf8("hello"), evg
-                .getIndex() == cp.lookupUtf8("hello"));
-        checkSerialize(evg, cp);
-    }
-
-    // //
-    // Create enum element value
-    public void testCreateEnumElementValue() throws Exception
-    {
-        final ClassGen cg = createClassGen("HelloWorld");
-        final ConstantPoolGen cp = cg.getConstantPool();
-        final ObjectType enumType = new ObjectType("SimpleEnum"); // Supports rainbow
-                                                            // :)
-        final EnumElementValueGen evg = new EnumElementValueGen(enumType, "Red", cp);
-        // Creation of an element like that should leave a new entry in the
-        // cpool
-        assertTrue(
-                "The new ElementValue value index should match the contents of the constantpool but "
-                        + evg.getValueIndex() + "!=" + cp.lookupUtf8("Red"),
-                evg.getValueIndex() == cp.lookupUtf8("Red"));
-        // BCELBUG: Should the class signature or class name be in the constant
-        // pool? (see note in ConstantPool)
-        // assertTrue("The new ElementValue type index should match the contents
-        // of the constantpool but "+
-        // evg.getTypeIndex()+"!="+cp.lookupClass(enumType.getSignature()),
-        // evg.getTypeIndex()==cp.lookupClass(enumType.getSignature()));
-        checkSerialize(evg, cp);
-    }
-
-    // //
-    // Create class element value
-    public void testCreateClassElementValue() throws Exception
-    {
-        final ClassGen cg = createClassGen("HelloWorld");
-        final ConstantPoolGen cp = cg.getConstantPool();
-        final ObjectType classType = new ObjectType("java.lang.Integer");
-        final ClassElementValueGen evg = new ClassElementValueGen(classType, cp);
-        assertTrue("Unexpected value for contained class: '"
-                + evg.getClassString() + "'", evg.getClassString().contains("Integer"));
-        checkSerialize(evg, cp);
-    }
-
+public class ElementValueGenTestCase extends AbstractTestCase {
     private void checkSerialize(final ElementValueGen evgBefore, final ConstantPoolGen cpg) throws IOException {
         final String beforeValue = evgBefore.stringifyValue();
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -221,8 +49,154 @@ public class ElementValueGenTestCase extends AbstractTestCase
             evgAfter = ElementValueGen.readElementValue(dis, cpg);
         }
         final String afterValue = evgAfter.stringifyValue();
-        if (!beforeValue.equals(afterValue)) {
-            fail("Deserialization failed: before='" + beforeValue + "' after='" + afterValue + "'");
-        }
+        assertEquals(beforeValue, afterValue, "Deserialization failed");
+    }
+
+    private ClassGen createClassGen(final String classname) {
+        return new ClassGen(classname, "java.lang.Object", "<generated>", Const.ACC_PUBLIC | Const.ACC_SUPER, null);
+    }
+
+    @Test
+    public void testCreateBooleanElementValue() throws Exception {
+        final ClassGen cg = createClassGen("HelloWorld");
+        final ConstantPoolGen cp = cg.getConstantPool();
+        final SimpleElementValueGen evg = new SimpleElementValueGen(ElementValueGen.PRIMITIVE_BOOLEAN, cp, true);
+        // Creation of an element like that should leave a new entry in the
+        // cpool
+        final int idx = cp.lookupInteger(1); // 1 == true
+        assertEquals(idx, evg.getIndex(), "Should have the same index in the constantpool");
+        checkSerialize(evg, cp);
+    }
+
+    @Test
+    public void testCreateByteElementValue() throws Exception {
+        final ClassGen cg = createClassGen("HelloWorld");
+        final ConstantPoolGen cp = cg.getConstantPool();
+        final SimpleElementValueGen evg = new SimpleElementValueGen(ElementValueGen.PRIMITIVE_CHAR, cp, (byte) 'z');
+        // Creation of an element like that should leave a new entry in the
+        // cpool
+        final int idx = cp.lookupInteger((byte) 'z');
+        assertEquals(idx, evg.getIndex(), "Should have the same index in the constantpool");
+        checkSerialize(evg, cp);
+    }
+
+    @Test
+    public void testCreateCharElementValue() throws Exception {
+        final ClassGen cg = createClassGen("HelloWorld");
+        final ConstantPoolGen cp = cg.getConstantPool();
+        final SimpleElementValueGen evg = new SimpleElementValueGen(ElementValueGen.PRIMITIVE_CHAR, cp, 't');
+        // Creation of an element like that should leave a new entry in the
+        // cpool
+        final int idx = cp.lookupInteger('t');
+        assertEquals(idx, evg.getIndex(), "Should have the same index in the constantpool");
+        checkSerialize(evg, cp);
+    }
+
+    // //
+    // Create class element value
+    @Test
+    public void testCreateClassElementValue() throws Exception {
+        final ClassGen cg = createClassGen("HelloWorld");
+        final ConstantPoolGen cp = cg.getConstantPool();
+        final ObjectType classType = new ObjectType("java.lang.Integer");
+        final ClassElementValueGen evg = new ClassElementValueGen(classType, cp);
+        assertTrue(evg.getClassString().contains("Integer"), "Unexpected value for contained class: '" + evg.getClassString() + "'");
+        checkSerialize(evg, cp);
+    }
+
+    @Test
+    public void testCreateDoubleElementValue() throws Exception {
+        final ClassGen cg = createClassGen("HelloWorld");
+        final ConstantPoolGen cp = cg.getConstantPool();
+        final SimpleElementValueGen evg = new SimpleElementValueGen(ElementValueGen.PRIMITIVE_DOUBLE, cp, 333.44);
+        // Creation of an element like that should leave a new entry in the
+        // cpool
+        final int idx = cp.lookupDouble(333.44);
+        assertEquals(idx, evg.getIndex(), "Should have the same index in the constantpool");
+        checkSerialize(evg, cp);
+    }
+
+    // //
+    // Create enum element value
+    @Test
+    public void testCreateEnumElementValue() throws Exception {
+        final ClassGen cg = createClassGen("HelloWorld");
+        final ConstantPoolGen cp = cg.getConstantPool();
+        final ObjectType enumType = new ObjectType("SimpleEnum"); // Supports rainbow
+        // :)
+        final EnumElementValueGen evg = new EnumElementValueGen(enumType, "Red", cp);
+        // Creation of an element like that should leave a new entry in the
+        // cpool
+        assertEquals(cp.lookupUtf8("Red"), evg.getValueIndex(), "The new ElementValue value index should match the contents of the constantpool");
+        // BCELBUG: Should the class signature or class name be in the constant
+        // pool? (see note in ConstantPool)
+        // assertTrue("The new ElementValue type index should match the contents
+        // of the constantpool but "+
+        // evg.getTypeIndex()+"!="+cp.lookupClass(enumType.getSignature()),
+        // evg.getTypeIndex()==cp.lookupClass(enumType.getSignature()));
+        checkSerialize(evg, cp);
+    }
+
+    @Test
+    public void testCreateFloatElementValue() throws Exception {
+        final ClassGen cg = createClassGen("HelloWorld");
+        final ConstantPoolGen cp = cg.getConstantPool();
+        final SimpleElementValueGen evg = new SimpleElementValueGen(ElementValueGen.PRIMITIVE_FLOAT, cp, 111.222f);
+        // Creation of an element like that should leave a new entry in the
+        // cpool
+        assertEquals(cp.lookupFloat(111.222f), evg.getIndex(), "Should have the same index in the constantpool");
+        checkSerialize(evg, cp);
+    }
+
+    /**
+     * Create primitive element values
+     */
+    @Test
+    public void testCreateIntegerElementValue() throws Exception {
+        final ClassGen cg = createClassGen("HelloWorld");
+        final ConstantPoolGen cp = cg.getConstantPool();
+        final SimpleElementValueGen evg = new SimpleElementValueGen(ElementValueGen.PRIMITIVE_INT, cp, 555);
+        // Creation of an element like that should leave a new entry in the
+        // cpool
+        assertEquals(cp.lookupInteger(555), evg.getIndex(), "Should have the same index in the constantpool");
+        checkSerialize(evg, cp);
+    }
+
+    @Test
+    public void testCreateLongElementValue() throws Exception {
+        final ClassGen cg = createClassGen("HelloWorld");
+        final ConstantPoolGen cp = cg.getConstantPool();
+        final SimpleElementValueGen evg = new SimpleElementValueGen(ElementValueGen.PRIMITIVE_LONG, cp, 3334455L);
+        // Creation of an element like that should leave a new entry in the
+        // cpool
+        final int idx = cp.lookupLong(3334455L);
+        assertEquals(idx, evg.getIndex(), "Should have the same index in the constantpool");
+        checkSerialize(evg, cp);
+    }
+
+    @Test
+    public void testCreateShortElementValue() throws Exception {
+        final ClassGen cg = createClassGen("HelloWorld");
+        final ConstantPoolGen cp = cg.getConstantPool();
+        final SimpleElementValueGen evg = new SimpleElementValueGen(ElementValueGen.PRIMITIVE_SHORT, cp, (short) 42);
+        // Creation of an element like that should leave a new entry in the
+        // cpool
+        final int idx = cp.lookupInteger(42);
+        assertEquals(idx, evg.getIndex(), "Should have the same index in the constantpool");
+        checkSerialize(evg, cp);
+    }
+
+    // //
+    // Create string element values
+    @Test
+    public void testCreateStringElementValue() throws Exception {
+        // Create HelloWorld
+        final ClassGen cg = createClassGen("HelloWorld");
+        final ConstantPoolGen cp = cg.getConstantPool();
+        final SimpleElementValueGen evg = new SimpleElementValueGen(ElementValueGen.STRING, cp, "hello");
+        // Creation of an element like that should leave a new entry in the
+        // cpool
+        assertEquals(cp.lookupUtf8("hello"), evg.getIndex(), "Should have the same index in the constantpool");
+        checkSerialize(evg, cp);
     }
 }

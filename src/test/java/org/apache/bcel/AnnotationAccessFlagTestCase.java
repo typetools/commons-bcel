@@ -18,24 +18,22 @@
 
 package org.apache.bcel;
 
-import org.apache.bcel.classfile.JavaClass;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AnnotationAccessFlagTestCase extends AbstractTestCase
-{
+import org.apache.bcel.classfile.JavaClass;
+import org.junit.jupiter.api.Test;
+
+public class AnnotationAccessFlagTestCase extends AbstractTestCase {
     /**
-     * If you write an annotation and compile it, the class file generated
-     * should be marked as an annotation type - which is detectable through
-     * BCEL.
+     * If you write an annotation and compile it, the class file generated should be marked as an annotation type - which is
+     * detectable through BCEL.
      */
-    public void testAnnotationClassSaysItIs() throws ClassNotFoundException
-    {
-        JavaClass clazz = getTestClass(PACKAGE_BASE_NAME+".data.SimpleAnnotation");
-        assertTrue(
-                "Expected SimpleAnnotation class to say it was an annotation - but it didn't !",
-                clazz.isAnnotation());
-        clazz = getTestClass(PACKAGE_BASE_NAME+".data.SimpleClass");
-        assertTrue(
-                "Expected SimpleClass class to say it was not an annotation - but it didn't !",
-                !clazz.isAnnotation());
+    @Test
+    public void testAnnotationClassSaysItIs() throws ClassNotFoundException {
+        JavaClass clazz = getTestClass(PACKAGE_BASE_NAME + ".data.SimpleAnnotation");
+        assertTrue(clazz.isAnnotation(), "Expected SimpleAnnotation class to say it was an annotation - but it didn't !");
+        clazz = getTestClass(PACKAGE_BASE_NAME + ".data.SimpleClass");
+        assertFalse(clazz.isAnnotation(), "Expected SimpleClass class to say it was not an annotation - but it didn't !");
     }
 }

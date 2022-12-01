@@ -27,14 +27,16 @@ import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
- * This class represents a line number within a method, i.e., give an instruction
- * a line number corresponding to the source code line.
+ * This class represents a line number within a method, i.e., give an instruction a line number corresponding to the
+ * source code line.
  *
- * @see     LineNumber
- * @see     MethodGen
+ * @see LineNumber
+ * @see MethodGen
  */
 @AnnotatedFor({"signedness"})
 public class LineNumberGen implements InstructionTargeter, Cloneable {
+
+    static final LineNumberGen[] EMPTY_ARRAY = {};
 
     private InstructionHandle ih;
     private @NonNegative int srcLine;
@@ -49,47 +51,6 @@ public class LineNumberGen implements InstructionTargeter, Cloneable {
         setSourceLine(src_line);
     }
 
-
-    /**
-     * @return true, if ih is target of this line number
-     */
-    @Override
-    public boolean containsTarget( final InstructionHandle ih ) {
-        return this.ih == ih;
-    }
-
-
-    /**
-     * @param old_ih old target
-     * @param new_ih new target
-     */
-    @Override
-    public void updateTarget( final InstructionHandle old_ih, final InstructionHandle new_ih ) {
-        if (old_ih != ih) {
-            throw new ClassGenException("Not targeting " + old_ih + ", but " + ih + "}");
-        }
-        setInstruction(new_ih);
-    }
-
-
-    /**
-     * Get LineNumber attribute .
-     *
-     * This relies on that the instruction list has already been dumped to byte code or
-     * or that the `setPositions' methods has been called for the instruction list.
-     */
-    public LineNumber getLineNumber() {
-        return new LineNumber(ih.getPosition(), srcLine);
-    }
-
-
-    public void setInstruction( final InstructionHandle instructionHandle ) { // TODO could be package-protected?
-        Objects.requireNonNull(instructionHandle, "instructionHandle");
-        BranchInstruction.notifyTarget(this.ih, instructionHandle, this);
-        this.ih = instructionHandle;
-    }
-
-
     @Override
     public Object clone() {
         try {
@@ -99,20 +60,53 @@ public class LineNumberGen implements InstructionTargeter, Cloneable {
         }
     }
 
+    /**
+     * @return true, if ih is target of this line number
+     */
+    @Override
+    public boolean containsTarget(final InstructionHandle ih) {
+        return this.ih == ih;
+    }
 
     @Pure
     public InstructionHandle getInstruction() {
         return ih;
     }
 
-
-    public void setSourceLine( final @NonNegative int src_line ) { // TODO could be package-protected?
-        this.srcLine = src_line;
+    /**
+     * Get LineNumber attribute .
+     *
+     * This relies on that the instruction list has already been dumped to byte code or that the `setPositions' methods
+     * has been called for the instruction list.
+     */
+    public LineNumber getLineNumber() {
+        return new LineNumber(ih.getPosition(), srcLine);
     }
-
 
     @Pure
     public @GTENegativeOne int getSourceLine() {
         return srcLine;
+    }
+
+    public void setInstruction(final InstructionHandle instructionHandle) { // TODO could be package-protected?
+        Objects.requireNonNull(instructionHandle, "instructionHandle");
+        BranchInstruction.notifyTarget(this.ih, instructionHandle, this);
+        this.ih = instructionHandle;
+    }
+
+    public void setSourceLine(final @NonNegative int src_line) { // TODO could be package-protected?
+        this.srcLine = src_line;
+    }
+
+    /**
+     * @param old_ih old target
+     * @param new_ih new target
+     */
+    @Override
+    public void updateTarget(final InstructionHandle old_ih, final InstructionHandle new_ih) {
+        if (old_ih != ih) {
+            throw new ClassGenException("Not targeting " + old_ih + ", but " + ih + "}");
+        }
+        setInstruction(new_ih);
     }
 }

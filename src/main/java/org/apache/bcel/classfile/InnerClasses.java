@@ -20,6 +20,9 @@ package org.apache.bcel.classfile;
 import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.stream.Stream;
 
 import org.apache.bcel.Const;
 
@@ -29,40 +32,28 @@ import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
- * This class is derived from <em>Attribute</em> and denotes that this class
- * is an Inner class of another.
- * to the source file of this class.
- * It is instantiated from the <em>Attribute.readAttribute()</em> method.
+ * This class is derived from <em>Attribute</em> and denotes that this class is an Inner class of another. to the source
+ * file of this class. It is instantiated from the <em>Attribute.readAttribute()</em> method.
  *
- * @see     Attribute
+ * @see Attribute
  */
 @AnnotatedFor({"signedness"})
-public final class InnerClasses extends Attribute {
+public final class InnerClasses extends Attribute implements Iterable<InnerClass> {
+
+    /**
+     * Empty array.
+     */
+    private static final InnerClass[] EMPTY_INNER_CLASSE_ARRAY = {};
 
     private InnerClass[] innerClasses;
 
-
     /**
-     * Initialize from another object. Note that both objects use the same
-     * references (shallow copy). Use clone() for a physical copy.
+     * Initialize from another object. Note that both objects use the same references (shallow copy). Use clone() for a
+     * physical copy.
      */
     public InnerClasses(final InnerClasses c) {
         this(c.getNameIndex(), c.getLength(), c.getInnerClasses(), c.getConstantPool());
     }
-
-
-    /**
-     * @param name_index Index in constant pool to CONSTANT_Utf8
-     * @param length Content length in bytes
-     * @param innerClasses array of inner classes attributes
-     * @param constant_pool Array of constants
-     */
-    public InnerClasses(final @NonNegative int name_index, final @NonNegative int length, final InnerClass @Nullable [] innerClasses,
-            final ConstantPool constant_pool) {
-        super(Const.ATTR_INNER_CLASSES, name_index, length, constant_pool);
-        this.innerClasses = innerClasses != null ? innerClasses : new InnerClass[0];
-    }
-
 
     /**
      * Construct object from input stream.
@@ -71,10 +62,9 @@ public final class InnerClasses extends Attribute {
      * @param length Content length in bytes
      * @param input Input stream
      * @param constant_pool Array of constants
-     * @throws IOException
+     * @throws IOException if an I/O error occurs.
      */
-    InnerClasses(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool)
-            throws IOException {
+    InnerClasses(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
         this(name_index, length, (InnerClass[]) null, constant_pool);
         final int number_of_classes = input.readUnsignedShort();
         innerClasses = new InnerClass[number_of_classes];
@@ -83,35 +73,55 @@ public final class InnerClasses extends Attribute {
         }
     }
 
+    /**
+     * @param name_index Index in constant pool to CONSTANT_Utf8
+     * @param length Content length in bytes
+     * @param innerClasses array of inner classes attributes
+     * @param constant_pool Array of constants
+     */
+    public InnerClasses(final @NonNegative int name_index, final @NonNegative int length, final InnerClass @Nullable [] innerClasses, final ConstantPool constant_pool) {
+        super(Const.ATTR_INNER_CLASSES, name_index, length, constant_pool);
+        this.innerClasses = innerClasses != null ? innerClasses : EMPTY_INNER_CLASSE_ARRAY;
+    }
 
     /**
-     * Called by objects that are traversing the nodes of the tree implicitely
-     * defined by the contents of a Java class. I.e., the hierarchy of methods,
-     * fields, attributes, etc. spawns a tree of objects.
+     * Called by objects that are traversing the nodes of the tree implicitly defined by the contents of a Java class.
+     * I.e., the hierarchy of methods, fields, attributes, etc. spawns a tree of objects.
      *
      * @param v Visitor object
      */
     @Override
-    public void accept( final Visitor v ) {
+    public void accept(final Visitor v) {
         v.visitInnerClasses(this);
     }
 
+    /**
+     * @return deep copy of this attribute
+     */
+    @Override
+    public Attribute copy(final ConstantPool constantPool) {
+        // TODO this could be recoded to use a lower level constructor after creating a copy of the inner classes
+        final InnerClasses c = (InnerClasses) clone();
+        c.innerClasses = new InnerClass[innerClasses.length];
+        Arrays.setAll(c.innerClasses, i -> innerClasses[i].copy());
+        c.setConstantPool(constantPool);
+        return c;
+    }
 
     /**
      * Dump source file attribute to file stream in binary format.
      *
      * @param file Output file stream
-     * @throws IOException
+     * @throws IOException if an I/O error occurs.
      */
     @Override
-    public void dump( final DataOutputStream file ) throws IOException {
+    public void dump(final DataOutputStream file) throws IOException {
         super.dump(file);
         file.writeShort(innerClasses.length);
         for (final InnerClass inner_class : innerClasses) {
             inner_class.dump(file);
         }
     }
-
 
     /**
      * @return array of inner class "records"
@@ -121,14 +131,17 @@ public final class InnerClasses extends Attribute {
         return innerClasses;
     }
 
+    @Override
+    public Iterator<InnerClass> iterator() {
+        return Stream.of(innerClasses).iterator();
+    }
 
     /**
      * @param innerClasses the array of inner classes
      */
-    public void setInnerClasses( final InnerClass[] innerClasses ) {
-        this.innerClasses = innerClasses != null ? innerClasses : new InnerClass[0];
+    public void setInnerClasses(final InnerClass[] innerClasses) {
+        this.innerClasses = innerClasses != null ? innerClasses : EMPTY_INNER_CLASSE_ARRAY;
     }
-
 
     /**
      * @return String representation.
@@ -142,22 +155,6 @@ public final class InnerClasses extends Attribute {
         for (final InnerClass inner_class : innerClasses) {
             buf.append(inner_class.toString(super.getConstantPool())).append("\n");
         }
-        return buf.substring(0, buf.length()-1); // remove the last newline
-    }
-
-
-    /**
-     * @return deep copy of this attribute
-     */
-    @Override
-    public Attribute copy( final ConstantPool _constant_pool ) {
-        // TODO this could be recoded to use a lower level constructor after creating a copy of the inner classes
-        final InnerClasses c = (InnerClasses) clone();
-        c.innerClasses = new InnerClass[innerClasses.length];
-        for (int i = 0; i < innerClasses.length; i++) {
-            c.innerClasses[i] = innerClasses[i].copy();
-        }
-        c.setConstantPool(_constant_pool);
-        return c;
+        return buf.substring(0, buf.length() - 1); // remove the last newline
     }
 }

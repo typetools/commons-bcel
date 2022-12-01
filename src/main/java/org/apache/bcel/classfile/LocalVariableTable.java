@@ -20,6 +20,9 @@ package org.apache.bcel.classfile;
 import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.stream.Stream;
 
 import org.apache.bcel.Const;
 
@@ -29,50 +32,27 @@ import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
- * This class represents colection of local variables in a
- * method. This attribute is contained in the <em>Code</em> attribute.
+ * This class represents colection of local variables in a method. This attribute is contained in the <em>Code</em>
+ * attribute.
  *
- * @see     Code
+ * @see Code
  * @see LocalVariable
  */
 @AnnotatedFor({"signedness"})
-public class LocalVariableTable extends Attribute {
+public class LocalVariableTable extends Attribute implements Iterable<LocalVariable> {
 
     private LocalVariable[] localVariableTable; // variables
 
-
-    /**
-     * Initialize from another object. Note that both objects use the same
-     * references (shallow copy). Use copy() for a physical copy.
-     */
-    public LocalVariableTable(final LocalVariableTable c) {
-        this(c.getNameIndex(), c.getLength(), c.getLocalVariableTable(), c.getConstantPool());
-    }
-
-
-    /**
-     * @param nameIndex Index in constant pool to `LocalVariableTable'
-     * @param length Content length in bytes
-     * @param localVariableTable Table of local variables
-     * @param constantPool Array of constants
-     */
-    public LocalVariableTable(final @NonNegative int nameIndex, final @NonNegative int length, final LocalVariable[] localVariableTable,
-            final ConstantPool constantPool) {
-        super(Const.ATTR_LOCAL_VARIABLE_TABLE, nameIndex, length, constantPool);
-        this.localVariableTable = localVariableTable;
-    }
-
-
     /**
      * Construct object from input stream.
+     *
      * @param name_index Index in constant pool
      * @param length Content length in bytes
      * @param input Input stream
      * @param constant_pool Array of constants
-     * @throws IOException
+     * @throws IOException if an I/O error occurs.
      */
-    LocalVariableTable(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool)
-            throws IOException {
+    LocalVariableTable(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
         this(name_index, length, (LocalVariable[]) null, constant_pool);
         final int local_variable_table_length = input.readUnsignedShort();
         localVariableTable = new LocalVariable[local_variable_table_length];
@@ -81,28 +61,56 @@ public class LocalVariableTable extends Attribute {
         }
     }
 
+    /**
+     * @param nameIndex Index in constant pool to `LocalVariableTable'
+     * @param length Content length in bytes
+     * @param localVariableTable Table of local variables
+     * @param constantPool Array of constants
+     */
+    public LocalVariableTable(final @NonNegative int nameIndex, final @NonNegative int length, final LocalVariable[] localVariableTable, final ConstantPool constantPool) {
+        super(Const.ATTR_LOCAL_VARIABLE_TABLE, nameIndex, length, constantPool);
+        this.localVariableTable = localVariableTable;
+    }
 
     /**
-     * Called by objects that are traversing the nodes of the tree implicitely
-     * defined by the contents of a Java class. I.e., the hierarchy of methods,
-     * fields, attributes, etc. spawns a tree of objects.
+     * Initialize from another object. Note that both objects use the same references (shallow copy). Use copy() for a
+     * physical copy.
+     */
+    public LocalVariableTable(final LocalVariableTable c) {
+        this(c.getNameIndex(), c.getLength(), c.getLocalVariableTable(), c.getConstantPool());
+    }
+
+    /**
+     * Called by objects that are traversing the nodes of the tree implicitly defined by the contents of a Java class.
+     * I.e., the hierarchy of methods, fields, attributes, etc. spawns a tree of objects.
      *
      * @param v Visitor object
      */
     @Override
-    public void accept( final Visitor v ) {
+    public void accept(final Visitor v) {
         v.visitLocalVariableTable(this);
     }
 
+    /**
+     * @return deep copy of this attribute
+     */
+    @Override
+    public Attribute copy(final ConstantPool constantPool) {
+        final LocalVariableTable c = (LocalVariableTable) clone();
+        c.localVariableTable = new LocalVariable[localVariableTable.length];
+        Arrays.setAll(c.localVariableTable, i -> localVariableTable[i].copy());
+        c.setConstantPool(constantPool);
+        return c;
+    }
 
     /**
      * Dump local variable table attribute to file stream in binary format.
      *
      * @param file Output file stream
-     * @throws IOException
+     * @throws IOException if an I/O error occurs.
      */
     @Override
-    public final void dump( final DataOutputStream file ) throws IOException {
+    public final void dump(final DataOutputStream file) throws IOException {
         super.dump(file);
         file.writeShort(localVariableTable.length);
         for (final LocalVariable variable : localVariableTable) {
@@ -110,28 +118,18 @@ public class LocalVariableTable extends Attribute {
         }
     }
 
-
-    /**
-     * @return Array of local variables of method.
-     */
-    @Pure
-    public final LocalVariable[] getLocalVariableTable() {
-        return localVariableTable;
-    }
-
-
     /**
      *
      * @param index the variable slot
      *
      * @return the first LocalVariable that matches the slot or null if not found
      *
-     * @deprecated since 5.2 because multiple variables can share the
-     *             same slot, use getLocalVariable(int index, int pc) instead.
+     * @deprecated since 5.2 because multiple variables can share the same slot, use getLocalVariable(int index, int pc)
+     *             instead.
      */
     @java.lang.Deprecated
     @Pure
-    public final @Nullable LocalVariable getLocalVariable( final @NonNegative int index ) {
+    public final @Nullable LocalVariable getLocalVariable(final @NonNegative int index) {
         for (final LocalVariable variable : localVariableTable) {
             if (variable.getIndex() == index) {
                 return variable;
@@ -139,7 +137,6 @@ public class LocalVariableTable extends Attribute {
         }
         return null;
     }
-
 
     /**
      *
@@ -154,7 +151,7 @@ public class LocalVariableTable extends Attribute {
             if (variable.getIndex() == index) {
                 final int start_pc = variable.getStartPC();
                 final int end_pc = start_pc + variable.getLength();
-                if ((pc >= start_pc) && (pc <= end_pc)) {
+                if (pc >= start_pc && pc <= end_pc) {
                     return variable;
                 }
             }
@@ -162,11 +159,27 @@ public class LocalVariableTable extends Attribute {
         return null;
     }
 
-
-    public final void setLocalVariableTable( final LocalVariable[] local_variable_table ) {
-        this.localVariableTable = local_variable_table;
+    /**
+     * @return Array of local variables of method.
+     */
+    @Pure
+    public final LocalVariable[] getLocalVariableTable() {
+        return localVariableTable;
     }
 
+    @Pure
+    public final int getTableLength() {
+        return localVariableTable == null ? 0 : localVariableTable.length;
+    }
+
+    @Override
+    public Iterator<LocalVariable> iterator() {
+        return Stream.of(localVariableTable).iterator();
+    }
+
+    public final void setLocalVariableTable(final LocalVariable[] local_variable_table) {
+        this.localVariableTable = local_variable_table;
+    }
 
     /**
      * @return String representation.
@@ -181,26 +194,5 @@ public class LocalVariableTable extends Attribute {
             }
         }
         return buf.toString();
-    }
-
-
-    /**
-     * @return deep copy of this attribute
-     */
-    @Override
-    public Attribute copy( final ConstantPool _constant_pool ) {
-        final LocalVariableTable c = (LocalVariableTable) clone();
-        c.localVariableTable = new LocalVariable[localVariableTable.length];
-        for (int i = 0; i < localVariableTable.length; i++) {
-            c.localVariableTable[i] = localVariableTable[i].copy();
-        }
-        c.setConstantPool(_constant_pool);
-        return c;
-    }
-
-
-    @Pure
-    public final int getTableLength() {
-        return localVariableTable == null ? 0 : localVariableTable.length;
     }
 }

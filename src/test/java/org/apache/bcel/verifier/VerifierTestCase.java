@@ -18,24 +18,25 @@
 
 package org.apache.bcel.verifier;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.Collection;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class VerifierTestCase extends TestCase {
+public class VerifierTestCase {
 
+    @Test
     public void testDefaultMethodValidation() {
         final String classname = Collection.class.getName();
 
         final Verifier verifier = VerifierFactory.getVerifier(classname);
         VerificationResult result = verifier.doPass1();
 
-        assertEquals("Pass 1 verification of " + classname + " failed: " + result.getMessage(), VerificationResult.VERIFIED_OK,
-                result.getStatus());
+        assertEquals(VerificationResult.VERIFIED_OK, result.getStatus(), "Pass 1 verification of " + classname + " failed: " + result.getMessage());
 
         result = verifier.doPass2();
 
-        assertEquals("Pass 2 verification of " + classname + " failed: " + result.getMessage(), VerificationResult.VERIFIED_OK,
-                result.getStatus());
+        assertEquals(VerificationResult.VERIFIED_OK, result.getStatus(), "Pass 2 verification of " + classname + " failed: " + result.getMessage());
     }
 }

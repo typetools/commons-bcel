@@ -19,7 +19,11 @@ package org.apache.bcel.verifier.tests;
 
 import java.io.Serializable;
 
-public class TestArray01{
+public class TestArray01 {
+
+    public static Object foo(final String s) {
+        return s;
+    }
 
     public static Object test1() {
         final String[] a = new String[4];
@@ -46,9 +50,5 @@ public class TestArray01{
 
     public static Cloneable test6() {
         return new Object[1];
-    }
-
-    public static Object foo(final String s) {
-        return s;
     }
 }

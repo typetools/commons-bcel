@@ -17,7 +17,8 @@
 
 package org.apache.bcel.verifier.structurals;
 
-import org.junit.Test;
+import org.apache.bcel.Constants;
+import org.junit.jupiter.api.Test;
 
 public class UninitializedObjectTypeTestCase {
 
@@ -27,7 +28,6 @@ public class UninitializedObjectTypeTestCase {
     @Test
     public void testReferenceToConstant() {
         @SuppressWarnings("unused")
-        final
-        short referenceToConstant = UninitializedObjectType.AALOAD;
+        final short referenceToConstant = Constants.AALOAD;
     }
 }

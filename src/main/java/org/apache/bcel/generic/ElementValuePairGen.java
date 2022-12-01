@@ -32,17 +32,14 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @since 6.0
  */
 @AnnotatedFor({"signedness"})
-public class ElementValuePairGen
-{
+public class ElementValuePairGen {
     private @NonNegative int nameIdx;
 
     private final ElementValueGen value;
 
     private final ConstantPoolGen constantPoolGen;
 
-    public ElementValuePairGen(final ElementValuePair nvp, final ConstantPoolGen cpool,
-            final boolean copyPoolEntries)
-    {
+    public ElementValuePairGen(final ElementValuePair nvp, final ConstantPoolGen cpool, final boolean copyPoolEntries) {
         this.constantPoolGen = cpool;
         // J5ASSERT:
         // Could assert nvp.getNameString() points to the same thing as
@@ -52,71 +49,56 @@ public class ElementValuePairGen
         // {
         // throw new IllegalArgumentException("envp buggered");
         // }
-        if (copyPoolEntries)
-        {
+        if (copyPoolEntries) {
             nameIdx = cpool.addUtf8(nvp.getNameString());
-        }
-        else
-        {
+        } else {
             nameIdx = nvp.getNameIndex();
         }
         value = ElementValueGen.copy(nvp.getValue(), cpool, copyPoolEntries);
     }
 
-    /**
-     * Retrieve an immutable version of this ElementNameValuePairGen
-     */
-    public ElementValuePair getElementNameValuePair()
-    {
-        final ElementValue immutableValue = value.getElementValue();
-        return new ElementValuePair(nameIdx, immutableValue, constantPoolGen
-                .getConstantPool());
-    }
-
-    protected ElementValuePairGen(final @NonNegative int idx, final ElementValueGen value,
-            final ConstantPoolGen cpool)
-    {
+    protected ElementValuePairGen(final @NonNegative int idx, final ElementValueGen value, final ConstantPoolGen cpool) {
         this.nameIdx = idx;
         this.value = value;
         this.constantPoolGen = cpool;
     }
 
-    public ElementValuePairGen(final String name, final ElementValueGen value,
-            final ConstantPoolGen cpool)
-    {
+    public ElementValuePairGen(final String name, final ElementValueGen value, final ConstantPoolGen cpool) {
         this.nameIdx = cpool.addUtf8(name);
         this.value = value;
         this.constantPoolGen = cpool;
     }
 
-    protected void dump(final DataOutputStream dos) throws IOException
-    {
+    protected void dump(final DataOutputStream dos) throws IOException {
         dos.writeShort(nameIdx); // u2 name of the element
         value.dump(dos);
     }
 
+    /**
+     * Retrieve an immutable version of this ElementNameValuePairGen
+     */
+    public ElementValuePair getElementNameValuePair() {
+        final ElementValue immutableValue = value.getElementValue();
+        return new ElementValuePair(nameIdx, immutableValue, constantPoolGen.getConstantPool());
+    }
+
     @Pure
-    public @NonNegative int getNameIndex()
-    {
+    public @NonNegative int getNameIndex() {
         return nameIdx;
     }
 
-    public final String getNameString()
-    {
+    public final String getNameString() {
         // ConstantString cu8 = (ConstantString)constantPoolGen.getConstant(nameIdx);
         return ((ConstantUtf8) constantPoolGen.getConstant(nameIdx)).getBytes();
     }
 
     @Pure
-    public final ElementValueGen getValue()
-    {
+    public final ElementValueGen getValue() {
         return value;
     }
 
     @Override
-    public String toString()
-    {
-        return "ElementValuePair:[" + getNameString() + "="
-                + value.stringifyValue() + "]";
+    public String toString() {
+        return "ElementValuePair:[" + getNameString() + "=" + value.stringifyValue() + "]";
     }
 }

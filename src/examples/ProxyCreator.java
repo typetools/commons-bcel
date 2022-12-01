@@ -19,14 +19,14 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import org.apache.bcel.Constants;
+import org.apache.bcel.Const;
 import org.apache.bcel.classfile.Utility;
 import org.apache.bcel.generic.ALOAD;
 import org.apache.bcel.generic.ClassGen;
 import org.apache.bcel.generic.ConstantPoolGen;
 import org.apache.bcel.generic.GETSTATIC;
 import org.apache.bcel.generic.INVOKEVIRTUAL;
-import org.apache.bcel.generic.InstructionConstants;
+import org.apache.bcel.generic.InstructionConst;
 import org.apache.bcel.generic.InstructionFactory;
 import org.apache.bcel.generic.InstructionList;
 import org.apache.bcel.generic.MethodGen;
@@ -35,17 +35,18 @@ import org.apache.bcel.generic.PUSH;
 import org.apache.bcel.generic.Type;
 
 /**
- * Dynamically creates and uses a proxy for {@code java.awt.event.ActionListener}
- * via the classloader mechanism if called with
- * <pre>java org.apache.bcel.util.JavaWrapper ProxyCreator</pre>
+ * Dynamically creates and uses a proxy for {@code java.awt.event.ActionListener} via the classloader mechanism if
+ * called with
  *
- * The trick is to encode the byte code we need into the class name
- * using the Utility.encode() method. This will result however in big
- * ugly class name, so for many cases it will be more sufficient to
- * put some clever creation code into the class loader.
+ * <pre>
+ * java org.apache.bcel.util.JavaWrapper ProxyCreator
+ * </pre>
+ *
+ * The trick is to encode the byte code we need into the class name using the Utility.encode() method. This will result
+ * however in big ugly class name, so for many cases it will be more sufficient to put some clever creation code into
+ * the class loader.
  * <p>
- * This is comparable to the mechanism provided via
- * {@code java.lang.reflect.Proxy}, but much more flexible.
+ * This is comparable to the mechanism provided via {@code java.lang.reflect.Proxy}, but much more flexible.
  * </p>
  *
  * @see org.apache.bcel.util.JavaWrapper
@@ -57,9 +58,9 @@ public class ProxyCreator {
      * Load class and create instance
      */
     @SuppressWarnings("nullness") // bug in BCEL: should throw instead of returning null
-    public static Object createProxy(final String pack, final String class_name) {
+    public static Object createProxy(final String pack, final String className) {
         try {
-            final Class<?> cl = Class.forName(pack + "$$BCEL$$" + class_name);
+            final Class<?> cl = Class.forName(pack + "$$BCEL$$" + className);
             return cl.newInstance();
         } catch (final Exception e) {
             e.printStackTrace();
@@ -69,9 +70,8 @@ public class ProxyCreator {
     }
 
     /**
-     * Create JavaClass object for a simple proxy for an java.awt.event.ActionListener
-     * that just prints the passed arguments, load and use it via the class loader
-     * mechanism.
+     * Create JavaClass object for a simple proxy for an java.awt.event.ActionListener that just prints the passed
+     * arguments, load and use it via the class loader mechanism.
      */
     public static void main(final String[] argv) throws Exception {
         final ClassLoader loader = ProxyCreator.class.getClassLoader();
@@ -80,37 +80,31 @@ public class ProxyCreator {
         // TODO this is broken; cannot ever be true now that ClassLoader has been dropped
         if (loader.getClass().toString().equals("class org.apache.bcel.util.ClassLoader")) {
             // Real class name will be set by the class loader
-            final ClassGen cg = new ClassGen("foo", "java.lang.Object", "", Constants.ACC_PUBLIC,
-                    new String[]{"java.awt.event.ActionListener"});
+            final ClassGen cg = new ClassGen("foo", "java.lang.Object", "", Const.ACC_PUBLIC, new String[] {"java.awt.event.ActionListener"});
 
             // That's important, otherwise newInstance() won't work
-            cg.addEmptyConstructor(Constants.ACC_PUBLIC);
+            cg.addEmptyConstructor(Const.ACC_PUBLIC);
 
             final InstructionList il = new InstructionList();
             final ConstantPoolGen cp = cg.getConstantPool();
             final InstructionFactory factory = new InstructionFactory(cg);
 
-            final int out = cp.addFieldref("java.lang.System", "out",
-                    "Ljava/io/PrintStream;");
-            final int println = cp.addMethodref("java.io.PrintStream", "println",
-                    "(Ljava/lang/Object;)V");
-            final MethodGen mg = new MethodGen(Constants.ACC_PUBLIC, Type.VOID,
-                    new Type[]{
-                            new ObjectType("java.awt.event.ActionEvent")
-                    }, null, "actionPerformed", "foo", il, cp);
+            final int out = cp.addFieldref("java.lang.System", "out", "Ljava/io/PrintStream;");
+            final int println = cp.addMethodref("java.io.PrintStream", "println", "(Ljava/lang/Object;)V");
+            final MethodGen mg = new MethodGen(Const.ACC_PUBLIC, Type.VOID, new Type[] {new ObjectType("java.awt.event.ActionEvent")}, null,
+                "actionPerformed", "foo", il, cp);
 
             // System.out.println("actionPerformed:" + event);
             il.append(new GETSTATIC(out));
             il.append(factory.createNew("java.lang.StringBuffer"));
-            il.append(InstructionConstants.DUP);
+            il.append(InstructionConst.DUP);
             il.append(new PUSH(cp, "actionPerformed:"));
-            il.append(factory.createInvoke("java.lang.StringBuffer", "<init>", Type.VOID,
-                    new Type[]{Type.STRING}, Constants.INVOKESPECIAL));
+            il.append(factory.createInvoke("java.lang.StringBuffer", "<init>", Type.VOID, new Type[] {Type.STRING}, Const.INVOKESPECIAL));
 
             il.append(new ALOAD(1));
             il.append(factory.createAppend(Type.OBJECT));
             il.append(new INVOKEVIRTUAL(println));
-            il.append(InstructionConstants.RETURN);
+            il.append(InstructionConst.RETURN);
 
             mg.stripAttributes(true);
             mg.setMaxStack();

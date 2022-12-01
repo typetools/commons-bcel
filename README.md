@@ -43,10 +43,12 @@
 Apache Commons BCEL
 ===================
 
-[![Build Status](https://travis-ci.org/apache/commons-bcel.svg)](https://travis-ci.org/apache/commons-bcel)
-[![Coverage Status](https://coveralls.io/repos/apache/commons-bcel/badge.svg)](https://coveralls.io/r/apache/commons-bcel)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.bcel/bcel/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.apache.bcel/bcel/)
-[![Javadocs](https://javadoc.io/badge/org.apache.bcel/bcel/6.5.0.svg)](https://javadoc.io/doc/org.apache.bcel/bcel/6.5.0)
+[![GitHub Actions Status](https://github.com/apache/commons-bcel/workflows/Java%20CI/badge.svg)](https://github.com/apache/commons-bcel/actions)
+[![Coverage Status](https://codecov.io/gh/apache/commons-bcel/branch/master/graph/badge.svg)](https://app.codecov.io/gh/apache/commons-bcel)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.bcel/bcel/badge.svg?gav=true)](https://maven-badges.herokuapp.com/maven-central/org.apache.bcel/bcel/?gav=true)
+[![Javadocs](https://javadoc.io/badge/org.apache.bcel/bcel/6.6.0.svg)](https://javadoc.io/doc/org.apache.bcel/bcel/6.6.0)
+[![CodeQL](https://github.com/apache/commons-bcel/workflows/CodeQL/badge.svg)](hhttps://github.com/apache/commons-bcel/actions/workflows/codeql-analysis.yml?query=workflow%3ACodeQL)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/apache/commons-text/badge)](https://api.securityscorecards.dev/projects/github.com/apache/commons-text)
 
 Apache Commons Bytecode Engineering Library
 
@@ -67,7 +69,7 @@ Alternatively you can pull it from the central Maven repositories:
 <dependency>
   <groupId>org.apache.bcel</groupId>
   <artifactId>bcel</artifactId>
-  <version>6.5.0</version>
+  <version>6.6.0</version>
 </dependency>
 ```
 
@@ -79,7 +81,7 @@ There are some guidelines which will make applying PRs easier for us:
 + No tabs! Please use spaces for indentation.
 + Respect the code style.
 + Create minimal diffs - disable on save actions like reformat source code or organize imports. If you feel the source code should be reformatted create a separate PR for this change.
-+ Provide JUnit tests for your changes and make sure your changes don't break any existing tests by running ```mvn clean test```.
++ Provide JUnit tests for your changes and make sure your changes don't break any existing tests by running ```mvn```.
 
 If you plan to contribute on a regular basis, please consider filing a [contributor license agreement](https://www.apache.org/licenses/#clas).
 You can learn more about contributing via GitHub in our [contribution guidelines](CONTRIBUTING.md).

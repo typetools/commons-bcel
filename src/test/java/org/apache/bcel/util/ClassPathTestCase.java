@@ -18,26 +18,30 @@
 
 package org.apache.bcel.util;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.bcel.AbstractTestCase;
-import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 public class ClassPathTestCase extends AbstractTestCase {
 
+    @Test
     public void testGetClassFile() throws IOException {
-        Assert.assertNotNull(ClassPath.SYSTEM_CLASS_PATH.getClassFile("java.lang.String"));
+        assertNotNull(ClassPath.SYSTEM_CLASS_PATH.getClassFile("java.lang.String"));
     }
 
+    @Test
     public void testGetResource() {
-        Assert.assertNotNull(ClassPath.SYSTEM_CLASS_PATH.getResource("java/lang/String.class"));
+        assertNotNull(ClassPath.SYSTEM_CLASS_PATH.getResource("java/lang/String.class"));
     }
 
+    @Test
     public void testGetResourceAsStream() throws IOException {
-        try (final InputStream inputStream = ClassPath.SYSTEM_CLASS_PATH
-                .getResourceAsStream("java/lang/String.class")) {
-            Assert.assertNotNull(inputStream);
+        try (final InputStream inputStream = ClassPath.SYSTEM_CLASS_PATH.getResourceAsStream("java/lang/String.class")) {
+            assertNotNull(inputStream);
         }
     }
 }

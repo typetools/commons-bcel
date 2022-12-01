@@ -1,11 +1,3 @@
-package org.apache.bcel.verifier.tests;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URISyntaxException;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -23,6 +15,14 @@ import java.net.URISyntaxException;
  * limitations under the License.
  *
  */
+package org.apache.bcel.verifier.tests;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URISyntaxException;
+
 public abstract class TestCreator {
 
     // Common package base name for generated test classes
@@ -35,18 +35,7 @@ public abstract class TestCreator {
         }
     }
 
-    private String getClassName() {
-        final String name = getClass().getName();
-        return name.substring(name.lastIndexOf('.')+1).replace("Creator", ".class");
-    }
-
-    private File getPackageFolder() throws IOException {
-        return new File(getClassesFolder(), getPackageName());
-    }
-
-    protected String getPackageName() {
-        return getClass().getPackage().getName().replace('.', '/');
-    }
+    public abstract void create(OutputStream out) throws IOException;
 
     private File getClassesFolder() throws IOException {
         try {
@@ -56,5 +45,16 @@ public abstract class TestCreator {
         }
     }
 
-    public abstract void create(OutputStream out) throws IOException;
+    private String getClassName() {
+        final String name = getClass().getName();
+        return name.substring(name.lastIndexOf('.') + 1).replace("Creator", ".class");
+    }
+
+    private File getPackageFolder() throws IOException {
+        return new File(getClassesFolder(), getPackageName());
+    }
+
+    protected String getPackageName() {
+        return getClass().getPackage().getName().replace('.', '/');
+    }
 }

@@ -22,23 +22,37 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 
 /**
- * This class represents a JVM execution frame; that means,
- * a local variable array and an operand stack.
+ * This class represents a JVM execution frame; that means, a local variable array and an operand stack.
  *
  */
 
-public class Frame{
+public class Frame {
 
     /**
-     * For instance initialization methods, it is important to remember
-     * which instance it is that is not initialized yet. It will be
-     * initialized invoking another constructor later.
-     * NULL means the instance already *is* initialized.
-     * @deprecated Use the getter/setter to access the field as it may
-     * be made private in a later release
+     * For instance initialization methods, it is important to remember which instance it is that is not initialized yet. It
+     * will be initialized invoking another constructor later. NULL means the instance already *is* initialized.
+     *
+     * @deprecated Use the getter/setter to access the field as it may be made private in a later release
      */
     @Deprecated
     protected static UninitializedObjectType _this;
+
+    /**
+     * @return the _this
+     * @since 6.0
+     */
+    @Pure
+    public static UninitializedObjectType getThis() {
+        return _this;
+    }
+
+    /**
+     * @param _this the _this to set
+     * @since 6.0
+     */
+    public static void setThis(final UninitializedObjectType _this) {
+        Frame._this = _this;
+    }
 
     /**
      *
@@ -71,8 +85,19 @@ public class Frame{
      */
     @Override
     protected Object clone() {
-        final Frame f = new Frame(locals.getClone(), stack.getClone());
-        return f;
+        return new Frame(locals.getClone(), stack.getClone());
+    }
+
+    /**
+     *
+     */
+    @Override
+    public boolean equals(final @Nullable Object o) {
+        if (!(o instanceof Frame)) {
+            return false; // implies "null" is non-equal.
+        }
+        final Frame f = (Frame) o;
+        return this.stack.equals(f.stack) && this.locals.equals(f.locals);
     }
 
     /**
@@ -98,21 +123,12 @@ public class Frame{
         return stack;
     }
 
-    /** @return a hash code value for the object.
-     */
-    @Override
-    public int hashCode() { return stack.hashCode() ^ locals.hashCode(); }
-
     /**
-     *
+     * @return a hash code value for the object.
      */
     @Override
-    public boolean equals(final @Nullable Object o) {
-        if (!(o instanceof Frame)) {
-            return false; // implies "null" is non-equal.
-        }
-        final Frame f = (Frame) o;
-        return this.stack.equals(f.stack) && this.locals.equals(f.locals);
+    public int hashCode() {
+        return stack.hashCode() ^ locals.hashCode();
     }
 
     /**
@@ -120,27 +136,10 @@ public class Frame{
      */
     @Override
     public String toString() {
-        String s="Local Variables:\n";
+        String s = "Local Variables:\n";
         s += locals;
         s += "OperandStack:\n";
         s += stack;
         return s;
-    }
-
-    /**
-     * @return the _this
-     * @since 6.0
-     */
-    @Pure
-    public static UninitializedObjectType getThis() {
-        return _this;
-    }
-
-    /**
-     * @param _this the _this to set
-     * @since 6.0
-     */
-    public static void setThis(final UninitializedObjectType _this) {
-        Frame._this = _this;
     }
 }

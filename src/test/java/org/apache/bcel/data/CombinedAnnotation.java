@@ -22,7 +22,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CombinedAnnotation
-{
-    public SimpleAnnotation[] value();
+public @interface CombinedAnnotation {
+    SimpleAnnotation[] value();
 }

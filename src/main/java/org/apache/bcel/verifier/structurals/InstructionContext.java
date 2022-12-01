@@ -17,7 +17,6 @@
  */
 package org.apache.bcel.verifier.structurals;
 
-
 import java.util.ArrayList;
 
 import org.apache.bcel.generic.InstructionHandle;
@@ -25,67 +24,33 @@ import org.apache.bcel.generic.InstructionHandle;
 import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 
 /**
- * An InstructionContext offers convenient access
- * to information like control flow successors and
- * such.
+ * An InstructionContext offers convenient access to information like control flow successors and such.
  *
  */
-public @UsesObjectEquals interface InstructionContext{
+public @UsesObjectEquals interface InstructionContext {
 
     /**
-     * The getTag and setTag methods may be used for
-     * temporary flagging, such as graph colouring.
-     * Nothing in the InstructionContext object depends
-     * on the value of the tag. JustIce does not use it.
+     * This method symbolically executes the Instruction held in the InstructionContext. It "merges in" the incoming
+     * execution frame situation (see The Java Virtual Machine Specification, 2nd edition, page 146). By so doing, the
+     * outgoing execution frame situation is calculated.
      *
-     * @see #setTag(int tag)
-     */
-    int getTag();
-
-    /**
-     * The getTag and setTag methods may be used for
-     * temporary flagging, such as graph colouring.
-     * Nothing in the InstructionContext object depends
-     * on the value of the tag. JustIce does not use it.
-     *
-     * @see #getTag()
-     */
-    void setTag(int tag);
-
-    /**
-     * This method symbolically executes the Instruction
-     * held in the InstructionContext.
-     * It "merges in" the incoming execution frame situation
-     * (see The Java Virtual Machine Specification, 2nd
-     * edition, page 146).
-     * By so doing, the outgoing execution frame situation
-     * is calculated.
-     *
-     * This method is JustIce-specific and is usually of
-     * no sense for users of the ControlFlowGraph class.
-     * They should use getInstruction().accept(Visitor),
-     * possibly in conjunction with the ExecutionVisitor.
+     * This method is JustIce-specific and is usually of no sense for users of the ControlFlowGraph class. They should use
+     * getInstruction().accept(Visitor), possibly in conjunction with the ExecutionVisitor.
      *
      *
      * @see ControlFlowGraph
      * @see ExecutionVisitor
      * @see #getOutFrame(ArrayList)
-     * @return true -  if and only if the "outgoing" frame situation
-     * changed from the one before execute()ing.
+     * @return true - if and only if the "outgoing" frame situation changed from the one before execute()ing.
      */
-    boolean execute(Frame inFrame, ArrayList<InstructionContext> executionPredecessors,
-            InstConstraintVisitor icv, ExecutionVisitor ev);
-
-    Frame getInFrame();
+    boolean execute(Frame inFrame, ArrayList<InstructionContext> executionPredecessors, InstConstraintVisitor icv, ExecutionVisitor ev);
 
     /**
-     * This method returns the outgoing execution frame situation;
-     * therefore <B>it has to be calculated by execute(Frame, ArrayList)
-     * first.</B>
-     *
-     * @see #execute(Frame, ArrayList, InstConstraintVisitor, ExecutionVisitor)
+     * Returns the exception handlers that protect this instruction. They are special control flow successors.
      */
-    Frame getOutFrame(ArrayList<InstructionContext> executionPredecessors);
+    ExceptionHandler[] getExceptionHandlers();
+
+    Frame getInFrame();
 
     /**
      * Returns the InstructionHandle this InstructionContext is wrapped around.
@@ -95,14 +60,33 @@ public @UsesObjectEquals interface InstructionContext{
     InstructionHandle getInstruction();
 
     /**
+     * This method returns the outgoing execution frame situation; therefore <B>it has to be calculated by execute(Frame,
+     * ArrayList) first.</B>
+     *
+     * @see #execute(Frame, ArrayList, InstConstraintVisitor, ExecutionVisitor)
+     */
+    Frame getOutFrame(ArrayList<InstructionContext> executionPredecessors);
+
+    /**
      * Returns the usual control flow successors.
+     *
      * @see #getExceptionHandlers()
      */
     InstructionContext[] getSuccessors();
 
     /**
-     * Returns the exception handlers that protect this instruction.
-     * They are special control flow successors.
+     * The getTag and setTag methods may be used for temporary flagging, such as graph colouring. Nothing in the
+     * InstructionContext object depends on the value of the tag. JustIce does not use it.
+     *
+     * @see #setTag(int tag)
      */
-    ExceptionHandler[] getExceptionHandlers();
+    int getTag();
+
+    /**
+     * The getTag and setTag methods may be used for temporary flagging, such as graph colouring. Nothing in the
+     * InstructionContext object depends on the value of the tag. JustIce does not use it.
+     *
+     * @see #getTag()
+     */
+    void setTag(int tag);
 }

@@ -17,21 +17,22 @@
 
 package org.apache.bcel.util;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.io.FileInputStream;
 
+import org.apache.bcel.Constants;
 import org.apache.bcel.classfile.ClassParser;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+public class Class2HTMLTestCase {
 
-public class Class2HTMLTestCase extends TestCase {
-
+    @Test
     public void testConvertJavaUtil() throws Exception {
         final File outputDir = new File("target/test-output/html");
         if (!outputDir.mkdirs()) { // either was not created or already existed
-            Assert.assertTrue(outputDir.isDirectory()); // fail if missing
+            assertTrue(outputDir.isDirectory()); // fail if missing
         }
 
         try (FileInputStream file = new FileInputStream("target/test-classes/Java8Example.class")) {
@@ -48,8 +49,7 @@ public class Class2HTMLTestCase extends TestCase {
     @Test
     public void testReferenceToConstant() {
         @SuppressWarnings("unused")
-        final
-        short referenceToConstant = Class2HTML.AALOAD;
+        final short referenceToConstant = Constants.AALOAD;
     }
 
 }

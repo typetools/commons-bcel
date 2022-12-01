@@ -26,9 +26,10 @@ import org.apache.bcel.classfile.JavaClass;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
- * This repository is used in situations where a Class is created outside the realm of a ClassLoader. Classes are loaded from the file systems using the paths
- * specified in the given class path. By default, this is the value returned by ClassPath.getClassPath(). This repository holds onto classes with
- * SoftReferences, and will reload as needed, in cases where memory sizes are important.
+ * This repository is used in situations where a Class is created outside the realm of a ClassLoader. Classes are loaded
+ * from the file systems using the paths specified in the given class path. By default, this is the value returned by
+ * ClassPath.getClassPath(). This repository holds onto classes with SoftReferences, and will reload as needed, in cases
+ * where memory sizes are important.
  *
  * @see org.apache.bcel.Repository
  */
@@ -41,21 +42,11 @@ public class MemorySensitiveClassPathRepository extends AbstractClassPathReposit
     }
 
     /**
-     * Store a new JavaClass instance into this Repository.
+     * Clear all entries from cache.
      */
     @Override
-    public void storeClass(final JavaClass clazz) {
-        // Not calling super.storeClass because this subclass maintains the mapping.
-        loadedClasses.put(clazz.getClassName(), new SoftReference<>(clazz));
-        clazz.setRepository(this);
-    }
-
-    /**
-     * Remove class from repository
-     */
-    @Override
-    public void removeClass(final JavaClass clazz) {
-        loadedClasses.remove(clazz.getClassName());
+    public void clear() {
+        loadedClasses.clear();
     }
 
     /**
@@ -71,10 +62,20 @@ public class MemorySensitiveClassPathRepository extends AbstractClassPathReposit
     }
 
     /**
-     * Clear all entries from cache.
+     * Remove class from repository
      */
     @Override
-    public void clear() {
-        loadedClasses.clear();
+    public void removeClass(final JavaClass clazz) {
+        loadedClasses.remove(clazz.getClassName());
+    }
+
+    /**
+     * Store a new JavaClass instance into this Repository.
+     */
+    @Override
+    public void storeClass(final JavaClass clazz) {
+        // Not calling super.storeClass because this subclass maintains the mapping.
+        loadedClasses.put(clazz.getClassName(), new SoftReference<>(clazz));
+        clazz.setRepository(this);
     }
 }

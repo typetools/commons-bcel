@@ -29,25 +29,114 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 /**
  * LDC - Push item from constant pool.
  *
- * <PRE>Stack: ... -&gt; ..., item</PRE>
+ * <PRE>
+ * Stack: ... -&gt; ..., item
+ * </PRE>
  *
  */
 @AnnotatedFor({"signedness"})
 public class LDC extends CPInstruction implements PushInstruction, ExceptionThrower {
 
     /**
-     * Empty constructor needed for Instruction.readInstruction.
-     * Not to be used otherwise.
+     * Empty constructor needed for Instruction.readInstruction. Not to be used otherwise.
      */
     LDC() {
     }
-
 
     public LDC(final @NonNegative int index) {
         super(org.apache.bcel.Const.LDC_W, index);
         setSize();
     }
 
+    /**
+     * Call corresponding visitor method(s). The order is: Call visitor methods of implemented interfaces first, then call
+     * methods according to the class hierarchy in descending order, i.e., the most specific visitXXX() call comes last.
+     *
+     * @param v Visitor object
+     */
+    @Override
+    public void accept(final Visitor v) {
+        v.visitStackProducer(this);
+        v.visitPushInstruction(this);
+        v.visitExceptionThrower(this);
+        v.visitTypedInstruction(this);
+        v.visitCPInstruction(this);
+        v.visitLDC(this);
+    }
+
+    /**
+     * Dump instruction as byte code to stream out.
+     *
+     * @param out Output stream
+     */
+    @Override
+    public void dump(final DataOutputStream out) throws IOException {
+        out.writeByte(super.getOpcode());
+        if (super.getLength() == 2) { // TODO useless check?
+            out.writeByte(super.getIndex());
+        } else {
+            out.writeShort(super.getIndex());
+        }
+    }
+
+    @Override
+    public Class<?>[] getExceptions() {
+        return ExceptionConst.createExceptions(ExceptionConst.EXCS.EXCS_STRING_RESOLUTION);
+    }
+
+    @Override
+    public Type getType(final ConstantPoolGen cpg) {
+        switch (cpg.getConstantPool().getConstant(super.getIndex()).getTag()) {
+        case org.apache.bcel.Const.CONSTANT_String:
+            return Type.STRING;
+        case org.apache.bcel.Const.CONSTANT_Float:
+            return Type.FLOAT;
+        case org.apache.bcel.Const.CONSTANT_Integer:
+            return Type.INT;
+        case org.apache.bcel.Const.CONSTANT_Class:
+            return Type.CLASS;
+        default: // Never reached
+            throw new IllegalArgumentException("Unknown or invalid constant type at " + super.getIndex());
+        }
+    }
+
+    public Object getValue(final ConstantPoolGen cpg) {
+        org.apache.bcel.classfile.Constant c = cpg.getConstantPool().getConstant(super.getIndex());
+        switch (c.getTag()) {
+        case org.apache.bcel.Const.CONSTANT_String:
+            final int i = ((org.apache.bcel.classfile.ConstantString) c).getStringIndex();
+            c = cpg.getConstantPool().getConstant(i);
+            return ((org.apache.bcel.classfile.ConstantUtf8) c).getBytes();
+        case org.apache.bcel.Const.CONSTANT_Float:
+            return Float.valueOf(((org.apache.bcel.classfile.ConstantFloat) c).getBytes());
+        case org.apache.bcel.Const.CONSTANT_Integer:
+            return Integer.valueOf(((org.apache.bcel.classfile.ConstantInteger) c).getBytes());
+        case org.apache.bcel.Const.CONSTANT_Class:
+            final int nameIndex = ((org.apache.bcel.classfile.ConstantClass) c).getNameIndex();
+            c = cpg.getConstantPool().getConstant(nameIndex);
+            return new ObjectType(((org.apache.bcel.classfile.ConstantUtf8) c).getBytes());
+        default: // Never reached
+            throw new IllegalArgumentException("Unknown or invalid constant type at " + super.getIndex());
+        }
+    }
+
+    /**
+     * Read needed data (e.g. index) from file.
+     */
+    @Override
+    protected void initFromFile(final ByteSequence bytes, final boolean wide) throws IOException {
+        super.setLength(2);
+        super.setIndex(bytes.readUnsignedByte());
+    }
+
+    /**
+     * Set the index to constant pool and adjust size.
+     */
+    @Override
+    public final void setIndex(final @NonNegative int index) {
+        super.setIndex(index);
+        setSize();
+    }
 
     // Adjust to proper size
     protected final void setSize() {
@@ -58,103 +147,5 @@ public class LDC extends CPInstruction implements PushInstruction, ExceptionThro
             super.setOpcode(org.apache.bcel.Const.LDC_W);
             super.setLength(3);
         }
-    }
-
-
-    /**
-     * Dump instruction as byte code to stream out.
-     * @param out Output stream
-     */
-    @Override
-    public void dump( final DataOutputStream out ) throws IOException {
-        out.writeByte(super.getOpcode());
-        if (super.getLength() == 2) { // TODO useless check?
-            out.writeByte(super.getIndex());
-        } else {
-            out.writeShort(super.getIndex());
-        }
-    }
-
-
-    /**
-     * Set the index to constant pool and adjust size.
-     */
-    @Override
-    public final void setIndex( final @NonNegative int index ) {
-        super.setIndex(index);
-        setSize();
-    }
-
-
-    /**
-     * Read needed data (e.g. index) from file.
-     */
-    @Override
-    protected void initFromFile( final ByteSequence bytes, final boolean wide ) throws IOException {
-        super.setLength(2);
-        super.setIndex(bytes.readUnsignedByte());
-    }
-
-
-    public Object getValue( final ConstantPoolGen cpg ) {
-        org.apache.bcel.classfile.Constant c = cpg.getConstantPool().getConstant(super.getIndex());
-        switch (c.getTag()) {
-            case org.apache.bcel.Const.CONSTANT_String:
-                final int i = ((org.apache.bcel.classfile.ConstantString) c).getStringIndex();
-                c = cpg.getConstantPool().getConstant(i);
-                return ((org.apache.bcel.classfile.ConstantUtf8) c).getBytes();
-            case org.apache.bcel.Const.CONSTANT_Float:
-                return new Float(((org.apache.bcel.classfile.ConstantFloat) c).getBytes());
-            case org.apache.bcel.Const.CONSTANT_Integer:
-                return Integer.valueOf(((org.apache.bcel.classfile.ConstantInteger) c).getBytes());
-            case org.apache.bcel.Const.CONSTANT_Class:
-                final int nameIndex = ((org.apache.bcel.classfile.ConstantClass) c).getNameIndex();
-                c = cpg.getConstantPool().getConstant(nameIndex);
-                return new ObjectType(((org.apache.bcel.classfile.ConstantUtf8) c).getBytes());
-            default: // Never reached
-                throw new IllegalArgumentException("Unknown or invalid constant type at " + super.getIndex());
-        }
-    }
-
-
-    @Override
-    public Type getType( final ConstantPoolGen cpg ) {
-        switch (cpg.getConstantPool().getConstant(super.getIndex()).getTag()) {
-            case org.apache.bcel.Const.CONSTANT_String:
-                return Type.STRING;
-            case org.apache.bcel.Const.CONSTANT_Float:
-                return Type.FLOAT;
-            case org.apache.bcel.Const.CONSTANT_Integer:
-                return Type.INT;
-            case org.apache.bcel.Const.CONSTANT_Class:
-                return Type.CLASS;
-            default: // Never reached
-                throw new IllegalArgumentException("Unknown or invalid constant type at " + super.getIndex());
-        }
-    }
-
-
-    @Override
-    public Class<?>[] getExceptions() {
-        return ExceptionConst.createExceptions(ExceptionConst.EXCS.EXCS_STRING_RESOLUTION);
-    }
-
-
-    /**
-     * Call corresponding visitor method(s). The order is:
-     * Call visitor methods of implemented interfaces first, then
-     * call methods according to the class hierarchy in descending order,
-     * i.e., the most specific visitXXX() call comes last.
-     *
-     * @param v Visitor object
-     */
-    @Override
-    public void accept( final Visitor v ) {
-        v.visitStackProducer(this);
-        v.visitPushInstruction(this);
-        v.visitExceptionThrower(this);
-        v.visitTypedInstruction(this);
-        v.visitCPInstruction(this);
-        v.visitLDC(this);
     }
 }

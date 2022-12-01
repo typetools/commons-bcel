@@ -62,6 +62,84 @@ The <action> type attribute can be add,update,fix,remove.
    -->
 
   <body>
+    <release version="6.6.0" date="2022-10-08" description="Minor feature and bug fix release.">
+       <!-- FIX -->
+      <action                  type="fix" dev="ggregory" due-to="Mark Roberts, Gary Gregory">Improve test case coverage; fix Utility.encode bug #46.</action>
+      <action issue="BCEL-342" type="fix" dev="ggregory" due-to="Allon Murienik, Gary Gregory">Migrate test suite to JUnit Jupiter #68.</action>
+      <action issue="BCEL-343" type="fix" dev="ggregory" due-to="Allon Murienik, Gary Gregory">JUnit Assertion improvement #69.</action>
+      <action                  type="fix" dev="ggregory" due-to="Mark Roberts">Minor improvements to comments and toString() methods #71.</action>
+      <action                  type="fix" dev="ggregory" due-to="Arturo Bernal">Minor Improvements #83.</action>
+      <action                  type="fix" dev="ggregory" due-to="Arturo Bernal">Inline variable and avoid unnecessary variable. #94.</action>
+      <action                  type="fix" dev="ggregory" due-to="Mark Roberts, Gary Gregory">Formalize PerformanceTest #168.</action>
+      <action                  type="fix" dev="ggregory" due-to="Arturo Bernal">Java 8 improvements #95.</action>
+      <action issue="BCEL-345" type="fix" dev="ggregory" due-to="Christine Poerschke">Make documentation wording more inclusive #98.</action>
+      <action                  type="fix" dev="ggregory" due-to="Mark Roberts, Gary Gregory">Force unsigned short for LineNumber.toString() #118.</action>
+      <action                  type="fix" dev="ggregory" due-to="Tim Boudreau, Gary Gregory">Fix IllegalStateException when calling toString(ConstantPool) on a Module or ModuleRequires #125.</action>
+      <action                  type="fix" dev="ggregory" due-to="Gary Gregory">Generate HTML in UTF-8 instead of whatever happens to be the default platform encoding.</action>
+      <action issue="BCEL-303" type="fix" dev="ggregory" due-to="Mark Roberts, Gary Gregory">Several fixes to the verifier #117.</action>
+      <action issue="BCEL-307" type="fix" dev="ggregory" due-to="Mark Roberts, Gary Gregory">Several fixes to the verifier #117.</action>
+      <action issue="BCEL-308" type="fix" dev="ggregory" due-to="Mark Roberts, Gary Gregory">Several fixes to the verifier #117.</action>
+      <action issue="BCEL-309" type="fix" dev="ggregory" due-to="Mark Roberts, Gary Gregory">Several fixes to the verifier #117.</action>
+      <action issue="BCEL-311" type="fix" dev="ggregory" due-to="Mark Roberts, Gary Gregory">Several fixes to the verifier #117.</action>
+      <action issue="BCEL-312" type="fix" dev="ggregory" due-to="Mark Roberts, Gary Gregory">Several fixes to the verifier #117.</action>
+      <action issue="BCEL-313" type="fix" dev="ggregory" due-to="Mark Roberts, Gary Gregory">Several fixes to the verifier #117.</action>
+      <action issue="BCEL-337" type="fix" dev="ggregory" due-to="Mark Roberts, Gary Gregory">Several fixes to the verifier #117.</action>
+      <action                  type="fix" dev="ggregory" due-to="Michael Ernst, Gary Gregory">Close resources #138.</action>
+      <action                  type="fix" dev="ggregory" due-to="Alexander Kriegisch, Gary Gregory">Improve condy (constant dynamic) support #139.</action>
+      <action                  type="fix" dev="ggregory" due-to="Michael Ernst">Fix typos #140.</action>
+      <action issue="BCEL-363" type="fix" dev="ggregory" due-to="Richard Atkins, Gary Gregory">Enforce MAX_CP_ENTRIES in ConstantPoolGen and ConstantPool.dump #147.</action>
+      <action                  type="fix" dev="ggregory" due-to="Arturo Bernal, Gary Gregory">Minor Changes #99.</action>
+      <action                  type="fix" dev="ggregory" due-to="Arturo Bernal">Simplify boolean expressions #152.</action>
+      <action                  type="fix" dev="ggregory" due-to="Arturo Bernal">Use Math.max #151.</action>
+      <action                  type="fix" dev="ggregory" due-to="Gary Gregory">org.apache.bcel.classfile.Signature.translate(String) does not detect EOF correctly.</action>
+      <action                  type="fix" dev="ggregory" due-to="Gary Gregory">Fix SpotBugs [ERROR] High: Found reliance on default encoding in new org.apache.bcel.util.BCELifier(JavaClass, OutputStream): new java.io.PrintWriter(OutputStream) [org.apache.bcel.util.BCELifier] At BCELifier.java:[line 169] DM_DEFAULT_ENCODING.</action>
+      <action                  type="fix" dev="ggregory" due-to="Gary Gregory">Fix SpotBugs [ERROR] Medium: Unread field: org.apache.bcel.verifier.GraphicalVerifier.packFrame; should this field be static? [org.apache.bcel.verifier.GraphicalVerifier] At GraphicalVerifier.java:[line 43] SS_SHOULD_BE_STATIC.</action>
+      <action                  type="fix" dev="ggregory" due-to="Gary Gregory">Fix SpotBugs [ERROR] Medium: new org.apache.bcel.util.ModularRuntimeImage(String) creates a java.net.URLClassLoader classloader, which should be performed within a doPrivileged block [org.apache.bcel.util.ModularRuntimeImage] At ModularRuntimeImage.java:[line 68] DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED.</action>
+      <!-- ADD -->
+      <action                  type="add" dev="ggregory">Add github/codeql-action.</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Make Annotations implement Iterable&lt;AnnotationEntry&gt;.</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Make BootstrapMethods implement Iterable&lt;BootstrapMethod&gt;.</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Make ConstantPool implement Iterable&lt;Constant&gt;.</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Make InnerClasses implement Iterable&lt;InnerClass&gt;.</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Make LineNumberTable implement Iterable&lt;LineNumber&gt;.</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Make LocalVariableTable implement Iterable&lt;LocalVariable&gt;.</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Make LocalVariableTypeTable implement Iterable&lt;LocalVariable&gt;.</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Make MethodParameters implement Iterable&lt;MethodParameter&gt;.</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Make ParameterAnnotations implement Iterable&lt;ParameterAnnotationEntry&gt;.</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Add Const.MAJOR_15</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Add Const.MAJOR_16</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Add Const.MAJOR_17</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Add Const.MAJOR_18</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Add Const.MAJOR_19</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Add Const.MINOR_15</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Add Const.MINOR_16</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Add Const.MINOR_17</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Add Const.MINOR_18</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Add Const.MINOR_19</action>
+      <!-- UPDATES -->
+      <action                  type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump actions/cache from 2 to 3.0.10 #88, #93, #110, #119, #149, #154.</action>
+      <action                  type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump actions/checkout from 2.3.1 to 3.1.0 #59, #66, #73, #108, #115, #153.</action>
+      <action                  type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump actions/setup-java from 1.4.0 to 3.5.1 #62, #67.</action>
+      <action                  type="update" dev="ggregory" due-to="Gary Gregory">Bump tests from Apache Commons Lang 3.10 to 3.12.0</action>
+      <action                  type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-parent from 50 to 54.</action>
+      <action                  type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump biz.aQute.bndlib from 5.1.0 to 6.3.1, #54, #72, #81, #111.</action>
+      <action                  type="update" dev="ggregory" due-to="Dependabot">Bump maven-surefire-plugin from 3.0.0-M4 to 3.0.0-M7 #53, #124, #129.</action>
+      <action                  type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump maven-checkstyle-plugin from 3.1.0 to 3.2.0, #77, #141.</action>
+      <action                  type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump Jacoco from 0.8.5 to 0.8.8.</action>      
+      <action                  type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump commons-io from 2.7 to 2.11.0 #65, #96.</action>
+      <action                  type="update" dev="ggregory" due-to="Dependabot">Bump exec-maven-plugin from 1.6.0 to 3.1.0 #51, #134.</action>
+      <action                  type="update" dev="ggregory" due-to="Gary Gregory">Bump commons.japicmp.version from 0.14.3 to 0.16.0.</action>
+      <action                  type="update" dev="ggregory" due-to="Dependabot">Bump maven-pmd-plugin from 3.13.0 to 3.19. #74, #103, #116, #130, #142, #144.</action>
+      <action                  type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump pmd from 6.44.0 to 6.50.0.</action>
+      <action                  type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump junit-jupiter from 5.7.0 to 5.9.1 #78, #90, #101, #112, #135.</action>
+      <action                  type="update" dev="ggregory" due-to="Dependabot">Bump jna.version from 5.6.0 to 5.12.1 #84, #102, #109, #120, #131.</action>
+      <action                  type="update" dev="ggregory" due-to="Dependabot">Bump jmh.version from 1.19 to 1.35 #92, #100, #122.</action>
+      <action                  type="update" dev="ggregory" due-to="Gary Gregory">Bump maven-javadoc-plugin from 3.2.0 to 3.4.1.</action>
+      <action                  type="update" dev="ggregory" due-to="Gary Gregory">Bump Bump maven-bundle-plugin from 5.1.1 to 5.1.8.</action>
+      <action                  type="update" dev="ggregory" due-to="Dependabot">Bump taglist-maven-plugin from 2.4 to 3.0.0 #114.</action>
+      <action                  type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump spotbugs-maven-plugin from 4.5.3.0 to 4.7.2.1 #128, #132, #136, #144, #155.</action>
+      <action                  type="update" dev="ggregory" due-to="Gary Gregory">Bump spotbugs from 4.5.3 to 4.7.1.</action>
+    </release>
     <release version="6.5.0" date="2020-06-05" description="Minor feature and bug fix release.">
       <action issue="BCEL-330" type="update" dev="ggregory" due-to="Mark Roberts">Remove unnecessary references to Constants.</action>
       <action issue="BCEL-329" type="fix" dev="ggregory" due-to="Gary Gregory, Mark Roberts">MethodGen duplicates some attributes.</action>

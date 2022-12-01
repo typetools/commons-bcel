@@ -28,10 +28,9 @@ import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
- * This class is derived from <em>Attribute</em> and represents a reference
- * to a PMG attribute.
+ * This class is derived from <em>Attribute</em> and represents a reference to a PMG attribute.
  *
- * @see     Attribute
+ * @see Attribute
  */
 @AnnotatedFor({"signedness"})
 public final class PMGClass extends Attribute {
@@ -39,30 +38,18 @@ public final class PMGClass extends Attribute {
     private @NonNegative int pmgClassIndex;
     private @NonNegative int pmgIndex;
 
-
-    /**
-     * Initialize from another object. Note that both objects use the same
-     * references (shallow copy). Use copy() for a physical copy.
-     */
-    public PMGClass(final PMGClass pgmClass) {
-        this(pgmClass.getNameIndex(), pgmClass.getLength(), pgmClass.getPMGIndex(), pgmClass.getPMGClassIndex(),
-            pgmClass.getConstantPool());
-    }
-
-
     /**
      * Construct object from input stream.
+     *
      * @param name_index Index in constant pool to CONSTANT_Utf8
      * @param length Content length in bytes
      * @param input Input stream
      * @param constant_pool Array of constants
-     * @throws IOException
+     * @throws IOException if an I/O error occurs.
      */
-    PMGClass(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool)
-            throws IOException {
+    PMGClass(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
         this(name_index, length, input.readUnsignedShort(), input.readUnsignedShort(), constant_pool);
     }
-
 
     /**
      * @param name_index Index in constant pool to CONSTANT_Utf8
@@ -71,40 +58,51 @@ public final class PMGClass extends Attribute {
      * @param pmgClassIndex Index in constant pool to CONSTANT_Utf8
      * @param constantPool Array of constants
      */
-    public PMGClass(final @NonNegative int name_index, final @NonNegative int length, final @NonNegative int pmgIndex, final @NonNegative int pmgClassIndex,
-            final ConstantPool constantPool) {
+    public PMGClass(final @NonNegative int name_index, final @NonNegative int length, final @NonNegative int pmgIndex, final @NonNegative int pmgClassIndex, final ConstantPool constantPool) {
         super(Const.ATTR_PMG, name_index, length, constantPool);
         this.pmgIndex = pmgIndex;
         this.pmgClassIndex = pmgClassIndex;
     }
 
+    /**
+     * Initialize from another object. Note that both objects use the same references (shallow copy). Use copy() for a
+     * physical copy.
+     */
+    public PMGClass(final PMGClass pgmClass) {
+        this(pgmClass.getNameIndex(), pgmClass.getLength(), pgmClass.getPMGIndex(), pgmClass.getPMGClassIndex(), pgmClass.getConstantPool());
+    }
 
     /**
-     * Called by objects that are traversing the nodes of the tree implicitely
-     * defined by the contents of a Java class. I.e., the hierarchy of methods,
-     * fields, attributes, etc. spawns a tree of objects.
+     * Called by objects that are traversing the nodes of the tree implicitly defined by the contents of a Java class.
+     * I.e., the hierarchy of methods, fields, attributes, etc. spawns a tree of objects.
      *
      * @param v Visitor object
      */
     @Override
-    public void accept( final Visitor v ) {
+    public void accept(final Visitor v) {
         println("Visiting non-standard PMGClass object");
     }
 
+    /**
+     * @return deep copy of this attribute
+     */
+    @Override
+    public Attribute copy(final ConstantPool constantPool) {
+        return (Attribute) clone();
+    }
 
     /**
      * Dump source file attribute to file stream in binary format.
      *
      * @param file Output file stream
-     * @throws IOException
+     * @throws IOException if an I/O error occurs.
      */
     @Override
-    public void dump( final DataOutputStream file ) throws IOException {
+    public void dump(final DataOutputStream file) throws IOException {
         super.dump(file);
         file.writeShort(pmgIndex);
         file.writeShort(pmgClassIndex);
     }
-
 
     /**
      * @return Index in constant pool of source file name.
@@ -114,14 +112,12 @@ public final class PMGClass extends Attribute {
         return pmgClassIndex;
     }
 
-
     /**
-     * @param pmgClassIndex
+     * @return PMG class name.
      */
-    public void setPMGClassIndex( final @NonNegative int pmgClassIndex ) {
-        this.pmgClassIndex = pmgClassIndex;
+    public String getPMGClassName() {
+        return super.getConstantPool().getConstantUtf8(pmgClassIndex).getBytes();
     }
-
 
     /**
      * @return Index in constant pool of source file name.
@@ -131,34 +127,26 @@ public final class PMGClass extends Attribute {
         return pmgIndex;
     }
 
-
-    /**
-     * @param pmgIndex
-     */
-    public void setPMGIndex( final @NonNegative int pmgIndex ) {
-        this.pmgIndex = pmgIndex;
-    }
-
-
     /**
      * @return PMG name.
      */
     public String getPMGName() {
-        final ConstantUtf8 c = (ConstantUtf8) super.getConstantPool().getConstant(pmgIndex,
-                Const.CONSTANT_Utf8);
-        return c.getBytes();
+        return super.getConstantPool().getConstantUtf8(pmgIndex).getBytes();
     }
-
 
     /**
-     * @return PMG class name.
+     * @param pmgClassIndex
      */
-    public String getPMGClassName() {
-        final ConstantUtf8 c = (ConstantUtf8) super.getConstantPool().getConstant(pmgClassIndex,
-                Const.CONSTANT_Utf8);
-        return c.getBytes();
+    public void setPMGClassIndex(final @NonNegative int pmgClassIndex) {
+        this.pmgClassIndex = pmgClassIndex;
     }
 
+    /**
+     * @param pmgIndex
+     */
+    public void setPMGIndex(final @NonNegative int pmgIndex) {
+        this.pmgIndex = pmgIndex;
+    }
 
     /**
      * @return String representation
@@ -166,14 +154,5 @@ public final class PMGClass extends Attribute {
     @Override
     public String toString() {
         return "PMGClass(" + getPMGName() + ", " + getPMGClassName() + ")";
-    }
-
-
-    /**
-     * @return deep copy of this attribute
-     */
-    @Override
-    public Attribute copy( final ConstantPool _constant_pool ) {
-        return (Attribute) clone();
     }
 }

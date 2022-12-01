@@ -28,26 +28,29 @@ import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
- * This class is derived from <em>Attribute</em> and records the nest host of the nest
- * to which the current class or interface claims to belong.
- * There may be at most one NestHost attribute in a ClassFile structure.
+ * This class is derived from <em>Attribute</em> and records the nest host of the nest to which the current class or
+ * interface claims to belong. There may be at most one NestHost attribute in a ClassFile structure.
  *
- * @see     Attribute
+ * @see Attribute
  */
 @AnnotatedFor({"signedness"})
 public final class NestHost extends Attribute {
 
     private @NonNegative int hostClassIndex;
 
-
     /**
-     * Initializes from another object. Note that both objects use the same
-     * references (shallow copy). Use copy() for a physical copy.
+     * Constructs object from input stream.
+     *
+     * @param name_index Index in constant pool
+     * @param length Content length in bytes
+     * @param input Input stream
+     * @param constant_pool Array of constants
+     * @throws IOException if an I/O error occurs.
      */
-    public NestHost(final NestHost c) {
-        this(c.getNameIndex(), c.getLength(), c.getHostClassIndex(), c.getConstantPool());
+    NestHost(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
+        this(name_index, length, 0, constant_pool);
+        hostClassIndex = input.readUnsignedShort();
     }
-
 
     /**
      * @param nameIndex Index in constant pool
@@ -55,39 +58,39 @@ public final class NestHost extends Attribute {
      * @param hostClassIndex Host class index
      * @param constantPool Array of constants
      */
-    public NestHost(final @NonNegative int nameIndex, final @NonNegative int length, final @NonNegative int hostClassIndex,
-            final ConstantPool constantPool) {
+    public NestHost(final @NonNegative int nameIndex, final @NonNegative int length, final @NonNegative int hostClassIndex, final ConstantPool constantPool) {
         super(Const.ATTR_NEST_MEMBERS, nameIndex, length, constantPool);
         this.hostClassIndex = hostClassIndex;
     }
 
-
     /**
-     * Constructs object from input stream.
-     * @param name_index Index in constant pool
-     * @param length Content length in bytes
-     * @param input Input stream
-     * @param constant_pool Array of constants
-     * @throws IOException
+     * Initializes from another object. Note that both objects use the same references (shallow copy). Use copy() for a
+     * physical copy.
      */
-    NestHost(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
-        this(name_index, length, 0, constant_pool);
-        hostClassIndex = input.readUnsignedShort();
+    public NestHost(final NestHost c) {
+        this(c.getNameIndex(), c.getLength(), c.getHostClassIndex(), c.getConstantPool());
     }
 
-
     /**
-     * Called by objects that are traversing the nodes of the tree implicitely
-     * defined by the contents of a Java class. I.e., the hierarchy of methods,
-     * fields, attributes, etc. spawns a tree of objects.
+     * Called by objects that are traversing the nodes of the tree implicitly defined by the contents of a Java class.
+     * I.e., the hierarchy of methods, fields, attributes, etc. spawns a tree of objects.
      *
      * @param v Visitor object
      */
     @Override
-    public void accept( final Visitor v ) {
+    public void accept(final Visitor v) {
         v.visitNestHost(this);
     }
 
+    /**
+     * @return deep copy of this attribute
+     */
+    @Override
+    public Attribute copy(final ConstantPool constantPool) {
+        final NestHost c = (NestHost) clone();
+        c.setConstantPool(constantPool);
+        return c;
+    }
 
     /**
      * Dumps NestHost attribute to file stream in binary format.
@@ -96,11 +99,10 @@ public final class NestHost extends Attribute {
      * @throws IOException if an I/O error occurs.
      */
     @Override
-    public void dump( final DataOutputStream file ) throws IOException {
+    public void dump(final DataOutputStream file) throws IOException {
         super.dump(file);
         file.writeShort(hostClassIndex);
     }
-
 
     /**
      * @return index into constant pool of host class name.
@@ -110,14 +112,12 @@ public final class NestHost extends Attribute {
         return hostClassIndex;
     }
 
-
     /**
      * @param hostClassIndex the host class index
      */
-    public void setHostClassIndex( final @NonNegative int hostClassIndex ) {
+    public void setHostClassIndex(final @NonNegative int hostClassIndex) {
         this.hostClassIndex = hostClassIndex;
     }
-
 
     /**
      * @return String representation
@@ -126,19 +126,8 @@ public final class NestHost extends Attribute {
     public String toString() {
         final StringBuilder buf = new StringBuilder();
         buf.append("NestHost: ");
-        final String class_name = super.getConstantPool().getConstantString(hostClassIndex, Const.CONSTANT_Class);
-        buf.append(Utility.compactClassName(class_name, false));
+        final String className = super.getConstantPool().getConstantString(hostClassIndex, Const.CONSTANT_Class);
+        buf.append(Utility.compactClassName(className, false));
         return buf.toString();
-    }
-
-
-    /**
-     * @return deep copy of this attribute
-     */
-    @Override
-    public Attribute copy( final ConstantPool _constant_pool ) {
-        final NestHost c = (NestHost) clone();
-        c.setConstantPool(_constant_pool);
-        return c;
     }
 }

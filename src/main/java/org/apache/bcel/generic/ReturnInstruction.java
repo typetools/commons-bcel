@@ -26,16 +26,13 @@ import org.checkerframework.dataflow.qual.Pure;
  * Super class for the xRETURN family of instructions.
  *
  */
-public abstract class ReturnInstruction extends Instruction implements ExceptionThrower,
-        TypedInstruction, StackConsumer {
+public abstract class ReturnInstruction extends Instruction implements ExceptionThrower, TypedInstruction, StackConsumer {
 
     /**
-     * Empty constructor needed for Instruction.readInstruction.
-     * Not to be used otherwise.
+     * Empty constructor needed for Instruction.readInstruction. Not to be used otherwise.
      */
     ReturnInstruction() {
     }
-
 
     /**
      * @param opcode of instruction
@@ -44,41 +41,37 @@ public abstract class ReturnInstruction extends Instruction implements Exception
         super(opcode, (short) 1);
     }
 
+    @Override
+    public Class<?>[] getExceptions() {
+        return new Class[] {ExceptionConst.ILLEGAL_MONITOR_STATE};
+    }
 
     @Pure
     public Type getType() {
-        final short _opcode = super.getOpcode();
-        switch (_opcode) {
-            case Const.IRETURN:
-                return Type.INT;
-            case Const.LRETURN:
-                return Type.LONG;
-            case Const.FRETURN:
-                return Type.FLOAT;
-            case Const.DRETURN:
-                return Type.DOUBLE;
-            case Const.ARETURN:
-                return Type.OBJECT;
-            case Const.RETURN:
-                return Type.VOID;
-            default: // Never reached
-                throw new ClassGenException("Unknown type " + _opcode);
+        final short opcode = super.getOpcode();
+        switch (opcode) {
+        case Const.IRETURN:
+            return Type.INT;
+        case Const.LRETURN:
+            return Type.LONG;
+        case Const.FRETURN:
+            return Type.FLOAT;
+        case Const.DRETURN:
+            return Type.DOUBLE;
+        case Const.ARETURN:
+            return Type.OBJECT;
+        case Const.RETURN:
+            return Type.VOID;
+        default: // Never reached
+            throw new ClassGenException("Unknown type " + opcode);
         }
     }
 
-
-    @Override
-    public Class<?>[] getExceptions() {
-        return new Class[] {
-            ExceptionConst.ILLEGAL_MONITOR_STATE
-        };
-    }
-
-
-    /** @return type associated with the instruction
+    /**
+     * @return type associated with the instruction
      */
     @Override
-    public Type getType( final ConstantPoolGen cp ) {
+    public Type getType(final ConstantPoolGen cp) {
         return getType();
     }
 }

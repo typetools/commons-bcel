@@ -32,8 +32,7 @@ import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
- * Abstract super class for instructions that use an index into the
- * constant pool such as LDC, INVOKEVIRTUAL, etc.
+ * Abstract super class for instructions that use an index into the constant pool such as LDC, INVOKEVIRTUAL, etc.
  *
  * @see ConstantPoolGen
  * @see LDC
@@ -41,8 +40,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  *
  */
 @AnnotatedFor({"signedness"})
-public abstract class CPInstruction extends Instruction implements TypedInstruction,
-        IndexedInstruction {
+public abstract class CPInstruction extends Instruction implements TypedInstruction, IndexedInstruction {
 
     /**
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
@@ -50,14 +48,11 @@ public abstract class CPInstruction extends Instruction implements TypedInstruct
     @Deprecated
     protected @NonNegative int index; // index to constant pool
 
-
     /**
-     * Empty constructor needed for Instruction.readInstruction.
-     * Not to be used otherwise.
+     * Empty constructor needed for Instruction.readInstruction. Not to be used otherwise.
      */
     CPInstruction() {
     }
-
 
     /**
      * @param index to constant pool
@@ -67,58 +62,16 @@ public abstract class CPInstruction extends Instruction implements TypedInstruct
         setIndex(index);
     }
 
-
     /**
      * Dump instruction as byte code to stream out.
+     *
      * @param out Output stream
      */
     @Override
-    public void dump( final DataOutputStream out ) throws IOException {
+    public void dump(final DataOutputStream out) throws IOException {
         out.writeByte(super.getOpcode());
         out.writeShort(index);
     }
-
-
-    /**
-     * Long output format:
-     *
-     * &lt;name of opcode&gt; "["&lt;opcode number&gt;"]"
-     * "("&lt;length of instruction&gt;")" "&lt;"&lt; constant pool index&gt;"&gt;"
-     *
-     * @param verbose long/short format switch
-     * @return mnemonic for instruction
-     */
-    @Override
-    public String toString( final boolean verbose ) {
-        return super.toString(verbose) + " " + index;
-    }
-
-
-    /**
-     * @return mnemonic for instruction with symbolic references resolved
-     */
-    @Override
-    public String toString( final ConstantPool cp ) {
-        final Constant c = cp.getConstant(index);
-        String str = cp.constantToString(c);
-        if (c instanceof ConstantClass) {
-            str = str.replace('.', '/');
-        }
-        return org.apache.bcel.Const.getOpcodeName(super.getOpcode()) + " " + str;
-    }
-
-
-    /**
-     * Read needed data (i.e., index) from file.
-     * @param bytes input stream
-     * @param wide wide prefix?
-     */
-    @Override
-    protected void initFromFile( final ByteSequence bytes, final boolean wide ) throws IOException {
-        setIndex(bytes.readUnsignedShort());
-        super.setLength(3);
-    }
-
 
     /**
      * @return index in constant pool referred by this instruction.
@@ -129,25 +82,12 @@ public abstract class CPInstruction extends Instruction implements TypedInstruct
         return index;
     }
 
-
     /**
-     * Set the index to constant pool.
-     * @param index in  constant pool.
-     */
-    @Override
-    public void setIndex( @UnderInitialization CPInstruction this,  final @NonNegative int index ) { // TODO could be package-protected?
-        if (index < 0) {
-            throw new ClassGenException("Negative index value: " + index);
-        }
-        this.index = index;
-    }
-
-
-    /** @return type related with this instruction.
+     * @return type related with this instruction.
      */
     @Override
     @SuppressWarnings("signature") // convert @ClassGetName to @FieldDescriptor
-    public Type getType( final ConstantPoolGen cpg ) {
+    public Type getType(final ConstantPoolGen cpg) {
         final ConstantPool cp = cpg.getConstantPool();
         String name = cp.getConstantString(index, org.apache.bcel.Const.CONSTANT_Class);
         // This if statement converts @ClassGetName into @FieldDescriptor (EXCEPT it doesn't work for primitive types)
@@ -155,5 +95,57 @@ public abstract class CPInstruction extends Instruction implements TypedInstruct
             name = "L" + name + ";";
         }
         return Type.getType(name);
+    }
+
+    /**
+     * Read needed data (i.e., index) from file.
+     *
+     * @param bytes input stream
+     * @param wide wide prefix?
+     */
+    @Override
+    protected void initFromFile(final ByteSequence bytes, final boolean wide) throws IOException {
+        setIndex(bytes.readUnsignedShort());
+        super.setLength(3);
+    }
+
+    /**
+     * Set the index to constant pool.
+     *
+     * @param index in constant pool.
+     */
+    @Override
+    public void setIndex(@UnderInitialization CPInstruction this, final @NonNegative int index) { // TODO could be package-protected?
+        if (index < 0) {
+            throw new ClassGenException("Negative index value: " + index);
+        }
+        this.index = index;
+    }
+
+    /**
+     * Long output format:
+     *
+     * &lt;name of opcode&gt; "["&lt;opcode number&gt;"]" "("&lt;length of instruction&gt;")" "&lt;"&lt; constant pool
+     * index&gt;"&gt;"
+     *
+     * @param verbose long/short format switch
+     * @return mnemonic for instruction
+     */
+    @Override
+    public String toString(final boolean verbose) {
+        return super.toString(verbose) + " " + index;
+    }
+
+    /**
+     * @return mnemonic for instruction with symbolic references resolved
+     */
+    @Override
+    public String toString(final ConstantPool cp) {
+        final Constant c = cp.getConstant(index);
+        String str = cp.constantToString(c);
+        if (c instanceof ConstantClass) {
+            str = str.replace('.', '/');
+        }
+        return org.apache.bcel.Const.getOpcodeName(super.getOpcode()) + " " + str;
     }
 }
