@@ -17,7 +17,8 @@
  */
 package org.apache.bcel.util;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -25,9 +26,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import org.apache.bcel.classfile.JavaClass;
-import org.junit.Test;
 
+import org.apache.bcel.classfile.JavaClass;
+import org.junit.jupiter.api.Test;
 
 public class BCELifierTestCase {
 
@@ -35,7 +36,7 @@ public class BCELifierTestCase {
     private String canonHashRef(String input) {
         input = input.replaceAll("#\\d+", "#n"); // numbers may vary in length
         input = input.replaceAll(" +", " "); // collapse spaces
-        input = input.replaceAll("//.+",""); // comments may vary
+        input = input.replaceAll("//.+", ""); // comments may vary
         return input;
     }
 
@@ -44,8 +45,7 @@ public class BCELifierTestCase {
         final ProcessBuilder pb = new ProcessBuilder(args);
         pb.directory(workDir);
         final Process proc = pb.start();
-        try (BufferedInputStream is = new BufferedInputStream(proc.getInputStream());
-                InputStream es = proc.getErrorStream()) {
+        try (BufferedInputStream is = new BufferedInputStream(proc.getInputStream()); InputStream es = proc.getErrorStream()) {
             proc.waitFor();
             final byte[] buff = new byte[2048];
             int len;
@@ -61,12 +61,12 @@ public class BCELifierTestCase {
         }
     }
 
-    private void testClassOnPath(final String javaClass) throws Exception {
+    private void testClassOnPath(final String javaClassFileName) throws Exception {
         // Get javap of the input class
-        final String initial = exec(null, "javap", "-p", "-c", javaClass);
+        final String initial = exec(null, "javap", "-p", "-c", javaClassFileName);
 
         final File workDir = new File("target");
-        final File infile = new File(javaClass);
+        final File infile = new File(javaClassFileName);
         final JavaClass java_class = BCELifier.getJavaClass(infile.getName().replace(".class", ""));
         assertNotNull(java_class);
         final File outfile = new File(workDir, infile.getName().replace(".class", "Creator.java"));
@@ -81,9 +81,8 @@ public class BCELifierTestCase {
     }
 
     /*
-     * Dump a class using "javap" and compare with the same class recreated
-     * using BCELifier, "javac", "java" and dumped with "javap"
-     * TODO: detect if JDK present and skip test if not
+     * Dump a class using "javap" and compare with the same class recreated using BCELifier, "javac", "java" and dumped with
+     * "javap" TODO: detect if JDK present and skip test if not
      */
     @Test
     public void testJavapCompare() throws Exception {

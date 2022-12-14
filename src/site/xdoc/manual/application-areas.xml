@@ -34,14 +34,14 @@
 
       <p>
         Compilers like the <a
-              href="http://barat.sourceforge.net">Barat</a> compiler use <font
+              href="https://barat.sourceforge.net">Barat</a> compiler use <font
               face="helvetica,arial">BCEL</font> to implement a byte code
         generating back end. Other possible application areas are the
         static analysis of byte code or examining the run-time behavior of
         classes by inserting calls to profiling methods into the
         code. Further examples are extending Java with Eiffel-like
         assertions, automated delegation, or with the concepts of <a
-              href="http://www.eclipse.org/aspectj/">Aspect-Oriented Programming</a>.<br/> A
+              href="https://www.eclipse.org/aspectj/">Aspect-Oriented Programming</a>.<br/> A
         list of projects using <font face="helvetica,arial">BCEL</font> can
         be found <a href="../projects.html">here</a>.
       </p>
@@ -81,9 +81,9 @@
         This concept enables developers to use <em>load-time
         reflection</em> to implement their ideas as opposed to the static
         reflection supported by the <a
-              href="http://java.sun.com/j2se/1.3/docs/guide/reflection/index.html">Java
+              href="https://docs.oracle.com/javase/8/docs/technotes/guides/reflection/index.html">Java
         Reflection API</a>. Load-time transformations supply the user with
-        a new level of abstraction. He is not strictly tied to the static
+        a new level of abstraction. They are not strictly tied to the static
         constraints of the original authors of the classes but may
         customize the applications with third-party code in order to
         benefit from new features. Such transformations may be executed on

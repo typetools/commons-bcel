@@ -26,9 +26,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 
 /**
- * This class represents an uninitialized object type; see The Java
- * Virtual Machine Specification, Second Edition, page 147: 4.9.4 for
- * more details.
+ * This class represents an uninitialized object type; see The Java Virtual Machine Specification, Second Edition, page
+ * 147: 4.9.4 for more details.
  *
  */
 public class UninitializedObjectType extends ReferenceType implements Constants {
@@ -38,35 +37,37 @@ public class UninitializedObjectType extends ReferenceType implements Constants 
 
     /** Creates a new instance. */
     public UninitializedObjectType(final ObjectType t) {
-        super(Const.T_UNKNOWN, "<UNINITIALIZED OBJECT OF TYPE '"+t.getClassName()+"'>");
+        super(Const.T_UNKNOWN, "<UNINITIALIZED OBJECT OF TYPE '" + t.getClassName() + "'>");
         initialized = t;
     }
 
     /**
-     * Returns the ObjectType of the same class as the one of the uninitialized object
-     * represented by this UninitializedObjectType instance.
+     * Returns true on equality of this and o. Equality means the ObjectType instances of "initialized" equal one another in
+     * this and the o instance.
+     *
+     */
+    @Override
+    public boolean equals(final @Nullable Object o) {
+        if (!(o instanceof UninitializedObjectType)) {
+            return false;
+        }
+        return initialized.equals(((UninitializedObjectType) o).initialized);
+    }
+
+    /**
+     * Returns the ObjectType of the same class as the one of the uninitialized object represented by this
+     * UninitializedObjectType instance.
      */
     @Pure
     public ObjectType getInitialized() {
         return initialized;
     }
 
-    /** @return a hash code value for the object.
-     */
-    @Override
-    public int hashCode() { return initialized.hashCode(); }
-
     /**
-     * Returns true on equality of this and o.
-     * Equality means the ObjectType instances of "initialized"
-     * equal one another in this and the o instance.
-     *
+     * @return a hash code value for the object.
      */
     @Override
-    public boolean equals(final @Nullable Object o) {
-        if (! (o instanceof UninitializedObjectType)) {
-            return false;
-        }
-        return initialized.equals(((UninitializedObjectType)o).initialized);
+    public int hashCode() {
+        return initialized.hashCode();
     }
 }

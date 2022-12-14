@@ -18,11 +18,13 @@
 package org.apache.bcel.generic;
 
 import static com.sun.jna.platform.win32.WinReg.HKEY_LOCAL_MACHINE;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.FileSystems;
@@ -32,14 +34,13 @@ import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Stream;
 
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.Code;
@@ -49,12 +50,8 @@ import org.apache.bcel.util.ModularRuntimeImage;
 import org.apache.commons.lang3.JavaVersion;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.sun.jna.platform.win32.Advapi32Util;
 
@@ -73,15 +70,13 @@ import com.sun.jna.platform.win32.Advapi32Util;
  * mvn test -Dtest=JdkGenericDumpTestCase -DExtraJavaHomes="C:\Program Files\Java\openjdk\jdk-13;C:\Program Files\Java\openjdk\jdk-14"
  * </pre>
  */
-@RunWith(Parameterized.class)
 public class JdkGenericDumpTestCase {
-
-    private static final String EXTRA_JAVA_HOMES = "ExtraJavaHomes";
 
     private static class ClassParserFilesVisitor extends SimpleFileVisitor<Path> {
 
         private final PathMatcher matcher;
 
+        @SuppressWarnings("resource") // FileSystems.getDefault() returns a singleton
         ClassParserFilesVisitor(final String pattern) {
             matcher = FileSystems.getDefault().getPathMatcher("glob:" + pattern);
         }
@@ -91,8 +86,7 @@ public class JdkGenericDumpTestCase {
             if (name != null && matcher.matches(name)) {
                 try (final InputStream inputStream = Files.newInputStream(path)) {
                     final ClassParser classParser = new ClassParser(inputStream, name.toAbsolutePath().toString());
-                    final JavaClass javaClass = classParser.parse();
-                    Assert.assertNotNull(javaClass);
+                    assertNotNull(classParser.parse());
                 }
 
             }
@@ -117,6 +111,8 @@ public class JdkGenericDumpTestCase {
         }
     }
 
+    private static final String EXTRA_JAVA_HOMES = "ExtraJavaHomes";
+
     private static final char[] hexArray = "0123456789ABCDEF".toCharArray();
 
     private static final String KEY_JDK = "SOFTWARE\\JavaSoft\\Java Development Kit";
@@ -126,12 +122,6 @@ public class JdkGenericDumpTestCase {
     private static final String KEY_JRE = "SOFTWARE\\JavaSoft\\Java Runtime Environment";
 
     private static final String KEY_JRE_9 = "SOFTWARE\\JavaSoft\\JRE";
-
-    private static void addAllJavaHomesOnWindows(final String keyJre, final Set<String> javaHomes) {
-        if (Advapi32Util.registryKeyExists(HKEY_LOCAL_MACHINE, keyJre)) {
-            javaHomes.addAll(findJavaHomesOnWindows(keyJre, Advapi32Util.registryGetKeys(HKEY_LOCAL_MACHINE, keyJre)));
-        }
-    }
 
     private static String bytesToHex(final byte[] bytes) {
         final char[] hexChars = new char[bytes.length * 3];
@@ -145,63 +135,51 @@ public class JdkGenericDumpTestCase {
         return new String(hexChars);
     }
 
-    @Parameters(name = "{0}")
-    public static Collection<String> data() {
-        return findJavaHomes();
-    }
-
-    private static Set<String> findJavaHomes() {
+    public static Stream<String> findJavaHomes() {
         if (SystemUtils.IS_OS_WINDOWS) {
-            return findJavaHomesOnWindows();
+            final Stream<String> stream = findJavaHomesOnWindows();
+            if (stream.count() > 0) {
+                return findJavaHomesOnWindows();
+            }
+            // Falls back here on CI env like GitHub Actions.
         }
-        final Set<String> javaHomes = new HashSet<>(1);
-        javaHomes.add(SystemUtils.JAVA_HOME);
-        return javaHomes;
+        return Stream.of(SystemUtils.JAVA_HOME);
     }
 
-    private static Set<String> findJavaHomesOnWindows() {
-        final Set<String> javaHomes = new HashSet<>();
-        addAllJavaHomesOnWindows(KEY_JRE, javaHomes);
-        addAllJavaHomesOnWindows(KEY_JRE_9, javaHomes);
-        addAllJavaHomesOnWindows(KEY_JDK, javaHomes);
-        addAllJavaHomesOnWindows(KEY_JDK_9, javaHomes);
-        addAllJavaHomesFromKey(EXTRA_JAVA_HOMES, javaHomes);
-        return javaHomes;
+    private static Stream<String> findJavaHomesOnWindows() {
+        return Stream.concat(Stream.of(KEY_JRE, KEY_JRE_9, KEY_JDK, KEY_JDK_9).flatMap(JdkGenericDumpTestCase::getAllJavaHomesOnWindows),
+            getAllJavaHomesFromKey(EXTRA_JAVA_HOMES)).distinct();
     }
 
-    private static void addAllJavaHomesFromKey(final String extraJavaHomesKey, final Set<String> javaHomes) {
-        addAllJavaHomesFromPath(javaHomes, System.getProperty(extraJavaHomesKey));
-        addAllJavaHomesFromPath(javaHomes, System.getenv(extraJavaHomesKey));
-    }
-
-    private static void addAllJavaHomesFromPath(final Set<String> javaHomes, final String path) {
-        if (StringUtils.isEmpty(path)) {
-            return;
-        }
-        final String[] paths = path.split(File.pathSeparator);
-        javaHomes.addAll(Arrays.asList(paths));
-    }
-
-    private static Set<String> findJavaHomesOnWindows(final String keyJavaHome, final String[] keys) {
+    private static Stream<String> findJavaHomesOnWindows(final String keyJavaHome, final String[] keys) {
         final Set<String> javaHomes = new HashSet<>(keys.length);
         for (final String key : keys) {
             if (Advapi32Util.registryKeyExists(HKEY_LOCAL_MACHINE, keyJavaHome + "\\" + key)) {
-                final String javaHome = Advapi32Util.registryGetStringValue(HKEY_LOCAL_MACHINE,
-                    keyJavaHome + "\\" + key, "JavaHome");
-                if (StringUtils.isNoneBlank(javaHome)) {
-                    if (new File(javaHome).exists()) {
-                        javaHomes.add(javaHome);
-                    }
+                final String javaHome = Advapi32Util.registryGetStringValue(HKEY_LOCAL_MACHINE, keyJavaHome + "\\" + key, "JavaHome");
+                if (StringUtils.isNoneBlank(javaHome) && new File(javaHome).exists()) {
+                    javaHomes.add(javaHome);
                 }
             }
         }
-        return javaHomes;
+        return javaHomes.stream();
     }
 
-    private final String javaHome;
+    private static Stream<String> getAllJavaHomesFromKey(final String extraJavaHomesKey) {
+        return Stream.concat(getAllJavaHomesFromPath(System.getProperty(extraJavaHomesKey)), getAllJavaHomesFromPath(System.getenv(extraJavaHomesKey)));
+    }
 
-    public JdkGenericDumpTestCase(final String javaHome) {
-        this.javaHome = javaHome;
+    private static Stream<String> getAllJavaHomesFromPath(final String path) {
+        if (StringUtils.isEmpty(path)) {
+            return Stream.empty();
+        }
+        return Stream.of(path.split(File.pathSeparator));
+    }
+
+    private static Stream<String> getAllJavaHomesOnWindows(final String keyJre) {
+        if (Advapi32Util.registryKeyExists(HKEY_LOCAL_MACHINE, keyJre)) {
+            return findJavaHomesOnWindows(keyJre, Advapi32Util.registryGetKeys(HKEY_LOCAL_MACHINE, keyJre));
+        }
+        return Stream.empty();
     }
 
     private void compare(final String name, final Method method) {
@@ -214,7 +192,7 @@ public class JdkGenericDumpTestCase {
         final InstructionList instructionList = new InstructionList(src);
         final byte[] out = instructionList.getByteCode();
         if (src.length == out.length) {
-            assertArrayEquals(name + ": " + method.toString(), src, out);
+            assertArrayEquals(src, out, () -> name + ": " + method.toString());
         } else {
             System.out.println(name + ": " + method.toString() + " " + src.length + " " + out.length);
             System.out.println(bytesToHex(src));
@@ -226,14 +204,14 @@ public class JdkGenericDumpTestCase {
         }
     }
 
-    private File[] listJdkJars() throws Exception {
+    private File[] listJdkJars(final String javaHome) throws Exception {
         final File javaLib = new File(javaHome, "lib");
-        return javaLib.listFiles((FileFilter) file -> file.getName().endsWith(".jar"));
+        return javaLib.listFiles(file -> file.getName().endsWith(".jar"));
     }
 
-    private File[] listJdkModules() throws Exception {
+    private File[] listJdkModules(final String javaHome) throws Exception {
         final File javaLib = new File(javaHome, "jmods");
-        return javaLib.listFiles((FileFilter) file -> file.getName().endsWith(".jmod"));
+        return javaLib.listFiles(file -> file.getName().endsWith(".jmod"));
     }
 
     private void testJar(final File file) throws Exception {
@@ -257,9 +235,10 @@ public class JdkGenericDumpTestCase {
         }
     }
 
-    @Test
-    public void testJdkJars() throws Exception {
-        final File[] jars = listJdkJars();
+    @ParameterizedTest
+    @MethodSource("findJavaHomes")
+    public void testJdkJars(final String javaHome) throws Exception {
+        final File[] jars = listJdkJars(javaHome);
         if (jars != null) {
             for (final File file : jars) {
                 testJar(file);
@@ -267,9 +246,10 @@ public class JdkGenericDumpTestCase {
         }
     }
 
-    @Test
-    public void testJdkModules() throws Exception {
-        final File[] jmods = listJdkModules();
+    @ParameterizedTest
+    @MethodSource("findJavaHomes")
+    public void testJdkModules(final String javaHome) throws Exception {
+        final File[] jmods = listJdkModules(javaHome);
         if (jmods != null) {
             for (final File file : jmods) {
                 testJar(file);
@@ -277,12 +257,13 @@ public class JdkGenericDumpTestCase {
         }
     }
 
-    @Test
-    public void testJreModules() throws Exception {
-        Assume.assumeTrue(SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_9));
+    @ParameterizedTest
+    @MethodSource("findJavaHomes")
+    public void testJreModules(final String javaHome) throws Exception {
+        assumeTrue(SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_9));
         try (final ModularRuntimeImage mri = new ModularRuntimeImage(javaHome)) {
             final List<Path> modules = mri.modules();
-            Assert.assertFalse(modules.isEmpty());
+            assertFalse(modules.isEmpty());
             for (final Path path : modules) {
                 Files.walkFileTree(path, new ClassParserFilesVisitor("*.class"));
             }

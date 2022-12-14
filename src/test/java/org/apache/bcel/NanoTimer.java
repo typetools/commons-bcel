@@ -20,23 +20,23 @@ package org.apache.bcel;
 
 public class NanoTimer {
 
-    private long time = 0;
+    private long timeNanos;
+
+    public void reset() {
+        timeNanos = 0;
+    }
 
     public NanoTimer start() {
-        time -= System.nanoTime();
+        timeNanos -= System.nanoTime();
         return this;
     }
 
     public void stop() {
-        time += System.nanoTime();
+        timeNanos += System.nanoTime();
     }
 
     public void subtract(final NanoTimer o) {
-        time -= o.time;
-    }
-
-    public void reset() {
-        time = 0;
+        timeNanos -= o.timeNanos;
     }
 
     /**
@@ -44,9 +44,7 @@ public class NanoTimer {
      */
     @Override
     public String toString() {
-        return ((double) time / 1000000000) + " s";
+        return (double) timeNanos / 1000000000 + " s";
     }
-
-
 
 }

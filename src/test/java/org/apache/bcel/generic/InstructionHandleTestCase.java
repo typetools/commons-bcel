@@ -17,47 +17,47 @@
  */
 package org.apache.bcel.generic;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.Test;
 
 public class InstructionHandleTestCase {
 
     // Test that setInstruction only allows Instructions that are not BranchInstructions
 
-    @Test(expected=ClassGenException.class)
-    public void testsetInstructionNull() {
-        final InstructionHandle ih = InstructionHandle.getInstructionHandle(new NOP());// have to start with a valid non BI
-        Assert.assertNotNull(ih);
-        ih.setInstruction(null);
-        Assert.assertNotNull(ih);
+    @Test
+    public void testBCEL195() {
+        final InstructionList il = new InstructionList();
+        final InstructionHandle ih = il.append(InstructionConst.NOP);
+        new TABLESWITCH(new int[0], InstructionHandle.EMPTY_ARRAY, ih);
+        new TABLESWITCH(new int[0], InstructionHandle.EMPTY_ARRAY, ih);
+    }
+
+    @Test
+    public void testGetIHnull() {
+        assertThrows(ClassGenException.class, () -> InstructionHandle.getInstructionHandle(null));
     }
 
     @Test
     public void testsetInstructionI() {
         final InstructionHandle ih = InstructionHandle.getInstructionHandle(new NOP());// have to start with a valid non BI
-        Assert.assertNotNull(ih);
+        assertNotNull(ih);
         ih.setInstruction(new NOP());
-        Assert.assertNotNull(ih);
-    }
-
-    @Test(expected=ClassGenException.class)
-    public void testsetInstructionnotI() {
-        final InstructionHandle ih = InstructionHandle.getInstructionHandle(new NOP());// have to start with a valid non BI
-        Assert.assertNotNull(ih);
-        ih.setInstruction(new GOTO(null));
-        Assert.assertNotNull(ih);
-    }
-
-    @Test(expected=ClassGenException.class)
-    public void testGetIHnull() {
-        InstructionHandle.getInstructionHandle(null);
+        assertNotNull(ih);
     }
 
     @Test
-    public void testBCEL195() {
-        final InstructionList il = new InstructionList();
-        final InstructionHandle ih = il.append(InstructionConst.NOP);
-        new TABLESWITCH(new int[0], new InstructionHandle[0], ih);
-        new TABLESWITCH(new int[0], new InstructionHandle[0], ih);
+    public void testsetInstructionnotI() {
+        final InstructionHandle ih = InstructionHandle.getInstructionHandle(new NOP());// have to start with a valid non BI
+        assertNotNull(ih);
+        assertThrows(ClassGenException.class, () -> ih.setInstruction(new GOTO(null)));
+    }
+
+    @Test
+    public void testsetInstructionNull() {
+        final InstructionHandle ih = InstructionHandle.getInstructionHandle(new NOP());// have to start with a valid non BI
+        assertNotNull(ih);
+        assertThrows(ClassGenException.class, () -> ih.setInstruction(null));
     }
 }

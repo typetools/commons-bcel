@@ -18,8 +18,7 @@
 package org.apache.bcel.generic;
 
 /**
- * Thrown on internal errors. Extends RuntimeException so it hasn't to be declared
- * in the throws clause every time.
+ * Thrown on internal errors. Extends RuntimeException so it hasn't to be declared in the throws clause every time.
  *
  */
 public class ClassGenException extends RuntimeException {
@@ -27,9 +26,7 @@ public class ClassGenException extends RuntimeException {
     private static final long serialVersionUID = 7247369755051242791L;
 
     public ClassGenException() {
-        super();
     }
-
 
     public ClassGenException(final String s) {
         super(s);

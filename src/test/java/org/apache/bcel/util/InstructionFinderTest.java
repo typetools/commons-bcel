@@ -18,6 +18,8 @@
 
 package org.apache.bcel.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.Iterator;
 
 import org.apache.bcel.AbstractTestCase;
@@ -26,9 +28,11 @@ import org.apache.bcel.generic.ILOAD;
 import org.apache.bcel.generic.ISTORE;
 import org.apache.bcel.generic.InstructionHandle;
 import org.apache.bcel.generic.InstructionList;
+import org.junit.jupiter.api.Test;
 
 public class InstructionFinderTest extends AbstractTestCase {
 
+    @Test
     public void testSearch() {
         final InstructionList il = new InstructionList();
         il.append(new ILOAD(1));
@@ -37,8 +41,8 @@ public class InstructionFinderTest extends AbstractTestCase {
         il.append(new ISTORE(3));
         final InstructionFinder finder = new InstructionFinder(il);
 
-        final Iterator<?> it = finder.search("ILOAD IADD", il.getInstructionHandles()[0], null );
-        final InstructionHandle[] ihs = (InstructionHandle[])it.next();
+        final Iterator<?> it = finder.search("ILOAD IADD", il.getInstructionHandles()[0], null);
+        final InstructionHandle[] ihs = (InstructionHandle[]) it.next();
         assertEquals(2, ihs.length);
         assertEquals(ihs[0].getInstruction(), new ILOAD(2));
         assertEquals(ihs[1].getInstruction(), new IADD());

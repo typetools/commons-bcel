@@ -22,7 +22,9 @@ package Mini;
  *
  */
 public interface EnvEntry {
-  String getHashKey();
-  int    getLine();
-  int    getColumn();
+    int getColumn();
+
+    String getHashKey();
+
+    int getLine();
 }

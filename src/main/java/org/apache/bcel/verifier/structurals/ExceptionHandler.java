@@ -17,19 +17,20 @@
  */
 package org.apache.bcel.verifier.structurals;
 
-
 import org.apache.bcel.generic.InstructionHandle;
 import org.apache.bcel.generic.ObjectType;
 
 import org.checkerframework.dataflow.qual.Pure;
 
 /**
- * This class represents an exception handler; that is, an ObjectType
- * representing a subclass of java.lang.Throwable and the instruction
- * the handler starts off (represented by an InstructionContext).
+ * This class represents an exception handler; that is, an ObjectType representing a subclass of java.lang.Throwable and
+ * the instruction the handler starts off (represented by an InstructionContext).
  *
  */
-public class ExceptionHandler{
+public class ExceptionHandler {
+
+    static final ExceptionHandler[] EMPTY_ARRAY = {};
+
     /** The type of the exception to catch. NULL means ANY. */
     private final ObjectType catchType;
 
@@ -37,9 +38,9 @@ public class ExceptionHandler{
     private final InstructionHandle handlerPc;
 
     /** Leave instance creation to JustIce. */
-    ExceptionHandler(final ObjectType catch_type, final InstructionHandle handler_pc) {
-        catchType = catch_type;
-        handlerPc = handler_pc;
+    ExceptionHandler(final ObjectType catchType, final InstructionHandle handlerPc) {
+        this.catchType = catchType;
+        this.handlerPc = handlerPc;
     }
 
     /**

@@ -17,32 +17,30 @@
  */
 package org.apache.bcel.verifier.exc;
 
-
 /**
- * Instances of this class are thrown by BCEL's class file verifier "JustIce"
- * when a class file to verify does not pass the verification pass 2 as described
- * in the Java Virtual Machine specification, 2nd edition.
+ * Instances of this class are thrown by BCEL's class file verifier "JustIce" when a class file to verify does not pass
+ * the verification pass 2 as described in the Java Virtual Machine specification, 2nd edition.
  *
  */
-public class ClassConstraintException extends VerificationException{
+public class ClassConstraintException extends VerificationException {
     private static final long serialVersionUID = -4745598983569128296L;
 
     /**
      * Constructs a new ClassConstraintException with null as its error message string.
      */
     public ClassConstraintException() {
-        super();
     }
 
     /**
      * Constructs a new ClassConstraintException with the specified error message.
      */
     public ClassConstraintException(final String message) {
-        super (message);
+        super(message);
     }
 
     /**
      * Constructs a new ClassConstraintException with the specified error message and cause
+     *
      * @since 6.0
      */
     public ClassConstraintException(final String message, final Throwable initCause) {

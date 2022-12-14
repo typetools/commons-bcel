@@ -22,9 +22,8 @@ import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
- * SWITCH - Branch depending on int value, generates either LOOKUPSWITCH or
- * TABLESWITCH instruction, depending on whether the match values (int[]) can be
- * sorted with no gaps between the numbers.
+ * SWITCH - Branch depending on int value, generates either LOOKUPSWITCH or TABLESWITCH instruction, depending on
+ * whether the match values (int[]) can be sorted with no gaps between the numbers.
  *
  */
 @AnnotatedFor({"signedness"})
@@ -32,19 +31,19 @@ public final class SWITCH implements CompoundInstruction {
 
     private int[] match;
     private InstructionHandle[] targets;
-    private Select instruction;
-    private int matchLength;
+    private final Select instruction;
+    private final int matchLength;
 
+    public SWITCH(final int[] match, final InstructionHandle[] targets, final InstructionHandle target) {
+        this(match, targets, target, 1);
+    }
 
     /**
-     * Template for switch() constructs. If the match array can be
-     * sorted in ascending order with gaps no larger than max_gap
-     * between the numbers, a TABLESWITCH instruction is generated, and
-     * a LOOKUPSWITCH otherwise. The former may be more efficient, but
-     * needs more space.
+     * Template for switch() constructs. If the match array can be sorted in ascending order with gaps no larger than
+     * max_gap between the numbers, a TABLESWITCH instruction is generated, and a LOOKUPSWITCH otherwise. The former may be
+     * more efficient, but needs more space.
      *
-     * Note, that the key array always will be sorted, though we leave
-     * the original arrays unaltered.
+     * Note, that the key array always will be sorted, though we leave the original arrays unaltered.
      *
      * @param match array of match values (case 2: ... case 7: ..., etc.)
      * @param targets the instructions to be branched to for each case
@@ -68,12 +67,7 @@ public final class SWITCH implements CompoundInstruction {
     }
 
 
-    public SWITCH(final int[] match, final InstructionHandle[] targets, final InstructionHandle target) {
-        this(match, targets, target, 1);
-    }
-
-
-    private void fillup( final @NonNegative int max_gap, final InstructionHandle target ) {
+    private void fillup(final @NonNegative int max_gap, final InstructionHandle target) {
         final @NonNegative int max_size = matchLength + matchLength * max_gap;
         final int[] m_vec = new int[max_size];
         final InstructionHandle[] t_vec = new InstructionHandle[max_size];
@@ -98,15 +92,36 @@ public final class SWITCH implements CompoundInstruction {
         System.arraycopy(t_vec, 0, targets, 0, count);
     }
 
+    @Pure
+    public Instruction getInstruction() {
+        return instruction;
+    }
+
+    @Override
+    public InstructionList getInstructionList() {
+        return new InstructionList(instruction);
+    }
+
+    /**
+     * @return match is sorted in ascending order with no gap bigger than max_gap?
+     */
+    private boolean matchIsOrdered(final @NonNegative int max_gap) {
+        for (int i = 1; i < matchLength; i++) {
+            if (match[i] - match[i - 1] > max_gap) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     /**
      * Sort match and targets array with QuickSort.
      */
-    private void sort( final @NonNegative int l, final @NonNegative int r ) {
+    private void sort(final @NonNegative int l, final @NonNegative int r) {
         @NonNegative int i = l;
         @NonNegative int j = r;
         int h;
-        final int m = match[(l + r) >>> 1];
+        final int m = match[l + r >>> 1];
         InstructionHandle h2;
         do {
             while (match[i] < m) {
@@ -132,30 +147,5 @@ public final class SWITCH implements CompoundInstruction {
         if (i < r) {
             sort(i, r);
         }
-    }
-
-
-    /**
-     * @return match is sorted in ascending order with no gap bigger than max_gap?
-     */
-    private boolean matchIsOrdered( final @NonNegative int max_gap ) {
-        for (int i = 1; i < matchLength; i++) {
-            if (match[i] - match[i - 1] > max_gap) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
-    @Override
-    public InstructionList getInstructionList() {
-        return new InstructionList(instruction);
-    }
-
-
-    @Pure
-    public Instruction getInstruction() {
-        return instruction;
     }
 }

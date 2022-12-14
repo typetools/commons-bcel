@@ -18,29 +18,27 @@
 
 package org.apache.bcel;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.apache.bcel.classfile.AnnotationDefault;
 import org.apache.bcel.classfile.ElementValue;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.classfile.Method;
 import org.apache.bcel.classfile.SimpleElementValue;
+import org.junit.jupiter.api.Test;
 
-public class AnnotationDefaultAttributeTestCase extends AbstractTestCase
-{
+public class AnnotationDefaultAttributeTestCase extends AbstractTestCase {
     /**
-     * For values in an annotation that have default values, we should be able
-     * to query the AnnotationDefault attribute against the method to discover
-     * the default value that was originally declared.
+     * For values in an annotation that have default values, we should be able to query the AnnotationDefault attribute
+     * against the method to discover the default value that was originally declared.
      */
-    public void testMethodAnnotations() throws ClassNotFoundException
-    {
-        final JavaClass clazz = getTestClass(PACKAGE_BASE_NAME+".data.SimpleAnnotation");
+    @Test
+    public void testMethodAnnotations() throws ClassNotFoundException {
+        final JavaClass clazz = getTestClass(PACKAGE_BASE_NAME + ".data.SimpleAnnotation");
         final Method m = getMethod(clazz, "fruit");
-        final AnnotationDefault a = (AnnotationDefault) findAttribute(
-                "AnnotationDefault", m.getAttributes());
+        final AnnotationDefault a = (AnnotationDefault) findAttribute("AnnotationDefault", m.getAttributes());
         final SimpleElementValue val = (SimpleElementValue) a.getDefaultValue();
-        assertTrue("Should be STRING but is " + val.getElementValueType(), val
-                .getElementValueType() == ElementValue.STRING);
-        assertTrue("Should have default of bananas but default is "
-                + val.getValueString(), val.getValueString().equals("bananas"));
+        assertEquals(ElementValue.STRING, val.getElementValueType(), "Wrong element value type");
+        assertEquals("bananas", val.getValueString(), "Wrong default");
     }
 }

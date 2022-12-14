@@ -20,6 +20,8 @@ package org.apache.bcel.classfile;
 import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.stream.Stream;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
@@ -31,29 +33,27 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @since 6.0
  */
 @AnnotatedFor({"signedness"})
-public abstract class ParameterAnnotations extends Attribute {
+public abstract class ParameterAnnotations extends Attribute implements Iterable<ParameterAnnotationEntry> {
 
     /** Table of parameter annotations */
     private ParameterAnnotationEntry[] parameterAnnotationTable;
 
     /**
-     * @param parameter_annotation_type the subclass type of the parameter annotation
+     * @param parameterAnnotationType the subclass type of the parameter annotation
      * @param name_index Index pointing to the name <em>Code</em>
      * @param length Content length in bytes
      * @param input Input stream
      * @param constant_pool Array of constants
      */
-    ParameterAnnotations(final byte parameter_annotation_type, final @NonNegative int name_index, final @NonNegative int length,
-            final DataInput input, final ConstantPool constant_pool) throws IOException {
-        this(parameter_annotation_type, name_index, length, (ParameterAnnotationEntry[]) null,
-                constant_pool);
+    ParameterAnnotations(final byte parameterAnnotationType, final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool)
+        throws IOException {
+        this(parameterAnnotationType, name_index, length, (ParameterAnnotationEntry[]) null, constant_pool);
         final int num_parameters = input.readUnsignedByte();
         parameterAnnotationTable = new ParameterAnnotationEntry[num_parameters];
         for (int i = 0; i < num_parameters; i++) {
             parameterAnnotationTable[i] = new ParameterAnnotationEntry(input, constant_pool);
         }
     }
-
 
     /**
      * @param parameterAnnotationType the subclass type of the parameter annotation
@@ -63,53 +63,32 @@ public abstract class ParameterAnnotations extends Attribute {
      * @param constantPool Array of constants
      */
     public ParameterAnnotations(final byte parameterAnnotationType, final @NonNegative int nameIndex, final @NonNegative int length,
-            final ParameterAnnotationEntry[] parameterAnnotationTable, final ConstantPool constantPool) {
+        final ParameterAnnotationEntry[] parameterAnnotationTable, final ConstantPool constantPool) {
         super(parameterAnnotationType, nameIndex, length, constantPool);
         this.parameterAnnotationTable = parameterAnnotationTable;
     }
 
-
     /**
-     * Called by objects that are traversing the nodes of the tree implicitely
-     * defined by the contents of a Java class. I.e., the hierarchy of methods,
-     * fields, attributes, etc. spawns a tree of objects.
+     * Called by objects that are traversing the nodes of the tree implicitly defined by the contents of a Java class.
+     * I.e., the hierarchy of methods, fields, attributes, etc. spawns a tree of objects.
      *
      * @param v Visitor object
      */
     @Override
-    public void accept( final Visitor v ) {
+    public void accept(final Visitor v) {
         v.visitParameterAnnotation(this);
     }
 
-
     /**
-     * @param parameterAnnotationTable the entries to set in this parameter annotation
+     * @return deep copy of this attribute
      */
-    public final void setParameterAnnotationTable(final ParameterAnnotationEntry[] parameterAnnotationTable ) {
-        this.parameterAnnotationTable = parameterAnnotationTable;
-    }
-
-
-    /**
-     * @return the parameter annotation entry table
-     */
-    @Pure
-    public final ParameterAnnotationEntry[] getParameterAnnotationTable() {
-        return parameterAnnotationTable;
-    }
-
-
-    /**
-     * returns the array of parameter annotation entries in this parameter annotation
-     */
-    @Pure
-    public ParameterAnnotationEntry[] getParameterAnnotationEntries() {
-        return parameterAnnotationTable;
+    @Override
+    public Attribute copy(final ConstantPool constant_pool) {
+        return (Attribute) clone();
     }
 
     @Override
-    public void dump(final DataOutputStream dos) throws IOException
-    {
+    public void dump(final DataOutputStream dos) throws IOException {
         super.dump(dos);
         dos.writeByte(parameterAnnotationTable.length);
 
@@ -120,10 +99,30 @@ public abstract class ParameterAnnotations extends Attribute {
     }
 
     /**
-     * @return deep copy of this attribute
+     * returns the array of parameter annotation entries in this parameter annotation
      */
+    @Pure
+    public ParameterAnnotationEntry[] getParameterAnnotationEntries() {
+        return parameterAnnotationTable;
+    }
+
+    /**
+     * @return the parameter annotation entry table
+     */
+    @Pure
+    public final ParameterAnnotationEntry[] getParameterAnnotationTable() {
+        return parameterAnnotationTable;
+    }
+
     @Override
-    public Attribute copy( final ConstantPool constant_pool ) {
-        return (Attribute) clone();
+    public Iterator<ParameterAnnotationEntry> iterator() {
+        return Stream.of(parameterAnnotationTable).iterator();
+    }
+
+    /**
+     * @param parameterAnnotationTable the entries to set in this parameter annotation
+     */
+    public final void setParameterAnnotationTable(final ParameterAnnotationEntry[] parameterAnnotationTable) {
+        this.parameterAnnotationTable = parameterAnnotationTable;
     }
 }

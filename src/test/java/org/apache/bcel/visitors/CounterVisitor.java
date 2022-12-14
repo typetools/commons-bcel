@@ -60,11 +60,11 @@ import org.apache.bcel.classfile.MethodParameter;
 import org.apache.bcel.classfile.MethodParameters;
 import org.apache.bcel.classfile.Module;
 import org.apache.bcel.classfile.ModuleExports;
+import org.apache.bcel.classfile.ModuleMainClass;
 import org.apache.bcel.classfile.ModuleOpens;
+import org.apache.bcel.classfile.ModulePackages;
 import org.apache.bcel.classfile.ModuleProvides;
 import org.apache.bcel.classfile.ModuleRequires;
-import org.apache.bcel.classfile.ModuleMainClass;
-import org.apache.bcel.classfile.ModulePackages;
 import org.apache.bcel.classfile.NestHost;
 import org.apache.bcel.classfile.NestMembers;
 import org.apache.bcel.classfile.ParameterAnnotationEntry;
@@ -77,395 +77,209 @@ import org.apache.bcel.classfile.Synthetic;
 import org.apache.bcel.classfile.Unknown;
 import org.apache.bcel.classfile.Visitor;
 
-public class CounterVisitor implements Visitor
-{
+public class CounterVisitor implements Visitor {
     // CHECKSTYLE:OFF (public mutable fields in test code)
-    public int unknownCount = 0;
+    public int unknownCount;
 
-    public int syntheticCount = 0;
+    public int syntheticCount;
 
-    public int stackMapEntryCount = 0;
+    public int stackMapEntryCount;
 
-    public int stackMapCount = 0;
+    public int stackMapCount;
 
-    public int sourceFileCount = 0;
+    public int sourceFileCount;
 
-    public int signatureAnnotationCount = 0;
+    public int signatureAnnotationCount;
 
-    public int parameterAnnotationCount = 0;
+    public int parameterAnnotationCount;
 
-    public int methodCount = 0;
+    public int methodCount;
 
-    public int localVariableTypeTableCount = 0;
+    public int localVariableTypeTableCount;
 
-    public int localVariableTableCount = 0;
+    public int localVariableTableCount;
 
-    public int localVariableCount = 0;
+    public int localVariableCount;
 
-    public int lineNumberTableCount = 0;
+    public int lineNumberTableCount;
 
-    public int lineNumberCount = 0;
+    public int lineNumberCount;
 
-    public int javaClassCount = 0;
+    public int javaClassCount;
 
-    public int innerClassesCount = 0;
+    public int innerClassesCount;
 
-    public int innerClassCount = 0;
+    public int innerClassCount;
 
-    public int fieldCount = 0;
+    public int fieldCount;
 
-    public int exceptionTableCount = 0;
+    public int exceptionTableCount;
 
-    public int enclosingMethodCount = 0;
+    public int enclosingMethodCount;
 
-    public int deprecatedCount = 0;
+    public int deprecatedCount;
 
-    public int constantValueCount = 0;
+    public int constantValueCount;
 
-    public int constantUtf8Count = 0;
+    public int constantUtf8Count;
 
-    public int constantStringCount = 0;
+    public int constantStringCount;
 
-    public int constantNameAndTypeCount = 0;
+    public int constantNameAndTypeCount;
 
-    public int constantPoolCount = 0;
+    public int constantPoolCount;
 
-    public int constantMethodrefCount = 0;
+    public int constantMethodrefCount;
 
-    public int constantLongCount = 0;
+    public int constantLongCount;
 
-    public int constantIntegerCount = 0;
+    public int constantIntegerCount;
 
-    public int constantInterfaceMethodrefCount = 0;
+    public int constantInterfaceMethodrefCount;
 
-    public int constantFloatCount = 0;
+    public int constantFloatCount;
 
-    public int constantFieldrefCount = 0;
+    public int constantFieldrefCount;
 
-    public int constantClassCount = 0;
+    public int constantClassCount;
 
-    public int constantDoubleCount = 0;
+    public int constantDoubleCount;
 
-    public int codeExceptionCount = 0;
+    public int codeExceptionCount;
 
-    public int codeCount = 0;
+    public int codeCount;
 
-    public int annotationEntryCount = 0;
+    public int annotationEntryCount;
 
-    public int annotationDefaultCount = 0;
+    public int annotationDefaultCount;
 
-    public int annotationCount = 0;
-
-    /** @since 6.0 */
-    public int bootstrapMethodsCount = 0;
+    public int annotationCount;
 
     /** @since 6.0 */
-    public int methodParameterCount = 0;
+    public int bootstrapMethodsCount;
 
     /** @since 6.0 */
-    public int methodParametersCount = 0;
+    public int methodParameterCount;
 
     /** @since 6.0 */
-    public int constantInvokeDynamic = 0;
+    public int methodParametersCount;
+
+    /** @since 6.0 */
+    public int constantInvokeDynamic;
 
     /** @since 6.1 */
-    public int constantModuleCount = 0;
+    public int constantModuleCount;
 
     /** @since 6.1 */
-    public int constantPackageCount = 0;
+    public int constantPackageCount;
 
     /** @since 6.3 */
-    public int constantDynamicCount = 0;
+    public int constantDynamicCount;
 
     /** @since 6.4.0 */
-    public int moduleCount = 0;
+    public int moduleCount;
 
     /** @since 6.4.0 */
-    public int moduleExportsCount = 0;
+    public int moduleExportsCount;
 
     /** @since 6.4.0 */
-    public int moduleOpensCount = 0;
+    public int moduleOpensCount;
 
     /** @since 6.4.0 */
-    public int moduleProvidesCount = 0;
+    public int moduleProvidesCount;
 
     /** @since 6.4.0 */
-    public int moduleRequiresCount = 0;
+    public int moduleRequiresCount;
 
     /** @since 6.4.0 */
-    public int moduleMainClassCount = 0;
+    public int moduleMainClassCount;
 
     /** @since 6.4.0 */
-    public int modulePackagesCount = 0;
+    public int modulePackagesCount;
 
     /** @since 6.4.0 */
-    public int nestHostCount = 0;
+    public int nestHostCount;
 
     /** @since 6.4.0 */
-    public int nestMembersCount = 0;
+    public int nestMembersCount;
     // CHECKSTYLE:ON
 
-
     @Override
-    public void visitAnnotation(final Annotations obj)
-    {
+    public void visitAnnotation(final Annotations obj) {
         annotationCount++;
     }
 
     @Override
-    public void visitAnnotationDefault(final AnnotationDefault obj)
-    {
+    public void visitAnnotationDefault(final AnnotationDefault obj) {
         annotationDefaultCount++;
     }
 
     @Override
-    public void visitAnnotationEntry(final AnnotationEntry obj)
-    {
+    public void visitAnnotationEntry(final AnnotationEntry obj) {
         annotationEntryCount++;
     }
 
+    /** @since 6.0 */
     @Override
-    public void visitCode(final Code obj)
-    {
+    public void visitBootstrapMethods(final BootstrapMethods obj) {
+        bootstrapMethodsCount++;
+    }
+
+    @Override
+    public void visitCode(final Code obj) {
         codeCount++;
     }
 
     @Override
-    public void visitCodeException(final CodeException obj)
-    {
+    public void visitCodeException(final CodeException obj) {
         codeExceptionCount++;
     }
 
     @Override
-    public void visitConstantClass(final ConstantClass obj)
-    {
+    public void visitConstantClass(final ConstantClass obj) {
         constantClassCount++;
     }
 
     @Override
-    public void visitConstantDouble(final ConstantDouble obj)
-    {
+    public void visitConstantDouble(final ConstantDouble obj) {
         constantDoubleCount++;
     }
 
+    /** @since 6.3 */
     @Override
-    public void visitConstantFieldref(final ConstantFieldref obj)
-    {
+    public void visitConstantDynamic(final ConstantDynamic constantDynamic) {
+        constantDynamicCount++;
+    }
+
+    @Override
+    public void visitConstantFieldref(final ConstantFieldref obj) {
         constantFieldrefCount++;
     }
 
     @Override
-    public void visitConstantFloat(final ConstantFloat obj)
-    {
+    public void visitConstantFloat(final ConstantFloat obj) {
         constantFloatCount++;
     }
 
     @Override
-    public void visitConstantInteger(final ConstantInteger obj)
-    {
+    public void visitConstantInteger(final ConstantInteger obj) {
         constantIntegerCount++;
     }
 
     @Override
-    public void visitConstantInterfaceMethodref(final ConstantInterfaceMethodref obj)
-    {
+    public void visitConstantInterfaceMethodref(final ConstantInterfaceMethodref obj) {
         constantInterfaceMethodrefCount++;
     }
 
-    @Override
-    public void visitConstantLong(final ConstantLong obj)
-    {
-        constantLongCount++;
-    }
-
-    @Override
-    public void visitConstantMethodref(final ConstantMethodref obj)
-    {
-        constantMethodrefCount++;
-    }
-
-    @Override
-    public void visitConstantNameAndType(final ConstantNameAndType obj)
-    {
-        constantNameAndTypeCount++;
-    }
-
-    @Override
-    public void visitConstantPool(final ConstantPool obj)
-    {
-        constantPoolCount++;
-    }
-
-    @Override
-    public void visitConstantString(final ConstantString obj)
-    {
-        constantStringCount++;
-    }
-
-    @Override
-    public void visitConstantUtf8(final ConstantUtf8 obj)
-    {
-        constantUtf8Count++;
-    }
-
-    @Override
-    public void visitConstantValue(final ConstantValue obj)
-    {
-        constantValueCount++;
-    }
-
-    @Override
-    public void visitDeprecated(final Deprecated obj)
-    {
-        deprecatedCount++;
-    }
-
-    @Override
-    public void visitEnclosingMethod(final EnclosingMethod obj)
-    {
-        enclosingMethodCount++;
-    }
-
-    @Override
-    public void visitExceptionTable(final ExceptionTable obj)
-    {
-        exceptionTableCount++;
-    }
-
-    @Override
-    public void visitField(final Field obj)
-    {
-        fieldCount++;
-    }
-
-    @Override
-    public void visitInnerClass(final InnerClass obj)
-    {
-        innerClassCount++;
-    }
-
-    @Override
-    public void visitInnerClasses(final InnerClasses obj)
-    {
-        innerClassesCount++;
-    }
-
-    @Override
-    public void visitJavaClass(final JavaClass obj)
-    {
-        javaClassCount++;
-    }
-
-    @Override
-    public void visitLineNumber(final LineNumber obj)
-    {
-        lineNumberCount++;
-    }
-
-    @Override
-    public void visitLineNumberTable(final LineNumberTable obj)
-    {
-        lineNumberTableCount++;
-    }
-
-    @Override
-    public void visitLocalVariable(final LocalVariable obj)
-    {
-        localVariableCount++;
-    }
-
-    @Override
-    public void visitLocalVariableTable(final LocalVariableTable obj)
-    {
-        localVariableTableCount++;
-    }
-
-    @Override
-    public void visitLocalVariableTypeTable(final LocalVariableTypeTable obj)
-    {
-        localVariableTypeTableCount++;
-    }
-
-    @Override
-    public void visitMethod(final Method obj)
-    {
-        methodCount++;
-    }
-
-    @Override
-    public void visitParameterAnnotation(final ParameterAnnotations obj)
-    {
-        parameterAnnotationCount++;
-    }
-
-    @Override
-    public void visitSignature(final Signature obj)
-    {
-        signatureAnnotationCount++;
-    }
-
-    @Override
-    public void visitSourceFile(final SourceFile obj)
-    {
-        sourceFileCount++;
-    }
-
-    @Override
-    public void visitStackMap(final StackMap obj)
-    {
-        stackMapCount++;
-    }
-
-    @Override
-    public void visitStackMapEntry(final StackMapEntry obj)
-    {
-        stackMapEntryCount++;
-    }
-
-    @Override
-    public void visitSynthetic(final Synthetic obj)
-    {
-        syntheticCount++;
-    }
-
-    @Override
-    public void visitUnknown(final Unknown obj)
-    {
-        unknownCount++;
-    }
-
     /** @since 6.0 */
     @Override
-    public void visitBootstrapMethods(final BootstrapMethods obj)
-    {
-        bootstrapMethodsCount++;
-    }
-
-    /** @since 6.0 */
-    @Override
-    public void visitMethodParameter(final MethodParameter obj)
-    {
-        methodParameterCount++;
-    }
-
-    /** @since 6.0 */
-    @Override
-    public void visitMethodParameters(final MethodParameters obj)
-    {
-        methodParametersCount++;
-    }
-
-    /** @since 6.0 */
-    @Override
-    public void visitConstantInvokeDynamic(final ConstantInvokeDynamic obj)
-    {
+    public void visitConstantInvokeDynamic(final ConstantInvokeDynamic obj) {
         constantInvokeDynamic++;
     }
 
-    /** @since 6.0 */
     @Override
-    public void visitConstantMethodType(final ConstantMethodType obj) {
-        // TODO Auto-generated method stub
+    public void visitConstantLong(final ConstantLong obj) {
+        constantLongCount++;
     }
 
     /** @since 6.0 */
@@ -474,16 +288,15 @@ public class CounterVisitor implements Visitor
         // TODO Auto-generated method stub
     }
 
-    /** @since 6.0 */
     @Override
-    public void visitParameterAnnotationEntry(final ParameterAnnotationEntry parameterAnnotationEntry) {
-        // TODO Auto-generated method stub
+    public void visitConstantMethodref(final ConstantMethodref obj) {
+        constantMethodrefCount++;
     }
 
-    /** @since 6.1 */
+    /** @since 6.0 */
     @Override
-    public void visitConstantPackage(final ConstantPackage constantPackage) {
-        constantPackageCount++;
+    public void visitConstantMethodType(final ConstantMethodType obj) {
+        // TODO Auto-generated method stub
     }
 
     /** @since 6.1 */
@@ -492,10 +305,112 @@ public class CounterVisitor implements Visitor
         constantModuleCount++;
     }
 
-    /** @since 6.3 */
     @Override
-    public void visitConstantDynamic(final ConstantDynamic constantDynamic) {
-        constantDynamicCount++;
+    public void visitConstantNameAndType(final ConstantNameAndType obj) {
+        constantNameAndTypeCount++;
+    }
+
+    /** @since 6.1 */
+    @Override
+    public void visitConstantPackage(final ConstantPackage constantPackage) {
+        constantPackageCount++;
+    }
+
+    @Override
+    public void visitConstantPool(final ConstantPool obj) {
+        constantPoolCount++;
+    }
+
+    @Override
+    public void visitConstantString(final ConstantString obj) {
+        constantStringCount++;
+    }
+
+    @Override
+    public void visitConstantUtf8(final ConstantUtf8 obj) {
+        constantUtf8Count++;
+    }
+
+    @Override
+    public void visitConstantValue(final ConstantValue obj) {
+        constantValueCount++;
+    }
+
+    @Override
+    public void visitDeprecated(final Deprecated obj) {
+        deprecatedCount++;
+    }
+
+    @Override
+    public void visitEnclosingMethod(final EnclosingMethod obj) {
+        enclosingMethodCount++;
+    }
+
+    @Override
+    public void visitExceptionTable(final ExceptionTable obj) {
+        exceptionTableCount++;
+    }
+
+    @Override
+    public void visitField(final Field obj) {
+        fieldCount++;
+    }
+
+    @Override
+    public void visitInnerClass(final InnerClass obj) {
+        innerClassCount++;
+    }
+
+    @Override
+    public void visitInnerClasses(final InnerClasses obj) {
+        innerClassesCount++;
+    }
+
+    @Override
+    public void visitJavaClass(final JavaClass obj) {
+        javaClassCount++;
+    }
+
+    @Override
+    public void visitLineNumber(final LineNumber obj) {
+        lineNumberCount++;
+    }
+
+    @Override
+    public void visitLineNumberTable(final LineNumberTable obj) {
+        lineNumberTableCount++;
+    }
+
+    @Override
+    public void visitLocalVariable(final LocalVariable obj) {
+        localVariableCount++;
+    }
+
+    @Override
+    public void visitLocalVariableTable(final LocalVariableTable obj) {
+        localVariableTableCount++;
+    }
+
+    @Override
+    public void visitLocalVariableTypeTable(final LocalVariableTypeTable obj) {
+        localVariableTypeTableCount++;
+    }
+
+    @Override
+    public void visitMethod(final Method obj) {
+        methodCount++;
+    }
+
+    /** @since 6.0 */
+    @Override
+    public void visitMethodParameter(final MethodParameter obj) {
+        methodParameterCount++;
+    }
+
+    /** @since 6.0 */
+    @Override
+    public void visitMethodParameters(final MethodParameters obj) {
+        methodParametersCount++;
     }
 
     /** @since 6.4.0 */
@@ -512,8 +427,20 @@ public class CounterVisitor implements Visitor
 
     /** @since 6.4.0 */
     @Override
+    public void visitModuleMainClass(final ModuleMainClass obj) {
+        moduleMainClassCount++;
+    }
+
+    /** @since 6.4.0 */
+    @Override
     public void visitModuleOpens(final ModuleOpens obj) {
         moduleOpensCount++;
+    }
+
+    /** @since 6.4.0 */
+    @Override
+    public void visitModulePackages(final ModulePackages obj) {
+        modulePackagesCount++;
     }
 
     /** @since 6.4.0 */
@@ -530,18 +457,6 @@ public class CounterVisitor implements Visitor
 
     /** @since 6.4.0 */
     @Override
-    public void visitModuleMainClass(final ModuleMainClass obj) {
-        moduleMainClassCount++;
-    }
-
-    /** @since 6.4.0 */
-    @Override
-    public void visitModulePackages(final ModulePackages obj) {
-        modulePackagesCount++;
-    }
-
-    /** @since 6.4.0 */
-    @Override
     public void visitNestHost(final NestHost obj) {
         nestHostCount++;
     }
@@ -550,5 +465,46 @@ public class CounterVisitor implements Visitor
     @Override
     public void visitNestMembers(final NestMembers obj) {
         nestMembersCount++;
+    }
+
+    @Override
+    public void visitParameterAnnotation(final ParameterAnnotations obj) {
+        parameterAnnotationCount++;
+    }
+
+    /** @since 6.0 */
+    @Override
+    public void visitParameterAnnotationEntry(final ParameterAnnotationEntry parameterAnnotationEntry) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void visitSignature(final Signature obj) {
+        signatureAnnotationCount++;
+    }
+
+    @Override
+    public void visitSourceFile(final SourceFile obj) {
+        sourceFileCount++;
+    }
+
+    @Override
+    public void visitStackMap(final StackMap obj) {
+        stackMapCount++;
+    }
+
+    @Override
+    public void visitStackMapEntry(final StackMapEntry obj) {
+        stackMapEntryCount++;
+    }
+
+    @Override
+    public void visitSynthetic(final Synthetic obj) {
+        syntheticCount++;
+    }
+
+    @Override
+    public void visitUnknown(final Unknown obj) {
+        unknownCount++;
     }
 }

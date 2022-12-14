@@ -22,21 +22,20 @@ import org.checkerframework.dataflow.qual.Pure;
 /**
  * DCONST - Push 0.0 or 1.0, other values cause an exception
  *
- * <PRE>Stack: ... -&gt; ..., </PRE>
+ * <PRE>
+ * Stack: ... -&gt; ...,
+ * </PRE>
  *
  */
 public class DCONST extends Instruction implements ConstantPushInstruction {
 
     private double value;
 
-
     /**
-     * Empty constructor needed for Instruction.readInstruction.
-     * Not to be used otherwise.
+     * Empty constructor needed for Instruction.readInstruction. Not to be used otherwise.
      */
     DCONST() {
     }
-
 
     public DCONST(final double f) {
         super(org.apache.bcel.Const.DCONST_0, (short) 1);
@@ -50,36 +49,32 @@ public class DCONST extends Instruction implements ConstantPushInstruction {
         value = f;
     }
 
-
-    @Override
-    public Number getValue() {
-        return new Double(value);
-    }
-
-
-    /** @return Type.DOUBLE
-     */
-    @Override
-    @Pure
-    public Type getType( final ConstantPoolGen cp ) {
-        return Type.DOUBLE;
-    }
-
-
     /**
-     * Call corresponding visitor method(s). The order is:
-     * Call visitor methods of implemented interfaces first, then
-     * call methods according to the class hierarchy in descending order,
-     * i.e., the most specific visitXXX() call comes last.
+     * Call corresponding visitor method(s). The order is: Call visitor methods of implemented interfaces first, then call
+     * methods according to the class hierarchy in descending order, i.e., the most specific visitXXX() call comes last.
      *
      * @param v Visitor object
      */
     @Override
-    public void accept( final Visitor v ) {
+    public void accept(final Visitor v) {
         v.visitPushInstruction(this);
         v.visitStackProducer(this);
         v.visitTypedInstruction(this);
         v.visitConstantPushInstruction(this);
         v.visitDCONST(this);
+    }
+
+    /**
+     * @return Type.DOUBLE
+     */
+    @Override
+    @Pure
+    public Type getType(final ConstantPoolGen cp) {
+        return Type.DOUBLE;
+    }
+
+    @Override
+    public Number getValue() {
+        return Double.valueOf(value);
     }
 }

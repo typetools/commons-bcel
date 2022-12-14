@@ -20,14 +20,12 @@ package org.apache.bcel.generic;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
- * Denote entity that refers to an index, e.g. local variable instructions,
- * RET, CPInstruction, etc.
+ * Denote entity that refers to an index, e.g. local variable instructions, RET, CPInstruction, etc.
  *
  */
 public interface IndexedInstruction {
 
     @NonNegative int getIndex();
 
-
-    void setIndex( @NonNegative int index );
+    void setIndex(@NonNegative int index);
 }

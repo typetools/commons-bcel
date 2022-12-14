@@ -25,6 +25,7 @@ import org.apache.bcel.classfile.Constant;
 import org.apache.bcel.classfile.ConstantCP;
 import org.apache.bcel.classfile.ConstantClass;
 import org.apache.bcel.classfile.ConstantDouble;
+import org.apache.bcel.classfile.ConstantDynamic;
 import org.apache.bcel.classfile.ConstantFieldref;
 import org.apache.bcel.classfile.ConstantFloat;
 import org.apache.bcel.classfile.ConstantInteger;
@@ -36,6 +37,7 @@ import org.apache.bcel.classfile.ConstantNameAndType;
 import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.classfile.ConstantString;
 import org.apache.bcel.classfile.ConstantUtf8;
+import org.apache.bcel.classfile.Utility;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
@@ -46,28 +48,39 @@ import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
- * This class is used to build up a constant pool. The user adds
- * constants via `addXXX' methods, `addString', `addClass',
- * etc.. These methods return an index into the constant
- * pool. Finally, `getFinalConstantPool()' returns the constant pool
- * built up. Intermediate versions of the constant pool can be
- * obtained with `getConstantPool()'. A constant pool has capacity for
- * Constants.MAX_SHORT entries. Note that the first (0) is used by the
- * JVM and that Double and Long constants need two slots.
+ * This class is used to build up a constant pool. The user adds constants via `addXXX' methods, `addString',
+ * `addClass', etc.. These methods return an index into the constant pool. Finally, `getFinalConstantPool()' returns the
+ * constant pool built up. Intermediate versions of the constant pool can be obtained with `getConstantPool()'. A
+ * constant pool has capacity for Constants.MAX_SHORT entries. Note that the first (0) is used by the JVM and that
+ * Double and Long constants need two slots.
  *
  * @see Constant
  */
 @AnnotatedFor({"signedness"})
 public @UsesObjectEquals class ConstantPoolGen {
 
+    private static class Index {
+
+        final @NonNegative int index;
+
+        Index(final @NonNegative int i) {
+            index = i;
+        }
+    }
+
     private static final int DEFAULT_BUFFER_SIZE = 256;
 
+    private static final String METHODREF_DELIM = ":";
+
+    private static final String IMETHODREF_DELIM = "#";
+
+    private static final String FIELDREF_DELIM = "&";
+    private static final String NAT_DELIM = "%"; // Name and Type
     /**
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
      */
     @Deprecated
     protected @NonNegative int size;
-
     /**
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
      */
@@ -80,21 +93,23 @@ public @UsesObjectEquals class ConstantPoolGen {
     @Deprecated
     protected @NonNegative int index = 1; // First entry (0) used by JVM
 
-    private static final String METHODREF_DELIM = ":";
-    private static final String IMETHODREF_DELIM = "#";
-    private static final String FIELDREF_DELIM = "&";
-    private static final String NAT_DELIM = "%"; // Name and Type
+    private final Map<String, Index> stringTable = new HashMap<>();
 
-    private static class Index {
+    private final Map<String, Index> classTable = new HashMap<>();
 
-        final @NonNegative int index;
+    private final Map<String, Index> utf8Table = new HashMap<>();
 
+    private final Map<String, Index> natTable = new HashMap<>();
 
-        Index(final @NonNegative int i) {
-            index = i;
-        }
+    private final Map<String, Index> cpTable = new HashMap<>();
+
+    /**
+     * Create empty constant pool.
+     */
+    public ConstantPoolGen() {
+        size = DEFAULT_BUFFER_SIZE;
+        constants = new Constant[size];
     }
-
 
     /**
      * Initialize with given array of constants.
@@ -104,14 +119,13 @@ public @UsesObjectEquals class ConstantPoolGen {
     public ConstantPoolGen(final Constant[] cs) {
         final StringBuilder sb = new StringBuilder(DEFAULT_BUFFER_SIZE);
 
-        size = Math.max(DEFAULT_BUFFER_SIZE, cs.length + 64);
+        size = Math.min(Math.max(DEFAULT_BUFFER_SIZE, cs.length + 64), Const.MAX_CP_ENTRIES + 1);
         constants = new Constant[size];
 
         System.arraycopy(cs, 0, constants, 0, cs.length);
         if (cs.length > 0) {
             index = cs.length;
         }
-
 
         for (int i = 1; i < index; i++) {
             final Constant c = constants[i];
@@ -151,17 +165,17 @@ public @UsesObjectEquals class ConstantPoolGen {
                 }
             } else if (c instanceof ConstantCP) {
                 final ConstantCP m = (ConstantCP) c;
-                String class_name;
+                String className;
                 ConstantUtf8 u8;
 
                 if (c instanceof ConstantInvokeDynamic) {
-                    class_name = Integer.toString(((ConstantInvokeDynamic) m).getBootstrapMethodAttrIndex());
-                    // since name can't begin with digit, can  use
-                    // METHODREF_DELIM with out fear of duplicates.
+                    className = Integer.toString(((ConstantInvokeDynamic) m).getBootstrapMethodAttrIndex());
+                } else if (c instanceof ConstantDynamic) {
+                    className = Integer.toString(((ConstantDynamic) m).getBootstrapMethodAttrIndex());
                 } else {
-                final ConstantClass clazz = (ConstantClass) constants[m.getClassIndex()];
+                    final ConstantClass clazz = (ConstantClass) constants[m.getClassIndex()];
                     u8 = (ConstantUtf8) constants[clazz.getNameIndex()];
-                    class_name = u8.getBytes().replace('/', '.');
+                    className = Utility.pathToPackage(u8.getBytes());
                 }
 
                 final ConstantNameAndType n = (ConstantNameAndType) constants[m.getNameAndTypeIndex()];
@@ -170,6 +184,7 @@ public @UsesObjectEquals class ConstantPoolGen {
                 u8 = (ConstantUtf8) constants[n.getSignatureIndex()];
                 final String signature = u8.getBytes();
 
+                // Since name cannot begin with digit, we can use METHODREF_DELIM without fear of duplicates
                 String delim = METHODREF_DELIM;
                 if (c instanceof ConstantInterfaceMethodref) {
                     delim = IMETHODREF_DELIM;
@@ -177,7 +192,7 @@ public @UsesObjectEquals class ConstantPoolGen {
                     delim = FIELDREF_DELIM;
                 }
 
-                sb.append(class_name);
+                sb.append(className);
                 sb.append(delim);
                 sb.append(method_name);
                 sb.append(delim);
@@ -212,7 +227,6 @@ public @UsesObjectEquals class ConstantPoolGen {
         }
     }
 
-
     /**
      * Initialize with given constant pool.
      */
@@ -220,80 +234,38 @@ public @UsesObjectEquals class ConstantPoolGen {
         this(cp.getConstantPool());
     }
 
-
     /**
-     * Create empty constant pool.
-     */
-    public ConstantPoolGen() {
-        size = DEFAULT_BUFFER_SIZE;
-        constants = new Constant[size];
-    }
-
-
-    /** Resize internal array of constants.
-     */
-    protected void adjustSize() {
-        if (index + 3 >= size) {
-            final Constant[] cs = constants;
-            size *= 2;
-            constants = new Constant[size];
-            System.arraycopy(cs, 0, constants, 0, index);
-        }
-    }
-
-    private final Map<String, Index> stringTable = new HashMap<>();
-
-
-    /**
-     * Look for ConstantString in ConstantPool containing String `str'.
+     * Add a reference to an array class (e.g. String[][]) as needed by MULTIANEWARRAY instruction, e.g. to the
+     * ConstantPool.
      *
-     * @param str String to search for
-     * @return index on success, -1 otherwise
-     */
-    public @GTENegativeOne int lookupString( final String str ) {
-        final Index index = stringTable.get(str);
-        return (index != null) ? index.index : -1;
-    }
-
-
-    /**
-     * Add a new String constant to the ConstantPool, if it is not already in there.
-     *
-     * @param str String to add
+     * @param type type of array class
      * @return index of entry
      */
-    public @NonNegative int addString( final String str ) {
-        int ret;
-        if ((ret = lookupString(str)) != -1) {
-            return ret; // Already in CP
-        }
-        final int utf8 = addUtf8(str);
-        adjustSize();
-        final ConstantString s = new ConstantString(utf8);
-        ret = index;
-        constants[index++] = s;
-        if (!stringTable.containsKey(str)) {
-            stringTable.put(str, new Index(ret));
-        }
-        return ret;
+    public @NonNegative int addArrayClass(final ArrayType type) {
+        return addClass_(type.getSignature());
     }
-
-    private final Map<String, Index> classTable = new HashMap<>();
-
 
     /**
-     * Look for ConstantClass in ConstantPool named `str'.
+     * Add a new Class reference to the ConstantPool for a given type.
      *
-     * @param str String to search for
-     * @return index on success, -1 otherwise
+     * @param type Class to add
+     * @return index of entry
      */
-    public @GTENegativeOne int lookupClass( final String str ) {
-        final Index index = classTable.get(str.replace('.', '/'));
-        return (index != null) ? index.index : -1;
+    public @NonNegative int addClass(final ObjectType type) {
+        return addClass(type.getClassName());
     }
 
+    /**
+     * Add a new Class reference to the ConstantPool, if it is not already in there.
+     *
+     * @param str Class to add
+     * @return index of entry
+     */
+    public @NonNegative int addClass(final String str) {
+        return addClass_(str.replace('.', '/'));
+    }
 
-    private @NonNegative int addClass_( final String clazz ) {
+    private @NonNegative int addClass_(final String clazz) {
         int ret;
         if ((ret = lookupClass(clazz)) != -1) {
             return ret; // Already in CP
@@ -308,208 +280,67 @@ public @UsesObjectEquals class ConstantPoolGen {
         return ret;
     }
 
-
     /**
-     * Add a new Class reference to the ConstantPool, if it is not already in there.
-     *
-     * @param str Class to add
-     * @return index of entry
+     * Import constant from another ConstantPool and return new index.
      */
-    public @NonNegative int addClass( final String str ) {
-        return addClass_(str.replace('.', '/'));
-    }
-
-
-    /**
-     * Add a new Class reference to the ConstantPool for a given type.
-     *
-     * @param type Class to add
-     * @return index of entry
-     */
-    public @NonNegative int addClass( final ObjectType type ) {
-        return addClass(type.getClassName());
-    }
-
-
-    /**
-     * Add a reference to an array class (e.g. String[][]) as needed by MULTIANEWARRAY
-     * instruction, e.g. to the ConstantPool.
-     *
-     * @param type type of array class
-     * @return index of entry
-     */
-    public @NonNegative int addArrayClass( final ArrayType type ) {
-        return addClass_(type.getSignature());
-    }
-
-
-    /**
-     * Look for ConstantInteger in ConstantPool.
-     *
-     * @param n integer number to look for
-     * @return index on success, -1 otherwise
-     */
-    public @GTENegativeOne int lookupInteger( final int n ) {
-        for (int i = 1; i < index; i++) {
-            if (constants[i] instanceof ConstantInteger) {
-                final ConstantInteger c = (ConstantInteger) constants[i];
-                if (c.getBytes() == n) {
-                    return i;
-                }
+    public @NonNegative int addConstant(final Constant c, final ConstantPoolGen cp) {
+        final Constant[] constants = cp.getConstantPool().getConstantPool();
+        switch (c.getTag()) {
+        case Const.CONSTANT_String: {
+            final ConstantString s = (ConstantString) c;
+            final ConstantUtf8 u8 = (ConstantUtf8) constants[s.getStringIndex()];
+            return addString(u8.getBytes());
+        }
+        case Const.CONSTANT_Class: {
+            final ConstantClass s = (ConstantClass) c;
+            final ConstantUtf8 u8 = (ConstantUtf8) constants[s.getNameIndex()];
+            return addClass(u8.getBytes());
+        }
+        case Const.CONSTANT_NameAndType: {
+            final ConstantNameAndType n = (ConstantNameAndType) c;
+            final ConstantUtf8 u8 = (ConstantUtf8) constants[n.getNameIndex()];
+            final ConstantUtf8 u8_2 = (ConstantUtf8) constants[n.getSignatureIndex()];
+            return addNameAndType(u8.getBytes(), u8_2.getBytes());
+        }
+        case Const.CONSTANT_Utf8:
+            return addUtf8(((ConstantUtf8) c).getBytes());
+        case Const.CONSTANT_Double:
+            return addDouble(((ConstantDouble) c).getBytes());
+        case Const.CONSTANT_Float:
+            return addFloat(((ConstantFloat) c).getBytes());
+        case Const.CONSTANT_Long:
+            return addLong(((ConstantLong) c).getBytes());
+        case Const.CONSTANT_Integer:
+            return addInteger(((ConstantInteger) c).getBytes());
+        case Const.CONSTANT_InterfaceMethodref:
+        case Const.CONSTANT_Methodref:
+        case Const.CONSTANT_Fieldref: {
+            final ConstantCP m = (ConstantCP) c;
+            final ConstantClass clazz = (ConstantClass) constants[m.getClassIndex()];
+            final ConstantNameAndType n = (ConstantNameAndType) constants[m.getNameAndTypeIndex()];
+            ConstantUtf8 u8 = (ConstantUtf8) constants[clazz.getNameIndex()];
+            @SuppressWarnings("signature") // string conversion
+            final @FullyQualifiedName String className = u8.getBytes().replace('/', '.');
+            u8 = (ConstantUtf8) constants[n.getNameIndex()];
+            final String name = u8.getBytes();
+            u8 = (ConstantUtf8) constants[n.getSignatureIndex()];
+            @SuppressWarnings("signature") // string read from classfile
+            final @FieldDescriptor String signature = u8.getBytes();
+            switch (c.getTag()) {
+            case Const.CONSTANT_InterfaceMethodref:
+                return addInterfaceMethodref(className, name, signature);
+            case Const.CONSTANT_Methodref:
+                return addMethodref(className, name, signature);
+            case Const.CONSTANT_Fieldref:
+                return addFieldref(className, name, signature);
+            default: // Never reached
+                throw new IllegalArgumentException("Unknown constant type " + c);
             }
         }
-        return -1;
-    }
-
-
-    /**
-     * Add a new Integer constant to the ConstantPool, if it is not already in there.
-     *
-     * @param n integer number to add
-     * @return index of entry
-     */
-    public @NonNegative int addInteger( final int n ) {
-        int ret;
-        if ((ret = lookupInteger(n)) != -1) {
-            return ret; // Already in CP
+        default: // Never reached
+            throw new IllegalArgumentException("Unknown constant type " + c);
         }
-        adjustSize();
-        ret = index;
-        constants[index++] = new ConstantInteger(n);
-        return ret;
     }
-
-
-    /**
-     * Look for ConstantFloat in ConstantPool.
-     *
-     * @param n Float number to look for
-     * @return index on success, -1 otherwise
-     */
-    public @GTENegativeOne int lookupFloat( final float n ) {
-        final int bits = Float.floatToIntBits(n);
-        for (int i = 1; i < index; i++) {
-            if (constants[i] instanceof ConstantFloat) {
-                final ConstantFloat c = (ConstantFloat) constants[i];
-                if (Float.floatToIntBits(c.getBytes()) == bits) {
-                    return i;
-                }
-            }
-        }
-        return -1;
-    }
-
-
-    /**
-     * Add a new Float constant to the ConstantPool, if it is not already in there.
-     *
-     * @param n Float number to add
-     * @return index of entry
-     */
-    public @NonNegative int addFloat( final float n ) {
-        int ret;
-        if ((ret = lookupFloat(n)) != -1) {
-            return ret; // Already in CP
-        }
-        adjustSize();
-        ret = index;
-        constants[index++] = new ConstantFloat(n);
-        return ret;
-    }
-
-    private final Map<String, Index> utf8Table = new HashMap<>();
-
-
-    /**
-     * Look for ConstantUtf8 in ConstantPool.
-     *
-     * @param n Utf8 string to look for
-     * @return index on success, -1 otherwise
-     */
-    public @GTENegativeOne int lookupUtf8( final String n ) {
-        final Index index = utf8Table.get(n);
-        return (index != null) ? index.index : -1;
-    }
-
-
-    /**
-     * Add a new Utf8 constant to the ConstantPool, if it is not already in there.
-     *
-     * @param n Utf8 string to add
-     * @return index of entry
-     */
-    public @NonNegative int addUtf8( final String n ) {
-        int ret;
-        if ((ret = lookupUtf8(n)) != -1) {
-            return ret; // Already in CP
-        }
-        adjustSize();
-        ret = index;
-        constants[index++] = new ConstantUtf8(n);
-        if (!utf8Table.containsKey(n)) {
-            utf8Table.put(n, new Index(ret));
-        }
-        return ret;
-    }
-
-
-    /**
-     * Look for ConstantLong in ConstantPool.
-     *
-     * @param n Long number to look for
-     * @return index on success, -1 otherwise
-     */
-    public @GTENegativeOne int lookupLong( final long n ) {
-        for (int i = 1; i < index; i++) {
-            if (constants[i] instanceof ConstantLong) {
-                final ConstantLong c = (ConstantLong) constants[i];
-                if (c.getBytes() == n) {
-                    return i;
-                }
-            }
-        }
-        return -1;
-    }
-
-
-    /**
-     * Add a new long constant to the ConstantPool, if it is not already in there.
-     *
-     * @param n Long number to add
-     * @return index of entry
-     */
-    public @NonNegative int addLong( final long n ) {
-        int ret;
-        if ((ret = lookupLong(n)) != -1) {
-            return ret; // Already in CP
-        }
-        adjustSize();
-        ret = index;
-        constants[index] = new ConstantLong(n);
-        index += 2; // Wastes one entry according to spec
-        return ret;
-    }
-
-
-    /**
-     * Look for ConstantDouble in ConstantPool.
-     *
-     * @param n Double number to look for
-     * @return index on success, -1 otherwise
-     */
-    public @GTENegativeOne int lookupDouble( final double n ) {
-        final long bits = Double.doubleToLongBits(n);
-        for (int i = 1; i < index; i++) {
-            if (constants[i] instanceof ConstantDouble) {
-                final ConstantDouble c = (ConstantDouble) constants[i];
-                if (Double.doubleToLongBits(c.getBytes()) == bits) {
-                    return i;
-                }
-            }
-        }
-        return -1;
-    }
-
 
     /**
      * Add a new double constant to the ConstantPool, if it is not already in there.
@@ -517,7 +348,7 @@ public @UsesObjectEquals class ConstantPoolGen {
      * @param n Double number to add
      * @return index of entry
      */
-    public @NonNegative int addDouble( final double n ) {
+    public @NonNegative int addDouble(final double n) {
         int ret;
         if ((ret = lookupDouble(n)) != -1) {
             return ret; // Already in CP
@@ -529,31 +360,155 @@ public @UsesObjectEquals class ConstantPoolGen {
         return ret;
     }
 
-    private final Map<String, Index> natTable = new HashMap<>();
-
-
     /**
-     * Look for ConstantNameAndType in ConstantPool.
+     * Add a new Fieldref constant to the ConstantPool, if it is not already in there.
      *
-     * @param name of variable/method
-     * @param signature of variable/method
-     * @return index on success, -1 otherwise
+     * @param className class name string to add
+     * @param fieldName field name string to add
+     * @param signature signature string to add
+     * @return index of entry
      */
-    public @GTENegativeOne int lookupNameAndType( final String name, final String signature ) {
-        final Index _index = natTable.get(name + NAT_DELIM + signature);
-        return (_index != null) ? _index.index : -1;
+    public @NonNegative int addFieldref(final @FullyQualifiedName String className, final String fieldName, final @FieldDescriptor String signature) {
+        int ret;
+        int classIndex;
+        int nameAndTypeIndex;
+        if ((ret = lookupFieldref(className, fieldName, signature)) != -1) {
+            return ret; // Already in CP
+        }
+        adjustSize();
+        classIndex = addClass(className);
+        nameAndTypeIndex = addNameAndType(fieldName, signature);
+        ret = index;
+        constants[index++] = new ConstantFieldref(classIndex, nameAndTypeIndex);
+        final String key = className + FIELDREF_DELIM + fieldName + FIELDREF_DELIM + signature;
+        if (!cpTable.containsKey(key)) {
+            cpTable.put(key, new Index(ret));
+        }
+        return ret;
     }
 
+    /**
+     * Add a new Float constant to the ConstantPool, if it is not already in there.
+     *
+     * @param n Float number to add
+     * @return index of entry
+     */
+    public @NonNegative int addFloat(final float n) {
+        int ret;
+        if ((ret = lookupFloat(n)) != -1) {
+            return ret; // Already in CP
+        }
+        adjustSize();
+        ret = index;
+        constants[index++] = new ConstantFloat(n);
+        return ret;
+    }
 
     /**
-     * Add a new NameAndType constant to the ConstantPool if it is not already
-     * in there.
+     * Add a new Integer constant to the ConstantPool, if it is not already in there.
+     *
+     * @param n integer number to add
+     * @return index of entry
+     */
+    public @NonNegative int addInteger(final int n) {
+        int ret;
+        if ((ret = lookupInteger(n)) != -1) {
+            return ret; // Already in CP
+        }
+        adjustSize();
+        ret = index;
+        constants[index++] = new ConstantInteger(n);
+        return ret;
+    }
+
+    public @NonNegative int addInterfaceMethodref(final MethodGen method) {
+        return addInterfaceMethodref(method.getClassName(), method.getName(), method.getSignature());
+    }
+
+    /**
+     * Add a new InterfaceMethodref constant to the ConstantPool, if it is not already in there.
+     *
+     * @param className class name string to add
+     * @param method_name method name string to add
+     * @param signature signature string to add
+     * @return index of entry
+     */
+    public @NonNegative int addInterfaceMethodref(final String className, final String method_name, final String signature) {
+        int ret;
+        int classIndex;
+        int nameAndTypeIndex;
+        if ((ret = lookupInterfaceMethodref(className, method_name, signature)) != -1) {
+            return ret; // Already in CP
+        }
+        adjustSize();
+        classIndex = addClass(className);
+        nameAndTypeIndex = addNameAndType(method_name, signature);
+        ret = index;
+        constants[index++] = new ConstantInterfaceMethodref(classIndex, nameAndTypeIndex);
+        final String key = className + IMETHODREF_DELIM + method_name + IMETHODREF_DELIM + signature;
+        if (!cpTable.containsKey(key)) {
+            cpTable.put(key, new Index(ret));
+        }
+        return ret;
+    }
+
+    /**
+     * Add a new long constant to the ConstantPool, if it is not already in there.
+     *
+     * @param n Long number to add
+     * @return index of entry
+     */
+    public @NonNegative int addLong(final long n) {
+        int ret;
+        if ((ret = lookupLong(n)) != -1) {
+            return ret; // Already in CP
+        }
+        adjustSize();
+        ret = index;
+        constants[index] = new ConstantLong(n);
+        index += 2; // Wastes one entry according to spec
+        return ret;
+    }
+
+    public @NonNegative int addMethodref(final MethodGen method) {
+        return addMethodref(method.getClassName(), method.getName(), method.getSignature());
+    }
+
+    /**
+     * Add a new Methodref constant to the ConstantPool, if it is not already in there.
+     *
+     * @param className class name string to add
+     * @param method_name method name string to add
+     * @param signature method signature string to add
+     * @return index of entry
+     */
+    public @NonNegative int addMethodref(final String className, final String method_name, final String signature) {
+        int ret;
+        int classIndex;
+        int nameAndTypeIndex;
+        if ((ret = lookupMethodref(className, method_name, signature)) != -1) {
+            return ret; // Already in CP
+        }
+        adjustSize();
+        nameAndTypeIndex = addNameAndType(method_name, signature);
+        classIndex = addClass(className);
+        ret = index;
+        constants[index++] = new ConstantMethodref(classIndex, nameAndTypeIndex);
+        final String key = className + METHODREF_DELIM + method_name + METHODREF_DELIM + signature;
+        if (!cpTable.containsKey(key)) {
+            cpTable.put(key, new Index(ret));
+        }
+        return ret;
+    }
+
+    /**
+     * Add a new NameAndType constant to the ConstantPool if it is not already in there.
      *
      * @param name Name string to add
      * @param signature signature string to add
      * @return index of entry
      */
-    public @NonNegative int addNameAndType( final String name, final String signature ) {
+    public @NonNegative int addNameAndType(final String name, final String signature) {
         int ret;
         int name_index;
         int signature_index;
@@ -572,182 +527,77 @@ public @UsesObjectEquals class ConstantPoolGen {
         return ret;
     }
 
-    private final Map<String, Index> cpTable = new HashMap<>();
-
-
     /**
-     * Look for ConstantMethodref in ConstantPool.
+     * Add a new String constant to the ConstantPool, if it is not already in there.
      *
-     * @param class_name Where to find method
-     * @param method_name Guess what
-     * @param signature return and argument types
-     * @return index on success, -1 otherwise
-     */
-    public @GTENegativeOne int lookupMethodref( final String class_name, final String method_name, final String signature ) {
-        final Index index = cpTable.get(class_name + METHODREF_DELIM + method_name
-                + METHODREF_DELIM + signature);
-        return (index != null) ? index.index : -1;
-    }
-
-
-    public @GTENegativeOne int lookupMethodref( final MethodGen method ) {
-        return lookupMethodref(method.getClassName(), method.getName(), method.getSignature());
-    }
-
-
-    /**
-     * Add a new Methodref constant to the ConstantPool, if it is not already
-     * in there.
-     *
-     * @param class_name class name string to add
-     * @param method_name method name string to add
-     * @param signature method signature string to add
+     * @param str String to add
      * @return index of entry
      */
-    public @NonNegative int addMethodref( final String class_name, final String method_name, final String signature ) {
+    public @NonNegative int addString(final String str) {
         int ret;
-        int class_index;
-        int name_and_type_index;
-        if ((ret = lookupMethodref(class_name, method_name, signature)) != -1) {
+        if ((ret = lookupString(str)) != -1) {
             return ret; // Already in CP
         }
+        final int utf8 = addUtf8(str);
         adjustSize();
-        name_and_type_index = addNameAndType(method_name, signature);
-        class_index = addClass(class_name);
+        final ConstantString s = new ConstantString(utf8);
         ret = index;
-        constants[index++] = new ConstantMethodref(class_index, name_and_type_index);
-        final String key = class_name + METHODREF_DELIM + method_name + METHODREF_DELIM + signature;
-        if (!cpTable.containsKey(key)) {
-            cpTable.put(key, new Index(ret));
+        constants[index++] = s;
+        if (!stringTable.containsKey(str)) {
+            stringTable.put(str, new Index(ret));
         }
         return ret;
     }
 
-
-    public @NonNegative int addMethodref( final MethodGen method ) {
-        return addMethodref(method.getClassName(), method.getName(), method.getSignature());
-    }
-
-
     /**
-     * Look for ConstantInterfaceMethodref in ConstantPool.
+     * Add a new Utf8 constant to the ConstantPool, if it is not already in there.
      *
-     * @param class_name Where to find method
-     * @param method_name Guess what
-     * @param signature return and argument types
-     * @return index on success, -1 otherwise
-     */
-    public @GTENegativeOne int lookupInterfaceMethodref( final String class_name, final String method_name, final String signature ) {
-        final Index index = cpTable.get(class_name + IMETHODREF_DELIM + method_name
-                + IMETHODREF_DELIM + signature);
-        return (index != null) ? index.index : -1;
-    }
-
-
-    public @GTENegativeOne int lookupInterfaceMethodref( final MethodGen method ) {
-        return lookupInterfaceMethodref(method.getClassName(), method.getName(), method
-                .getSignature());
-    }
-
-
-    /**
-     * Add a new InterfaceMethodref constant to the ConstantPool, if it is not already
-     * in there.
-     *
-     * @param class_name class name string to add
-     * @param method_name method name string to add
-     * @param signature signature string to add
+     * @param n Utf8 string to add
      * @return index of entry
      */
-    public @NonNegative int addInterfaceMethodref( final String class_name, final String method_name, final String signature ) {
+    public @NonNegative int addUtf8(final String n) {
         int ret;
-        int class_index;
-        int name_and_type_index;
-        if ((ret = lookupInterfaceMethodref(class_name, method_name, signature)) != -1) {
+        if ((ret = lookupUtf8(n)) != -1) {
             return ret; // Already in CP
         }
         adjustSize();
-        class_index = addClass(class_name);
-        name_and_type_index = addNameAndType(method_name, signature);
         ret = index;
-        constants[index++] = new ConstantInterfaceMethodref(class_index, name_and_type_index);
-        final String key = class_name + IMETHODREF_DELIM + method_name + IMETHODREF_DELIM + signature;
-        if (!cpTable.containsKey(key)) {
-            cpTable.put(key, new Index(ret));
+        constants[index++] = new ConstantUtf8(n);
+        if (!utf8Table.containsKey(n)) {
+            utf8Table.put(n, new Index(ret));
         }
         return ret;
     }
 
-
-    public @NonNegative int addInterfaceMethodref( final MethodGen method ) {
-        return addInterfaceMethodref(method.getClassName(), method.getName(), method.getSignature());
-    }
-
-
     /**
-     * Look for ConstantFieldref in ConstantPool.
-     *
-     * @param class_name Where to find method
-     * @param field_name Guess what
-     * @param signature return and argument types
-     * @return index on success, -1 otherwise
+     * Resize internal array of constants.
      */
-    public @GTENegativeOne int lookupFieldref( final String class_name, final String field_name, final String signature ) {
-        final Index index = cpTable.get(class_name + FIELDREF_DELIM + field_name
-                + FIELDREF_DELIM + signature);
-        return (index != null) ? index.index : -1;
-    }
-
-
-    /**
-     * Add a new Fieldref constant to the ConstantPool, if it is not already
-     * in there.
-     *
-     * @param class_name class name string to add
-     * @param field_name field name string to add
-     * @param signature signature string to add
-     * @return index of entry
-     */
-    public @NonNegative int addFieldref( final @FullyQualifiedName String class_name, final String field_name, final @FieldDescriptor String signature ) {
-        int ret;
-        int class_index;
-        int name_and_type_index;
-        if ((ret = lookupFieldref(class_name, field_name, signature)) != -1) {
-            return ret; // Already in CP
+    protected void adjustSize() {
+        // 3 extra spaces are needed as some entries may take 3 slots
+        if (index + 3 >= Const.MAX_CP_ENTRIES + 1) {
+            throw new IllegalStateException("The number of constants " + (index + 3)
+                    + " is over the size of the constant pool: "
+                    + Const.MAX_CP_ENTRIES);
         }
-        adjustSize();
-        class_index = addClass(class_name);
-        name_and_type_index = addNameAndType(field_name, signature);
-        ret = index;
-        constants[index++] = new ConstantFieldref(class_index, name_and_type_index);
-        final String key = class_name + FIELDREF_DELIM + field_name + FIELDREF_DELIM + signature;
-        if (!cpTable.containsKey(key)) {
-            cpTable.put(key, new Index(ret));
-        }
-        return ret;
-    }
 
+        if (index + 3 >= size) {
+            final Constant[] cs = constants;
+            size *= 2;
+            // the constant array shall not exceed the size of the constant pool
+            size = Math.min(size, Const.MAX_CP_ENTRIES + 1);
+            constants = new Constant[size];
+            System.arraycopy(cs, 0, constants, 0, index);
+        }
+    }
 
     /**
      * @param i index in constant pool
      * @return constant pool entry at index i
      */
     @Pure
-    public Constant getConstant( final @NonNegative int i ) {
+    public Constant getConstant(final @NonNegative int i) {
         return constants[i];
     }
-
-
-    /**
-     * Use with care!
-     *
-     * @param i index in constant pool
-     * @param c new constant pool entry at index i
-     */
-    public void setConstant( final @NonNegative int i, final Constant c ) {
-        constants[i] = c;
-    }
-
 
     /**
      * @return intermediate constant pool
@@ -755,16 +605,6 @@ public @UsesObjectEquals class ConstantPoolGen {
     public ConstantPool getConstantPool() {
         return new ConstantPool(constants);
     }
-
-
-    /**
-     * @return current size of constant pool
-     */
-    @Pure
-    public @NonNegative int getSize() {
-        return index;
-    }
-
 
     /**
      * @return constant pool with proper length
@@ -775,6 +615,189 @@ public @UsesObjectEquals class ConstantPoolGen {
         return new ConstantPool(cs);
     }
 
+    /**
+     * @return current size of constant pool
+     */
+    @Pure
+    public @NonNegative int getSize() {
+        return index;
+    }
+
+    /**
+     * Look for ConstantClass in ConstantPool named `str'.
+     *
+     * @param str String to search for
+     * @return index on success, -1 otherwise
+     */
+    public @GTENegativeOne int lookupClass(final String str) {
+        final Index index = classTable.get(str.replace('.', '/'));
+        return index != null ? index.index : -1;
+    }
+
+    /**
+     * Look for ConstantDouble in ConstantPool.
+     *
+     * @param n Double number to look for
+     * @return index on success, -1 otherwise
+     */
+    public @GTENegativeOne int lookupDouble(final double n) {
+        final long bits = Double.doubleToLongBits(n);
+        for (int i = 1; i < index; i++) {
+            if (constants[i] instanceof ConstantDouble) {
+                final ConstantDouble c = (ConstantDouble) constants[i];
+                if (Double.doubleToLongBits(c.getBytes()) == bits) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Look for ConstantFieldref in ConstantPool.
+     *
+     * @param className Where to find method
+     * @param fieldName Guess what
+     * @param signature return and argument types
+     * @return index on success, -1 otherwise
+     */
+    public @GTENegativeOne int lookupFieldref(final String className, final String fieldName, final String signature) {
+        final Index index = cpTable.get(className + FIELDREF_DELIM + fieldName + FIELDREF_DELIM + signature);
+        return index != null ? index.index : -1;
+    }
+
+    /**
+     * Look for ConstantFloat in ConstantPool.
+     *
+     * @param n Float number to look for
+     * @return index on success, -1 otherwise
+     */
+    public @GTENegativeOne int lookupFloat(final float n) {
+        final int bits = Float.floatToIntBits(n);
+        for (int i = 1; i < index; i++) {
+            if (constants[i] instanceof ConstantFloat) {
+                final ConstantFloat c = (ConstantFloat) constants[i];
+                if (Float.floatToIntBits(c.getBytes()) == bits) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Look for ConstantInteger in ConstantPool.
+     *
+     * @param n integer number to look for
+     * @return index on success, -1 otherwise
+     */
+    public @GTENegativeOne int lookupInteger(final int n) {
+        for (int i = 1; i < index; i++) {
+            if (constants[i] instanceof ConstantInteger) {
+                final ConstantInteger c = (ConstantInteger) constants[i];
+                if (c.getBytes() == n) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    public @GTENegativeOne int lookupInterfaceMethodref(final MethodGen method) {
+        return lookupInterfaceMethodref(method.getClassName(), method.getName(), method.getSignature());
+    }
+
+    /**
+     * Look for ConstantInterfaceMethodref in ConstantPool.
+     *
+     * @param className Where to find method
+     * @param method_name Guess what
+     * @param signature return and argument types
+     * @return index on success, -1 otherwise
+     */
+    public @GTENegativeOne int lookupInterfaceMethodref(final String className, final String method_name, final String signature) {
+        final Index index = cpTable.get(className + IMETHODREF_DELIM + method_name + IMETHODREF_DELIM + signature);
+        return index != null ? index.index : -1;
+    }
+
+    /**
+     * Look for ConstantLong in ConstantPool.
+     *
+     * @param n Long number to look for
+     * @return index on success, -1 otherwise
+     */
+    public @GTENegativeOne int lookupLong(final long n) {
+        for (int i = 1; i < index; i++) {
+            if (constants[i] instanceof ConstantLong) {
+                final ConstantLong c = (ConstantLong) constants[i];
+                if (c.getBytes() == n) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    public @GTENegativeOne int lookupMethodref(final MethodGen method) {
+        return lookupMethodref(method.getClassName(), method.getName(), method.getSignature());
+    }
+
+    /**
+     * Look for ConstantMethodref in ConstantPool.
+     *
+     * @param className Where to find method
+     * @param method_name Guess what
+     * @param signature return and argument types
+     * @return index on success, -1 otherwise
+     */
+    public @GTENegativeOne int lookupMethodref(final String className, final String method_name, final String signature) {
+        final Index index = cpTable.get(className + METHODREF_DELIM + method_name + METHODREF_DELIM + signature);
+        return index != null ? index.index : -1;
+    }
+
+    /**
+     * Look for ConstantNameAndType in ConstantPool.
+     *
+     * @param name of variable/method
+     * @param signature of variable/method
+     * @return index on success, -1 otherwise
+     */
+    public @GTENegativeOne int lookupNameAndType(final String name, final String signature) {
+        final Index index = natTable.get(name + NAT_DELIM + signature);
+        return index != null ? index.index : -1;
+    }
+
+    /**
+     * Look for ConstantString in ConstantPool containing String `str'.
+     *
+     * @param str String to search for
+     * @return index on success, -1 otherwise
+     */
+    public @GTENegativeOne int lookupString(final String str) {
+        final Index index = stringTable.get(str);
+        return index != null ? index.index : -1;
+    }
+
+    /**
+     * Look for ConstantUtf8 in ConstantPool.
+     *
+     * @param n Utf8 string to look for
+     * @return index on success, -1 otherwise
+     */
+    public @GTENegativeOne int lookupUtf8(final String n) {
+        final Index index = utf8Table.get(n);
+        return index != null ? index.index : -1;
+    }
+
+    /**
+     * Use with care!
+     *
+     * @param i index in constant pool
+     * @param c new constant pool entry at index i
+     */
+    public void setConstant(final @NonNegative int i, final Constant c) {
+        constants[i] = c;
+    }
 
     /**
      * @return String representation.
@@ -786,67 +809,5 @@ public @UsesObjectEquals class ConstantPoolGen {
             buf.append(i).append(")").append(constants[i]).append("\n");
         }
         return buf.toString();
-    }
-
-
-    /** Import constant from another ConstantPool and return new index.
-     */
-    public @NonNegative int addConstant( final Constant c, final ConstantPoolGen cp ) {
-        final Constant[] constants = cp.getConstantPool().getConstantPool();
-        switch (c.getTag()) {
-            case Const.CONSTANT_String: {
-                final ConstantString s = (ConstantString) c;
-                final ConstantUtf8 u8 = (ConstantUtf8) constants[s.getStringIndex()];
-                return addString(u8.getBytes());
-            }
-            case Const.CONSTANT_Class: {
-                final ConstantClass s = (ConstantClass) c;
-                final ConstantUtf8 u8 = (ConstantUtf8) constants[s.getNameIndex()];
-                return addClass(u8.getBytes());
-            }
-            case Const.CONSTANT_NameAndType: {
-                final ConstantNameAndType n = (ConstantNameAndType) c;
-                final ConstantUtf8 u8 = (ConstantUtf8) constants[n.getNameIndex()];
-                final ConstantUtf8 u8_2 = (ConstantUtf8) constants[n.getSignatureIndex()];
-                return addNameAndType(u8.getBytes(), u8_2.getBytes());
-            }
-            case Const.CONSTANT_Utf8:
-                return addUtf8(((ConstantUtf8) c).getBytes());
-            case Const.CONSTANT_Double:
-                return addDouble(((ConstantDouble) c).getBytes());
-            case Const.CONSTANT_Float:
-                return addFloat(((ConstantFloat) c).getBytes());
-            case Const.CONSTANT_Long:
-                return addLong(((ConstantLong) c).getBytes());
-            case Const.CONSTANT_Integer:
-                return addInteger(((ConstantInteger) c).getBytes());
-            case Const.CONSTANT_InterfaceMethodref:
-            case Const.CONSTANT_Methodref:
-            case Const.CONSTANT_Fieldref: {
-                final ConstantCP m = (ConstantCP) c;
-                final ConstantClass clazz = (ConstantClass) constants[m.getClassIndex()];
-                final ConstantNameAndType n = (ConstantNameAndType) constants[m.getNameAndTypeIndex()];
-                ConstantUtf8 u8 = (ConstantUtf8) constants[clazz.getNameIndex()];
-                @SuppressWarnings("signature") // string conversion
-                final @FullyQualifiedName String class_name = u8.getBytes().replace('/', '.');
-                u8 = (ConstantUtf8) constants[n.getNameIndex()];
-                final String name = u8.getBytes();
-                u8 = (ConstantUtf8) constants[n.getSignatureIndex()];
-                @SuppressWarnings("signature") // string read from classfile
-                final @FieldDescriptor String signature = u8.getBytes();
-                switch (c.getTag()) {
-                    case Const.CONSTANT_InterfaceMethodref:
-                        return addInterfaceMethodref(class_name, name, signature);
-                    case Const.CONSTANT_Methodref:
-                        return addMethodref(class_name, name, signature);
-                    case Const.CONSTANT_Fieldref:
-                        return addFieldref(class_name, name, signature);
-                    default: // Never reached
-                        throw new IllegalArgumentException("Unknown constant type " + c);
-                }
-            }
-            default: // Never reached
-                throw new IllegalArgumentException("Unknown constant type " + c);
-        }
     }
 }

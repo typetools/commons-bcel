@@ -31,8 +31,8 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 /**
  * Entry of the parameters table.
  *
- * @see <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.24">
- * The class File Format : The MethodParameters Attribute</a>
+ * @see <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.24"> The class File Format :
+ *      The MethodParameters Attribute</a>
  * @since 6.0
  */
 @AnnotatedFor({"signedness"})
@@ -51,69 +51,16 @@ public class MethodParameter implements Cloneable {
      * Construct object from input stream.
      *
      * @param input Input stream
-     * @throws java.io.IOException
-     * @throws ClassFormatException
+     * @throws IOException if an I/O error occurs.
+     * @throws ClassFormatException if a class is malformed or cannot be interpreted as a class file
      */
     MethodParameter(final DataInput input) throws IOException {
         nameIndex = input.readUnsignedShort();
         accessFlags = input.readUnsignedShort();
     }
 
-    @Pure
-    public @NonNegative int getNameIndex() {
-        return nameIndex;
-    }
-
-    public void setNameIndex(final @NonNegative int name_index) {
-        this.nameIndex = name_index;
-    }
-
-    /**
-     * Returns the name of the parameter.
-     */
-    public @Nullable String getParameterName(final ConstantPool constant_pool) {
-        if (nameIndex == 0) {
-            return null;
-        }
-        return ((ConstantUtf8) constant_pool.getConstant(nameIndex, Const.CONSTANT_Utf8)).getBytes();
-       }
-
-    @Pure
-    public int getAccessFlags() {
-        return accessFlags;
-    }
-
-    public void setAccessFlags(final int access_flags) {
-        this.accessFlags = access_flags;
-    }
-
-    public boolean isFinal() {
-        return (accessFlags & Const.ACC_FINAL) != 0;
-    }
-
-    public boolean isSynthetic() {
-        return (accessFlags & Const.ACC_SYNTHETIC) != 0;
-    }
-
-    @SuppressWarnings("signedness:operation.mixed.unsignedrhs") // ACC_MANDATED is 0x8000
-    public boolean isMandated() {
-        return (accessFlags & Const.ACC_MANDATED) != 0;
-    }
-
     public void accept(final Visitor v) {
         v.visitMethodParameter(this);
-    }
-
-    /**
-     * Dump object to file stream on binary format.
-     *
-     * @param file Output file stream
-     * @throws IOException
-     */
-    @SuppressWarnings("argument") // writeShort only writes low 16 bits
-    public final void dump(final DataOutputStream file) throws IOException {
-        file.writeShort(nameIndex);
-        file.writeShort(accessFlags);
     }
 
     /**
@@ -127,5 +74,58 @@ public class MethodParameter implements Cloneable {
             // TODO should this throw?
         }
         return null;
+    }
+
+    /**
+     * Dump object to file stream on binary format.
+     *
+     * @param file Output file stream
+     * @throws IOException if an I/O error occurs.
+     */
+    @SuppressWarnings("argument") // writeShort only writes low 16 bits
+    public final void dump(final DataOutputStream file) throws IOException {
+        file.writeShort(nameIndex);
+        file.writeShort(accessFlags);
+    }
+
+    @Pure
+    public int getAccessFlags() {
+        return accessFlags;
+    }
+
+    @Pure
+    public @NonNegative int getNameIndex() {
+        return nameIndex;
+    }
+
+    /**
+     * Returns the name of the parameter.
+     */
+    public @Nullable String getParameterName(final ConstantPool constant_pool) {
+        if (nameIndex == 0) {
+            return null;
+        }
+        return constant_pool.getConstantUtf8(nameIndex).getBytes();
+    }
+
+    public boolean isFinal() {
+        return (accessFlags & Const.ACC_FINAL) != 0;
+    }
+
+    @SuppressWarnings("signedness:operation.mixed.unsignedrhs") // ACC_MANDATED is 0x8000
+    public boolean isMandated() {
+        return (accessFlags & Const.ACC_MANDATED) != 0;
+    }
+
+    public boolean isSynthetic() {
+        return (accessFlags & Const.ACC_SYNTHETIC) != 0;
+    }
+
+    public void setAccessFlags(final int access_flags) {
+        this.accessFlags = access_flags;
+    }
+
+    public void setNameIndex(final @NonNegative int name_index) {
+        this.nameIndex = name_index;
     }
 }

@@ -34,7 +34,6 @@ public class ReturnaddressType extends Type {
     public static final @InternedDistinct ReturnaddressType NO_TARGET = new @InternedDistinct ReturnaddressType();
     private InstructionHandle returnTarget;
 
-
     /**
      * A Returnaddress [that doesn't know where to return to].
      */
@@ -42,7 +41,6 @@ public class ReturnaddressType extends Type {
     private ReturnaddressType() {
         super(Const.T_ADDRESS, "<return address>");
     }
-
 
     /**
      * Creates a ReturnaddressType object with a target.
@@ -53,23 +51,11 @@ public class ReturnaddressType extends Type {
         this.returnTarget = returnTarget;
     }
 
-
-    /** @return a hash code value for the object.
-     */
-    @Override
-    public int hashCode() {
-        if (returnTarget == null) {
-            return 0;
-        }
-        return returnTarget.hashCode();
-    }
-
-
     /**
      * Returns if the two Returnaddresses refer to the same target.
      */
     @Override
-    public boolean equals( final @Nullable Object rat ) {
+    public boolean equals(final @Nullable Object rat) {
         if (!(rat instanceof ReturnaddressType)) {
             return false;
         }
@@ -80,12 +66,22 @@ public class ReturnaddressType extends Type {
         return that.returnTarget.equals(this.returnTarget);
     }
 
-
     /**
      * @return the target of this ReturnaddressType
      */
     @Pure
     public InstructionHandle getTarget() {
         return returnTarget;
+    }
+
+    /**
+     * @return a hash code value for the object.
+     */
+    @Override
+    public int hashCode() {
+        if (returnTarget == null) {
+            return 0;
+        }
+        return returnTarget.hashCode();
     }
 }

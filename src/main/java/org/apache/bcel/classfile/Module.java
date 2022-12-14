@@ -20,6 +20,7 @@ package org.apache.bcel.classfile;
 import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.apache.bcel.Const;
 
@@ -28,10 +29,10 @@ import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
- * This class is derived from <em>Attribute</em> and represents the list of modules required, exported, opened or provided by a module.
- * There may be at most one Module attribute in a ClassFile structure.
+ * This class is derived from <em>Attribute</em> and represents the list of modules required, exported, opened or
+ * provided by a module. There may be at most one Module attribute in a ClassFile structure.
  *
- * @see   Attribute
+ * @see Attribute
  * @since 6.4.0
  */
 @AnnotatedFor({"signedness"})
@@ -50,11 +51,12 @@ public final class Module extends Attribute {
 
     /**
      * Construct object from input stream.
+     *
      * @param name_index Index in constant pool
      * @param length Content length in bytes
      * @param input Input stream
      * @param constant_pool Array of constants
-     * @throws IOException
+     * @throws IOException if an I/O error occurs.
      */
     Module(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
         super(Const.ATTR_MODULE, name_index, length, constant_pool);
@@ -94,69 +96,50 @@ public final class Module extends Attribute {
         }
     }
 
-
     /**
-     * Called by objects that are traversing the nodes of the tree implicitely
-     * defined by the contents of a Java class. I.e., the hierarchy of methods,
-     * fields, attributes, etc. spawns a tree of objects.
+     * Called by objects that are traversing the nodes of the tree implicitly defined by the contents of a Java class.
+     * I.e., the hierarchy of methods, fields, attributes, etc. spawns a tree of objects.
      *
      * @param v Visitor object
      */
     @Override
-    public void accept( final Visitor v ) {
+    public void accept(final Visitor v) {
         v.visitModule(this);
     }
 
     // TODO add more getters and setters?
 
     /**
-     * @return table of required modules
-     * @see ModuleRequires
+     * @return deep copy of this attribute
      */
-    @Pure
-    public ModuleRequires[] getRequiresTable() {
-        return requiresTable;
+    @Override
+    public Attribute copy(final ConstantPool constantPool) {
+        final Module c = (Module) clone();
+
+        c.requiresTable = new ModuleRequires[requiresTable.length];
+        Arrays.setAll(c.requiresTable, i -> requiresTable[i].copy());
+
+        c.exportsTable = new ModuleExports[exportsTable.length];
+        Arrays.setAll(c.exportsTable, i -> exportsTable[i].copy());
+
+        c.opensTable = new ModuleOpens[opensTable.length];
+        Arrays.setAll(c.opensTable, i -> opensTable[i].copy());
+
+        c.providesTable = new ModuleProvides[providesTable.length];
+        Arrays.setAll(c.providesTable, i -> providesTable[i].copy());
+
+        c.setConstantPool(constantPool);
+        return c;
     }
-
-
-    /**
-     * @return table of exported interfaces
-     * @see ModuleExports
-     */
-    @Pure
-    public ModuleExports[] getExportsTable() {
-        return exportsTable;
-    }
-
-
-    /**
-     * @return table of provided interfaces
-     * @see ModuleOpens
-     */
-    @Pure
-    public ModuleOpens[] getOpensTable() {
-        return opensTable;
-    }
-
-
-    /**
-     * @return table of provided interfaces
-     * @see ModuleProvides
-     */
-    @Pure
-    public ModuleProvides[] getProvidesTable() {
-        return providesTable;
-    }
-
 
     /**
      * Dump Module attribute to file stream in binary format.
      *
      * @param file Output file stream
-     * @throws IOException
+     * @throws IOException if an I/O error occurs.
      */
     @Override
-    public void dump( final DataOutputStream file ) throws IOException {
+    public void dump(final DataOutputStream file) throws IOException {
         super.dump(file);
 
         file.writeShort(moduleNameIndex);
@@ -189,6 +172,41 @@ public final class Module extends Attribute {
         }
     }
 
+    /**
+     * @return table of exported interfaces
+     * @see ModuleExports
+     */
+    @Pure
+    public ModuleExports[] getExportsTable() {
+        return exportsTable;
+    }
+
+    /**
+     * @return table of provided interfaces
+     * @see ModuleOpens
+     */
+    @Pure
+    public ModuleOpens[] getOpensTable() {
+        return opensTable;
+    }
+
+    /**
+     * @return table of provided interfaces
+     * @see ModuleProvides
+     */
+    @Pure
+    public ModuleProvides[] getProvidesTable() {
+        return providesTable;
+    }
+
+    /**
+     * @return table of required modules
+     * @see ModuleRequires
+     */
+    @Pure
+    public ModuleRequires[] getRequiresTable() {
+        return requiresTable;
+    }
 
     /**
      * @return String representation, i.e., a list of packages.
@@ -198,10 +216,10 @@ public final class Module extends Attribute {
         final ConstantPool cp = super.getConstantPool();
         final StringBuilder buf = new StringBuilder();
         buf.append("Module:\n");
-        buf.append("  name:    ") .append(cp.getConstantString(moduleNameIndex, Const.CONSTANT_Module).replace('/', '.')).append("\n");
-        buf.append("  flags:   ") .append(String.format("%04x", moduleFlags)).append("\n");
+        buf.append("  name:    ").append(Utility.pathToPackage(cp.getConstantString(moduleNameIndex, Const.CONSTANT_Module))).append("\n");
+        buf.append("  flags:   ").append(String.format("%04x", moduleFlags)).append("\n");
         final String version = moduleVersionIndex == 0 ? "0" : cp.getConstantString(moduleVersionIndex, Const.CONSTANT_Utf8);
-        buf.append("  version: ") .append(version).append("\n");
+        buf.append("  version: ").append(version).append("\n");
 
         buf.append("  requires(").append(requiresTable.length).append("):\n");
         for (final ModuleRequires module : requiresTable) {
@@ -220,8 +238,8 @@ public final class Module extends Attribute {
 
         buf.append("  uses(").append(usesIndex.length).append("):\n");
         for (final int index : usesIndex) {
-            final String class_name = cp.getConstantString(index, Const.CONSTANT_Class);
-            buf.append("    ").append(Utility.compactClassName(class_name, false)).append("\n");
+            final String className = cp.getConstantString(index, Const.CONSTANT_Class);
+            buf.append("    ").append(Utility.compactClassName(className, false)).append("\n");
         }
 
         buf.append("  provides(").append(providesTable.length).append("):\n");
@@ -229,38 +247,6 @@ public final class Module extends Attribute {
             buf.append("    ").append(module.toString(cp)).append("\n");
         }
 
-        return buf.substring(0, buf.length()-1); // remove the last newline
-    }
-
-
-    /**
-     * @return deep copy of this attribute
-     */
-    @Override
-    public Attribute copy( final ConstantPool _constant_pool ) {
-        final Module c = (Module) clone();
-
-        c.requiresTable = new ModuleRequires[requiresTable.length];
-        for (int i = 0; i < requiresTable.length; i++) {
-            c.requiresTable[i] = requiresTable[i].copy();
-        }
-
-        c.exportsTable = new ModuleExports[exportsTable.length];
-        for (int i = 0; i < exportsTable.length; i++) {
-            c.exportsTable[i] = exportsTable[i].copy();
-        }
-
-        c.opensTable = new ModuleOpens[opensTable.length];
-        for (int i = 0; i < opensTable.length; i++) {
-            c.opensTable[i] = opensTable[i].copy();
-        }
-
-        c.providesTable = new ModuleProvides[providesTable.length];
-        for (int i = 0; i < providesTable.length; i++) {
-            c.providesTable[i] = providesTable[i].copy();
-        }
-
-        c.setConstantPool(_constant_pool);
-        return c;
+        return buf.substring(0, buf.length() - 1); // remove the last newline
     }
 }

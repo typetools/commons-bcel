@@ -17,39 +17,39 @@
 
 package org.apache.bcel.classfile;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test that dump() methods work on the JDK classes
  */
 public class JDKClassDumpTestCase {
 
-    @Test
-    public void testPerformance() throws Exception {
-        final File javaLib = new File(System.getProperty("java.home") + "/lib");
-        javaLib.listFiles((FileFilter) file -> {
-            if (file.getName().endsWith(".jar")) {
-                try {
-                    testJar(file);
-                } catch (final Exception e) {
-                    Assert.fail(e.getMessage());
-                }
+    private void compare(final JavaClass jc, final InputStream inputStream, final String name) throws Exception {
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (DataOutputStream dos = new DataOutputStream(baos)) {
+            jc.dump(dos);
+        }
+        try (DataInputStream src = new DataInputStream(inputStream)) {
+            int i = 0;
+            for (final int out : baos.toByteArray()) {
+                final int in = src.read();
+                final int j = i;
+                assertEquals(in, out & 0xFF, () -> name + ": Mismatch at " + j);
+                i++;
             }
-            return false;
-        });
+        }
     }
 
 
@@ -63,30 +63,27 @@ public class JDKClassDumpTestCase {
                 final String name = e.getName();
                 if (name.endsWith(".class")) {
                     // System.out.println("parsing " + name);
-                    try (InputStream in = jar.getInputStream(e)) {
-                        final ClassParser parser = new ClassParser(in, name);
-                        final JavaClass jc = parser.parse();
-                        compare(jc, jar.getInputStream(e), name);
+                    try (InputStream inputStream1 = jar.getInputStream(e); InputStream inputStream2 = jar.getInputStream(e);) {
+                        compare(new ClassParser(inputStream1, name).parse(), inputStream2, name);
                     }
                 }
             }
         }
     }
 
-    private void compare(final JavaClass jc, final InputStream inputStream, final String name) throws Exception {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try (DataOutputStream dos = new DataOutputStream(baos)) {
-            jc.dump(dos);
-        }
-        try (DataInputStream src = new DataInputStream(inputStream)) {
-            int i = 0;
-            for (final int out : baos.toByteArray()) {
-                final int in = src.read();
-                assertEquals(name + ": Mismatch at " + i, in, out & 0xFF);
-                i++;
+    @Test
+    public void testPerformance() throws Exception {
+        final File javaLib = new File(System.getProperty("java.home") + "/lib");
+        javaLib.listFiles(file -> {
+            if (file.getName().endsWith(".jar")) {
+                try {
+                    testJar(file);
+                } catch (final Exception e) {
+                    fail(e.getMessage());
+                }
             }
-        }
+            return false;
+        });
     }
-
 
 }

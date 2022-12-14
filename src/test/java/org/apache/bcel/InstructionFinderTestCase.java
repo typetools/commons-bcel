@@ -17,6 +17,8 @@
  */
 package org.apache.bcel;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.Iterator;
 
 import org.apache.bcel.classfile.JavaClass;
@@ -24,18 +26,16 @@ import org.apache.bcel.classfile.Method;
 import org.apache.bcel.generic.InstructionHandle;
 import org.apache.bcel.generic.InstructionList;
 import org.apache.bcel.util.InstructionFinder;
+import org.junit.jupiter.api.Test;
 
-public class InstructionFinderTestCase extends AbstractTestCase
-{
-    public void testSearchAll() throws Exception
-    {
-        final JavaClass clazz = getTestClass(PACKAGE_BASE_NAME+".util.InstructionFinder");
+public class InstructionFinderTestCase extends AbstractTestCase {
+    @Test
+    public void testSearchAll() throws Exception {
+        final JavaClass clazz = getTestClass(PACKAGE_BASE_NAME + ".util.InstructionFinder");
         final Method[] methods = clazz.getMethods();
         Method searchM = null;
-        for (final Method m : methods)
-        {
-            if (m.getName().equals("search") && (m.getArgumentTypes().length == 3))
-            {
+        for (final Method m : methods) {
+            if (m.getName().equals("search") && m.getArgumentTypes().length == 3) {
                 searchM = m;
                 break;
             }
@@ -50,10 +50,9 @@ public class InstructionFinderTestCase extends AbstractTestCase
         final InstructionFinder finder = new InstructionFinder(il);
         final Iterator<?> it = finder.search(".*", il.getStart(), null);
 
-        final InstructionHandle[] ihs = (InstructionHandle[])it.next();
+        final InstructionHandle[] ihs = (InstructionHandle[]) it.next();
         int size = 0;
-        for (final InstructionHandle ih : ihs)
-        {
+        for (final InstructionHandle ih : ihs) {
             size += ih.getInstruction().getLength();
         }
         assertEquals(bytes.length, size);

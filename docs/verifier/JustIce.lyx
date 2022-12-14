@@ -11970,7 +11970,7 @@ However, normally web-browsing is considered harmless, so that the employees
  can unrestrictedly gather information, possibly visiting Java-enabled web
  sites.
  The JVMs built into the browser software run software downloaded from the
- World Wide Web; while the the built-in verifiers make sure that no dangerous
+ World Wide Web; while the built-in verifiers make sure that no dangerous
  code can be executed.
 \layout Standard
 
@@ -12029,7 +12029,7 @@ In the Modula-2 programming language
 
 \end_inset 
 
-, this principle is implicitely used, too.
+, this principle is implicitly used, too.
  Basically this is achieved by defining interfaces that only describe what
  the code of a program module does.
  These interface 

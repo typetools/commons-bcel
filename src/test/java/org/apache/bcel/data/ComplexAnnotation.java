@@ -22,21 +22,20 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ComplexAnnotation
-{
-    int ival();
-
+public @interface ComplexAnnotation {
     byte bval();
 
     char cval();
 
-    long jval();
-
     double dval();
 
-    boolean zval();
+    float fval();
+
+    int ival();
+
+    long jval();
 
     short sval();
 
-    float fval();
+    boolean zval();
 }

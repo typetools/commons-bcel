@@ -17,6 +17,7 @@
  */
 package org.apache.bcel.verifier.statics;
 
+import java.util.Arrays;
 
 import org.apache.bcel.generic.Type;
 import org.apache.bcel.verifier.exc.AssertionViolatedException;
@@ -26,11 +27,9 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 
 /**
- * A utility class holding the information about
- * the names and the types of the local variables in
- * a given method.
+ * A utility class holding the information about the names and the types of the local variables in a given method.
  */
-public class LocalVariablesInfo{
+public class LocalVariablesInfo {
 
     /** The information about the local variables is stored here. */
     private final LocalVariableInfo[] localVariableInfos;
@@ -38,8 +37,33 @@ public class LocalVariablesInfo{
     /** The constructor. */
     LocalVariablesInfo(final @NonNegative int max_locals) {
         localVariableInfos = new LocalVariableInfo[max_locals];
-        for (int i=0; i<max_locals; i++) {
-            localVariableInfos[i] = new LocalVariableInfo();
+        Arrays.setAll(localVariableInfos, i -> new LocalVariableInfo());
+    }
+
+    /**
+     * Adds information about the local variable in slot 'slot'. Automatically adds information for slot+1 if 't' is
+     * Type.LONG or Type.DOUBLE.
+     *
+     * @param name variable name
+     * @param startPc Range in which the variable is valid.
+     * @param length length of ...
+     * @param type variable type
+     * @throws LocalVariableInfoInconsistentException if the new information conflicts with already gathered information.
+     */
+    public void add(final @NonNegative int slot, final String name, final int startPc, final int length, final Type type) throws LocalVariableInfoInconsistentException{
+        // The add operation on LocalVariableInfo may throw the '...Inconsistent...' exception, we don't throw it explicitely
+        // here.
+
+        if (slot < 0 || slot >= localVariableInfos.length) {
+            throw new AssertionViolatedException("Slot number for local variable information out of range.");
+        }
+
+        localVariableInfos[slot].add(name, startPc, length, type);
+        if (type == Type.LONG) {
+            localVariableInfos[slot + 1].add(name, startPc, length, LONG_Upper.theInstance());
+        }
+        if (type == Type.DOUBLE) {
+            localVariableInfos[slot + 1].add(name, startPc, length, DOUBLE_Upper.theInstance());
         }
     }
 
@@ -55,32 +79,5 @@ public class LocalVariablesInfo{
             throw new AssertionViolatedException("Slot number for local variable information out of range.");
         }
         return localVariableInfos[slot];
-    }
-
-    /**
-     * Adds information about the local variable in slot 'slot'. Automatically
-     * adds information for slot+1 if 't' is Type.LONG or Type.DOUBLE.
-     *
-     * @param name variable name
-     * @param startPc Range in which the variable is valid.
-     * @param length length of ...
-     * @param type variable type
-     * @throws LocalVariableInfoInconsistentException if the new information conflicts
-     *         with already gathered information.
-     */
-    public void add(final @NonNegative int slot, final String name, final int startPc, final int length, final Type type) throws LocalVariableInfoInconsistentException{
-        // The add operation on LocalVariableInfo may throw the '...Inconsistent...' exception, we don't throw it explicitely here.
-
-        if (slot < 0 || slot >= localVariableInfos.length) {
-            throw new AssertionViolatedException("Slot number for local variable information out of range.");
-        }
-
-        localVariableInfos[slot].add(name, startPc, length, type);
-        if (type == Type.LONG) {
-            localVariableInfos[slot+1].add(name, startPc, length, LONG_Upper.theInstance());
-        }
-        if (type == Type.DOUBLE) {
-            localVariableInfos[slot+1].add(name, startPc, length, DOUBLE_Upper.theInstance());
-        }
     }
 }

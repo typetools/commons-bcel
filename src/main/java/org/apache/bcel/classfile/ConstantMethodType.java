@@ -28,17 +28,15 @@ import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
- * This class is derived from the abstract {@link Constant}
- * and represents a reference to a method type.
+ * This class is derived from the abstract {@link Constant} and represents a reference to a method type.
  *
- * @see     Constant
+ * @see Constant
  * @since 6.0
  */
 @AnnotatedFor({"signedness"})
 public final class ConstantMethodType extends Constant {
 
     private @NonNegative int descriptorIndex;
-
 
     /**
      * Initialize from another object.
@@ -47,12 +45,11 @@ public final class ConstantMethodType extends Constant {
         this(c.getDescriptorIndex());
     }
 
-
     /**
      * Initialize instance from file data.
      *
      * @param file Input stream
-     * @throws IOException
+     * @throws IOException if an I/O error occurs.
      */
     ConstantMethodType(final DataInput file) throws IOException {
         this(file.readUnsignedShort());
@@ -64,43 +61,37 @@ public final class ConstantMethodType extends Constant {
         this.descriptorIndex = descriptor_index;
     }
 
-
     /**
-     * Called by objects that are traversing the nodes of the tree implicitly
-     * defined by the contents of a Java class. I.e., the hierarchy of methods,
-     * fields, attributes, etc. spawns a tree of objects.
+     * Called by objects that are traversing the nodes of the tree implicitly defined by the contents of a Java class. I.e.,
+     * the hierarchy of methods, fields, attributes, etc. spawns a tree of objects.
      *
      * @param v Visitor object
      */
     @Override
-    public void accept( final Visitor v ) {
+    public void accept(final Visitor v) {
         v.visitConstantMethodType(this);
     }
-
 
     /**
      * Dump name and signature index to file stream in binary format.
      *
      * @param file Output file stream
-     * @throws IOException
+     * @throws IOException if an I/O error occurs.
      */
     @Override
-    public void dump( final DataOutputStream file ) throws IOException {
+    public void dump(final DataOutputStream file) throws IOException {
         file.writeByte(super.getTag());
         file.writeShort(descriptorIndex);
     }
-
 
     @Pure
     public @NonNegative int getDescriptorIndex() {
         return descriptorIndex;
     }
 
-
     public void setDescriptorIndex(final @NonNegative int descriptor_index) {
         this.descriptorIndex = descriptor_index;
     }
-
 
     /**
      * @return String representation

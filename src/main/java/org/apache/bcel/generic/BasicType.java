@@ -28,6 +28,33 @@ import org.checkerframework.dataflow.qual.Pure;
  */
 public final class BasicType extends Type {
 
+    // @since 6.0 no longer final
+    @Pure
+    public static BasicType getType(final byte type) {
+        switch (type) {
+        case Const.T_VOID:
+            return VOID;
+        case Const.T_BOOLEAN:
+            return BOOLEAN;
+        case Const.T_BYTE:
+            return BYTE;
+        case Const.T_SHORT:
+            return SHORT;
+        case Const.T_CHAR:
+            return CHAR;
+        case Const.T_INT:
+            return INT;
+        case Const.T_LONG:
+            return LONG;
+        case Const.T_DOUBLE:
+            return DOUBLE;
+        case Const.T_FLOAT:
+            return FLOAT;
+        default:
+            throw new ClassGenException("Invalid type: " + type);
+        }
+    }
+
     /**
      * Constructor for basic types such as int, long, `void'
      *
@@ -36,55 +63,24 @@ public final class BasicType extends Type {
      */
     BasicType(final byte type) {
         super(type, Const.getShortTypeName(type));
-        if ((type < Const.T_BOOLEAN) || (type > Const.T_VOID)) {
+        if (type < Const.T_BOOLEAN || type > Const.T_VOID) {
             throw new ClassGenException("Invalid type: " + type);
         }
     }
 
-
-    // @since 6.0 no longer final
-    @Pure
-    public static BasicType getType( final byte type ) {
-        switch (type) {
-            case Const.T_VOID:
-                return VOID;
-            case Const.T_BOOLEAN:
-                return BOOLEAN;
-            case Const.T_BYTE:
-                return BYTE;
-            case Const.T_SHORT:
-                return SHORT;
-            case Const.T_CHAR:
-                return CHAR;
-            case Const.T_INT:
-                return INT;
-            case Const.T_LONG:
-                return LONG;
-            case Const.T_DOUBLE:
-                return DOUBLE;
-            case Const.T_FLOAT:
-                return FLOAT;
-            default:
-                throw new ClassGenException("Invalid type: " + type);
-        }
+    /**
+     * @return true if both type objects refer to the same type
+     */
+    @Override
+    public boolean equals(final @Nullable Object type) {
+        return type instanceof BasicType && ((BasicType) type).getType() == this.getType();
     }
 
-
-    /** @return a hash code value for the object.
+    /**
+     * @return a hash code value for the object.
      */
     @Override
     public int hashCode() {
         return super.getType();
-    }
-
-
-    /** @return true if both type objects refer to the same type
-     */
-    @Override
-    public boolean equals( final @Nullable Object _type ) {
-        if (_type instanceof BasicType) {
-            return ((BasicType) _type).getType() == this.getType();
-        }
-        return false;
     }
 }

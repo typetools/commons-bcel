@@ -30,13 +30,11 @@ import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
- * This class represents a reference to an unknown (i.e.,
- * application-specific) attribute of a class.  It is instantiated from the
- * {@link Attribute#readAttribute(java.io.DataInput, ConstantPool)} method.
- * Applications that need to read in application-specific attributes should create an
- * {@link UnknownAttributeReader} implementation and attach it via
+ * This class represents a reference to an unknown (i.e., application-specific) attribute of a class. It is instantiated
+ * from the {@link Attribute#readAttribute(java.io.DataInput, ConstantPool)} method. Applications that need to read in
+ * application-specific attributes should create an {@link UnknownAttributeReader} implementation and attach it via
  * {@link Attribute#addAttributeReader(String, UnknownAttributeReader)}.
-
+ *
  *
  * @see Attribute
  * @see UnknownAttributeReader
@@ -44,29 +42,25 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"signedness"})
 public final class Unknown extends Attribute {
 
-    private byte[] bytes;
-    private final String name;
-    private static final Map<String, Unknown> unknownAttributes = new HashMap<>();
+    private static final Unknown[] EMPTY_ARRAY = {};
 
-
-    /** @return array of unknown attributes, but just one for each kind.
-     */
-    static Unknown[] getUnknownAttributes() {
-        final Unknown[] unknowns = new Unknown[unknownAttributes.size()];
-        unknownAttributes.values().toArray(unknowns);
-        unknownAttributes.clear();
-        return unknowns;
-    }
-
+    private static final Map<String, Unknown> UNKNOWN_ATTRIBUTES = new HashMap<>();
 
     /**
-     * Initialize from another object. Note that both objects use the same
-     * references (shallow copy). Use clone() for a physical copy.
+     * @return array of unknown attributes, but just one for each kind.
      */
-    public Unknown(final Unknown c) {
-        this(c.getNameIndex(), c.getLength(), c.getBytes(), c.getConstantPool());
+    static Unknown[] getUnknownAttributes() {
+        try {
+            return UNKNOWN_ATTRIBUTES.values().toArray(EMPTY_ARRAY);
+        } finally {
+            // TODO Does this really make sense?
+            UNKNOWN_ATTRIBUTES.clear();
+        }
     }
 
+    private byte[] bytes;
+
+    private final String name;
 
     /**
      * Create a non-standard attribute.
@@ -79,11 +73,9 @@ public final class Unknown extends Attribute {
     public Unknown(final @NonNegative int name_index, final @NonNegative int length, final byte[] bytes, final ConstantPool constant_pool) {
         super(Const.ATTR_UNKNOWN, name_index, length, constant_pool);
         this.bytes = bytes;
-        name = ((ConstantUtf8) constant_pool.getConstant(name_index, Const.CONSTANT_Utf8))
-                .getBytes();
-        unknownAttributes.put(name, this);
+        name = constant_pool.getConstantUtf8(name_index).getBytes();
+        UNKNOWN_ATTRIBUTES.put(name, this);
     }
-
 
     /**
      * Construct object from input stream.
@@ -92,10 +84,9 @@ public final class Unknown extends Attribute {
      * @param length Content length in bytes
      * @param input Input stream
      * @param constant_pool Array of constants
-     * @throws IOException
+     * @throws IOException if an I/O error occurs.
      */
-    Unknown(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool)
-            throws IOException {
+    Unknown(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
         this(name_index, length, (byte[]) null, constant_pool);
         if (length > 0) {
             bytes = new byte[length];
@@ -103,34 +94,52 @@ public final class Unknown extends Attribute {
         }
     }
 
+    /**
+     * Initialize from another object. Note that both objects use the same references (shallow copy). Use clone() for a
+     * physical copy.
+     */
+    public Unknown(final Unknown c) {
+        this(c.getNameIndex(), c.getLength(), c.getBytes(), c.getConstantPool());
+    }
 
     /**
-     * Called by objects that are traversing the nodes of the tree implicitely
-     * defined by the contents of a Java class. I.e., the hierarchy of methods,
-     * fields, attributes, etc. spawns a tree of objects.
+     * Called by objects that are traversing the nodes of the tree implicitly defined by the contents of a Java class.
+     * I.e., the hierarchy of methods, fields, attributes, etc. spawns a tree of objects.
      *
      * @param v Visitor object
      */
     @Override
-    public void accept( final Visitor v ) {
+    public void accept(final Visitor v) {
         v.visitUnknown(this);
     }
 
+    /**
+     * @return deep copy of this attribute
+     */
+    @Override
+    public Attribute copy(final ConstantPool constantPool) {
+        final Unknown c = (Unknown) clone();
+        if (bytes != null) {
+            c.bytes = new byte[bytes.length];
+            System.arraycopy(bytes, 0, c.bytes, 0, bytes.length);
+        }
+        c.setConstantPool(constantPool);
+        return c;
+    }
 
     /**
      * Dump unknown bytes to file stream.
      *
      * @param file Output file stream
-     * @throws IOException
+     * @throws IOException if an I/O error occurs.
      */
     @Override
-    public void dump( final DataOutputStream file ) throws IOException {
+    public void dump(final DataOutputStream file) throws IOException {
         super.dump(file);
         if (super.getLength() > 0) {
             file.write(bytes, 0, super.getLength());
         }
     }
-
 
     /**
      * @return data bytes.
@@ -139,7 +148,6 @@ public final class Unknown extends Attribute {
     public byte[] getBytes() {
         return bytes;
     }
-
 
     /**
      * @return name of attribute.
@@ -150,14 +158,12 @@ public final class Unknown extends Attribute {
         return name;
     }
 
-
     /**
      * @param bytes the bytes to set
      */
-    public void setBytes( final byte[] bytes ) {
+    public void setBytes(final byte[] bytes) {
         this.bytes = bytes;
     }
-
 
     /**
      * @return String representation.
@@ -176,20 +182,5 @@ public final class Unknown extends Attribute {
             hex = Utility.toHexString(bytes);
         }
         return "(Unknown attribute " + name + ": " + hex + ")";
-    }
-
-
-    /**
-     * @return deep copy of this attribute
-     */
-    @Override
-    public Attribute copy( final ConstantPool _constant_pool ) {
-        final Unknown c = (Unknown) clone();
-        if (bytes != null) {
-            c.bytes = new byte[bytes.length];
-            System.arraycopy(bytes, 0, c.bytes, 0, bytes.length);
-        }
-        c.setConstantPool(_constant_pool);
-        return c;
     }
 }

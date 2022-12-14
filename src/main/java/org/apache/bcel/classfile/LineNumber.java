@@ -28,11 +28,10 @@ import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
- * This class represents a (PC offset, line number) pair, i.e., a line number in
- * the source that corresponds to a relative address in the byte code. This
- * is used for debugging purposes.
+ * This class represents a (PC offset, line number) pair, i.e., a line number in the source that corresponds to a
+ * relative address in the byte code. This is used for debugging purposes.
  *
- * @see     LineNumberTable
+ * @see LineNumberTable
  */
 @AnnotatedFor({"signedness"})
 public final class LineNumber implements Cloneable, Node {
@@ -44,16 +43,6 @@ public final class LineNumber implements Cloneable, Node {
     private @Unsigned short lineNumber;
 
     /**
-     * Initialize from another object.
-     *
-     * @param c the object to copy
-     */
-    public LineNumber(final LineNumber c) {
-        this(c.getStartPC(), c.getLineNumber());
-    }
-
-
-    /**
      * Construct object from file stream.
      *
      * @param file Input stream
@@ -63,85 +52,34 @@ public final class LineNumber implements Cloneable, Node {
         this(file.readUnsignedShort(), file.readUnsignedShort());
     }
 
-
     /**
      * @param startPc Program Counter (PC) corresponds to
      * @param lineNumber line number in source file
      */
     public LineNumber(final @Unsigned int startPc, final @Unsigned int lineNumber) {
         this.startPc = (short) startPc;
-        this.lineNumber = (short)lineNumber;
+        this.lineNumber = (short) lineNumber;
     }
 
+    /**
+     * Initialize from another object.
+     *
+     * @param c the object to copy
+     */
+    public LineNumber(final LineNumber c) {
+        this(c.getStartPC(), c.getLineNumber());
+    }
 
     /**
-     * Called by objects that are traversing the nodes of the tree implicitely
-     * defined by the contents of a Java class. I.e., the hierarchy of methods,
-     * fields, attributes, etc. spawns a tree of objects.
+     * Called by objects that are traversing the nodes of the tree implicitly defined by the contents of a Java class.
+     * I.e., the hierarchy of methods, fields, attributes, etc. spawns a tree of objects.
      *
      * @param v Visitor object
      */
     @Override
-    public void accept( final Visitor v ) {
+    public void accept(final Visitor v) {
         v.visitLineNumber(this);
     }
-
-
-    /**
-     * Dump line number/pc pair to file stream in binary format.
-     *
-     * @param file Output file stream
-     * @throws IOException if an I/O Exception occurs in writeShort
-     */
-    @SuppressWarnings("signedness:argument") // writeShort only writes low 16 bits
-    public void dump( final DataOutputStream file ) throws IOException {
-        file.writeShort(startPc);
-        file.writeShort(lineNumber);
-    }
-
-
-    /**
-     * @return Corresponding source line
-     */
-    @Pure
-    public @NonNegative int getLineNumber() {
-        return lineNumber & 0xffff;
-    }
-
-
-    /**
-     * @return PC in code
-     */
-    @Pure
-    public @NonNegative int getStartPC() {
-        return  startPc & 0xffff;
-    }
-
-
-    /**
-     * @param lineNumber the source line number
-     */
-    public void setLineNumber( final @NonNegative int lineNumber ) {
-        this.lineNumber = (short) lineNumber;
-    }
-
-
-    /**
-     * @param startPc the pc for this line number
-     */
-    public void setStartPC( final @NonNegative int startPc ) {
-        this.startPc = (short) startPc;
-    }
-
-
-    /**
-     * @return String representation
-     */
-    @Override
-    public String toString() {
-        return "LineNumber(" + getStartPC() + ", " + getLineNumber() + ")";
-    }
-
 
     /**
      * @return deep copy of this object
@@ -154,5 +92,55 @@ public final class LineNumber implements Cloneable, Node {
             // TODO should this throw?
         }
         return null;
+    }
+
+    /**
+     * Dump line number/pc pair to file stream in binary format.
+     *
+     * @param file Output file stream
+     * @throws IOException if an I/O Exception occurs in writeShort
+     */
+    @SuppressWarnings("signedness:argument") // writeShort only writes low 16 bits
+    public void dump(final DataOutputStream file) throws IOException {
+        file.writeShort(startPc);
+        file.writeShort(lineNumber);
+    }
+
+    /**
+     * @return Corresponding source line
+     */
+    @Pure
+    public @NonNegative int getLineNumber() {
+        return lineNumber & 0xffff;
+    }
+
+    /**
+     * @return PC in code
+     */
+    @Pure
+    public @NonNegative int getStartPC() {
+        return  startPc & 0xffff;
+    }
+
+    /**
+     * @param lineNumber the source line number
+     */
+    public void setLineNumber(final @NonNegative int lineNumber) {
+        this.lineNumber = (short) lineNumber;
+    }
+
+    /**
+     * @param startPc the pc for this line number
+     */
+    public void setStartPC(final @NonNegative int startPc) {
+        this.startPc = (short) startPc;
+    }
+
+    /**
+     * @return String representation
+     */
+    @Override
+    public String toString() {
+        return "LineNumber(" + getStartPC() + ", " + getLineNumber() + ")";
     }
 }

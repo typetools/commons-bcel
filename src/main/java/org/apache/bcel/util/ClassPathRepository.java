@@ -25,42 +25,18 @@ import org.apache.bcel.classfile.JavaClass;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
- * This repository is used in situations where a Class is created outside the realm of a ClassLoader. Classes are loaded from the file systems using the paths
- * specified in the given class path. By default, this is the value returned by ClassPath.getClassPath().
+ * This repository is used in situations where a Class is created outside the realm of a ClassLoader. Classes are loaded
+ * from the file systems using the paths specified in the given class path. By default, this is the value returned by
+ * ClassPath.getClassPath().
  *
  * @see org.apache.bcel.Repository
  */
 public class ClassPathRepository extends AbstractClassPathRepository {
 
-    private final Map<String, JavaClass> _loadedClasses = new HashMap<>(); // CLASSNAME X JAVACLASS
+    private final Map<String, JavaClass> loadedClasses = new HashMap<>(); // CLASSNAME X JAVACLASS
 
     public ClassPathRepository(final ClassPath classPath) {
         super(classPath);
-    }
-
-    /**
-     * Stores a new JavaClass instance into this Repository.
-     */
-    @Override
-    public void storeClass(final JavaClass javaClass) {
-        _loadedClasses.put(javaClass.getClassName(), javaClass);
-        javaClass.setRepository(this);
-    }
-
-    /**
-     * Removes class from repository.
-     */
-    @Override
-    public void removeClass(final JavaClass javaClass) {
-        _loadedClasses.remove(javaClass.getClassName());
-    }
-
-    /**
-     * Finds an already defined (cached) JavaClass object by name.
-     */
-    @Override
-    public @Nullable JavaClass findClass(final String className) {
-        return _loadedClasses.get(className);
     }
 
     /**
@@ -68,6 +44,31 @@ public class ClassPathRepository extends AbstractClassPathRepository {
      */
     @Override
     public void clear() {
-        _loadedClasses.clear();
+        loadedClasses.clear();
+    }
+
+    /**
+     * Finds an already defined (cached) JavaClass object by name.
+     */
+    @Override
+    public @Nullable JavaClass findClass(final String className) {
+        return loadedClasses.get(className);
+    }
+
+    /**
+     * Removes class from repository.
+     */
+    @Override
+    public void removeClass(final JavaClass javaClass) {
+        loadedClasses.remove(javaClass.getClassName());
+    }
+
+    /**
+     * Stores a new JavaClass instance into this Repository.
+     */
+    @Override
+    public void storeClass(final JavaClass javaClass) {
+        loadedClasses.put(javaClass.getClassName(), javaClass);
+        javaClass.setRepository(this);
     }
 }
