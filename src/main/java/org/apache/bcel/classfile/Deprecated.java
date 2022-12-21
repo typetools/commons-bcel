@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.classfile;
 
@@ -48,27 +47,27 @@ public final class Deprecated extends Attribute {
     }
 
     /**
-     * @param name_index Index in constant pool to CONSTANT_Utf8
+     * @param nameIndex Index in constant pool to CONSTANT_Utf8
      * @param length Content length in bytes
      * @param bytes Attribute contents
-     * @param constant_pool Array of constants
+     * @param constantPool Array of constants
      */
-    public Deprecated(final @NonNegative int name_index, final @NonNegative int length, final byte @Nullable [] bytes, final ConstantPool constant_pool) {
-        super(Const.ATTR_DEPRECATED, name_index, length, constant_pool);
+    public Deprecated(final @NonNegative int nameIndex, final @NonNegative int length, final byte @Nullable [] bytes, final ConstantPool constantPool) {
+        super(Const.ATTR_DEPRECATED, nameIndex, length, constantPool);
         this.bytes = bytes;
     }
 
     /**
      * Construct object from input stream.
      *
-     * @param name_index Index in constant pool to CONSTANT_Utf8
+     * @param nameIndex Index in constant pool to CONSTANT_Utf8
      * @param length Content length in bytes
      * @param input Input stream
-     * @param constant_pool Array of constants
+     * @param constantPool Array of constants
      * @throws IOException if an I/O error occurs.
      */
-    Deprecated(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
-        this(name_index, length, (byte[]) null, constant_pool);
+    Deprecated(final @NonNegative int nameIndex, final @NonNegative int length, final DataInput input, final ConstantPool constantPool) throws IOException {
+        this(nameIndex, length, (byte[]) null, constantPool);
         if (length > 0) {
             bytes = new byte[length];
             input.readFully(bytes);
@@ -94,8 +93,7 @@ public final class Deprecated extends Attribute {
     public Attribute copy(final ConstantPool constantPool) {
         final Deprecated c = (Deprecated) clone();
         if (bytes != null) {
-            c.bytes = new byte[bytes.length];
-            System.arraycopy(bytes, 0, c.bytes, 0, bytes.length);
+            c.bytes = bytes.clone();
         }
         c.setConstantPool(constantPool);
         return c;

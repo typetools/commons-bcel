@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.generic;
 
@@ -38,9 +37,9 @@ public class LOOKUPSWITCH extends Select {
     public LOOKUPSWITCH(final int[] match, final InstructionHandle[] targets, final InstructionHandle defaultTarget) {
         super(org.apache.bcel.Const.LOOKUPSWITCH, match, targets, defaultTarget);
         /* alignment remainder assumed 0 here, until dump time. */
-        final short length = (short) (9 + getMatch_length() * 8);
+        final short length = (short) (9 + getMatchLength() * 8);
         super.setLength(length);
-        setFixed_length(length);
+        setFixedLength(length);
     }
 
     /**
@@ -66,7 +65,7 @@ public class LOOKUPSWITCH extends Select {
     @Override
     public void dump(final DataOutputStream out) throws IOException {
         super.dump(out);
-        final int matchLength = getMatch_length();
+        final int matchLength = getMatchLength();
         out.writeInt(matchLength); // npairs
         for (int i = 0; i < matchLength; i++) {
             out.writeInt(super.getMatch(i)); // match-offset pairs
@@ -81,9 +80,9 @@ public class LOOKUPSWITCH extends Select {
     protected void initFromFile(final ByteSequence bytes, final boolean wide) throws IOException {
         super.initFromFile(bytes, wide); // reads padding
         final int matchLength = bytes.readInt();
-        setMatch_length(matchLength);
+        setMatchLength(matchLength);
         final short fixedLength = (short) (9 + matchLength * 8);
-        setFixed_length(fixedLength);
+        setFixedLength(fixedLength);
         final short length = (short) (matchLength + super.getPadding());
         super.setLength(length);
         super.setMatches(new int[matchLength]);

@@ -17,37 +17,46 @@
 
 package org.apache.bcel.classfile;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.io.IOException;
+import java.util.stream.IntStream;
 
 import org.apache.bcel.AbstractTestCase;
 import org.apache.bcel.Const;
 import org.apache.bcel.generic.ConstantPoolGen;
 import org.apache.bcel.generic.InstructionHandle;
-import org.apache.bcel.generic.InstructionList;
 import org.apache.bcel.generic.MethodGen;
+import org.apache.bcel.util.ClassPath;
+import org.apache.bcel.util.ClassPathRepository;
 import org.junit.jupiter.api.Test;
+
+class ClassWithDoubleConstantPoolItem {
+    double d = 42; // here is the key; we need a double constant value
+}
+
+class ClassWithLongConstantPoolItem {
+    long l = 42; // here is the key; we need a double constant value
+}
 
 public class ConstantPoolTestCase extends AbstractTestCase {
 
     private InstructionHandle[] getInstructionHandles(final JavaClass clazz, final ConstantPoolGen cp, final Method method) {
         final MethodGen methodGen = new MethodGen(method, clazz.getClassName(), cp);
-        final InstructionList instructionList = methodGen.getInstructionList();
-        return instructionList.getInstructionHandles();
+        return methodGen.getInstructionList().getInstructionHandles();
     }
 
     @Test
     public void testConstantToString() throws ClassNotFoundException {
-        final JavaClass clazz = getTestClass(PACKAGE_BASE_NAME + ".data.SimpleClassWithDefaultConstructor");
+        final JavaClass clazz = getTestJavaClass(PACKAGE_BASE_NAME + ".data.SimpleClassWithDefaultConstructor");
         final ConstantPoolGen cp = new ConstantPoolGen(clazz.getConstantPool());
-
         final Method[] methods = clazz.getMethods();
-
         for (final Method method : methods) {
             if (method.getName().equals("<init>")) {
                 for (final InstructionHandle instructionHandle : getInstructionHandles(clazz, cp, method)) {
-                    final String string = instructionHandle.getInstruction().toString(cp.getConstantPool());
-                    assertNotNull(string);
+                    assertNotNull(instructionHandle.getInstruction().toString(cp.getConstantPool()));
                     // TODO Need real assertions.
                     // System.out.println(string);
                 }
@@ -56,10 +65,29 @@ public class ConstantPoolTestCase extends AbstractTestCase {
     }
 
     @Test
-    public void testTooManyConstants() throws ClassNotFoundException {
-        final JavaClass clazz = getTestClass(PACKAGE_BASE_NAME + ".data.SimpleClassWithDefaultConstructor");
-        final ConstantPoolGen cp = new ConstantPoolGen(clazz.getConstantPool());
+    public void testDoubleConstantWontThrowClassFormatException() throws ClassNotFoundException, IOException {
+        try (final ClassPath cp = new ClassPath("target/test-classes/org/apache/bcel/classfile")) {
+            final JavaClass c = new ClassPathRepository(cp).loadClass("ClassWithDoubleConstantPoolItem");
 
+            final ConstantPool pool = c.getConstantPool();
+            IntStream.range(0, pool.getLength()).forEach(i -> assertDoesNotThrow(() -> pool.getConstant(i)));
+        }
+    }
+
+    @Test
+    public void testLongConstantWontThrowClassFormatException() throws ClassNotFoundException, IOException {
+        try (final ClassPath cp = new ClassPath("target/test-classes/org/apache/bcel/classfile")) {
+            final JavaClass c = new ClassPathRepository(cp).loadClass("ClassWithLongConstantPoolItem");
+
+            final ConstantPool pool = c.getConstantPool();
+            IntStream.range(0, pool.getLength()).forEach(i -> assertDoesNotThrow(() -> pool.getConstant(i)));
+        }
+    }
+
+    @Test
+    public void testTooManyConstants() throws ClassNotFoundException {
+        final JavaClass clazz = getTestJavaClass(PACKAGE_BASE_NAME + ".data.SimpleClassWithDefaultConstructor");
+        final ConstantPoolGen cp = new ConstantPoolGen(clazz.getConstantPool());
         int i = cp.getSize();
         while (i < Const.MAX_CP_ENTRIES - 1) {
             cp.addLong(i);

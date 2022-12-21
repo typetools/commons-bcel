@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.classfile;
 
@@ -49,24 +48,24 @@ public final class ConstantValue extends Attribute {
     /**
      * Construct object from input stream.
      *
-     * @param name_index Name index in constant pool
+     * @param nameIndex Name index in constant pool
      * @param length Content length in bytes
      * @param input Input stream
-     * @param constant_pool Array of constants
+     * @param constantPool Array of constants
      * @throws IOException if an I/O error occurs.
      */
-    ConstantValue(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
-        this(name_index, length, input.readUnsignedShort(), constant_pool);
+    ConstantValue(final @NonNegative int nameIndex, final @NonNegative int length, final DataInput input, final ConstantPool constantPool) throws IOException {
+        this(nameIndex, length, input.readUnsignedShort(), constantPool);
     }
 
     /**
-     * @param name_index Name index in constant pool
+     * @param nameIndex Name index in constant pool
      * @param length Content length in bytes
      * @param constantValueIndex Index in constant pool
-     * @param constant_pool Array of constants
+     * @param constantPool Array of constants
      */
-    public ConstantValue(final @NonNegative int name_index, final @NonNegative int length, final @NonNegative int constantValueIndex, final ConstantPool constant_pool) {
-        super(Const.ATTR_CONSTANT_VALUE, name_index, length, constant_pool);
+    public ConstantValue(final @NonNegative int nameIndex, final @NonNegative int length, final @NonNegative int constantValueIndex, final ConstantPool constantPool) {
+        super(Const.ATTR_CONSTANT_VALUE, nameIndex, length, constantPool);
         this.constantValueIndex = constantValueIndex;
     }
 

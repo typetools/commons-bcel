@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.classfile;
 
@@ -71,9 +70,9 @@ public abstract class Annotations extends Attribute implements Iterable<Annotati
     Annotations(final byte annotationType, final @NonNegative int nameIndex, final @NonNegative int length, final DataInput input, final ConstantPool constantPool,
             final boolean isRuntimeVisible) throws IOException {
         this(annotationType, nameIndex, length, (AnnotationEntry[]) null, constantPool, isRuntimeVisible);
-        final int annotation_table_length = input.readUnsignedShort();
-        annotationTable = new AnnotationEntry[annotation_table_length];
-        for (int i = 0; i < annotation_table_length; i++) {
+        final int annotationTableLength = input.readUnsignedShort();
+        annotationTable = new AnnotationEntry[annotationTableLength];
+        for (int i = 0; i < annotationTableLength; i++) {
             annotationTable[i] = AnnotationEntry.read(input, constantPool, isRuntimeVisible);
         }
     }

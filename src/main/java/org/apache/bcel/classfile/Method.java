@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.classfile;
 
@@ -32,7 +31,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 /**
  * This class represents the method info structure, i.e., the representation for a method in the class. See JVM
  * specification for details. A method has access flags, a name, a signature and a number of attributes.
- *
  */
 @AnnotatedFor({"nullness","signedness"})
 public final class Method extends FieldOrMethod {
@@ -96,19 +94,19 @@ public final class Method extends FieldOrMethod {
      * @throws IOException if an I/O error occurs.
      * @throws ClassFormatException if a class is malformed or cannot be interpreted as a class file
      */
-    Method(final DataInput file, final ConstantPool constant_pool) throws IOException, ClassFormatException {
-        super(file, constant_pool);
+    Method(final DataInput file, final ConstantPool constantPool) throws IOException, ClassFormatException {
+        super(file, constantPool);
     }
 
     /**
-     * @param access_flags Access rights of method
-     * @param name_index Points to field name in constant pool
-     * @param signature_index Points to encoded signature
+     * @param accessFlags Access rights of method
+     * @param nameIndex Points to field name in constant pool
+     * @param signatureIndex Points to encoded signature
      * @param attributes Collection of attributes
-     * @param constant_pool Array of constants
+     * @param constantPool Array of constants
      */
-    public Method(final int access_flags, final @NonNegative int name_index, final @NonNegative int signature_index, final Attribute[] attributes, final ConstantPool constant_pool) {
-        super(access_flags, name_index, signature_index, attributes, constant_pool);
+    public Method(final int accessFlags, final @NonNegative int nameIndex, final @NonNegative int signatureIndex, final Attribute[] attributes, final ConstantPool constantPool) {
+        super(accessFlags, nameIndex, signatureIndex, attributes, constantPool);
     }
 
     /**

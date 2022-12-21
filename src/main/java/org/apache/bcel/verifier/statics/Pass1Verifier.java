@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.verifier.statics;
 
@@ -24,6 +23,7 @@ import org.apache.bcel.verifier.PassVerifier;
 import org.apache.bcel.verifier.VerificationResult;
 import org.apache.bcel.verifier.Verifier;
 import org.apache.bcel.verifier.exc.LoadingException;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * This PassVerifier verifies a class file according to pass 1 as described in The Java Virtual Machine Specification,
@@ -128,7 +128,7 @@ public final class Pass1Verifier extends PassVerifier {
             /* If we find more constraints to check, we should do this in an own method. */
             // This should maybe caught by BCEL: In case of renamed .class files we get wrong
             // JavaClass objects here.
-            // This test should be much more complicated. It needs to take the classname, remove any portion at the
+            // This test should be much more complicated. It needs to take the class name, remove any portion at the
             // end that matches the file name and then see if the remainder matches anything on the class path.
             // Dumb test for now, see if the class name ends with the file name.
             if (jc != null && !myOwner.getClassName().equals(jc.getClassName()) && !jc.getClassName().endsWith(myOwner.getClassName())) {
@@ -161,7 +161,7 @@ public final class Pass1Verifier extends PassVerifier {
         if (jc == null) {
             try {
                 jc = Repository.lookupClass(myOwner.getClassName());
-            } catch (final ClassNotFoundException e) {
+            } catch (final ClassNotFoundException ignored) {
                 // FIXME: currently, Pass1Verifier treats jc == null as a special
                 // case, so we don't need to do anything here. A better solution
                 // would be to simply throw the ClassNotFoundException
@@ -175,12 +175,11 @@ public final class Pass1Verifier extends PassVerifier {
      * Currently this returns an empty array of String. One could parse the error messages of BCEL (written to
      * java.lang.System.err) when loading a class file such as detecting unknown attributes or trailing garbage at the end
      * of a class file. However, Markus Dahm does not like the idea so this method is currently useless and therefore marked
-     * as <B>TODO</B>.
+     * as <b>TODO</b>.
      */
     @Override
     public String[] getMessages() {
-        // This method is only here to override the javadoc-comment.
-        return super.getMessages();
+        return ArrayUtils.EMPTY_STRING_ARRAY;
     }
 
 }

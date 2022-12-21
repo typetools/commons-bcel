@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.classfile;
 
@@ -61,33 +60,33 @@ public final class Code extends Attribute {
     }
 
     /**
-     * @param name_index Index pointing to the name <em>Code</em>
+     * @param nameIndex Index pointing to the name <em>Code</em>
      * @param length Content length in bytes
      * @param file Input stream
-     * @param constant_pool Array of constants
+     * @param constantPool Array of constants
      */
-    Code(final @NonNegative int name_index, final @NonNegative int length, final DataInput file, final ConstantPool constant_pool) throws IOException {
+    Code(final @NonNegative int nameIndex, final @NonNegative int length, final DataInput file, final ConstantPool constantPool) throws IOException {
         // Initialize with some default values which will be overwritten later
-        this(name_index, length, file.readUnsignedShort(), file.readUnsignedShort(), (byte[]) null, (CodeException[]) null, (Attribute[]) null, constant_pool);
-        final int code_length = file.readInt();
-        code = new byte[code_length]; // Read byte code
+        this(nameIndex, length, file.readUnsignedShort(), file.readUnsignedShort(), (byte[]) null, (CodeException[]) null, (Attribute[]) null, constantPool);
+        final int codeLength = file.readInt();
+        code = new byte[codeLength]; // Read byte code
         file.readFully(code);
         /*
          * Read exception table that contains all regions where an exception handler is active, i.e., a try { ... } catch()
          * block.
          */
-        final int exception_table_length = file.readUnsignedShort();
-        exceptionTable = new CodeException[exception_table_length];
-        for (int i = 0; i < exception_table_length; i++) {
+        final int exceptionTableLength = file.readUnsignedShort();
+        exceptionTable = new CodeException[exceptionTableLength];
+        for (int i = 0; i < exceptionTableLength; i++) {
             exceptionTable[i] = new CodeException(file);
         }
         /*
          * Read all attributes, currently `LineNumberTable' and `LocalVariableTable'
          */
-        final int attributes_count = file.readUnsignedShort();
-        attributes = new Attribute[attributes_count];
-        for (int i = 0; i < attributes_count; i++) {
-            attributes[i] = Attribute.readAttribute(file, constant_pool);
+        final int attributesCount = file.readUnsignedShort();
+        attributes = new Attribute[attributesCount];
+        for (int i = 0; i < attributesCount; i++) {
+            attributes[i] = Attribute.readAttribute(file, constantPool);
         }
         /*
          * Adjust length, because of setAttributes in this(), s.b. length is incorrect, because it didn't take the internal
@@ -97,18 +96,18 @@ public final class Code extends Attribute {
     }
 
     /**
-     * @param name_index Index pointing to the name <em>Code</em>
+     * @param nameIndex Index pointing to the name <em>Code</em>
      * @param length Content length in bytes
      * @param maxStack Maximum size of stack
      * @param maxLocals Number of local variables
      * @param code Actual byte code
      * @param exceptionTable of handled exceptions
      * @param attributes Attributes of code: LineNumber or LocalVariable
-     * @param constant_pool Array of constants
+     * @param constantPool Array of constants
      */
-    public Code(final @NonNegative int name_index, final @NonNegative int length, final @NonNegative int maxStack, final @NonNegative int maxLocals, final byte @Nullable [] code, final CodeException @Nullable [] exceptionTable,
-        final Attribute @Nullable [] attributes, final ConstantPool constant_pool) {
-        super(Const.ATTR_CODE, name_index, length, constant_pool);
+    public Code(final @NonNegative int nameIndex, final @NonNegative int length, final @NonNegative int maxStack, final @NonNegative int maxLocals, final byte @Nullable [] code, final CodeException @Nullable [] exceptionTable,
+        final Attribute @Nullable [] attributes, final ConstantPool constantPool) {
+        super(Const.ATTR_CODE, nameIndex, length, constantPool);
         this.maxStack = maxStack;
         this.maxLocals = maxLocals;
         this.code = code != null ? code : ArrayUtils.EMPTY_BYTE_ARRAY;
@@ -151,8 +150,7 @@ public final class Code extends Attribute {
     public Attribute copy(final ConstantPool constantPool) {
         final Code c = (Code) clone();
         if (code != null) {
-            c.code = new byte[code.length];
-            System.arraycopy(code, 0, c.code, 0, code.length);
+            c.code = code.clone();
         }
         c.setConstantPool(constantPool);
         c.exceptionTable = new CodeException[exceptionTable.length];

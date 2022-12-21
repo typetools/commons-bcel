@@ -101,11 +101,11 @@ public class MethodParameter implements Cloneable {
     /**
      * Returns the name of the parameter.
      */
-    public @Nullable String getParameterName(final ConstantPool constant_pool) {
+    public @Nullable String getParameterName(final ConstantPool constantPool) {
         if (nameIndex == 0) {
             return null;
         }
-        return constant_pool.getConstantUtf8(nameIndex).getBytes();
+        return constantPool.getConstantUtf8(nameIndex).getBytes();
     }
 
     public boolean isFinal() {
@@ -121,11 +121,11 @@ public class MethodParameter implements Cloneable {
         return (accessFlags & Const.ACC_SYNTHETIC) != 0;
     }
 
-    public void setAccessFlags(final int access_flags) {
-        this.accessFlags = access_flags;
+    public void setAccessFlags(final int accessFlags) {
+        this.accessFlags = accessFlags;
     }
 
-    public void setNameIndex(final @NonNegative int name_index) {
-        this.nameIndex = name_index;
+    public void setNameIndex(final @NonNegative int nameIndex) {
+        this.nameIndex = nameIndex;
     }
 }

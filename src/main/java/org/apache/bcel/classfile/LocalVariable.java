@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.classfile;
 
@@ -61,8 +60,8 @@ public final class LocalVariable implements Cloneable, Node, Constants {
      * @param file Input stream
      * @throws IOException if an I/O error occurs.
      */
-    LocalVariable(final DataInput file, final ConstantPool constant_pool) throws IOException {
-        this(file.readUnsignedShort(), file.readUnsignedShort(), file.readUnsignedShort(), file.readUnsignedShort(), file.readUnsignedShort(), constant_pool);
+    LocalVariable(final DataInput file, final ConstantPool constantPool) throws IOException {
+        this(file.readUnsignedShort(), file.readUnsignedShort(), file.readUnsignedShort(), file.readUnsignedShort(), file.readUnsignedShort(), constantPool);
     }
 
     /**

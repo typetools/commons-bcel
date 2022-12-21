@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.verifier;
 
@@ -108,9 +107,11 @@ public class Verifier {
     /**
      * The name of the class this verifier operates on.
      */
-    private final @FullyQualifiedName String classname;
+    private final @FullyQualifiedName String className;
+
     /** A Pass1Verifier for this Verifier instance. */
     private Pass1Verifier p1v;
+
     /** A Pass2Verifier for this Verifier instance. */
     private Pass2Verifier p2v;
 
@@ -125,9 +126,8 @@ public class Verifier {
      *
      * @see VerifierFactory
      */
-    Verifier(final @FullyQualifiedName String fully_qualified_classname) {
-        classname = fully_qualified_classname;
-        flush();
+    Verifier(final @FullyQualifiedName String fullyQualifiedClassName) {
+        className = fullyQualifiedClassName;
     }
 
     /** Returns the VerificationResult for the given pass. */
@@ -146,32 +146,29 @@ public class Verifier {
         return p2v.verify();
     }
 
-    /** Returns the VerificationResult for the given pass. */
-    public VerificationResult doPass3a(final int method_no) {
-        final String key = Integer.toString(method_no);
-        Pass3aVerifier p3av = p3avs.get(key);
-        if (p3avs.get(key) == null) {
-            p3av = new Pass3aVerifier(this, method_no);
-            p3avs.put(key, p3av);
-        }
-        return p3av.verify();
+    /**
+     * Returns the VerificationResult for the given pass.
+     * 
+     * @param methodNo The method to verify
+     * @return the VerificationResult 
+     */
+    public VerificationResult doPass3a(final int methodNo) {
+        return p3avs.computeIfAbsent(Integer.toString(methodNo), k -> new Pass3aVerifier(this, methodNo)).verify();
     }
 
-    /** Returns the VerificationResult for the given pass. */
-    public VerificationResult doPass3b(final int method_no) {
-        final String key = Integer.toString(method_no);
-        Pass3bVerifier p3bv = p3bvs.get(key);
-        if (p3bvs.get(key) == null) {
-            p3bv = new Pass3bVerifier(this, method_no);
-            p3bvs.put(key, p3bv);
-        }
-        return p3bv.verify();
+    /**
+     * Returns the VerificationResult for the given pass.
+     * 
+     * @param methodNo The method to verify
+     * @return the VerificationResult 
+     */
+    public VerificationResult doPass3b(final int methodNo) {
+        return p3bvs.computeIfAbsent(Integer.toString(methodNo), k -> new Pass3bVerifier(this, methodNo)).verify();
     }
 
     /**
      * Forget everything known about the class file; that means, really start a new verification of a possibly different
      * class file from BCEL's repository.
-     *
      */
     public void flush() {
         p1v = null;
@@ -189,7 +186,7 @@ public class Verifier {
      */
     @Pure
     public final @FullyQualifiedName String getClassName() {
-        return classname;
+        return className;
     }
 
     /**
@@ -199,25 +196,21 @@ public class Verifier {
     public String[] getMessages() throws ClassNotFoundException {
         final List<String> messages = new ArrayList<>();
         if (p1v != null) {
-            for (final String element : p1v.getMessages()) {
-                messages.add("Pass 1: " + element);
-            }
+            p1v.getMessagesList().forEach(element -> messages.add("Pass 1: " + element));
         }
         if (p2v != null) {
-            for (final String element : p2v.getMessages()) {
-                messages.add("Pass 2: " + element);
-            }
+            p2v.getMessagesList().forEach(element -> messages.add("Pass 2: " + element));
         }
         for (final Pass3aVerifier pv : p3avs.values()) {
             final int meth = pv.getMethodNo();
             for (final String element : pv.getMessages()) {
-                messages.add("Pass 3a, method " + meth + " ('" + org.apache.bcel.Repository.lookupClass(classname).getMethods()[meth] + "'): " + element);
+                messages.add("Pass 3a, method " + meth + " ('" + org.apache.bcel.Repository.lookupClass(className).getMethods()[meth] + "'): " + element);
             }
         }
         for (final Pass3bVerifier pv : p3bvs.values()) {
             final int meth = pv.getMethodNo();
             for (final String element : pv.getMessages()) {
-                messages.add("Pass 3b, method " + meth + " ('" + org.apache.bcel.Repository.lookupClass(classname).getMethods()[meth] + "'): " + element);
+                messages.add("Pass 3b, method " + meth + " ('" + org.apache.bcel.Repository.lookupClass(className).getMethods()[meth] + "'): " + element);
             }
         }
 

@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.generic;
 
@@ -33,7 +32,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  *
  * The Instructions can also accessed directly under their names, so it's possible to write
  * il.append(Instruction.ICONST_0);
- *
  */
 @AnnotatedFor({"signedness"})
 public final class InstructionConst {
@@ -173,7 +171,7 @@ public final class InstructionConst {
     /**
      * Get object via its opcode, for immutable instructions like branch instructions entries are set to null.
      */
-    private static final Instruction[] INSTRUCTIONS = new Instruction[256];
+    static final Instruction[] INSTRUCTIONS = new Instruction[256];
 
     static {
         INSTRUCTIONS[Const.NOP] = NOP;

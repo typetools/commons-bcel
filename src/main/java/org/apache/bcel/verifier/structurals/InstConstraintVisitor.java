@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.verifier.structurals;
 
@@ -128,9 +127,9 @@ public class InstConstraintVisitor extends EmptyVisitor {
      * @throws StructuralCodeConstraintException always.
      */
     private void constraintViolated(final Instruction violator, final String description) {
-        final String fq_classname = violator.getClass().getName();
+        final String fqClassName = violator.getClass().getName();
         throw new StructuralCodeConstraintException(
-            "Instruction " + fq_classname.substring(fq_classname.lastIndexOf('.') + 1) + " constraint violated: " + description);
+            "Instruction " + fqClassName.substring(fqClassName.lastIndexOf('.') + 1) + " constraint violated: " + description);
     }
 
     private ObjectType getObjectType(final FieldInstruction o) {
@@ -251,9 +250,11 @@ public class InstConstraintVisitor extends EmptyVisitor {
         indexOfInt(o, index);
         if (!(value instanceof ReferenceType)) {
             constraintViolated(o, "The 'value' is not of a ReferenceType but of type " + value + ".");
-        } else {
-            // referenceTypeIsInitialized(o, (ReferenceType) value);
         }
+        // } else {
+            // referenceTypeIsInitialized(o, (ReferenceType) value);
+        // }
+        //
         // Don't bother further with "referenceTypeIsInitialized()", there are no arrays
         // of an uninitialized object type.
         if (arrayrefOfArrayType(o, arrayref) && !(((ArrayType) arrayref).getElementType() instanceof ReferenceType)) {
@@ -944,6 +945,57 @@ public class InstConstraintVisitor extends EmptyVisitor {
         }
     }
 
+    private Field visitFieldInstructionInternals(final FieldInstruction o) throws ClassNotFoundException {
+        final String fieldName = o.getFieldName(cpg);
+        final JavaClass jc = Repository.lookupClass(getObjectType(o).getClassName());
+        final Field[] fields = jc.getFields();
+        Field f = null;
+        for (final Field field : fields) {
+            if (field.getName().equals(fieldName)) {
+                final Type fType = Type.getType(field.getSignature());
+                final Type oType = o.getType(cpg);
+                /*
+                 * TODO: Check if assignment compatibility is sufficient. What does Sun do?
+                 */
+                if (fType.equals(oType)) {
+                    f = field;
+                    break;
+                }
+            }
+        }
+        if (f == null) {
+            throw new AssertionViolatedException("Field '" + fieldName + "' not found in " + jc.getClassName());
+        }
+        final Type value = stack().peek();
+        final Type t = Type.getType(f.getSignature());
+        Type shouldbe = t;
+        if (shouldbe == Type.BOOLEAN || shouldbe == Type.BYTE || shouldbe == Type.CHAR || shouldbe == Type.SHORT) {
+            shouldbe = Type.INT;
+        }
+        if (t instanceof ReferenceType) {
+            ReferenceType rvalue = null;
+            if (value instanceof ReferenceType) {
+                rvalue = (ReferenceType) value;
+                referenceTypeIsInitialized(o, rvalue);
+            } else {
+                constraintViolated(o, "The stack top type '" + value + "' is not of a reference type as expected.");
+            }
+            // TODO: This can possibly only be checked using Staerk-et-al's "set-of-object types", not
+            // using "wider cast object types" created during verification.
+            // Comment it out if you encounter problems. See also the analogon at visitPUTFIELD|visitPUTSTATIC.
+            if (!rvalue.isAssignmentCompatibleWith(shouldbe)) {
+                constraintViolated(o, "The stack top type '" + value + "' is not assignment compatible with '" + shouldbe + "'.");
+            }
+        } else {
+            @SuppressWarnings("interning") // Type is interned if not of reference type
+            boolean bad = (shouldbe != value);
+            if (bad) {
+                constraintViolated(o, "The stack top type '" + value + "' is not of type '" + shouldbe + "' as expected.");
+            }
+        }
+        return f;
+    }
+
     /**
      * Ensures the specific preconditions of the said instruction.
      */
@@ -1034,13 +1086,13 @@ public class InstConstraintVisitor extends EmptyVisitor {
                 constraintViolated(o, "Stack top should be an object reference that's not an array reference, but is '" + objectref + "'.");
             }
 
-            final String field_name = o.getFieldName(cpg);
+            final String fieldName = o.getFieldName(cpg);
 
             final JavaClass jc = Repository.lookupClass(getObjectType(o).getClassName());
             Field[] fields = jc.getFields();
             Field f = null;
             for (final Field field : fields) {
-                if (field.getName().equals(field_name)) {
+                if (field.getName().equals(fieldName)) {
                     final Type fType = Type.getType(field.getSignature());
                     final Type oType = o.getType(cpg);
                     /*
@@ -1058,7 +1110,7 @@ public class InstConstraintVisitor extends EmptyVisitor {
                 outer: for (final JavaClass superclass : superclasses) {
                     fields = superclass.getFields();
                     for (final Field field : fields) {
-                        if (field.getName().equals(field_name)) {
+                        if (field.getName().equals(fieldName)) {
                             final Type fType = Type.getType(field.getSignature());
                             final Type oType = o.getType(cpg);
                             if (fType.equals(oType)) {
@@ -1072,7 +1124,7 @@ public class InstConstraintVisitor extends EmptyVisitor {
                     }
                 }
                 if (f == null) {
-                    throw new AssertionViolatedException("Field '" + field_name + "' not found in " + jc.getClassName());
+                    throw new AssertionViolatedException("Field '" + fieldName + "' not found in " + jc.getClassName());
                 }
             }
 
@@ -1088,8 +1140,8 @@ public class InstConstraintVisitor extends EmptyVisitor {
                     if (!(t instanceof ObjectType)) {
                         constraintViolated(o, "The 'objectref' must refer to an object that's not an array. Found instead: '" + t + "'.");
                     }
-                    final ObjectType objreftype = (ObjectType) t;
-                    if (!(objreftype.equals(curr) || objreftype.subclassOf(curr))) {
+                    // final ObjectType objreftype = (ObjectType) t;
+                    // if (!(objreftype.equals(curr) || objreftype.subclassOf(curr))) {
                         // TODO: One day move to Staerk-et-al's "Set of object types" instead of "wider" object types
                         // created during the verification.
                         // "Wider" object types don't allow us to check for things like that below.
@@ -1097,7 +1149,7 @@ public class InstConstraintVisitor extends EmptyVisitor {
                         // "and it's a member of the current class or a superclass of the current class."+
                         // " However, the referenced object type '"+stack().peek()+
                         // "' is not the current class or a subclass of the current class.");
-                    }
+                    //}
                 }
             }
 
@@ -1654,13 +1706,52 @@ public class InstConstraintVisitor extends EmptyVisitor {
         // constraintViolated(o, "The 'objref' item '"+objref+"' does not implement '"+theInterface+"' as expected.");
         // }
 
-        int counted_count = 1; // 1 for the objectref
+        int countedCount = 1; // 1 for the objectref
         for (int i = 0; i < nargs; i++) {
-            counted_count += argtypes[i].getSize();
+            countedCount += argtypes[i].getSize();
         }
-        if (count != counted_count) {
-            constraintViolated(o, "The 'count' argument should probably read '" + counted_count + "' but is '" + count + "'.");
+        if (count != countedCount) {
+            constraintViolated(o, "The 'count' argument should probably read '" + countedCount + "' but is '" + count + "'.");
         }
+    }
+
+    private int visitInvokeInternals(final InvokeInstruction o) throws ClassNotFoundException {
+        final Type t = o.getType(cpg);
+        if (t instanceof ObjectType) {
+            final String name = ((ObjectType) t).getClassName();
+            final Verifier v = VerifierFactory.getVerifier(name);
+            final VerificationResult vr = v.doPass2();
+            if (vr.getStatus() != VerificationResult.VERIFIED_OK) {
+                constraintViolated(o, "Class '" + name + "' is referenced, but cannot be loaded and resolved: '" + vr + "'.");
+            }
+        }
+
+        final Type[] argtypes = o.getArgumentTypes(cpg);
+        final int nargs = argtypes.length;
+
+        for (int i = nargs - 1; i >= 0; i--) {
+            final Type fromStack = stack().peek(nargs - 1 - i); // 0 to nargs-1
+            Type fromDesc = argtypes[i];
+            if (fromDesc == Type.BOOLEAN || fromDesc == Type.BYTE || fromDesc == Type.CHAR || fromDesc == Type.SHORT) {
+                fromDesc = Type.INT;
+            }
+            if (!fromStack.equals(fromDesc)) {
+                if (fromStack instanceof ReferenceType && fromDesc instanceof ReferenceType) {
+                    final ReferenceType rFromStack = (ReferenceType) fromStack;
+                    final ReferenceType rFromDesc = (ReferenceType) fromDesc;
+                    // TODO: This can possibly only be checked when using Staerk-et-al's "set of object types" instead
+                    // of a single "wider cast object type" created during verification.
+                    if (!rFromStack.isAssignmentCompatibleWith(rFromDesc)) {
+                        constraintViolated(o,
+                            "Expecting a '" + fromDesc + "' but found a '" + fromStack + "' on the stack (which is not assignment compatible).");
+                    }
+                    referenceTypeIsInitialized(o, rFromStack);
+                } else {
+                    constraintViolated(o, "Expecting a '" + fromDesc + "' but found a '" + fromStack + "' on the stack.");
+                }
+            }
+        }
+        return nargs;
     }
 
     /**
@@ -1680,42 +1771,7 @@ public class InstConstraintVisitor extends EmptyVisitor {
 
             // the o.getClassType(cpg) type has passed pass 2; see visitLoadClass(o).
 
-            final Type t = o.getType(cpg);
-            if (t instanceof ObjectType) {
-                final String name = ((ObjectType) t).getClassName();
-                final Verifier v = VerifierFactory.getVerifier(name);
-                final VerificationResult vr = v.doPass2();
-                if (vr.getStatus() != VerificationResult.VERIFIED_OK) {
-                    constraintViolated(o, "Class '" + name + "' is referenced, but cannot be loaded and resolved: '" + vr + "'.");
-                }
-            }
-
-            final Type[] argtypes = o.getArgumentTypes(cpg);
-            final int nargs = argtypes.length;
-
-            for (int i = nargs - 1; i >= 0; i--) {
-                final Type fromStack = stack().peek(nargs - 1 - i); // 0 to nargs-1
-                Type fromDesc = argtypes[i];
-                if (fromDesc == Type.BOOLEAN || fromDesc == Type.BYTE || fromDesc == Type.CHAR || fromDesc == Type.SHORT) {
-                    fromDesc = Type.INT;
-                }
-                if (!fromStack.equals(fromDesc)) {
-                    if (fromStack instanceof ReferenceType && fromDesc instanceof ReferenceType) {
-                        final ReferenceType rFromStack = (ReferenceType) fromStack;
-                        final ReferenceType rFromDesc = (ReferenceType) fromDesc;
-                        // TODO: This can only be checked using Staerk-et-al's "set of object types", not
-                        // using a "wider cast object type".
-                        if (!rFromStack.isAssignmentCompatibleWith(rFromDesc)) {
-                            constraintViolated(o,
-                                "Expecting a '" + fromDesc + "' but found a '" + fromStack + "' on the stack (which is not assignment compatible).");
-                        }
-                        referenceTypeIsInitialized(o, rFromStack);
-                    } else {
-                        constraintViolated(o, "Expecting a '" + fromDesc + "' but found a '" + fromStack + "' on the stack.");
-                    }
-                }
-            }
-
+            final int nargs = visitInvokeInternals(o);
             Type objref = stack().peek(nargs);
             if (objref == Type.NULL) {
                 return;
@@ -1723,7 +1779,7 @@ public class InstConstraintVisitor extends EmptyVisitor {
             if (!(objref instanceof ReferenceType)) {
                 constraintViolated(o, "Expecting a reference type as 'objectref' on the stack, not a '" + objref + "'.");
             }
-            String objref_classname = null;
+            String objRefClassName = null;
             if (!o.getMethodName(cpg).equals(Const.CONSTRUCTOR_NAME)) {
                 referenceTypeIsInitialized(o, (ReferenceType) objref);
                 if (!(objref instanceof ObjectType)) {
@@ -1734,17 +1790,17 @@ public class InstConstraintVisitor extends EmptyVisitor {
                     }
                 }
 
-                objref_classname = ((ObjectType) objref).getClassName();
+                objRefClassName = ((ObjectType) objref).getClassName();
             } else {
                 if (!(objref instanceof UninitializedObjectType)) {
                     constraintViolated(o, "Expecting an UninitializedObjectType as 'objectref' on the stack, not a '" + objref
                         + "'. Otherwise, you couldn't invoke a method since an array has no methods (not to speak of a return address).");
                 }
-                objref_classname = ((UninitializedObjectType) objref).getInitialized().getClassName();
+                objRefClassName = ((UninitializedObjectType) objref).getInitialized().getClassName();
             }
 
             final String theClass = o.getClassName(cpg);
-            if (!Repository.instanceOf(objref_classname, theClass)) {
+            if (!Repository.instanceOf(objRefClassName, theClass)) {
                 constraintViolated(o, "The 'objref' item '" + objref + "' does not implement '" + theClass + "' as expected.");
             }
 
@@ -1761,42 +1817,7 @@ public class InstConstraintVisitor extends EmptyVisitor {
     public void visitINVOKESTATIC(final INVOKESTATIC o) {
         try {
             // Method is not native, otherwise pass 3 would not happen.
-
-            final Type t = o.getType(cpg);
-            if (t instanceof ObjectType) {
-                final String name = ((ObjectType) t).getClassName();
-                final Verifier v = VerifierFactory.getVerifier(name);
-                final VerificationResult vr = v.doPass2();
-                if (vr.getStatus() != VerificationResult.VERIFIED_OK) {
-                    constraintViolated(o, "Class '" + name + "' is referenced, but cannot be loaded and resolved: '" + vr + "'.");
-                }
-            }
-
-            final Type[] argtypes = o.getArgumentTypes(cpg);
-            final int nargs = argtypes.length;
-
-            for (int i = nargs - 1; i >= 0; i--) {
-                final Type fromStack = stack().peek(nargs - 1 - i); // 0 to nargs-1
-                Type fromDesc = argtypes[i];
-                if (fromDesc == Type.BOOLEAN || fromDesc == Type.BYTE || fromDesc == Type.CHAR || fromDesc == Type.SHORT) {
-                    fromDesc = Type.INT;
-                }
-                if (!fromStack.equals(fromDesc)) {
-                    if (fromStack instanceof ReferenceType && fromDesc instanceof ReferenceType) {
-                        final ReferenceType rFromStack = (ReferenceType) fromStack;
-                        final ReferenceType rFromDesc = (ReferenceType) fromDesc;
-                        // TODO: This check can possibly only be done using Staerk-et-al's "set of object types"
-                        // instead of a "wider cast object type" created during verification.
-                        if (!rFromStack.isAssignmentCompatibleWith(rFromDesc)) {
-                            constraintViolated(o,
-                                "Expecting a '" + fromDesc + "' but found a '" + fromStack + "' on the stack (which is not assignment compatible).");
-                        }
-                        referenceTypeIsInitialized(o, rFromStack);
-                    } else {
-                        constraintViolated(o, "Expecting a '" + fromDesc + "' but found a '" + fromStack + "' on the stack.");
-                    }
-                }
-            }
+            visitInvokeInternals(o);
         } catch (final ClassNotFoundException e) {
             // FIXME: maybe not the best way to handle this
             throw new AssertionViolatedException("Missing class: " + e, e);
@@ -1811,42 +1832,7 @@ public class InstConstraintVisitor extends EmptyVisitor {
         try {
             // the o.getClassType(cpg) type has passed pass 2; see visitLoadClass(o).
 
-            final Type t = o.getType(cpg);
-            if (t instanceof ObjectType) {
-                final String name = ((ObjectType) t).getClassName();
-                final Verifier v = VerifierFactory.getVerifier(name);
-                final VerificationResult vr = v.doPass2();
-                if (vr.getStatus() != VerificationResult.VERIFIED_OK) {
-                    constraintViolated(o, "Class '" + name + "' is referenced, but cannot be loaded and resolved: '" + vr + "'.");
-                }
-            }
-
-            final Type[] argtypes = o.getArgumentTypes(cpg);
-            final int nargs = argtypes.length;
-
-            for (int i = nargs - 1; i >= 0; i--) {
-                final Type fromStack = stack().peek(nargs - 1 - i); // 0 to nargs-1
-                Type fromDesc = argtypes[i];
-                if (fromDesc == Type.BOOLEAN || fromDesc == Type.BYTE || fromDesc == Type.CHAR || fromDesc == Type.SHORT) {
-                    fromDesc = Type.INT;
-                }
-                if (!fromStack.equals(fromDesc)) {
-                    if (fromStack instanceof ReferenceType && fromDesc instanceof ReferenceType) {
-                        final ReferenceType rFromStack = (ReferenceType) fromStack;
-                        final ReferenceType rFromDesc = (ReferenceType) fromDesc;
-                        // TODO: This can possibly only be checked when using Staerk-et-al's "set of object types" instead
-                        // of a single "wider cast object type" created during verification.
-                        if (!rFromStack.isAssignmentCompatibleWith(rFromDesc)) {
-                            constraintViolated(o,
-                                "Expecting a '" + fromDesc + "' but found a '" + fromStack + "' on the stack (which is not assignment compatible).");
-                        }
-                        referenceTypeIsInitialized(o, rFromStack);
-                    } else {
-                        constraintViolated(o, "Expecting a '" + fromDesc + "' but found a '" + fromStack + "' on the stack.");
-                    }
-                }
-            }
-
+            final int nargs = visitInvokeInternals(o);
             Type objref = stack().peek(nargs);
             if (objref == Type.NULL) {
                 return;
@@ -1863,11 +1849,11 @@ public class InstConstraintVisitor extends EmptyVisitor {
                 }
             }
 
-            final String objref_classname = ((ObjectType) objref).getClassName();
+            final String objRefClassName = ((ObjectType) objref).getClassName();
 
             final String theClass = o.getClassName(cpg);
 
-            if (!Repository.instanceOf(objref_classname, theClass)) {
+            if (!Repository.instanceOf(objRefClassName, theClass)) {
                 constraintViolated(o, "The 'objref' item '" + objref + "' does not implement '" + theClass + "' as expected.");
             }
         } catch (final ClassNotFoundException e) {
@@ -2508,55 +2494,7 @@ public class InstConstraintVisitor extends EmptyVisitor {
                 constraintViolated(o, "Stack next-to-top should be an object reference that's not an array reference, but is '" + objectref + "'.");
             }
 
-            final String field_name = o.getFieldName(cpg);
-
-            final JavaClass jc = Repository.lookupClass(getObjectType(o).getClassName());
-            final Field[] fields = jc.getFields();
-            Field f = null;
-            for (final Field field : fields) {
-                if (field.getName().equals(field_name)) {
-                    final Type fType = Type.getType(field.getSignature());
-                    final Type oType = o.getType(cpg);
-                    /*
-                     * TODO: Check if assignment compatibility is sufficient. What does Sun do?
-                     */
-                    if (fType.equals(oType)) {
-                        f = field;
-                        break;
-                    }
-                }
-            }
-            if (f == null) {
-                throw new AssertionViolatedException("Field '" + field_name + "' not found in " + jc.getClassName());
-            }
-
-            final Type value = stack().peek();
-            final Type t = Type.getType(f.getSignature());
-            Type shouldbe = t;
-            if (shouldbe == Type.BOOLEAN || shouldbe == Type.BYTE || shouldbe == Type.CHAR || shouldbe == Type.SHORT) {
-                shouldbe = Type.INT;
-            }
-            if (t instanceof ReferenceType) {
-                ReferenceType rvalue = null;
-                if (value instanceof ReferenceType) {
-                    rvalue = (ReferenceType) value;
-                    referenceTypeIsInitialized(o, rvalue);
-                } else {
-                    constraintViolated(o, "The stack top type '" + value + "' is not of a reference type as expected.");
-                }
-                // TODO: This can possibly only be checked using Staerk-et-al's "set-of-object types", not
-                // using "wider cast object types" created during verification.
-                // Comment it out if you encounter problems. See also the analogon at visitPUTSTATIC.
-                if (!rvalue.isAssignmentCompatibleWith(shouldbe)) {
-                    constraintViolated(o, "The stack top type '" + value + "' is not assignment compatible with '" + shouldbe + "'.");
-                }
-            } else {
-                @SuppressWarnings("interning") // Type is interned if not of reference type
-                boolean bad = (shouldbe != value);
-                if (bad) {
-                    constraintViolated(o, "The stack top type '" + value + "' is not of type '" + shouldbe + "' as expected.");
-                }
-            }
+            final Field f = visitFieldInstructionInternals(o);
 
             if (f.isProtected()) {
                 final ObjectType classtype = getObjectType(o);
@@ -2597,54 +2535,7 @@ public class InstConstraintVisitor extends EmptyVisitor {
     @Override
     public void visitPUTSTATIC(final PUTSTATIC o) {
         try {
-            final String field_name = o.getFieldName(cpg);
-            final JavaClass jc = Repository.lookupClass(getObjectType(o).getClassName());
-            final Field[] fields = jc.getFields();
-            Field f = null;
-            for (final Field field : fields) {
-                if (field.getName().equals(field_name)) {
-                    final Type fType = Type.getType(field.getSignature());
-                    final Type oType = o.getType(cpg);
-                    /*
-                     * TODO: Check if assignment compatibility is sufficient. What does Sun do?
-                     */
-                    if (fType.equals(oType)) {
-                        f = field;
-                        break;
-                    }
-                }
-            }
-            if (f == null) {
-                throw new AssertionViolatedException("Field '" + field_name + "' not found in " + jc.getClassName());
-            }
-            final Type value = stack().peek();
-            final Type t = Type.getType(f.getSignature());
-            Type shouldbe = t;
-            if (shouldbe == Type.BOOLEAN || shouldbe == Type.BYTE || shouldbe == Type.CHAR || shouldbe == Type.SHORT) {
-                shouldbe = Type.INT;
-            }
-            if (t instanceof ReferenceType) {
-                ReferenceType rvalue = null;
-                if (value instanceof ReferenceType) {
-                    rvalue = (ReferenceType) value;
-                    referenceTypeIsInitialized(o, rvalue);
-                } else {
-                    constraintViolated(o, "The stack top type '" + value + "' is not of a reference type as expected.");
-                }
-                // TODO: This can possibly only be checked using Staerk-et-al's "set-of-object types", not
-                // using "wider cast object types" created during verification.
-                // Comment it out if you encounter problems. See also the analogon at visitPUTFIELD.
-                if (!rvalue.isAssignmentCompatibleWith(shouldbe)) {
-                    constraintViolated(o, "The stack top type '" + value + "' is not assignment compatible with '" + shouldbe + "'.");
-                }
-            } else {
-                @SuppressWarnings("interning") // Type is interned if not of reference type
-                boolean bad = (shouldbe != value);
-                if (bad) {
-                    constraintViolated(o, "The stack top type '" + value + "' is not of type '" + shouldbe + "' as expected.");
-                }
-            }
-
+            visitFieldInstructionInternals(o);
         } catch (final ClassNotFoundException e) {
             // FIXME: maybe not the best way to handle this
             throw new AssertionViolatedException("Missing class: " + e, e);

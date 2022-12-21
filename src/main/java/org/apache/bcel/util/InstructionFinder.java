@@ -13,11 +13,11 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -260,10 +260,8 @@ public class InstructionFinder {
     /**
      * @return the matched piece of code as an array of instruction (handles)
      */
-    private InstructionHandle[] getMatch(final int matched_from, final int match_length) {
-        final InstructionHandle[] match = new InstructionHandle[match_length];
-        System.arraycopy(handles, matched_from, match, 0, match_length);
-        return match;
+    private InstructionHandle[] getMatch(final int matchedFrom, final int matchLength) {
+        return Arrays.copyOfRange(handles, matchedFrom, matchedFrom + matchLength);
     }
 
     /**

@@ -13,7 +13,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package org.apache.bcel;
@@ -37,7 +36,7 @@ public class EnclosingMethodAttributeTestCase extends AbstractTestCase {
      */
     @Test
     public void testAttributeSerializtion() throws ClassNotFoundException, IOException {
-        final JavaClass clazz = getTestClass(PACKAGE_BASE_NAME + ".data.AttributeTestClassEM02$1");
+        final JavaClass clazz = getTestJavaClass(PACKAGE_BASE_NAME + ".data.AttributeTestClassEM02$1");
         final ConstantPool pool = clazz.getConstantPool();
         final Attribute[] encMethodAttrs = findAttribute("EnclosingMethod", clazz);
         assertEquals(1, encMethodAttrs.length, "Wrong number of EnclosingMethod attributes");
@@ -61,7 +60,7 @@ public class EnclosingMethodAttributeTestCase extends AbstractTestCase {
      */
     @Test
     public void testCheckClassLevelNamedInnerClass() throws ClassNotFoundException {
-        final JavaClass clazz = getTestClass(PACKAGE_BASE_NAME + ".data.AttributeTestClassEM02$1");
+        final JavaClass clazz = getTestJavaClass(PACKAGE_BASE_NAME + ".data.AttributeTestClassEM02$1");
         final ConstantPool pool = clazz.getConstantPool();
         final Attribute[] encMethodAttrs = findAttribute("EnclosingMethod", clazz);
         assertEquals(1, encMethodAttrs.length, "Expected 1 EnclosingMethod attribute but found " + encMethodAttrs.length);
@@ -76,7 +75,7 @@ public class EnclosingMethodAttributeTestCase extends AbstractTestCase {
      */
     @Test
     public void testCheckMethodLevelNamedInnerClass() throws ClassNotFoundException {
-        final JavaClass clazz = getTestClass(PACKAGE_BASE_NAME + ".data.AttributeTestClassEM01$1S");
+        final JavaClass clazz = getTestJavaClass(PACKAGE_BASE_NAME + ".data.AttributeTestClassEM01$1S");
         final ConstantPool pool = clazz.getConstantPool();
         final Attribute[] encMethodAttrs = findAttribute("EnclosingMethod", clazz);
         assertEquals(1, encMethodAttrs.length, "Wrong number of EnclosingMethod attributes");

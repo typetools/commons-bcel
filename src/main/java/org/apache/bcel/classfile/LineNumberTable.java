@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.classfile;
 
@@ -48,33 +47,33 @@ public final class LineNumberTable extends Attribute implements Iterable<LineNum
     /**
      * Construct object from input stream.
      *
-     * @param name_index Index of name
+     * @param nameIndex Index of name
      * @param length Content length in bytes
      * @param input Input stream
-     * @param constant_pool Array of constants
+     * @param constantPool Array of constants
      * @throws IOException if an I/O Exception occurs in readUnsignedShort
      */
-    LineNumberTable(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
-        this(name_index, length, (LineNumber[]) null, constant_pool);
-        final int line_number_table_length = input.readUnsignedShort();
-        lineNumberTable = new LineNumber[line_number_table_length];
-        for (int i = 0; i < line_number_table_length; i++) {
+    LineNumberTable(final @NonNegative int nameIndex, final @NonNegative int length, final DataInput input, final ConstantPool constantPool) throws IOException {
+        this(nameIndex, length, (LineNumber[]) null, constantPool);
+        final int lineNumberTableLength = input.readUnsignedShort();
+        lineNumberTable = new LineNumber[lineNumberTableLength];
+        for (int i = 0; i < lineNumberTableLength; i++) {
             lineNumberTable[i] = new LineNumber(input);
         }
     }
 
     /*
-     * @param name_index Index of name
+     * @param nameIndex Index of name
      *
      * @param length Content length in bytes
      *
      * @param lineNumberTable Table of line/numbers pairs
      *
-     * @param constant_pool Array of constants
+     * @param constantPool Array of constants
      */
-    public LineNumberTable(final @NonNegative int name_index, final @NonNegative int length, final LineNumber[] line_number_table, final ConstantPool constant_pool) {
-        super(Const.ATTR_LINE_NUMBER_TABLE, name_index, length, constant_pool);
-        this.lineNumberTable = line_number_table;
+    public LineNumberTable(final @NonNegative int nameIndex, final @NonNegative int length, final LineNumber[] lineNumberTable, final ConstantPool constantPool) {
+        super(Const.ATTR_LINE_NUMBER_TABLE, nameIndex, length, constantPool);
+        this.lineNumberTable = lineNumberTable;
     }
 
     /*
@@ -145,7 +144,7 @@ public final class LineNumberTable extends Attribute implements Iterable<LineNum
         if (r < 0) {
             return -1;
         }
-        int min_index = -1;
+        int minIndex = -1;
         int min = -1;
         /*
          * Do a binary search since the array is ordered.
@@ -167,16 +166,16 @@ public final class LineNumberTable extends Attribute implements Iterable<LineNum
              */
             if (j < pos && j > min) {
                 min = j;
-                min_index = i;
+                minIndex = i;
             }
         } while (l <= r);
         /*
          * It's possible that we did not find any valid entry for the bytecode offset we were looking for.
          */
-        if (min_index < 0) {
+        if (minIndex < 0) {
             return -1;
         }
-        return lineNumberTable[min_index].getLineNumber();
+        return lineNumberTable[minIndex].getLineNumber();
     }
 
     @Pure

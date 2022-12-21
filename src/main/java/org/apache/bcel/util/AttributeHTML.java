@@ -13,13 +13,13 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.util;
 
 import java.io.Closeable;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 import org.apache.bcel.Const;
@@ -53,7 +53,7 @@ final class AttributeHTML implements Closeable {
     private final ConstantPool constantPool;
 
     AttributeHTML(final String dir, final String className, final ConstantPool constantPool, final ConstantHTML constantHtml, final Charset charset)
-        throws IOException {
+        throws FileNotFoundException, UnsupportedEncodingException {
         this.className = className;
         this.constantPool = constantPool;
         this.constantHtml = constantHtml;
@@ -71,15 +71,15 @@ final class AttributeHTML implements Closeable {
         printWriter.close();
     }
 
-    private String codeLink( final int link, final @NonNegative int method_number ) {
-        return "<A HREF=\"" + className + "_code.html#code" + method_number + "@" + link + "\" TARGET=Code>" + link + "</A>";
+    private String codeLink(final int link, final @NonNegative int methodNumber) {
+        return "<A HREF=\"" + className + "_code.html#code" + methodNumber + "@" + link + "\" TARGET=Code>" + link + "</A>";
     }
 
     void writeAttribute(final Attribute attribute, final String anchor) {
         writeAttribute(attribute, anchor, 0);
     }
 
-    void writeAttribute(final Attribute attribute, final String anchor, final @NonNegative int method_number) {
+    void writeAttribute(final Attribute attribute, final String anchor, final @NonNegative int methodNumber) {
         final byte tag = attribute.getTag();
         @NonNegative int index;
         if (tag == Const.ATTR_UNKNOWN) {
@@ -100,7 +100,7 @@ final class AttributeHTML implements Closeable {
             final Code c = (Code) attribute;
             // Some directly printable values
             printWriter.print("<UL><LI>Maximum stack size = " + c.getMaxStack() + "</LI>\n<LI>Number of local variables = " + c.getMaxLocals()
-                + "</LI>\n<LI><A HREF=\"" + className + "_code.html#method" + method_number + "\" TARGET=Code>Byte code</A></LI></UL>\n");
+                + "</LI>\n<LI><A HREF=\"" + className + "_code.html#method" + methodNumber + "\" TARGET=Code>Byte code</A></LI></UL>\n");
             // Get handled exceptions and list them
             final CodeException[] ce = c.getExceptionTable();
             final int len = ce.length;
@@ -114,8 +114,8 @@ final class AttributeHTML implements Closeable {
                     } else {
                         printWriter.print("Any Exception");
                     }
-                    printWriter.print("<BR>(Ranging from lines " + codeLink(cex.getStartPC(), method_number) + " to " + codeLink(cex.getEndPC(), method_number)
-                        + ", handled at line " + codeLink(cex.getHandlerPC(), method_number) + ")</LI>");
+                    printWriter.print("<BR>(Ranging from lines " + codeLink(cex.getStartPC(), methodNumber) + " to " + codeLink(cex.getEndPC(), methodNumber)
+                        + ", handled at line " + codeLink(cex.getHandlerPC(), methodNumber) + ")</LI>");
                 }
                 printWriter.print("</UL>");
             }
@@ -143,12 +143,12 @@ final class AttributeHTML implements Closeable {
             printWriter.print("</UL>\n");
             break;
         case Const.ATTR_LINE_NUMBER_TABLE:
-            final LineNumber[] line_numbers = ((LineNumberTable) attribute).getLineNumberTable();
+            final LineNumber[] lineNumbers = ((LineNumberTable) attribute).getLineNumberTable();
             // List line number pairs
             printWriter.print("<P>");
-            for (int i = 0; i < line_numbers.length; i++) {
-                printWriter.print("(" + line_numbers[i].getStartPC() + ",&nbsp;" + line_numbers[i].getLineNumber() + ")");
-                if (i < line_numbers.length - 1) {
+            for (int i = 0; i < lineNumbers.length; i++) {
+                printWriter.print("(" + lineNumbers[i].getStartPC() + ",&nbsp;" + lineNumbers[i].getLineNumber() + ")");
+                if (i < lineNumbers.length - 1) {
                     printWriter.print(", "); // breakable
                 }
             }
@@ -163,8 +163,8 @@ final class AttributeHTML implements Closeable {
                 final int start = var.getStartPC();
                 final int end = start + var.getLength();
                 printWriter.println("<LI>" + Class2HTML.referenceType(signature) + "&nbsp;<B>" + var.getName() + "</B> in slot %" + var.getIndex()
-                    + "<BR>Valid from lines " + "<A HREF=\"" + className + "_code.html#code" + method_number + "@" + start + "\" TARGET=Code>" + start
-                    + "</A> to " + "<A HREF=\"" + className + "_code.html#code" + method_number + "@" + end + "\" TARGET=Code>" + end + "</A></LI>");
+                    + "<BR>Valid from lines " + "<A HREF=\"" + className + "_code.html#code" + methodNumber + "@" + start + "\" TARGET=Code>" + start
+                    + "</A> to " + "<A HREF=\"" + className + "_code.html#code" + methodNumber + "@" + end + "\" TARGET=Code>" + end + "</A></LI>");
             });
             printWriter.print("</UL>\n");
             break;

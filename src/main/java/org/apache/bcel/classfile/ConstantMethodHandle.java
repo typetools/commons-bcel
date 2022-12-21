@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.classfile;
 
@@ -55,10 +54,10 @@ public final class ConstantMethodHandle extends Constant {
         this(file.readUnsignedByte(), file.readUnsignedShort());
     }
 
-    public ConstantMethodHandle(final @NonNegative int reference_kind, final @NonNegative int reference_index) {
+    public ConstantMethodHandle(final @NonNegative int referenceKind, final @NonNegative int referenceIndex) {
         super(Const.CONSTANT_MethodHandle);
-        this.referenceKind = reference_kind;
-        this.referenceIndex = reference_index;
+        this.referenceKind = referenceKind;
+        this.referenceIndex = referenceIndex;
     }
 
     /**
@@ -95,12 +94,12 @@ public final class ConstantMethodHandle extends Constant {
         return referenceKind;
     }
 
-    public void setReferenceIndex(final @NonNegative int reference_index) {
-        this.referenceIndex = reference_index;
+    public void setReferenceIndex(final @NonNegative int referenceIndex) {
+        this.referenceIndex = referenceIndex;
     }
 
-    public void setReferenceKind(final @NonNegative int reference_kind) {
-        this.referenceKind = reference_kind;
+    public void setReferenceKind(final @NonNegative int referenceKind) {
+        this.referenceKind = referenceKind;
     }
 
     /**

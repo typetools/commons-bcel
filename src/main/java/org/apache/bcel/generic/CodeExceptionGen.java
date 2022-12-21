@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.generic;
 
@@ -127,9 +126,9 @@ public final class CodeExceptionGen implements InstructionTargeter, Cloneable {
      *
      * @param endPc End of handled region (inclusive)
      */
-    public void setEndPC(final InstructionHandle end_pc) { // TODO could be package-protected?
-        BranchInstruction.notifyTarget(this.endPc, end_pc, this);
-        this.endPc = end_pc;
+    public void setEndPC(final InstructionHandle endPc) { // TODO could be package-protected?
+        BranchInstruction.notifyTarget(this.endPc, endPc, this);
+        this.endPc = endPc;
     }
 
     /*
@@ -137,9 +136,9 @@ public final class CodeExceptionGen implements InstructionTargeter, Cloneable {
      *
      * @param handlerPc Start of handler
      */
-    public void setHandlerPC(final InstructionHandle handler_pc) { // TODO could be package-protected?
-        BranchInstruction.notifyTarget(this.handlerPc, handler_pc, this);
-        this.handlerPc = handler_pc;
+    public void setHandlerPC(final InstructionHandle handlerPc) { // TODO could be package-protected?
+        BranchInstruction.notifyTarget(this.handlerPc, handlerPc, this);
+        this.handlerPc = handlerPc;
     }
 
     /*
@@ -147,9 +146,9 @@ public final class CodeExceptionGen implements InstructionTargeter, Cloneable {
      *
      * @param startPc Start of handled region (inclusive)
      */
-    public void setStartPC(final InstructionHandle start_pc) { // TODO could be package-protected?
-        BranchInstruction.notifyTarget(this.startPc, start_pc, this);
-        this.startPc = start_pc;
+    public void setStartPC(final InstructionHandle startPc) { // TODO could be package-protected?
+        BranchInstruction.notifyTarget(this.startPc, startPc, this);
+        this.startPc = startPc;
     }
 
     @Override
@@ -158,26 +157,26 @@ public final class CodeExceptionGen implements InstructionTargeter, Cloneable {
     }
 
     /**
-     * @param old_ih old target, either start or end
-     * @param new_ih new target
+     * @param oldIh old target, either start or end
+     * @param newIh new target
      */
     @Override
-    public void updateTarget(final InstructionHandle old_ih, final InstructionHandle new_ih) {
+    public void updateTarget(final InstructionHandle oldIh, final InstructionHandle newIh) {
         boolean targeted = false;
-        if (startPc == old_ih) {
+        if (startPc == oldIh) {
             targeted = true;
-            setStartPC(new_ih);
+            setStartPC(newIh);
         }
-        if (endPc == old_ih) {
+        if (endPc == oldIh) {
             targeted = true;
-            setEndPC(new_ih);
+            setEndPC(newIh);
         }
-        if (handlerPc == old_ih) {
+        if (handlerPc == oldIh) {
             targeted = true;
-            setHandlerPC(new_ih);
+            setHandlerPC(newIh);
         }
         if (!targeted) {
-            throw new ClassGenException("Not targeting " + old_ih + ", but {" + startPc + ", " + endPc + ", " + handlerPc + "}");
+            throw new ClassGenException("Not targeting " + oldIh + ", but {" + startPc + ", " + endPc + ", " + handlerPc + "}");
         }
     }
 }

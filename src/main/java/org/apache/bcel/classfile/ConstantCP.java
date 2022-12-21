@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.classfile;
 
@@ -121,7 +120,7 @@ public abstract class ConstantCP extends Constant {
     }
 
     /**
-     * @param class_index points to Constant_class
+     * @param classIndex points to Constant_class
      */
     public final void setClassIndex(final @NonNegative int classIndex) {
         this.class_index = classIndex;

@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.classfile;
 
@@ -46,18 +45,18 @@ public class LocalVariableTable extends Attribute implements Iterable<LocalVaria
     /**
      * Construct object from input stream.
      *
-     * @param name_index Index in constant pool
+     * @param nameIndex Index in constant pool
      * @param length Content length in bytes
      * @param input Input stream
-     * @param constant_pool Array of constants
+     * @param constantPool Array of constants
      * @throws IOException if an I/O error occurs.
      */
-    LocalVariableTable(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
-        this(name_index, length, (LocalVariable[]) null, constant_pool);
-        final int local_variable_table_length = input.readUnsignedShort();
-        localVariableTable = new LocalVariable[local_variable_table_length];
-        for (int i = 0; i < local_variable_table_length; i++) {
-            localVariableTable[i] = new LocalVariable(input, constant_pool);
+    LocalVariableTable(final @NonNegative int nameIndex, final @NonNegative int length, final DataInput input, final ConstantPool constantPool) throws IOException {
+        this(nameIndex, length, (LocalVariable[]) null, constantPool);
+        final int localVariableTableLength = input.readUnsignedShort();
+        localVariableTable = new LocalVariable[localVariableTableLength];
+        for (int i = 0; i < localVariableTableLength; i++) {
+            localVariableTable[i] = new LocalVariable(input, constantPool);
         }
     }
 
@@ -149,9 +148,9 @@ public class LocalVariableTable extends Attribute implements Iterable<LocalVaria
     public final @Nullable LocalVariable getLocalVariable( final @NonNegative int index, final int pc ) {
         for (final LocalVariable variable : localVariableTable) {
             if (variable.getIndex() == index) {
-                final int start_pc = variable.getStartPC();
-                final int end_pc = start_pc + variable.getLength();
-                if (pc >= start_pc && pc <= end_pc) {
+                final int startPc = variable.getStartPC();
+                final int endPc = startPc + variable.getLength();
+                if (pc >= startPc && pc <= endPc) {
                     return variable;
                 }
             }
@@ -177,8 +176,8 @@ public class LocalVariableTable extends Attribute implements Iterable<LocalVaria
         return Stream.of(localVariableTable).iterator();
     }
 
-    public final void setLocalVariableTable(final LocalVariable[] local_variable_table) {
-        this.localVariableTable = local_variable_table;
+    public final void setLocalVariableTable(final LocalVariable[] localVariableTable) {
+        this.localVariableTable = localVariableTable;
     }
 
     /**

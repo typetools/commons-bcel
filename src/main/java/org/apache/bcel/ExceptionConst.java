@@ -13,9 +13,10 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * Exception constants.
@@ -121,13 +122,7 @@ public final class ExceptionConst {
 
     // helper method to merge exception class arrays
     private static Class<?>[] mergeExceptions(final Class<?>[] input, final Class<?>... extraClasses) {
-        final int extraLen = extraClasses == null ? 0 : extraClasses.length;
-        final Class<?>[] excs = new Class<?>[input.length + extraLen];
-        System.arraycopy(input, 0, excs, 0, input.length);
-        if (extraLen > 0) {
-            System.arraycopy(extraClasses, 0, excs, input.length, extraLen);
-        }
-        return excs;
+        return ArrayUtils.addAll(input, extraClasses);
     }
 
 }

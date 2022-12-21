@@ -17,9 +17,7 @@
 
 package org.apache.bcel.generic;
 
-import static com.sun.jna.platform.win32.WinReg.HKEY_LOCAL_MACHINE;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -35,12 +33,8 @@ import java.nio.file.PathMatcher;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.stream.Stream;
 
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.Code;
@@ -48,19 +42,17 @@ import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.classfile.Method;
 import org.apache.bcel.util.ModularRuntimeImage;
 import org.apache.commons.lang3.JavaVersion;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
+import org.junit.jupiter.api.condition.DisabledOnJre;
+import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import com.sun.jna.platform.win32.Advapi32Util;
-
 /**
- * Test that the generic dump() methods work on the JDK classes Reads each class into an instruction list and then dumps
- * the instructions. The output bytes should be the same as the input.
+ * Test that the generic dump() methods work on the JDK classes Reads each class into an instruction list and then dumps the instructions. The output bytes
+ * should be the same as the input.
  * <p>
- * Set the property {@value #EXTRA_JAVA_HOMES} to a {@link File#pathSeparator}-separated list of JRE/JDK paths for
- * additional testing.
+ * Set the property {@value JavaHome#EXTRA_JAVA_HOMES} to a {@link File#pathSeparator}-separated list of JRE/JDK paths for additional testing.
  * </p>
  * <p>
  * For example:
@@ -68,7 +60,17 @@ import com.sun.jna.platform.win32.Advapi32Util;
  *
  * <pre>
  * mvn test -Dtest=JdkGenericDumpTestCase -DExtraJavaHomes="C:\Program Files\Java\openjdk\jdk-13;C:\Program Files\Java\openjdk\jdk-14"
+ * mvn test -Dtest=JdkGenericDumpTestCase -DExtraJavaRoot="C:\Program Files\Eclipse Adoptium"
  * </pre>
+ * <p>
+ * Where "C:\Program Files\Eclipse Adoptium" contains JDK directories, for example:
+ * </p>
+ * <ul>
+ * <li>jdk-11.0.16.101-hotspot</li>
+ * <li>jdk-17.0.4.101-hotspot</li>
+ * <li>jdk-19.0.0.36-hotspot</li>
+ * <li>jdk-8.0.345.1-hotspot</li>
+ * </ul>
  */
 public class JdkGenericDumpTestCase {
 
@@ -88,7 +90,6 @@ public class JdkGenericDumpTestCase {
                     final ClassParser classParser = new ClassParser(inputStream, name.toAbsolutePath().toString());
                     assertNotNull(classParser.parse());
                 }
-
             }
         }
 
@@ -111,17 +112,7 @@ public class JdkGenericDumpTestCase {
         }
     }
 
-    private static final String EXTRA_JAVA_HOMES = "ExtraJavaHomes";
-
     private static final char[] hexArray = "0123456789ABCDEF".toCharArray();
-
-    private static final String KEY_JDK = "SOFTWARE\\JavaSoft\\Java Development Kit";
-
-    private static final String KEY_JDK_9 = "SOFTWARE\\JavaSoft\\JDK";
-
-    private static final String KEY_JRE = "SOFTWARE\\JavaSoft\\Java Runtime Environment";
-
-    private static final String KEY_JRE_9 = "SOFTWARE\\JavaSoft\\JRE";
 
     private static String bytesToHex(final byte[] bytes) {
         final char[] hexChars = new char[bytes.length * 3];
@@ -133,53 +124,6 @@ public class JdkGenericDumpTestCase {
             hexChars[i++] = ' ';
         }
         return new String(hexChars);
-    }
-
-    public static Stream<String> findJavaHomes() {
-        if (SystemUtils.IS_OS_WINDOWS) {
-            final Stream<String> stream = findJavaHomesOnWindows();
-            if (stream.count() > 0) {
-                return findJavaHomesOnWindows();
-            }
-            // Falls back here on CI env like GitHub Actions.
-        }
-        return Stream.of(SystemUtils.JAVA_HOME);
-    }
-
-    private static Stream<String> findJavaHomesOnWindows() {
-        return Stream.concat(Stream.of(KEY_JRE, KEY_JRE_9, KEY_JDK, KEY_JDK_9).flatMap(JdkGenericDumpTestCase::getAllJavaHomesOnWindows),
-            getAllJavaHomesFromKey(EXTRA_JAVA_HOMES)).distinct();
-    }
-
-    private static Stream<String> findJavaHomesOnWindows(final String keyJavaHome, final String[] keys) {
-        final Set<String> javaHomes = new HashSet<>(keys.length);
-        for (final String key : keys) {
-            if (Advapi32Util.registryKeyExists(HKEY_LOCAL_MACHINE, keyJavaHome + "\\" + key)) {
-                final String javaHome = Advapi32Util.registryGetStringValue(HKEY_LOCAL_MACHINE, keyJavaHome + "\\" + key, "JavaHome");
-                if (StringUtils.isNoneBlank(javaHome) && new File(javaHome).exists()) {
-                    javaHomes.add(javaHome);
-                }
-            }
-        }
-        return javaHomes.stream();
-    }
-
-    private static Stream<String> getAllJavaHomesFromKey(final String extraJavaHomesKey) {
-        return Stream.concat(getAllJavaHomesFromPath(System.getProperty(extraJavaHomesKey)), getAllJavaHomesFromPath(System.getenv(extraJavaHomesKey)));
-    }
-
-    private static Stream<String> getAllJavaHomesFromPath(final String path) {
-        if (StringUtils.isEmpty(path)) {
-            return Stream.empty();
-        }
-        return Stream.of(path.split(File.pathSeparator));
-    }
-
-    private static Stream<String> getAllJavaHomesOnWindows(final String keyJre) {
-        if (Advapi32Util.registryKeyExists(HKEY_LOCAL_MACHINE, keyJre)) {
-            return findJavaHomesOnWindows(keyJre, Advapi32Util.registryGetKeys(HKEY_LOCAL_MACHINE, keyJre));
-        }
-        return Stream.empty();
     }
 
     private void compare(final String name, final Method method) {
@@ -204,19 +148,9 @@ public class JdkGenericDumpTestCase {
         }
     }
 
-    private File[] listJdkJars(final String javaHome) throws Exception {
-        final File javaLib = new File(javaHome, "lib");
-        return javaLib.listFiles(file -> file.getName().endsWith(".jar"));
-    }
-
-    private File[] listJdkModules(final String javaHome) throws Exception {
-        final File javaLib = new File(javaHome, "jmods");
-        return javaLib.listFiles(file -> file.getName().endsWith(".jmod"));
-    }
-
-    private void testJar(final File file) throws Exception {
+    private void testJar(final Path file) throws Exception {
         System.out.println(file);
-        try (JarFile jar = new JarFile(file)) {
+        try (JarFile jar = new JarFile(file.toFile())) {
             final Enumeration<JarEntry> en = jar.entries();
             while (en.hasMoreElements()) {
                 final JarEntry jarEntry = en.nextElement();
@@ -236,35 +170,24 @@ public class JdkGenericDumpTestCase {
     }
 
     @ParameterizedTest
-    @MethodSource("findJavaHomes")
-    public void testJdkJars(final String javaHome) throws Exception {
-        final File[] jars = listJdkJars(javaHome);
-        if (jars != null) {
-            for (final File file : jars) {
-                testJar(file);
-            }
-        }
+    @MethodSource("org.apache.bcel.generic.JavaHome#streamJarPaths")
+    public void testJdkJars(final Path jarPath) throws Exception {
+        testJar(jarPath);
     }
 
     @ParameterizedTest
-    @MethodSource("findJavaHomes")
-    public void testJdkModules(final String javaHome) throws Exception {
-        final File[] jmods = listJdkModules(javaHome);
-        if (jmods != null) {
-            for (final File file : jmods) {
-                testJar(file);
-            }
-        }
+    @MethodSource("org.apache.bcel.generic.JavaHome#streamModulePaths")
+    @DisabledOnJre(value = JRE.JAVA_8)
+    public void testJdkModules(final Path jmodPath) throws Exception {
+        testJar(jmodPath);
     }
 
     @ParameterizedTest
-    @MethodSource("findJavaHomes")
-    public void testJreModules(final String javaHome) throws Exception {
+    @MethodSource("org.apache.bcel.generic.JavaHome#streamJavaHomes")
+    public void testJreModules(final JavaHome javaHome) throws Exception {
         assumeTrue(SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_9));
-        try (final ModularRuntimeImage mri = new ModularRuntimeImage(javaHome)) {
-            final List<Path> modules = mri.modules();
-            assertFalse(modules.isEmpty());
-            for (final Path path : modules) {
+        try (final ModularRuntimeImage mri = javaHome.getModularRuntimeImage()) {
+            for (final Path path : mri.modules()) {
                 Files.walkFileTree(path, new ClassParserFilesVisitor("*.class"));
             }
         }

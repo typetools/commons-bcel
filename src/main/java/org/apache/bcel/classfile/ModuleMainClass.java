@@ -53,13 +53,13 @@ public final class ModuleMainClass extends Attribute {
     }
 
     /**
-     * @param name_index Index in constant pool
+     * @param nameIndex Index in constant pool
      * @param length Content length in bytes
      * @param mainClassIndex Host class index
      * @param constantPool Array of constants
      */
-    public ModuleMainClass(final @NonNegative int name_index, final @NonNegative int length, final @NonNegative int mainClassIndex, final ConstantPool constantPool) {
-        super(Const.ATTR_NEST_MEMBERS, name_index, length, constantPool);
+    public ModuleMainClass(final @NonNegative int nameIndex, final @NonNegative int length, final int mainClassIndex, final ConstantPool constantPool) {
+        super(Const.ATTR_NEST_MEMBERS, nameIndex, length, constantPool);
         this.mainClassIndex = mainClassIndex;
     }
 

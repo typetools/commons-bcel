@@ -13,13 +13,14 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.util;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
@@ -52,7 +53,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  *
  * All subfiles reference each other appropriately, e.g. clicking on a method in the Method's frame will jump to the
  * appropriate method in the Code frame.
- *
  */
 @AnnotatedFor({"signedness"})
 public class Class2HTML implements Constants {
@@ -204,7 +204,7 @@ public class Class2HTML implements Constants {
         /*
          * Attributes can't be written in one step, so we just open a file which will be written consequently.
          */
-        try (final AttributeHTML attributeHtml = new AttributeHTML(dir, className, constantPool, constantHtml, charset)) {
+        try (AttributeHTML attributeHtml = new AttributeHTML(dir, className, constantPool, constantHtml, charset)) {
             new MethodHTML(dir, className, methods, javaClass.getFields(), constantHtml, attributeHtml, charset);
             // Write main file (with frames, yuk)
             writeMainHTML(attributeHtml, charset);
@@ -212,7 +212,7 @@ public class Class2HTML implements Constants {
         }
     }
 
-    private void writeMainHTML(final AttributeHTML attributeHtml, final Charset charset) throws IOException {
+    private void writeMainHTML(final AttributeHTML attributeHtml, final Charset charset) throws FileNotFoundException, UnsupportedEncodingException {
         try (PrintWriter file = new PrintWriter(dir + className + ".html", charset.name())) {
             file.println("<HTML>\n" + "<HEAD><TITLE>Documentation for " + className + "</TITLE>" + "</HEAD>\n" + "<FRAMESET BORDER=1 cols=\"30%,*\">\n"
                 + "<FRAMESET BORDER=1 rows=\"80%,*\">\n" + "<FRAME NAME=\"ConstantPool\" SRC=\"" + className + "_cp.html" + "\"\n MARGINWIDTH=\"0\" "

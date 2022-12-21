@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.classfile;
 
@@ -41,27 +40,27 @@ public final class Synthetic extends Attribute {
     private byte[] bytes;
 
     /**
-     * @param name_index Index in constant pool to CONSTANT_Utf8, which should represent the string "Synthetic".
+     * @param nameIndex Index in constant pool to CONSTANT_Utf8, which should represent the string "Synthetic".
      * @param length Content length in bytes - should be zero.
      * @param bytes Attribute contents
-     * @param constant_pool The constant pool this attribute is associated with.
+     * @param constantPool The constant pool this attribute is associated with.
      */
-    public Synthetic(final @NonNegative int name_index, final @NonNegative int length, final byte[] bytes, final ConstantPool constant_pool) {
-        super(Const.ATTR_SYNTHETIC, name_index, length, constant_pool);
+    public Synthetic(final @NonNegative int nameIndex, final @NonNegative int length, final byte[] bytes, final ConstantPool constantPool) {
+        super(Const.ATTR_SYNTHETIC, nameIndex, length, constantPool);
         this.bytes = bytes;
     }
 
     /**
      * Construct object from input stream.
      *
-     * @param name_index Index in constant pool to CONSTANT_Utf8
+     * @param nameIndex Index in constant pool to CONSTANT_Utf8
      * @param length Content length in bytes
      * @param input Input stream
-     * @param constant_pool Array of constants
+     * @param constantPool Array of constants
      * @throws IOException if an I/O error occurs.
      */
-    Synthetic(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
-        this(name_index, length, (byte[]) null, constant_pool);
+    Synthetic(final @NonNegative int nameIndex, final @NonNegative int length, final DataInput input, final ConstantPool constantPool) throws IOException {
+        this(nameIndex, length, (byte[]) null, constantPool);
         if (length > 0) {
             bytes = new byte[length];
             input.readFully(bytes);
@@ -95,8 +94,7 @@ public final class Synthetic extends Attribute {
     public Attribute copy(final ConstantPool constantPool) {
         final Synthetic c = (Synthetic) clone();
         if (bytes != null) {
-            c.bytes = new byte[bytes.length];
-            System.arraycopy(bytes, 0, c.bytes, 0, bytes.length);
+            c.bytes = bytes.clone();
         }
         c.setConstantPool(constantPool);
         return c;

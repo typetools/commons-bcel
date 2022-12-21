@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.verifier;
 
@@ -33,7 +32,6 @@ import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * This class implements an adapter; it implements both a Swing ListModel and a VerifierFactoryObserver.
- *
  */
 public class VerifierFactoryListModel implements VerifierFactoryObserver, ListModel<String> {
 
@@ -69,13 +67,13 @@ public class VerifierFactoryListModel implements VerifierFactoryObserver, ListMo
     @Override
     public synchronized void update(final String s) {
         final Verifier[] verifiers = VerifierFactory.getVerifiers();
-        final int num_of_verifiers = verifiers.length;
+        final int verifierLen = verifiers.length;
         cache.clear();
         for (final Verifier verifier : verifiers) {
             cache.add(verifier.getClassName());
         }
         for (final ListDataListener listener : listeners) {
-            listener.contentsChanged(new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, num_of_verifiers - 1));
+            listener.contentsChanged(new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, verifierLen - 1));
         }
     }
 

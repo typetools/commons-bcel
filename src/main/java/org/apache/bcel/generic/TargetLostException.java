@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.generic;
 
@@ -25,7 +24,7 @@ import org.checkerframework.dataflow.qual.Pure;
  * referencing is being removed from the InstructionList and thus not valid anymore.
  *
  * <p>
- * Making this an exception instead of a return value forces the user to handle these case explicitely in a try { ... }
+ * Making this an exception instead of a return value forces the user to handle these case explicitly in a try { ... }
  * catch. The following code illustrates how this may be done:
  * </p>
  *

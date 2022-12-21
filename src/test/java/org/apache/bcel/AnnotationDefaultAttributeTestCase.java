@@ -13,7 +13,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package org.apache.bcel;
@@ -34,7 +33,7 @@ public class AnnotationDefaultAttributeTestCase extends AbstractTestCase {
      */
     @Test
     public void testMethodAnnotations() throws ClassNotFoundException {
-        final JavaClass clazz = getTestClass(PACKAGE_BASE_NAME + ".data.SimpleAnnotation");
+        final JavaClass clazz = getTestJavaClass(PACKAGE_BASE_NAME + ".data.SimpleAnnotation");
         final Method m = getMethod(clazz, "fruit");
         final AnnotationDefault a = (AnnotationDefault) findAttribute("AnnotationDefault", m.getAttributes());
         final SimpleElementValue val = (SimpleElementValue) a.getDefaultValue();

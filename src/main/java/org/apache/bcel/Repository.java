@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel;
 
@@ -32,7 +31,6 @@ import org.checkerframework.dataflow.qual.Pure;
  *
  * @see org.apache.bcel.util.Repository
  * @see SyntheticRepository
- *
  */
 public abstract class Repository {
 
@@ -134,35 +132,35 @@ public abstract class Repository {
     /**
      * Equivalent to runtime "instanceof" operator.
      *
-     * @return true, if clazz is an instance of super_class
+     * @return true, if clazz is an instance of superclass
      * @throws ClassNotFoundException if any superclasses or superinterfaces of clazz can't be found
      */
-    public static boolean instanceOf(final JavaClass clazz, final JavaClass super_class) throws ClassNotFoundException {
-        return clazz.instanceOf(super_class);
+    public static boolean instanceOf(final JavaClass clazz, final JavaClass superclass) throws ClassNotFoundException {
+        return clazz.instanceOf(superclass);
     }
 
     /**
-     * @return true, if clazz is an instance of super_class
-     * @throws ClassNotFoundException if super_class can't be found
+     * @return true, if clazz is an instance of superclass
+     * @throws ClassNotFoundException if superclass can't be found
      */
-    public static boolean instanceOf(final JavaClass clazz, final String super_class) throws ClassNotFoundException {
-        return instanceOf(clazz, lookupClass(super_class));
+    public static boolean instanceOf(final JavaClass clazz, final String superclass) throws ClassNotFoundException {
+        return instanceOf(clazz, lookupClass(superclass));
     }
 
     /**
-     * @return true, if clazz is an instance of super_class
+     * @return true, if clazz is an instance of superclass
      * @throws ClassNotFoundException if clazz can't be found
      */
-    public static boolean instanceOf(final String clazz, final JavaClass super_class) throws ClassNotFoundException {
-        return instanceOf(lookupClass(clazz), super_class);
+    public static boolean instanceOf(final String clazz, final JavaClass superclass) throws ClassNotFoundException {
+        return instanceOf(lookupClass(clazz), superclass);
     }
 
     /**
-     * @return true, if clazz is an instance of super_class
-     * @throws ClassNotFoundException if either clazz or super_class can't be found
+     * @return true, if clazz is an instance of superclass
+     * @throws ClassNotFoundException if either clazz or superclass can't be found
      */
-    public static boolean instanceOf(final String clazz, final String super_class) throws ClassNotFoundException {
-        return instanceOf(lookupClass(clazz), lookupClass(super_class));
+    public static boolean instanceOf(final String clazz, final String superclass) throws ClassNotFoundException {
+        return instanceOf(lookupClass(clazz), lookupClass(superclass));
     }
 
     /**
@@ -191,7 +189,7 @@ public abstract class Repository {
      *         can't be found
      */
     public static ClassPath. @Nullable ClassFile lookupClassFile(final String className) {
-        try (final ClassPath path = repository.getClassPath()) {
+        try (ClassPath path = repository.getClassPath()) {
             if (path == null) {
                 return null;
             }

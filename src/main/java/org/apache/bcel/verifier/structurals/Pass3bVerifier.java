@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.verifier.structurals;
 
@@ -152,9 +151,9 @@ public final class Pass3bVerifier extends PassVerifier {
      *
      * @see org.apache.bcel.verifier.Verifier
      */
-    public Pass3bVerifier(final Verifier owner, final int method_no) {
-        myOwner = owner;
-        this.methodNo = method_no;
+    public Pass3bVerifier(final Verifier myOwner, final int methodNo) {
+        this.myOwner = myOwner;
+        this.methodNo = methodNo;
     }
 
     /**
@@ -202,21 +201,21 @@ public final class Pass3bVerifier extends PassVerifier {
 
                 // Sanity check
                 InstructionContext lastJSR = null;
-                int skip_jsr = 0;
+                int skipJsr = 0;
                 for (int ss = oldchain.size() - 1; ss >= 0; ss--) {
-                    if (skip_jsr < 0) {
+                    if (skipJsr < 0) {
                         throw new AssertionViolatedException("More RET than JSR in execution chain?!");
                     }
 //System.err.println("+"+oldchain.get(ss));
                     if (oldchain.get(ss).getInstruction().getInstruction() instanceof JsrInstruction) {
-                        if (skip_jsr == 0) {
+                        if (skipJsr == 0) {
                             lastJSR = oldchain.get(ss);
                             break;
                         }
-                        skip_jsr--;
+                        skipJsr--;
                     }
                     if (oldchain.get(ss).getInstruction().getInstruction() instanceof RET) {
-                        skip_jsr++;
+                        skipJsr++;
                     }
                 }
                 if (lastJSR == null) {
@@ -248,9 +247,9 @@ public final class Pass3bVerifier extends PassVerifier {
 
             // Exception Handlers. Add them to the queue of successors.
             // [subroutines are never protected; mandated by JustIce]
-            final ExceptionHandler[] exc_hds = u.getExceptionHandlers();
-            for (final ExceptionHandler exc_hd : exc_hds) {
-                final InstructionContext v = cfg.contextOf(exc_hd.getHandlerStart());
+            final ExceptionHandler[] excHds = u.getExceptionHandlers();
+            for (final ExceptionHandler excHd : excHds) {
+                final InstructionContext v = cfg.contextOf(excHd.getHandlerStart());
                 // TODO: the "oldchain" and "newchain" is used to determine the subroutine
                 // we're in (by searching for the last JSR) by the InstructionContext
                 // implementation. Therefore, we should not use this chain mechanism
@@ -264,7 +263,7 @@ public final class Pass3bVerifier extends PassVerifier {
                 // (exc_hds[s].getExceptionType()==null? Type.THROWABLE : exc_hds[s].getExceptionType())) ), newchain), icv, ev) {
                 // icq.add(v, (ArrayList) newchain.clone());
                 if (v.execute(new Frame(u.getOutFrame(oldchain).getLocals(), new OperandStack(u.getOutFrame(oldchain).getStack().maxStack(),
-                    exc_hd.getExceptionType() == null ? Type.THROWABLE : exc_hd.getExceptionType())), new ArrayList<>(), icv, ev)) {
+                    excHd.getExceptionType() == null ? Type.THROWABLE : excHd.getExceptionType())), new ArrayList<>(), icv, ev)) {
                     icq.add(v, new ArrayList<>());
                 }
             }

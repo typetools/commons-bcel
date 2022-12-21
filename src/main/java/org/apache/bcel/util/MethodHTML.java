@@ -13,12 +13,12 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.util;
 
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 import org.apache.bcel.Const;
@@ -42,7 +42,7 @@ final class MethodHTML {
     private final AttributeHTML attributeHtml;
 
     MethodHTML(final String dir, final String className, final Method[] methods, final Field[] fields, final ConstantHTML constantHtml,
-        final AttributeHTML attributeHtml, final Charset charset) throws IOException {
+        final AttributeHTML attributeHtml, final Charset charset) throws FileNotFoundException, UnsupportedEncodingException {
         this.className = className;
         this.attributeHtml = attributeHtml;
         this.constantHtml = constantHtml;
