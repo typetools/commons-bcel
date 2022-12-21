@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.generic;
 
@@ -27,7 +26,6 @@ import org.checkerframework.checker.signature.qual.FieldDescriptor;
 
 /**
  * Super class for object and array types.
- *
  */
 public abstract class ReferenceType extends Type {
 
@@ -75,36 +73,7 @@ public abstract class ReferenceType extends Type {
             return Type.OBJECT;
             // TODO: Is there a proof of OBJECT being the direct ancestor of every ArrayType?
         }
-        if (this instanceof ObjectType && ((ObjectType) this).referencesInterface() || t instanceof ObjectType && ((ObjectType) t).referencesInterface()) {
-            return Type.OBJECT;
-            // TODO: The above line is correct comparing to the vmspec2. But one could
-            // make class file verification a bit stronger here by using the notion of
-            // superinterfaces or even castability or assignment compatibility.
-        }
-        // this and t are ObjectTypes, see above.
-        final ObjectType thiz = (ObjectType) this;
-        final ObjectType other = (ObjectType) t;
-        final JavaClass[] thiz_sups = Repository.getSuperClasses(thiz.getClassName());
-        final JavaClass[] other_sups = Repository.getSuperClasses(other.getClassName());
-        if (thiz_sups == null || other_sups == null) {
-            return null;
-        }
-        // Waaahh...
-        final JavaClass[] this_sups = new JavaClass[thiz_sups.length + 1];
-        final JavaClass[] t_sups = new JavaClass[other_sups.length + 1];
-        System.arraycopy(thiz_sups, 0, this_sups, 1, thiz_sups.length);
-        System.arraycopy(other_sups, 0, t_sups, 1, other_sups.length);
-        this_sups[0] = Repository.lookupClass(thiz.getClassName());
-        t_sups[0] = Repository.lookupClass(other.getClassName());
-        for (final JavaClass t_sup : t_sups) {
-            for (final JavaClass this_sup : this_sups) {
-                if (this_sup.equals(t_sup)) {
-                    return ObjectType.getInstance(this_sup.getClassName());
-                }
-            }
-        }
-        // Huh? Did you ask for Type.OBJECT's superclass??
-        return null;
+        return getFirstCommonSuperclassInternal(t);
     }
 
     /**
@@ -145,6 +114,10 @@ public abstract class ReferenceType extends Type {
             return Type.OBJECT;
             // TODO: Is there a proof of OBJECT being the direct ancestor of every ArrayType?
         }
+        return getFirstCommonSuperclassInternal(t);
+    }
+
+    private @Nullable ReferenceType getFirstCommonSuperclassInternal(final ReferenceType t) throws ClassNotFoundException {
         if (this instanceof ObjectType && ((ObjectType) this).referencesInterfaceExact()
             || t instanceof ObjectType && ((ObjectType) t).referencesInterfaceExact()) {
             return Type.OBJECT;
@@ -155,22 +128,22 @@ public abstract class ReferenceType extends Type {
         // this and t are ObjectTypes, see above.
         final ObjectType thiz = (ObjectType) this;
         final ObjectType other = (ObjectType) t;
-        final JavaClass[] thiz_sups = Repository.getSuperClasses(thiz.getClassName());
-        final JavaClass[] other_sups = Repository.getSuperClasses(other.getClassName());
-        if (thiz_sups == null || other_sups == null) {
+        final JavaClass[] thizSups = Repository.getSuperClasses(thiz.getClassName());
+        final JavaClass[] otherSups = Repository.getSuperClasses(other.getClassName());
+        if (thizSups == null || otherSups == null) {
             return null;
         }
         // Waaahh...
-        final JavaClass[] this_sups = new JavaClass[thiz_sups.length + 1];
-        final JavaClass[] t_sups = new JavaClass[other_sups.length + 1];
-        System.arraycopy(thiz_sups, 0, this_sups, 1, thiz_sups.length);
-        System.arraycopy(other_sups, 0, t_sups, 1, other_sups.length);
-        this_sups[0] = Repository.lookupClass(thiz.getClassName());
-        t_sups[0] = Repository.lookupClass(other.getClassName());
-        for (final JavaClass t_sup : t_sups) {
-            for (final JavaClass this_sup : this_sups) {
-                if (this_sup.equals(t_sup)) {
-                    return ObjectType.getInstance(this_sup.getClassName());
+        final JavaClass[] thisSups = new JavaClass[thizSups.length + 1];
+        final JavaClass[] tSups = new JavaClass[otherSups.length + 1];
+        System.arraycopy(thizSups, 0, thisSups, 1, thizSups.length);
+        System.arraycopy(otherSups, 0, tSups, 1, otherSups.length);
+        thisSups[0] = Repository.lookupClass(thiz.getClassName());
+        tSups[0] = Repository.lookupClass(other.getClassName());
+        for (final JavaClass tSup : tSups) {
+            for (final JavaClass thisSup : thisSups) {
+                if (thisSup.equals(tSup)) {
+                    return ObjectType.getInstance(thisSup.getClassName());
                 }
             }
         }
@@ -191,7 +164,7 @@ public abstract class ReferenceType extends Type {
         }
         final ReferenceType T = (ReferenceType) t;
         if (this.equals(Type.NULL)) {
-            return true; // This is not explicitely stated, but clear. Isn't it?
+            return true; // This is not explicitly stated, but clear. Isn't it?
         }
         /*
          * If this is a class type then

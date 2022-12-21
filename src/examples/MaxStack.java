@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 
 import org.apache.bcel.Repository;
@@ -26,45 +25,44 @@ import org.apache.bcel.generic.MethodGen;
 /**
  * Read class file(s) and examine all of its methods, determining the maximum stack depth used by analyzing control
  * flow.
- *
  */
-public final class maxstack {
+public final class MaxStack {
 
     public static void main(final String[] argv) throws Exception {
         for (final String className : argv) {
-            JavaClass java_class = Repository.lookupClass(className);
+            JavaClass javaClass = Repository.lookupClass(className);
 
-            if (java_class == null) {
-                java_class = new ClassParser(className).parse();
+            if (javaClass == null) {
+                javaClass = new ClassParser(className).parse();
             }
 
-            final ConstantPoolGen cp = new ConstantPoolGen(java_class.getConstantPool());
+            final ConstantPoolGen cp = new ConstantPoolGen(javaClass.getConstantPool());
 
-            for (final Method m : java_class.getMethods()) {
+            for (final Method m : javaClass.getMethods()) {
                 if (!(m.isAbstract() || m.isNative())) {
                     final MethodGen mg = new MethodGen(m, className, cp);
 
-                    final int compiled_stack = mg.getMaxStack();
-                    final int compiled_locals = mg.getMaxLocals();
+                    final int compiledStack = mg.getMaxStack();
+                    final int compiledLocals = mg.getMaxLocals();
                     mg.setMaxStack(); // Recompute value
                     mg.setMaxLocals();
-                    final int computed_stack = mg.getMaxStack();
-                    final int computed_locals = mg.getMaxLocals();
+                    final int computedStack = mg.getMaxStack();
+                    final int computedLocals = mg.getMaxLocals();
 
                     mg.getInstructionList().dispose(); // Reuse instruction handles
 
                     System.out.println(m);
 
-                    if (computed_stack == compiled_stack) {
-                        System.out.println("Stack ok(" + computed_stack + ")");
+                    if (computedStack == compiledStack) {
+                        System.out.println("Stack ok(" + computedStack + ")");
                     } else {
-                        System.out.println("\nCompiled stack size " + compiled_stack + " computed size " + computed_stack);
+                        System.out.println("\nCompiled stack size " + compiledStack + " computed size " + computedStack);
                     }
 
-                    if (computed_locals == compiled_locals) {
-                        System.out.println("Locals ok(" + computed_locals + ")");
+                    if (computedLocals == compiledLocals) {
+                        System.out.println("Locals ok(" + computedLocals + ")");
                     } else {
-                        System.out.println("\nCompiled locals " + compiled_locals + " computed size " + computed_locals);
+                        System.out.println("\nCompiled locals " + compiledLocals + " computed size " + computedLocals);
                     }
                 }
             }

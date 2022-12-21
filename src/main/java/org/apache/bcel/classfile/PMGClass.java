@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.classfile;
 
@@ -41,25 +40,25 @@ public final class PMGClass extends Attribute {
     /**
      * Construct object from input stream.
      *
-     * @param name_index Index in constant pool to CONSTANT_Utf8
+     * @param nameIndex Index in constant pool to CONSTANT_Utf8
      * @param length Content length in bytes
      * @param input Input stream
-     * @param constant_pool Array of constants
+     * @param constantPool Array of constants
      * @throws IOException if an I/O error occurs.
      */
-    PMGClass(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
-        this(name_index, length, input.readUnsignedShort(), input.readUnsignedShort(), constant_pool);
+    PMGClass(final @NonNegative int nameIndex, final @NonNegative int length, final DataInput input, final ConstantPool constantPool) throws IOException {
+        this(nameIndex, length, input.readUnsignedShort(), input.readUnsignedShort(), constantPool);
     }
 
     /**
-     * @param name_index Index in constant pool to CONSTANT_Utf8
+     * @param nameIndex Index in constant pool to CONSTANT_Utf8
      * @param length Content length in bytes
      * @param pmgIndex index in constant pool for source file name
      * @param pmgClassIndex Index in constant pool to CONSTANT_Utf8
      * @param constantPool Array of constants
      */
-    public PMGClass(final @NonNegative int name_index, final @NonNegative int length, final @NonNegative int pmgIndex, final @NonNegative int pmgClassIndex, final ConstantPool constantPool) {
-        super(Const.ATTR_PMG, name_index, length, constantPool);
+    public PMGClass(final @NonNegative int nameIndex, final @NonNegative int length, final @NonNegative int pmgIndex, final @NonNegative int pmgClassIndex, final ConstantPool constantPool) {
+        super(Const.ATTR_PMG, nameIndex, length, constantPool);
         this.pmgIndex = pmgIndex;
         this.pmgClassIndex = pmgClassIndex;
     }

@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.verifier.exc;
 
@@ -24,7 +23,6 @@ import org.checkerframework.dataflow.qual.Pure;
 /**
  * Instances of this class should never be thrown. When such an instance is thrown, this is due to an INTERNAL ERROR of
  * BCEL's class file verifier &quot;JustIce&quot;.
- *
  */
 public final class AssertionViolatedException extends RuntimeException {
     private static final long serialVersionUID = -129822266349567409L;

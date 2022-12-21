@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.generic;
 
@@ -30,7 +29,6 @@ import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Super class for FieldGen and MethodGen objects, since they have some methods in common!
- *
  */
 public abstract class FieldGenOrMethodGen extends AccessFlags implements NamedAndTyped, Cloneable {
 
@@ -63,8 +61,8 @@ public abstract class FieldGenOrMethodGen extends AccessFlags implements NamedAn
     /**
      * @since 6.0
      */
-    protected FieldGenOrMethodGen(final int access_flags) { // TODO could this be package protected?
-        super(access_flags);
+    protected FieldGenOrMethodGen(final int accessFlags) { // TODO could this be package protected?
+        super(accessFlags);
     }
 
     protected void addAll(final Attribute[] attrs) {

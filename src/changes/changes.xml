@@ -62,6 +62,14 @@ The <action> type attribute can be add,update,fix,remove.
    -->
 
   <body>
+    <release version="6.6.1" date="2022-10-29" description="Maintenance and bug fix release.">
+       <!-- FIX -->
+      <action                  type="fix" dev="ggregory" due-to="Kengo TODA, Gary Gregory">Keep ConstantPool.getConstant(int) backward compatible with 6.5.0 #157.</action>
+       <!-- UPDATE -->
+      <action                  type="update" dev="ggregory" due-to="Dependabot">Bump actions/setup-java from 3.5.1 to 3.6.0 #159.</action>
+      <action                  type="update" dev="ggregory" due-to="Gary Gregory">Bump spotbugs from 4.7.2 to 4.7.3.</action>
+      <action                  type="update" dev="ggregory" due-to="Gary Gregory">Bump pmd from 6.50.0 to 6.51.0.</action>
+    </release>
     <release version="6.6.0" date="2022-10-08" description="Minor feature and bug fix release.">
        <!-- FIX -->
       <action                  type="fix" dev="ggregory" due-to="Mark Roberts, Gary Gregory">Improve test case coverage; fix Utility.encode bug #46.</action>
@@ -117,7 +125,7 @@ The <action> type attribute can be add,update,fix,remove.
       <action                  type="add" dev="ggregory" due-to="Gary Gregory">Add Const.MINOR_18</action>
       <action                  type="add" dev="ggregory" due-to="Gary Gregory">Add Const.MINOR_19</action>
       <!-- UPDATES -->
-      <action                  type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump actions/cache from 2 to 3.0.10 #88, #93, #110, #119, #149, #154.</action>
+      <action                  type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump actions/cache from 2 to 3.0.11 #88, #93, #110, #119, #149, #154, #156.</action>
       <action                  type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump actions/checkout from 2.3.1 to 3.1.0 #59, #66, #73, #108, #115, #153.</action>
       <action                  type="update" dev="ggregory" due-to="Dependabot, Gary Gregory">Bump actions/setup-java from 1.4.0 to 3.5.1 #62, #67.</action>
       <action                  type="update" dev="ggregory" due-to="Gary Gregory">Bump tests from Apache Commons Lang 3.10 to 3.12.0</action>

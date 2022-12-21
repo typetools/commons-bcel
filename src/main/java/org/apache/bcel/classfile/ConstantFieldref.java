@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.classfile;
 
@@ -27,7 +26,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class represents a constant pool reference to a field.
- *
  */
 @AnnotatedFor({"signedness"})
 public final class ConstantFieldref extends ConstantCP {

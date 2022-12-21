@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.generic;
 
@@ -23,7 +22,6 @@ import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Super class for instructions dealing with array access such as IALOAD.
- *
  */
 public abstract class ArrayInstruction extends Instruction implements ExceptionThrower, TypedInstruction {
 

@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 
 import java.util.Arrays;
@@ -56,17 +55,17 @@ public class TransitiveHull extends org.apache.bcel.classfile.EmptyVisitor {
         "org[.]xml[.].*", "net[.]jini[.].*"};
 
     public static void main(final String[] argv) {
-        JavaClass java_class;
+        JavaClass javaClass;
 
         try {
             if (argv.length == 0) {
                 System.err.println("transitive: No input files specified");
             } else {
-                if ((java_class = Repository.lookupClass(argv[0])) == null) {
-                    java_class = new ClassParser(argv[0]).parse();
+                if ((javaClass = Repository.lookupClass(argv[0])) == null) {
+                    javaClass = new ClassParser(argv[0]).parse();
                 }
 
-                final TransitiveHull hull = new TransitiveHull(java_class);
+                final TransitiveHull hull = new TransitiveHull(javaClass);
 
                 hull.start();
                 System.out.println(Arrays.asList(hull.getClassNames()));

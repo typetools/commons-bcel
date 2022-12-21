@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 
 import java.io.File;
@@ -53,11 +52,10 @@ import org.apache.bcel.generic.TABLESWITCH;
 
 /**
  * Disassemble Java class object into the <a href="https://jasmin.sourceforge.net"> Jasmin</a> format.
- *
  */
 public class JasminVisitor extends org.apache.bcel.classfile.EmptyVisitor {
     public static void main(final String[] argv) throws Exception {
-        JavaClass java_class;
+        JavaClass javaClass;
 
         if (argv.length == 0) {
             System.err.println("disassemble: No input files specified");
@@ -65,11 +63,11 @@ public class JasminVisitor extends org.apache.bcel.classfile.EmptyVisitor {
         }
 
         for (final String arg : argv) {
-            if ((java_class = Repository.lookupClass(arg)) == null) {
-                java_class = new ClassParser(arg).parse();
+            if ((javaClass = Repository.lookupClass(arg)) == null) {
+                javaClass = new ClassParser(arg).parse();
             }
 
-            String className = java_class.getClassName();
+            String className = javaClass.getClassName();
             final int index = className.lastIndexOf('.');
             final String path = className.substring(0, index + 1).replace('.', File.separatorChar);
             className = className.substring(index + 1);
@@ -81,7 +79,7 @@ public class JasminVisitor extends org.apache.bcel.classfile.EmptyVisitor {
 
             final String name = path + className + ".j";
             try (final FileOutputStream out = new FileOutputStream(name)) {
-                new JasminVisitor(java_class, out).disassemble();
+                new JasminVisitor(javaClass, out).disassemble();
                 System.out.println("File dumped to: " + name);
             }
         }
@@ -145,7 +143,7 @@ public class JasminVisitor extends org.apache.bcel.classfile.EmptyVisitor {
 
     @Override
     public void visitCode(final Code code) {
-        int label_counter = 0;
+        int labelCounter = 0;
 
         out.println(".limit stack " + code.getMaxStack());
         out.println(".limit locals " + code.getMaxLocals());
@@ -165,32 +163,32 @@ public class JasminVisitor extends org.apache.bcel.classfile.EmptyVisitor {
 
                 if (bi instanceof Select) { // Special cases LOOKUPSWITCH and TABLESWITCH
                     for (final InstructionHandle target : ((Select) bi).getTargets()) {
-                        put(target, "Label" + label_counter++ + ":");
+                        put(target, "Label" + labelCounter++ + ":");
                     }
                 }
 
                 final InstructionHandle ih = bi.getTarget();
-                put(ih, "Label" + label_counter++ + ":");
+                put(ih, "Label" + labelCounter++ + ":");
             }
         }
 
         final LocalVariableGen[] lvs = mg.getLocalVariables();
         for (final LocalVariableGen lv : lvs) {
             InstructionHandle ih = lv.getStart();
-            put(ih, "Label" + label_counter++ + ":");
+            put(ih, "Label" + labelCounter++ + ":");
             ih = lv.getEnd();
-            put(ih, "Label" + label_counter++ + ":");
+            put(ih, "Label" + labelCounter++ + ":");
         }
 
         final CodeExceptionGen[] ehs = mg.getExceptionHandlers();
         for (final CodeExceptionGen c : ehs) {
             InstructionHandle ih = c.getStartPC();
 
-            put(ih, "Label" + label_counter++ + ":");
+            put(ih, "Label" + labelCounter++ + ":");
             ih = c.getEndPC();
-            put(ih, "Label" + label_counter++ + ":");
+            put(ih, "Label" + labelCounter++ + ":");
             ih = c.getHandlerPC();
-            put(ih, "Label" + label_counter++ + ":");
+            put(ih, "Label" + labelCounter++ + ":");
         }
 
         final LineNumberGen[] lns = mg.getLineNumbers();

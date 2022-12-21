@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.util;
 
@@ -497,11 +496,11 @@ public class ClassPath implements Closeable {
         final List<String> dirs = new ArrayList<>();
         getPathComponents(extDirs, dirs);
         for (final String d : dirs) {
-            final File ext_dir = new File(d);
-            final String[] extensions = ext_dir.list(ARCHIVE_FILTER);
+            final File extDir = new File(d);
+            final String[] extensions = extDir.list(ARCHIVE_FILTER);
             if (extensions != null) {
                 for (final String extension : extensions) {
-                    list.add(ext_dir.getPath() + File.separatorChar + extension);
+                    list.add(extDir.getPath() + File.separatorChar + extension);
                 }
             }
         }

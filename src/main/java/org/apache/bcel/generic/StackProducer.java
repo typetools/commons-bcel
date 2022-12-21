@@ -13,13 +13,11 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.generic;
 
 /**
- * Denote an instruction that may produce a value on top of the stack (this excludes DUP_X1, e.g.)
- *
+ * Denotes an instruction that may produce a value on top of the stack (this excludes DUP_X1, e.g.)
  */
 public interface StackProducer {
 

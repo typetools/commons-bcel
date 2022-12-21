@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.verifier;
 
@@ -24,7 +23,6 @@ import org.apache.bcel.classfile.Utility;
 /**
  * This class has a main method implementing a demonstration program of how to use the VerifierFactoryObserver. It
  * transitively verifies all class files encountered; this may take up a lot of time and, more notably, memory.
- *
  */
 public class TransitiveHull implements VerifierFactoryObserver {
 
@@ -57,14 +55,14 @@ public class TransitiveHull implements VerifierFactoryObserver {
 
     /* Implementing VerifierFactoryObserver. */
     @Override
-    public void update(final String classname) {
+    public void update(final String className) {
         System.gc(); // avoid swapping if possible.
         for (int i = 0; i < indent; i++) {
             System.out.print(" ");
         }
-        System.out.println(classname);
+        System.out.println(className);
         indent += 1;
-        final Verifier v = VerifierFactory.getVerifier(classname);
+        final Verifier v = VerifierFactory.getVerifier(className);
         VerificationResult vr;
         vr = v.doPass1();
         if (vr != VerificationResult.VR_OK) {

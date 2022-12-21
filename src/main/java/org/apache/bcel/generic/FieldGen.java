@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.generic;
 
@@ -107,13 +106,13 @@ public class FieldGen extends FieldGenOrMethodGen {
      * Declare a field. If it is static (isStatic() == true) and has a basic type like int or String it may have an initial
      * value associated with it as defined by setInitValue().
      *
-     * @param access_flags access qualifiers
+     * @param accessFlags access qualifiers
      * @param type field type
      * @param name field name
      * @param cp constant pool
      */
-    public FieldGen(final int access_flags, final Type type, final String name, final ConstantPoolGen cp) {
-        super(access_flags);
+    public FieldGen(final int accessFlags, final Type type, final String name, final ConstantPoolGen cp) {
+        super(accessFlags);
         setType(type);
         setName(name);
         setConstantPool(cp);
@@ -199,15 +198,15 @@ public class FieldGen extends FieldGenOrMethodGen {
      */
     public Field getField() {
         final String signature = getSignature();
-        final @NonNegative int name_index = super.getConstantPool().addUtf8(super.getName());
-        final @NonNegative int signature_index = super.getConstantPool().addUtf8(signature);
+        final @NonNegative int nameIndex = super.getConstantPool().addUtf8(super.getName());
+        final @NonNegative int signatureIndex = super.getConstantPool().addUtf8(signature);
         if (value != null) {
             checkType(super.getType());
             final @NonNegative int index = addConstant();
             addAttribute(new ConstantValue(super.getConstantPool().addUtf8("ConstantValue"), 2, index, super.getConstantPool().getConstantPool())); // sic
         }
         addAnnotationsAsAttribute(super.getConstantPool());
-        return new Field(super.getAccessFlags(), name_index, signature_index, getAttributes(), super.getConstantPool().getConstantPool()); // sic
+        return new Field(super.getAccessFlags(), nameIndex, signatureIndex, getAttributes(), super.getConstantPool().getConstantPool()); // sic
     }
 
     public @Nullable String getInitValue() {

@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.verifier;
 
@@ -73,7 +72,7 @@ public class VerifierAppFrame extends JFrame {
     private final GridLayout gridLayout4 = new GridLayout();
     private final JScrollPane jScrollPane4 = new JScrollPane();
     private final CardLayout cardLayout1 = new CardLayout();
-    private String current_class;
+    private String currentClass;
     private final GridLayout gridLayout3 = new GridLayout();
     private final JTextPane pass1TextPane = new JTextPane();
     private final JTextPane pass2TextPane = new JTextPane();
@@ -113,14 +112,14 @@ public class VerifierAppFrame extends JFrame {
         if (e.getValueIsAdjusting()) {
             return;
         }
-        current_class = classNamesJList.getSelectedValue();
+        currentClass = classNamesJList.getSelectedValue();
         try {
             verify();
         } catch (final ClassNotFoundException ex) {
             // FIXME: report the error using the GUI
             ex.printStackTrace();
         }
-        classNamesJList.setSelectedValue(current_class, true);
+        classNamesJList.setSelectedValue(currentClass, true);
     }
 
     /**
@@ -216,19 +215,19 @@ public class VerifierAppFrame extends JFrame {
     }
 
     void newFileMenuItem_actionPerformed(final ActionEvent e) {
-        final String classname = JOptionPane.showInputDialog("Please enter the fully qualified name of a class or interface to verify:");
-        if (classname == null || classname.isEmpty()) {
+        final String className = JOptionPane.showInputDialog("Please enter the fully qualified name of a class or interface to verify:");
+        if (className == null || className.isEmpty()) {
             return;
         }
-        VerifierFactory.getVerifier(classname); // let observers do the rest.
-        classNamesJList.setSelectedValue(classname, true);
+        VerifierFactory.getVerifier(className); // let observers do the rest.
+        classNamesJList.setSelectedValue(className, true);
     }
 
     synchronized void pass3aJList_valueChanged(final ListSelectionEvent e) {
         if (e.getValueIsAdjusting()) {
             return;
         }
-        final Verifier v = VerifierFactory.getVerifier(current_class);
+        final Verifier v = VerifierFactory.getVerifier(currentClass);
         final StringBuilder all3amsg = new StringBuilder();
         boolean all3aok = true;
         boolean rejected = false;
@@ -257,7 +256,7 @@ public class VerifierAppFrame extends JFrame {
         if (e.getValueIsAdjusting()) {
             return;
         }
-        final Verifier v = VerifierFactory.getVerifier(current_class);
+        final Verifier v = VerifierFactory.getVerifier(currentClass);
         final StringBuilder all3bmsg = new StringBuilder();
         boolean all3bok = true;
         boolean rejected = false;
@@ -293,7 +292,7 @@ public class VerifierAppFrame extends JFrame {
 
     private void verify() throws ClassNotFoundException {
         setTitle("PLEASE WAIT");
-        final Verifier v = VerifierFactory.getVerifier(current_class);
+        final Verifier v = VerifierFactory.getVerifier(currentClass);
         v.flush(); // Don't cache the verification result for this class.
         VerificationResult vr;
         vr = v.doPass1();
@@ -324,7 +323,7 @@ public class VerifierAppFrame extends JFrame {
             } else { // must be Verified_OK, because Pass1 was OK (cannot be Verified_NOTYET).
                 pass2TextPane.setText(vr.getMessage());
                 pass2TextPane.setBackground(Color.green);
-                final JavaClass jc = Repository.lookupClass(current_class);
+                final JavaClass jc = Repository.lookupClass(currentClass);
                 /*
                  * boolean all3aok = true; boolean all3bok = true; String all3amsg = ""; String all3bmsg = "";
                  */
@@ -344,7 +343,7 @@ public class VerifierAppFrame extends JFrame {
             allmsgs.append(msgs[i]).append("\n\n");
         }
         messagesTextPane.setText(allmsgs.toString());
-        setTitle(current_class + " - " + JUSTICE_VERSION);
+        setTitle(currentClass + " - " + JUSTICE_VERSION);
     }
 
     void whatisMenuItem_actionPerformed(final ActionEvent e) {

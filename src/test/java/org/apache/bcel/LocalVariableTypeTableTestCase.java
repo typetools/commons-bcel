@@ -13,7 +13,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 package org.apache.bcel;
 
@@ -80,7 +79,7 @@ public class LocalVariableTypeTableTestCase extends AbstractTestCase {
     }
 
     private byte[] getBytesFromClass(final String className) throws ClassNotFoundException {
-        final JavaClass clazz = getTestClass(className);
+        final JavaClass clazz = getTestJavaClass(className);
         final ConstantPoolGen cp = new ConstantPoolGen(clazz.getConstantPool());
 
         final Method[] methods = clazz.getMethods();

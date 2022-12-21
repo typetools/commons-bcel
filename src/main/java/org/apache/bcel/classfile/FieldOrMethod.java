@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.classfile;
 
@@ -29,7 +28,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Abstract super class for fields and methods.
- *
  */
 @AnnotatedFor({"signedness"})
 public abstract class FieldOrMethod extends AccessFlags implements Cloneable, Node {
@@ -81,12 +79,12 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
      */
     protected FieldOrMethod(final DataInput file, final ConstantPool constantPool) throws IOException {
         this(file.readUnsignedShort(), file.readUnsignedShort(), file.readUnsignedShort(), null, constantPool);
-        final @NonNegative int attributes_count = file.readUnsignedShort();
-        attributes = new Attribute[attributes_count];
-        for (int i = 0; i < attributes_count; i++) {
+        final @NonNegative int attributesCount = file.readUnsignedShort();
+        attributes = new Attribute[attributesCount];
+        for (int i = 0; i < attributesCount; i++) {
             attributes[i] = Attribute.readAttribute(file, constantPool);
         }
-        this.attributes_count = attributes_count; // init deprecated field
+        this.attributes_count = attributesCount; // init deprecated field
     }
 
     /**
@@ -110,18 +108,18 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
     }
 
     /**
-     * @param access_flags Access rights of method
-     * @param name_index Points to field name in constant pool
-     * @param signature_index Points to encoded signature
+     * @param accessFlags Access rights of method
+     * @param nameIndex Points to field name in constant pool
+     * @param signatureIndex Points to encoded signature
      * @param attributes Collection of attributes
-     * @param constant_pool Array of constants
+     * @param constantPool Array of constants
      */
-    protected FieldOrMethod(final int access_flags, final @NonNegative int name_index, final @NonNegative int signature_index, final Attribute[] attributes,
-        final ConstantPool constant_pool) {
-        super(access_flags);
-        this.name_index = name_index;
-        this.signature_index = signature_index;
-        this.constant_pool = constant_pool;
+    protected FieldOrMethod(final int accessFlags, final @NonNegative int nameIndex, final @NonNegative int signatureIndex, final Attribute[] attributes,
+        final ConstantPool constantPool) {
+        super(accessFlags);
+        this.name_index = nameIndex;
+        this.signature_index = signatureIndex;
+        this.constant_pool = constantPool;
         setAttributes(attributes);
     }
 
@@ -248,23 +246,23 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
     }
 
     /**
-     * @param constant_pool Constant pool to be used for this object.
+     * @param constantPool Constant pool to be used for this object.
      */
-    public final void setConstantPool(final ConstantPool constant_pool) {
-        this.constant_pool = constant_pool;
+    public final void setConstantPool(final ConstantPool constantPool) {
+        this.constant_pool = constantPool;
     }
 
     /**
-     * @param name_index Index in constant pool of object's name.
+     * @param nameIndex Index in constant pool of object's name.
      */
-    public final void setNameIndex(final @NonNegative int name_index) {
-        this.name_index = name_index;
+    public final void setNameIndex(final @NonNegative int nameIndex) {
+        this.name_index = nameIndex;
     }
 
     /**
-     * @param signature_index Index in constant pool of field signature.
+     * @param signatureIndex Index in constant pool of field signature.
      */
-    public final void setSignatureIndex(final @NonNegative int signature_index) {
-        this.signature_index = signature_index;
+    public final void setSignatureIndex(final @NonNegative int signatureIndex) {
+        this.signature_index = signatureIndex;
     }
 }

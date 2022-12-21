@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.classfile;
 
@@ -40,18 +39,18 @@ public abstract class ParameterAnnotations extends Attribute implements Iterable
 
     /**
      * @param parameterAnnotationType the subclass type of the parameter annotation
-     * @param name_index Index pointing to the name <em>Code</em>
+     * @param nameIndex Index pointing to the name <em>Code</em>
      * @param length Content length in bytes
      * @param input Input stream
-     * @param constant_pool Array of constants
+     * @param constantPool Array of constants
      */
-    ParameterAnnotations(final byte parameterAnnotationType, final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool)
+    ParameterAnnotations(final byte parameterAnnotationType, final @NonNegative int nameIndex, final @NonNegative int length, final DataInput input, final ConstantPool constantPool)
         throws IOException {
-        this(parameterAnnotationType, name_index, length, (ParameterAnnotationEntry[]) null, constant_pool);
-        final int num_parameters = input.readUnsignedByte();
-        parameterAnnotationTable = new ParameterAnnotationEntry[num_parameters];
-        for (int i = 0; i < num_parameters; i++) {
-            parameterAnnotationTable[i] = new ParameterAnnotationEntry(input, constant_pool);
+        this(parameterAnnotationType, nameIndex, length, (ParameterAnnotationEntry[]) null, constantPool);
+        final int numParameters = input.readUnsignedByte();
+        parameterAnnotationTable = new ParameterAnnotationEntry[numParameters];
+        for (int i = 0; i < numParameters; i++) {
+            parameterAnnotationTable[i] = new ParameterAnnotationEntry(input, constantPool);
         }
     }
 
@@ -83,7 +82,7 @@ public abstract class ParameterAnnotations extends Attribute implements Iterable
      * @return deep copy of this attribute
      */
     @Override
-    public Attribute copy(final ConstantPool constant_pool) {
+    public Attribute copy(final ConstantPool constantPool) {
         return (Attribute) clone();
     }
 

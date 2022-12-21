@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.generic;
 
@@ -29,7 +28,6 @@ import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * Abstract super class for all Java byte codes.
- *
  */
 public abstract class Instruction implements Cloneable {
 

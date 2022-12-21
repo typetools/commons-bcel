@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.classfile;
 
@@ -55,12 +54,12 @@ public class ParameterAnnotationEntry implements Node {
      * @param input Input stream
      * @throws IOException if an I/O error occurs.
      */
-    ParameterAnnotationEntry(final DataInput input, final ConstantPool constant_pool) throws IOException {
-        final int annotation_table_length = input.readUnsignedShort();
-        annotationTable = new AnnotationEntry[annotation_table_length];
-        for (int i = 0; i < annotation_table_length; i++) {
+    ParameterAnnotationEntry(final DataInput input, final ConstantPool constantPool) throws IOException {
+        final int annotationTableLength = input.readUnsignedShort();
+        annotationTable = new AnnotationEntry[annotationTableLength];
+        for (int i = 0; i < annotationTableLength; i++) {
             // TODO isRuntimeVisible
-            annotationTable[i] = AnnotationEntry.read(input, constant_pool, false);
+            annotationTable[i] = AnnotationEntry.read(input, constantPool, false);
         }
     }
 

@@ -13,7 +13,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package org.apache.bcel.util;
@@ -44,7 +43,7 @@ public class ModularRuntimeImageTestCase {
     }
 
     @ParameterizedTest
-    @MethodSource("org.apache.bcel.generic.JdkGenericDumpTestCase#findJavaHomes")
+    @MethodSource("org.apache.bcel.generic.JavaHome#streamModularRuntimeImages")
     public void testListJreModule(final ModularRuntimeImage modularRuntimeImage) throws IOException {
         final List<Path> listEntries = modularRuntimeImage.list(ModularRuntimeImage.MODULES_PATH + "/java.base");
         assertFalse(listEntries.isEmpty());
@@ -52,7 +51,7 @@ public class ModularRuntimeImageTestCase {
     }
 
     @ParameterizedTest
-    @MethodSource("org.apache.bcel.generic.JdkGenericDumpTestCase#findJavaHomes")
+    @MethodSource("org.apache.bcel.generic.JavaHome#streamModularRuntimeImages")
     public void testListJreModulePackageDir(final ModularRuntimeImage modularRuntimeImage) throws IOException {
         final List<Path> listEntries = modularRuntimeImage.list(ModularRuntimeImage.MODULES_PATH + "/java.base/java/lang");
         assertFalse(listEntries.isEmpty());
@@ -60,7 +59,7 @@ public class ModularRuntimeImageTestCase {
     }
 
     @ParameterizedTest
-    @MethodSource("org.apache.bcel.generic.JdkGenericDumpTestCase#findJavaHomes")
+    @MethodSource("org.apache.bcel.generic.JavaHome#streamModularRuntimeImages")
     public void testListJreModules(final ModularRuntimeImage modularRuntimeImage) throws IOException {
         final List<Path> listEntries = modularRuntimeImage.list(ModularRuntimeImage.MODULES_PATH);
         assertFalse(listEntries.isEmpty());
@@ -68,7 +67,7 @@ public class ModularRuntimeImageTestCase {
     }
 
     @ParameterizedTest
-    @MethodSource("org.apache.bcel.generic.JdkGenericDumpTestCase#findJavaHomes")
+    @MethodSource("org.apache.bcel.generic.JavaHome#streamModularRuntimeImages")
     public void testListJrePackages(final ModularRuntimeImage modularRuntimeImage) throws IOException {
         final List<Path> listEntries = modularRuntimeImage.list(ModularRuntimeImage.PACKAGES_PATH);
         assertFalse(listEntries.isEmpty());

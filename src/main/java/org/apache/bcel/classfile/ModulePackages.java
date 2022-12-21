@@ -43,17 +43,17 @@ public final class ModulePackages extends Attribute {
     /**
      * Construct object from input stream.
      *
-     * @param name_index Index in constant pool
+     * @param nameIndex Index in constant pool
      * @param length Content length in bytes
      * @param input Input stream
-     * @param constant_pool Array of constants
+     * @param constantPool Array of constants
      * @throws IOException if an I/O error occurs.
      */
-    ModulePackages(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
-        this(name_index, length, (int[]) null, constant_pool);
-        final int number_of_packages = input.readUnsignedShort();
-        packageIndexTable = new int[number_of_packages];
-        for (int i = 0; i < number_of_packages; i++) {
+    ModulePackages(final @NonNegative int nameIndex, final @NonNegative int length, final DataInput input, final ConstantPool constantPool) throws IOException {
+        this(nameIndex, length, (int[]) null, constantPool);
+        final int packageCount = input.readUnsignedShort();
+        packageIndexTable = new int[packageCount];
+        for (int i = 0; i < packageCount; i++) {
             packageIndexTable[i] = input.readUnsignedShort();
         }
     }
@@ -95,8 +95,7 @@ public final class ModulePackages extends Attribute {
     public Attribute copy(final ConstantPool constantPool) {
         final ModulePackages c = (ModulePackages) clone();
         if (packageIndexTable != null) {
-            c.packageIndexTable = new int[packageIndexTable.length];
-            System.arraycopy(packageIndexTable, 0, c.packageIndexTable, 0, packageIndexTable.length);
+            c.packageIndexTable = packageIndexTable.clone();
         }
         c.setConstantPool(constantPool);
         return c;
@@ -159,8 +158,8 @@ public final class ModulePackages extends Attribute {
         buf.append(packageIndexTable.length);
         buf.append("):\n");
         for (final int index : packageIndexTable) {
-            final String package_name = super.getConstantPool().getConstantString(index, Const.CONSTANT_Package);
-            buf.append("  ").append(Utility.compactClassName(package_name, false)).append("\n");
+            final String packageName = super.getConstantPool().getConstantString(index, Const.CONSTANT_Package);
+            buf.append("  ").append(Utility.compactClassName(packageName, false)).append("\n");
         }
         return buf.substring(0, buf.length() - 1); // remove the last newline
     }

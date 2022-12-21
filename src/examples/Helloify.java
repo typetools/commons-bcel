@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 
 import org.apache.bcel.classfile.ClassParser;
@@ -36,9 +35,8 @@ import org.apache.bcel.generic.PUSH;
 /**
  * Read class file(s) and patch all of its methods, so that they print "hello" and their name and signature before doing
  * anything else.
- *
  */
-public final class helloify {
+public final class Helloify {
 
     private static String className;
     private static ConstantPoolGen cp;
@@ -48,9 +46,9 @@ public final class helloify {
     /**
      * Change class name to <old_name>_hello
      */
-    private static void helloifyClassName(final JavaClass java_class) {
-        className = java_class.getClassName() + "_hello";
-        int index = java_class.getClassNameIndex();
+    private static void helloifyClassName(final JavaClass javaClass) {
+        className = javaClass.getClassName() + "_hello";
+        int index = javaClass.getClassNameIndex();
 
         index = ((ConstantClass) cp.getConstant(index)).getNameIndex();
         cp.setConstant(index, new ConstantUtf8(className.replace('.', '/')));
@@ -106,25 +104,25 @@ public final class helloify {
     public static void main(final String[] argv) throws Exception {
         for (final String arg : argv) {
             if (arg.endsWith(".class")) {
-                final JavaClass java_class = new ClassParser(arg).parse();
-                final ConstantPool constants = java_class.getConstantPool();
-                final String file_name = arg.substring(0, arg.length() - 6) + "_hello.class";
+                final JavaClass javaClass = new ClassParser(arg).parse();
+                final ConstantPool constants = javaClass.getConstantPool();
+                final String fileName = arg.substring(0, arg.length() - 6) + "_hello.class";
                 cp = new ConstantPoolGen(constants);
 
-                helloifyClassName(java_class);
+                helloifyClassName(javaClass);
 
                 out = cp.addFieldref("java.lang.System", "out", "Ljava/io/PrintStream;");
                 println = cp.addMethodref("java.io.PrintStream", "println", "(Ljava/lang/String;)V");
                 // Patch all methods.
-                final Method[] methods = java_class.getMethods();
+                final Method[] methods = javaClass.getMethods();
 
                 for (int j = 0; j < methods.length; j++) {
                     methods[j] = helloifyMethod(methods[j]);
                 }
 
                 // Finally dump it back to a file.
-                java_class.setConstantPool(cp.getFinalConstantPool());
-                java_class.dump(file_name);
+                javaClass.setConstantPool(cp.getFinalConstantPool());
+                javaClass.dump(fileName);
             }
         }
     }

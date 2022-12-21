@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.verifier.structurals;
 
@@ -28,7 +27,6 @@ import org.checkerframework.dataflow.qual.Pure;
 /**
  * This class represents an uninitialized object type; see The Java Virtual Machine Specification, Second Edition, page
  * 147: 4.9.4 for more details.
- *
  */
 public class UninitializedObjectType extends ReferenceType implements Constants {
 

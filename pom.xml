@@ -34,7 +34,7 @@
   <groupId>org.apache.bcel</groupId>
   <artifactId>bcel</artifactId>
   <packaging>jar</packaging>
-  <version>6.6.0</version>
+  <version>6.6.1</version>
   <name>Apache Commons BCEL</name>
   <description>Apache Commons Bytecode Engineering Library</description>
 
@@ -50,10 +50,10 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <commons.componentid>bcel</commons.componentid>
     <commons.module.name>org.apache.bcel</commons.module.name>
-    <commons.release.version>6.6.0</commons.release.version>
+    <commons.release.version>6.6.1</commons.release.version>
     <commons.release.isDistModule>true</commons.release.isDistModule>
-    <commons.rc.version>RC1</commons.rc.version>
-    <commons.bc.version>6.5.0</commons.bc.version>
+    <commons.rc.version>RC2</commons.rc.version>
+    <commons.bc.version>6.6.0</commons.bc.version>
     <commons.release.desc>(Java 8)</commons.release.desc>
     <commons.scmPubUrl>https://svn.apache.org/repos/infra/websites/production/commons/content/proper/commons-bcel</commons.scmPubUrl>
     <commons.distSvnStagingUrl>scm:svn:https://dist.apache.org/repos/dist/dev/commons/${commons.componentid}</commons.distSvnStagingUrl>
@@ -77,10 +77,10 @@
     <commons.javadoc.version>3.4.1</commons.javadoc.version>
     <commons.felix.version>5.1.8</commons.felix.version>
     <commons.spotbugs.plugin.version>4.7.2.1</commons.spotbugs.plugin.version>
-    <commons.spotbugs.impl.version>4.7.2</commons.spotbugs.impl.version>    
+    <commons.spotbugs.impl.version>4.7.3</commons.spotbugs.impl.version>    
     <commons.biz.aQute.bndlib.version>6.3.1</commons.biz.aQute.bndlib.version>
     <commons.pmd.version>3.19.0</commons.pmd.version>
-    <commons.pmd-impl.version>6.50.0</commons.pmd-impl.version>
+    <commons.pmd-impl.version>6.51.0</commons.pmd-impl.version>
     <commons.junit.version>5.9.1</commons.junit.version>
     <!-- default checkerframework annotation processors and compiler arguments -->
     <annotationProcessor1>org.checkerframework.checker.interning.InterningChecker</annotationProcessor1>
@@ -99,6 +99,11 @@
       <url>scm:svn:https://svn.apache.org/repos/infra/websites/production/commons/content/proper/commons-bcel/</url>
     </site>
   </distributionManagement>
+
+  <ciManagement>
+    <system>GitHub</system>
+    <url>https://github.com/apache/commons-bcel/actions</url>
+  </ciManagement>
 
   <developers>
     <developer>
@@ -227,7 +232,7 @@
   </scm>
 
   <build>
-    <defaultGoal>clean verify apache-rat:check japicmp:cmp checkstyle:check javadoc:javadoc</defaultGoal>
+    <defaultGoal>clean verify apache-rat:check japicmp:cmp checkstyle:check pmd:check javadoc:javadoc</defaultGoal>
     <plugins>
       <plugin>
         <groupId>org.apache.felix</groupId>
@@ -373,6 +378,16 @@
           <excludeFilterFile>src/conf/spotbugs-exclude-filter.xml</excludeFilterFile>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <configuration>
+          <targetJdk>${maven.compiler.target}</targetJdk>
+          <rulesets>
+            <ruleset>${basedir}/src/conf/pmd-ruleset.xml</ruleset>
+          </rulesets>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
@@ -403,9 +418,6 @@
         <configuration>
           <targetJdk>${maven.compiler.target}</targetJdk>
           <linkXRef>true</linkXRef>
-          <rulesets>
-            <ruleset>${basedir}/src/conf/pmd.xml</ruleset>
-          </rulesets>
         </configuration>
       </plugin>
       <plugin>

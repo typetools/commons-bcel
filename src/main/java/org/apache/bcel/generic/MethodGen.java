@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.generic;
 
@@ -153,9 +152,9 @@ public class MethodGen extends FieldGenOrMethodGen {
          * explicitly. in each case, the stack will have depth 1, containing the exception object.
          */
         for (final CodeExceptionGen element : et) {
-            final InstructionHandle handler_pc = element.getHandlerPC();
-            if (handler_pc != null) {
-                branchTargets.push(handler_pc, 1);
+            final InstructionHandle handlerPc = element.getHandlerPC();
+            if (handlerPc != null) {
+                branchTargets.push(handlerPc, 1);
             }
         }
         @NonNegative int stackDepth = 0;
@@ -341,21 +340,21 @@ public class MethodGen extends FieldGenOrMethodGen {
                             final @ClassGetName String cen = method.getConstantPool().getConstantString(type, Const.CONSTANT_Class);
                             cType = ObjectType.getInstance(cen);
                         }
-                        final @NonNegative int end_pc = ce.getEndPC();
+                        final @NonNegative int endPc = ce.getEndPC();
                         final @NonNegative int length = getByteCodes(method).length;
                         InstructionHandle end;
-                        if (length == end_pc) { // May happen, because end_pc is exclusive
+                        if (length == endPc) { // May happen, because end_pc is exclusive
                             end = il.getEnd();
                         } else {
-                            end = il.findHandle(end_pc);
+                            end = il.findHandle(endPc);
                             end = end.getPrev(); // Make it inclusive
                         }
                         addExceptionHandler(il.findHandle(ce.getStartPC()), end, il.findHandle(ce.getHandlerPC()), cType);
                     }
                 }
-                final Attribute[] c_attributes = c.getAttributes();
-                for (final Attribute c_attribute : c_attributes) {
-                    a = c_attribute;
+                final Attribute[] cAttributes = c.getAttributes();
+                for (final Attribute cAttribute : cAttributes) {
+                    a = cAttribute;
                     if (a instanceof LineNumberTable) {
                         ((LineNumberTable) a).forEach(l -> {
                             final InstructionHandle ih = il.findHandle(l.getStartPC());
@@ -479,19 +478,19 @@ public class MethodGen extends FieldGenOrMethodGen {
      * @param slot the index of the local variable, if type is long or double, the next available index is slot+2
      * @param start from where the variable is valid
      * @param end until where the variable is valid
-     * @param orig_index the index of the local variable prior to any modifications
+     * @param origIndex the index of the local variable prior to any modifications
      * @return new local variable object
      * @see LocalVariable
      */
     public LocalVariableGen addLocalVariable(final String name, final Type type, final @NonNegative int slot, final InstructionHandle start, final InstructionHandle end,
-        final @NonNegative int orig_index) {
+        final @NonNegative int origIndex) {
         final byte t = type.getType();
         if (t != Const.T_ADDRESS) {
             final @NonNegative int add = type.getSize();
             if (slot + add > maxLocals) {
                 maxLocals = slot + add;
             }
-            final LocalVariableGen l = new LocalVariableGen(slot, name, type, start, end, orig_index);
+            final LocalVariableGen l = new LocalVariableGen(slot, name, type, start, end, origIndex);
             int i;
             if ((i = variableList.indexOf(l)) >= 0) {
                 variableList.set(i, l);
@@ -700,9 +699,9 @@ public class MethodGen extends FieldGenOrMethodGen {
      */
     private CodeException[] getCodeExceptions() {
         final @NonNegative int size = exceptionList.size();
-        final CodeException[] c_exc = new CodeException[size];
-        Arrays.setAll(c_exc, i -> exceptionList.get(i).getCodeException(super.getConstantPool()));
-        return c_exc;
+        final CodeException[] cExc = new CodeException[size];
+        Arrays.setAll(cExc, i -> exceptionList.get(i).getCodeException(super.getConstantPool()));
+        return cExc;
     }
 
     /*
@@ -813,8 +812,8 @@ public class MethodGen extends FieldGenOrMethodGen {
     public Method getMethod() {
         final String signature = getSignature();
         final ConstantPoolGen cp = super.getConstantPool();
-        final @NonNegative int name_index = cp.addUtf8(super.getName());
-        final @NonNegative int signature_index = cp.addUtf8(signature);
+        final @NonNegative int nameIndex = cp.addUtf8(super.getName());
+        final @NonNegative int signatureIndex = cp.addUtf8(signature);
         /*
          * Also updates positions of instructions, i.e., their indices
          */
@@ -843,12 +842,12 @@ public class MethodGen extends FieldGenOrMethodGen {
         /*
          * Each attribute causes 6 additional header bytes
          */
-        @NonNegative int attrs_len = 0;
-        for (final Attribute code_attr : codeAttrs) {
-            attrs_len += code_attr.getLength() + 6;
+        @NonNegative int attrsLen = 0;
+        for (final Attribute codeAttr : codeAttrs) {
+            attrsLen += codeAttr.getLength() + 6;
         }
         final CodeException[] cExc = getCodeExceptions();
-        final @NonNegative int exc_len = cExc.length * 8; // Every entry takes 8 bytes
+        final @NonNegative int excLen = cExc.length * 8; // Every entry takes 8 bytes
         Code code = null;
         if (byteCode != null && !isAbstract() && !isNative()) {
             // Remove any stale code attribute
@@ -859,8 +858,8 @@ public class MethodGen extends FieldGenOrMethodGen {
                 }
             }
             code = new Code(cp.addUtf8("Code"), 8 + byteCode.length + // prologue byte code
-                2 + exc_len + // exceptions
-                2 + attrs_len, // attributes
+                2 + excLen + // exceptions
+                2 + attrsLen, // attributes
                 maxStack, maxLocals, byteCode, cExc, codeAttrs, cp.getConstantPool());
             addAttribute(code);
         }
@@ -871,7 +870,7 @@ public class MethodGen extends FieldGenOrMethodGen {
             addAttribute(et = getExceptionTable(cp));
             // Add `Exceptions' if there are "throws" clauses
         }
-        final Method m = new Method(super.getAccessFlags(), name_index, signature_index, getAttributes(), cp.getConstantPool());
+        final Method m = new Method(super.getAccessFlags(), nameIndex, signatureIndex, getAttributes(), cp.getConstantPool());
         // Undo effects of adding attributes
         if (lvt != null) {
             removeCodeAttribute(lvt);

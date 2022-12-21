@@ -66,7 +66,7 @@ public class EnclosingMethod extends Attribute {
     }
 
     @Override
-    public Attribute copy(final ConstantPool constant_pool) {
+    public Attribute copy(final ConstantPool constantPool) {
         return (Attribute) clone();
     }
 

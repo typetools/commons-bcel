@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.classfile;
 
@@ -34,20 +33,20 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"signedness"})
 public class RuntimeVisibleAnnotations extends Annotations {
     /**
-     * @param name_index Index pointing to the name <em>Code</em>
+     * @param nameIndex Index pointing to the name <em>Code</em>
      * @param length Content length in bytes
      * @param input Input stream
-     * @param constant_pool Array of constants
+     * @param constantPool Array of constants
      */
-    public RuntimeVisibleAnnotations(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
-        super(Const.ATTR_RUNTIME_VISIBLE_ANNOTATIONS, name_index, length, input, constant_pool, true);
+    public RuntimeVisibleAnnotations(final @NonNegative int nameIndex, final @NonNegative int length, final DataInput input, final ConstantPool constantPool) throws IOException {
+        super(Const.ATTR_RUNTIME_VISIBLE_ANNOTATIONS, nameIndex, length, input, constantPool, true);
     }
 
     /**
      * @return deep copy of this attribute
      */
     @Override
-    public Attribute copy(final ConstantPool constant_pool) {
+    public Attribute copy(final ConstantPool constantPool) {
         return (Attribute) clone();
     }
 

@@ -13,7 +13,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package org.apache.bcel.verifier;
@@ -22,21 +21,27 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Collection;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 public class VerifierTestCase {
 
+    @AfterEach
+    public void afterEach() {
+        VerifierFactory.clear();
+    }
+    
     @Test
     public void testDefaultMethodValidation() {
-        final String classname = Collection.class.getName();
+        final String className = Collection.class.getName();
 
-        final Verifier verifier = VerifierFactory.getVerifier(classname);
+        final Verifier verifier = VerifierFactory.getVerifier(className);
         VerificationResult result = verifier.doPass1();
 
-        assertEquals(VerificationResult.VERIFIED_OK, result.getStatus(), "Pass 1 verification of " + classname + " failed: " + result.getMessage());
+        assertEquals(VerificationResult.VERIFIED_OK, result.getStatus(), "Pass 1 verification of " + className + " failed: " + result.getMessage());
 
         result = verifier.doPass2();
 
-        assertEquals(VerificationResult.VERIFIED_OK, result.getStatus(), "Pass 2 verification of " + classname + " failed: " + result.getMessage());
+        assertEquals(VerificationResult.VERIFIED_OK, result.getStatus(), "Pass 2 verification of " + className + " failed: " + result.getMessage());
     }
 }

@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.classfile;
 
@@ -162,24 +161,24 @@ public final class Signature extends Attribute {
     /**
      * Construct object from file stream.
      *
-     * @param name_index Index in constant pool to CONSTANT_Utf8
+     * @param nameIndex Index in constant pool to CONSTANT_Utf8
      * @param length Content length in bytes
      * @param input Input stream
-     * @param constant_pool Array of constants
+     * @param constantPool Array of constants
      * @throws IOException if an I/O error occurs.
      */
-    Signature(final @NonNegative int name_index, final @NonNegative int length, final DataInput input, final ConstantPool constant_pool) throws IOException {
-        this(name_index, length, input.readUnsignedShort(), constant_pool);
+    Signature(final @NonNegative int nameIndex, final @NonNegative int length, final DataInput input, final ConstantPool constantPool) throws IOException {
+        this(nameIndex, length, input.readUnsignedShort(), constantPool);
     }
 
     /**
-     * @param name_index Index in constant pool to CONSTANT_Utf8
+     * @param nameIndex Index in constant pool to CONSTANT_Utf8
      * @param length Content length in bytes
      * @param signatureIndex Index in constant pool to CONSTANT_Utf8
-     * @param constant_pool Array of constants
+     * @param constantPool Array of constants
      */
-    public Signature(final @NonNegative int name_index, final @NonNegative int length, final @NonNegative int signatureIndex, final ConstantPool constant_pool) {
-        super(Const.ATTR_SIGNATURE, name_index, length, constant_pool);
+    public Signature(final @NonNegative int nameIndex, final @NonNegative int length, final @NonNegative int signatureIndex, final ConstantPool constantPool) {
+        super(Const.ATTR_SIGNATURE, nameIndex, length, constantPool);
         this.signatureIndex = signatureIndex;
     }
 

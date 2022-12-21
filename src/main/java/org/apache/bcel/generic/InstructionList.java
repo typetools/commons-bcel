@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.generic;
 
@@ -21,6 +20,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -143,8 +143,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
         } catch (final IOException e) {
             throw new ClassGenException(e.toString(), e);
         }
-        bytePositions = new int[count]; // Trim to proper size
-        System.arraycopy(pos, 0, bytePositions, 0, count);
+        bytePositions = Arrays.copyOf(pos, count); // Trim to proper size
         /*
          * Pass 2: Look for BranchInstruction and update their targets, i.e., convert offsets to instruction handles.
          */
@@ -473,15 +472,15 @@ public class InstructionList implements Iterable<InstructionHandle> {
      * @param to where to end deleting (inclusive)
      */
     public void delete(final Instruction from, final Instruction to) throws TargetLostException {
-        InstructionHandle from_ih;
-        InstructionHandle to_ih;
-        if ((from_ih = findInstruction1(from)) == null) {
+        InstructionHandle fromIh;
+        InstructionHandle toIh;
+        if ((fromIh = findInstruction1(from)) == null) {
             throw new ClassGenException("Instruction " + from + " is not contained in this list.");
         }
-        if ((to_ih = findInstruction2(to)) == null) {
+        if ((toIh = findInstruction2(to)) == null) {
             throw new ClassGenException("Instruction " + to + " is not contained in this list.");
         }
-        delete(from_ih, to_ih);
+        delete(fromIh, toIh);
     }
 
     /**
@@ -937,25 +936,25 @@ public class InstructionList implements Iterable<InstructionHandle> {
     }
 
     /**
-     * Redirect all references from old_target to new_target, i.e., update targets of branch instructions.
+     * Redirect all references from oldTarget to newTarget, i.e., update targets of branch instructions.
      *
-     * @param old_target the old target instruction handle
-     * @param new_target the new target instruction handle
+     * @param oldTarget the old target instruction handle
+     * @param newTarget the new target instruction handle
      */
-    public void redirectBranches(final InstructionHandle old_target, final InstructionHandle new_target) {
+    public void redirectBranches(final InstructionHandle oldTarget, final InstructionHandle newTarget) {
         for (InstructionHandle ih = start; ih != null; ih = ih.getNext()) {
             final Instruction i = ih.getInstruction();
             if (i instanceof BranchInstruction) {
                 final BranchInstruction b = (BranchInstruction) i;
                 final InstructionHandle target = b.getTarget();
-                if (target == old_target) {
-                    b.setTarget(new_target);
+                if (target == oldTarget) {
+                    b.setTarget(newTarget);
                 }
                 if (b instanceof Select) { // Either LOOKUPSWITCH or TABLESWITCH
                     final InstructionHandle[] targets = ((Select) b).getTargets();
                     for (int j = 0; j < targets.length; j++) {
-                        if (targets[j] == old_target) {
-                            ((Select) b).setTarget(j, new_target);
+                        if (targets[j] == oldTarget) {
+                            ((Select) b).setTarget(j, newTarget);
                         }
                     }
                 }
@@ -964,44 +963,44 @@ public class InstructionList implements Iterable<InstructionHandle> {
     }
 
     /**
-     * Redirect all references of exception handlers from old_target to new_target.
+     * Redirect all references of exception handlers from oldTarget to newTarget.
      *
      * @param exceptions array of exception handlers
-     * @param old_target the old target instruction handle
-     * @param new_target the new target instruction handle
+     * @param oldTarget the old target instruction handle
+     * @param newTarget the new target instruction handle
      * @see MethodGen
      */
-    public void redirectExceptionHandlers(final CodeExceptionGen[] exceptions, final InstructionHandle old_target, final InstructionHandle new_target) {
+    public void redirectExceptionHandlers(final CodeExceptionGen[] exceptions, final InstructionHandle oldTarget, final InstructionHandle newTarget) {
         for (final CodeExceptionGen exception : exceptions) {
-            if (exception.getStartPC() == old_target) {
-                exception.setStartPC(new_target);
+            if (exception.getStartPC() == oldTarget) {
+                exception.setStartPC(newTarget);
             }
-            if (exception.getEndPC() == old_target) {
-                exception.setEndPC(new_target);
+            if (exception.getEndPC() == oldTarget) {
+                exception.setEndPC(newTarget);
             }
-            if (exception.getHandlerPC() == old_target) {
-                exception.setHandlerPC(new_target);
+            if (exception.getHandlerPC() == oldTarget) {
+                exception.setHandlerPC(newTarget);
             }
         }
     }
 
     /**
-     * Redirect all references of local variables from old_target to new_target.
+     * Redirect all references of local variables from oldTarget to newTarget.
      *
      * @param lg array of local variables
-     * @param old_target the old target instruction handle
-     * @param new_target the new target instruction handle
+     * @param oldTarget the old target instruction handle
+     * @param newTarget the new target instruction handle
      * @see MethodGen
      */
-    public void redirectLocalVariables(final LocalVariableGen[] lg, final InstructionHandle old_target, final InstructionHandle new_target) {
+    public void redirectLocalVariables(final LocalVariableGen[] lg, final InstructionHandle oldTarget, final InstructionHandle newTarget) {
         for (final LocalVariableGen element : lg) {
             final InstructionHandle start = element.getStart();
             final InstructionHandle end = element.getEnd();
-            if (start == old_target) {
-                element.setStart(new_target);
+            if (start == oldTarget) {
+                element.setStart(newTarget);
             }
-            if (end == old_target) {
-                element.setEnd(new_target);
+            if (end == oldTarget) {
+                element.setEnd(newTarget);
             }
         }
     }
@@ -1038,7 +1037,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
         }
         first.setPrev(null); // Completely separated from rest of list
         last.setNext(null);
-        final List<InstructionHandle> target_vec = new ArrayList<>();
+        final List<InstructionHandle> targetVec = new ArrayList<>();
         for (InstructionHandle ih = first; ih != null; ih = ih.getNext()) {
             ih.getInstruction().dispose(); // e.g. BranchInstructions release their targets
         }
@@ -1047,7 +1046,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
             next = ih.getNext();
             length--;
             if (ih.hasTargeters()) { // Still got targeters?
-                target_vec.add(ih);
+                targetVec.add(ih);
                 buf.append(ih.toString(true)).append(" ");
                 ih.setNext(ih.setPrev(null));
             } else {
@@ -1055,8 +1054,8 @@ public class InstructionList implements Iterable<InstructionHandle> {
             }
         }
         buf.append("}");
-        if (!target_vec.isEmpty()) {
-            throw new TargetLostException(target_vec.toArray(InstructionHandle.EMPTY_ARRAY), buf.toString());
+        if (!targetVec.isEmpty()) {
+            throw new TargetLostException(targetVec.toArray(InstructionHandle.EMPTY_ARRAY), buf.toString());
         }
     }
 
@@ -1072,13 +1071,13 @@ public class InstructionList implements Iterable<InstructionHandle> {
     /**
      * Replace all references to the old constant pool with references to the new constant pool
      */
-    public void replaceConstantPool(final ConstantPoolGen old_cp, final ConstantPoolGen new_cp) {
+    public void replaceConstantPool(final ConstantPoolGen oldCp, final ConstantPoolGen newCp) {
         for (InstructionHandle ih = start; ih != null; ih = ih.getNext()) {
             final Instruction i = ih.getInstruction();
             if (i instanceof CPInstruction) {
                 final CPInstruction ci = (CPInstruction) i;
-                final Constant c = old_cp.getConstant(ci.getIndex());
-                ci.setIndex(new_cp.addConstant(c, old_cp));
+                final Constant c = oldCp.getConstant(ci.getIndex());
+                ci.setIndex(newCp.addConstant(c, oldCp));
             }
         }
     }
@@ -1093,8 +1092,8 @@ public class InstructionList implements Iterable<InstructionHandle> {
      * @param check Perform sanity checks, e.g. if all targeted instructions really belong to this list
      */
     public void setPositions(final boolean check) { // called by code in other packages
-        int max_additional_bytes = 0;
-        int additional_bytes = 0;
+        int maxAdditionalBytes = 0;
+        int additionalBytes = 0;
         @NonNegative int index = 0;
         @NonNegative int count = 0;
         final int[] pos = new int[length];
@@ -1139,11 +1138,11 @@ public class InstructionList implements Iterable<InstructionHandle> {
             switch (i.getOpcode()) {
             case Const.JSR:
             case Const.GOTO:
-                max_additional_bytes += 2;
+                maxAdditionalBytes += 2;
                 break;
             case Const.TABLESWITCH:
             case Const.LOOKUPSWITCH:
-                max_additional_bytes += 3;
+                maxAdditionalBytes += 3;
                 break;
             }
             index += i.getLength();
@@ -1153,7 +1152,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
          * branch targets are within this list.
          */
         for (InstructionHandle ih = start; ih != null; ih = ih.getNext()) {
-            additional_bytes += ih.updatePosition(additional_bytes, max_additional_bytes);
+            additionalBytes += ih.updatePosition(additionalBytes, maxAdditionalBytes);
         }
         /*
          * Pass 3: Update position numbers (which may have changed due to the preceding expansions), like pass 1.

@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.util;
 
@@ -83,19 +82,19 @@ public class ClassLoader extends java.lang.ClassLoader {
     }
 
     /**
-     * @param ignored_packages classes contained in these packages will be loaded with the system class loader
+     * @param ignoredPackages classes contained in these packages will be loaded with the system class loader
      * @param deferTo delegate class loader to use for ignored packages
      */
-    public ClassLoader(final java.lang.ClassLoader deferTo, final String[] ignored_packages) {
-        this(ignored_packages);
+    public ClassLoader(final java.lang.ClassLoader deferTo, final String[] ignoredPackages) {
+        this(ignoredPackages);
         this.repository = new ClassLoaderRepository(deferTo);
     }
 
     /**
-     * @param ignored_packages classes contained in these packages will be loaded with the system class loader
+     * @param ignoredPackages classes contained in these packages will be loaded with the system class loader
      */
-    public ClassLoader(final String[] ignored_packages) {
-        this.ignoredPackages = ignored_packages;
+    public ClassLoader(final String[] ignoredPackages) {
+        this.ignoredPackages = ignoredPackages;
     }
 
     /**
@@ -112,10 +111,10 @@ public class ClassLoader extends java.lang.ClassLoader {
      */
     protected JavaClass createClass(final String className) {
         final int index = className.indexOf(BCEL_TOKEN);
-        final String real_name = className.substring(index + BCEL_TOKEN.length());
+        final String realName = className.substring(index + BCEL_TOKEN.length());
         JavaClass clazz = null;
         try {
-            final byte[] bytes = Utility.decode(real_name, true);
+            final byte[] bytes = Utility.decode(realName, true);
             final ClassParser parser = new ClassParser(new ByteArrayInputStream(bytes), "foo");
             clazz = parser.parse();
         } catch (final IOException e) {
@@ -140,8 +139,8 @@ public class ClassLoader extends java.lang.ClassLoader {
             /*
              * Second try: Load system class using system class loader. You better don't mess around with them.
              */
-            for (final String ignored_package : ignoredPackages) {
-                if (className.startsWith(ignored_package)) {
+            for (final String ignoredPackage : ignoredPackages) {
+                if (className.startsWith(ignoredPackage)) {
                     cl = getParent().loadClass(className);
                     break;
                 }

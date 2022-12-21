@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.classfile;
 
@@ -42,7 +41,6 @@ import org.checkerframework.checker.index.qual.NonNegative;
  * The structure and the names comply, except for a few conveniences, exactly with the
  * <a href="http://docs.oracle.com/javase/specs/"> JVM specification 1.0</a>. See this paper for further details about
  * the structure of a bytecode file.
- *
  */
 @InheritableMustCall("parse")
 public final class ClassParser {
@@ -177,7 +175,7 @@ public final class ClassParser {
                     if (dataInputStream != null) {
                         dataInputStream.close();
                     }
-                } catch (final IOException ioe) {
+                } catch (final IOException ignored) {
                     // ignore close exceptions
                 }
             }
@@ -185,7 +183,7 @@ public final class ClassParser {
                 if (zip != null) {
                     zip.close();
                 }
-            } catch (final IOException ioe) {
+            } catch (final IOException ignored) {
                 // ignore close exceptions
             }
         }
@@ -201,9 +199,9 @@ public final class ClassParser {
      * @throws ClassFormatException if a class is malformed or cannot be interpreted as a class file
      */
     private void readAttributes() throws IOException, ClassFormatException {
-        final int attributes_count = dataInputStream.readUnsignedShort();
-        attributes = new Attribute[attributes_count];
-        for (int i = 0; i < attributes_count; i++) {
+        final int attributesCount = dataInputStream.readUnsignedShort();
+        attributes = new Attribute[attributesCount];
+        for (int i = 0; i < attributesCount; i++) {
             attributes[i] = Attribute.readAttribute(dataInputStream, constantPool);
         }
     }
@@ -246,9 +244,9 @@ public final class ClassParser {
      * @throws ClassFormatException if a class is malformed or cannot be interpreted as a class file
      */
     private void readFields() throws IOException, ClassFormatException {
-        final int fields_count = dataInputStream.readUnsignedShort();
-        fields = new Field[fields_count];
-        for (int i = 0; i < fields_count; i++) {
+        final int fieldsCount = dataInputStream.readUnsignedShort();
+        fields = new Field[fieldsCount];
+        for (int i = 0; i < fieldsCount; i++) {
             fields[i] = new Field(dataInputStream, constantPool);
         }
     }
@@ -273,9 +271,9 @@ public final class ClassParser {
      * @throws ClassFormatException if a class is malformed or cannot be interpreted as a class file
      */
     private void readInterfaces() throws IOException, ClassFormatException {
-        final int interfaces_count = dataInputStream.readUnsignedShort();
-        interfaces = new int[interfaces_count];
-        for (int i = 0; i < interfaces_count; i++) {
+        final int interfacesCount = dataInputStream.readUnsignedShort();
+        interfaces = new int[interfacesCount];
+        for (int i = 0; i < interfacesCount; i++) {
             interfaces[i] = dataInputStream.readUnsignedShort();
         }
     }
@@ -287,9 +285,9 @@ public final class ClassParser {
      * @throws ClassFormatException if a class is malformed or cannot be interpreted as a class file
      */
     private void readMethods() throws IOException {
-        final int methods_count = dataInputStream.readUnsignedShort();
-        methods = new Method[methods_count];
-        for (int i = 0; i < methods_count; i++) {
+        final int methodsCount = dataInputStream.readUnsignedShort();
+        methods = new Method[methodsCount];
+        for (int i = 0; i < methodsCount; i++) {
             methods[i] = new Method(dataInputStream, constantPool);
         }
     }

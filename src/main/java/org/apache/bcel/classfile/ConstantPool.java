@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.classfile;
 
@@ -86,12 +85,12 @@ public class ConstantPool implements Cloneable, Node, Iterable<Constant> {
      */
     public ConstantPool(final DataInput input) throws IOException {
         byte tag;
-        final int constant_pool_count = input.readUnsignedShort();
-        constantPool = new Constant[constant_pool_count];
+        final int constantPoolCount = input.readUnsignedShort();
+        constantPool = new Constant[constantPoolCount];
         /*
          * constantPool[0] is unused by the compiler and may be used freely by the implementation.
          */
-        for (int i = 1; i < constant_pool_count; i++) {
+        for (int i = 1; i < constantPoolCount; i++) {
             constantPool[i] = Constant.readConstant(input);
             /*
              * Quote from the JVM specification: "All eight byte constants take up two spots in the constant pool. If this is the n'th byte in the constant
@@ -299,7 +298,9 @@ public class ConstantPool implements Cloneable, Node, Iterable<Constant> {
     /**
      * Gets constant from constant pool.
      *
+     * @param <T> A {@link Constant} subclass
      * @param index Index in constant pool
+     * @param castTo The {@link Constant} subclass to cast to.
      * @return Constant value
      * @see Constant
      * @throws ClassFormatException if index is invalid
@@ -310,8 +311,13 @@ public class ConstantPool implements Cloneable, Node, Iterable<Constant> {
             throw new ClassFormatException("Invalid constant pool reference: " + index + ". Constant pool size is: " + constantPool.length);
         }
         final T c = castTo.cast(constantPool[index]);
-        if (c == null) {
-            throw new ClassFormatException("Constant pool at index " + index + " is null.");
+        if (c == null
+            // the 0th element is always null
+            && index != 0) {
+            final Constant prev = constantPool[index - 1];
+            if (prev == null || prev.getTag() != Const.CONSTANT_Double && prev.getTag() != Const.CONSTANT_Long) {
+                throw new ClassFormatException("Constant pool at index " + index + " is null.");
+            }
         }
         return c;
     }

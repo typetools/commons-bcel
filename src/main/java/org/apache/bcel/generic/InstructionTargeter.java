@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 
 package org.apache.bcel.generic;
@@ -37,9 +36,9 @@ public interface InstructionTargeter {
     /**
      * Replaces the target of this targeter from this old handle to the new handle.
      *
-     * @param old_ih the old handle
-     * @param new_ih the new handle
-     * @throws ClassGenException if old_ih is not targeted by this object
+     * @param oldIh the old handle
+     * @param newIh the new handle
+     * @throws ClassGenException if oldIh is not targeted by this object
      */
-    void updateTarget(InstructionHandle old_ih, InstructionHandle new_ih) throws ClassGenException;
+    void updateTarget(InstructionHandle oldIh, InstructionHandle newIh) throws ClassGenException;
 }

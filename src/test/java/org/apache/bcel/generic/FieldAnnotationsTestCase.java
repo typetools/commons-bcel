@@ -13,7 +13,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package org.apache.bcel.generic;
@@ -58,7 +57,7 @@ public class FieldAnnotationsTestCase extends AbstractTestCase {
      */
     @Test
     public void testFieldAnnotationEntrys() throws ClassNotFoundException {
-        final JavaClass clazz = getTestClass(PACKAGE_BASE_NAME + ".data.AnnotatedFields");
+        final JavaClass clazz = getTestJavaClass(PACKAGE_BASE_NAME + ".data.AnnotatedFields");
         // TODO L...;?
         checkAnnotatedField(clazz, "i", "L" + PACKAGE_BASE_SIG + "/data/SimpleAnnotation;", "id", "1");
         checkAnnotatedField(clazz, "s", "L" + PACKAGE_BASE_SIG + "/data/SimpleAnnotation;", "id", "2");
@@ -69,7 +68,7 @@ public class FieldAnnotationsTestCase extends AbstractTestCase {
      */
     @Test
     public void testFieldAnnotationEntrysReadWrite() throws ClassNotFoundException, IOException {
-        final JavaClass clazz = getTestClass(PACKAGE_BASE_NAME + ".data.AnnotatedFields");
+        final JavaClass clazz = getTestJavaClass(PACKAGE_BASE_NAME + ".data.AnnotatedFields");
         checkAnnotatedField(clazz, "i", "L" + PACKAGE_BASE_SIG + "/data/SimpleAnnotation;", "id", "1");
         checkAnnotatedField(clazz, "s", "L" + PACKAGE_BASE_SIG + "/data/SimpleAnnotation;", "id", "2");
         // Write it out
@@ -88,7 +87,7 @@ public class FieldAnnotationsTestCase extends AbstractTestCase {
     @Test
     public void testFieldAnnotationModification() throws ClassNotFoundException {
         final boolean dbg = false;
-        final JavaClass clazz = getTestClass(PACKAGE_BASE_NAME + ".data.AnnotatedFields");
+        final JavaClass clazz = getTestJavaClass(PACKAGE_BASE_NAME + ".data.AnnotatedFields");
         final ClassGen clg = new ClassGen(clazz);
         Field f = clg.getFields()[0];
         if (dbg) {

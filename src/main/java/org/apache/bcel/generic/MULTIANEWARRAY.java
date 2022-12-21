@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.generic;
 
@@ -34,7 +33,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * <PRE>
  * Stack: ..., count1, [count2, ...] -&gt; ..., arrayref
  * </PRE>
- *
  */
 @AnnotatedFor({"signedness"})
 public class MULTIANEWARRAY extends CPInstruction implements LoadClass, AllocationInstruction, ExceptionThrower {

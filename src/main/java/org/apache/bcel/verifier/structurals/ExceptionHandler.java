@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.verifier.structurals;
 
@@ -25,7 +24,6 @@ import org.checkerframework.dataflow.qual.Pure;
 /**
  * This class represents an exception handler; that is, an ObjectType representing a subclass of java.lang.Throwable and
  * the instruction the handler starts off (represented by an InstructionContext).
- *
  */
 public class ExceptionHandler {
 

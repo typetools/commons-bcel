@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.verifier.structurals;
 
@@ -427,16 +426,16 @@ public class Subroutines {
         TOPLEVEL = new SubroutineImpl();
 
         // Calculate "real" subroutines.
-        final Set<InstructionHandle> sub_leaders = new HashSet<>(); // Elements: InstructionHandle
+        final Set<InstructionHandle> subLeaders = new HashSet<>(); // Elements: InstructionHandle
         for (final InstructionHandle element : all) {
             final Instruction inst = element.getInstruction();
             if (inst instanceof JsrInstruction) {
-                sub_leaders.add(((JsrInstruction) inst).getTarget());
+                subLeaders.add(((JsrInstruction) inst).getTarget());
             }
         }
 
         // Build up the database.
-        for (final InstructionHandle astore : sub_leaders) {
+        for (final InstructionHandle astore : subLeaders) {
             final SubroutineImpl sr = new SubroutineImpl();
             sr.setLocalVariable(((ASTORE) astore.getInstruction()).getIndex());
             subroutines.put(astore, sr);
@@ -444,7 +443,7 @@ public class Subroutines {
 
         // Fake it a bit. We want a virtual "TopLevel" subroutine.
         subroutines.put(all[0], TOPLEVEL);
-        sub_leaders.add(all[0]);
+        subLeaders.add(all[0]);
 
         // Tell the subroutines about their JsrInstructions.
         // Note that there cannot be a JSR targeting the top-level
@@ -462,13 +461,13 @@ public class Subroutines {
         // Now do a BFS from every subroutine leader to find all the
         // instructions that belong to a subroutine.
         // we don't want to assign an instruction to two or more Subroutine objects.
-        final Set<InstructionHandle> instructions_assigned = new HashSet<>();
+        final Set<InstructionHandle> instructionsAssigned = new HashSet<>();
 
         // Graph coloring. Key: InstructionHandle, Value: ColourConstants enum .
         final Map<InstructionHandle, ColourConstants> colors = new HashMap<>();
 
         final List<InstructionHandle> qList = new ArrayList<>();
-        for (final InstructionHandle actual : sub_leaders) {
+        for (final InstructionHandle actual : subLeaders) {
             // Do some BFS with "actual" as the root of the graph.
             // Init colors
             for (final InstructionHandle element : all) {
@@ -508,11 +507,11 @@ public class Subroutines {
             for (final InstructionHandle element : all) {
                 if (colors.get(element) == ColourConstants.BLACK) {
                     ((SubroutineImpl) (actual == all[0] ? getTopLevel() : getSubroutine(actual))).addInstruction(element);
-                    if (instructions_assigned.contains(element)) {
+                    if (instructionsAssigned.contains(element)) {
                         throw new StructuralCodeConstraintException(
                             "Instruction '" + element + "' is part of more than one subroutine (or of the top level and a subroutine).");
                     }
-                    instructions_assigned.add(element);
+                    instructionsAssigned.add(element);
                 }
             }
             if (actual != all[0]) {// If we don't deal with the top-level 'subroutine'

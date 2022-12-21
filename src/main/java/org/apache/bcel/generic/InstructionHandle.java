@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.generic;
 
@@ -307,10 +306,10 @@ public @UsesObjectEquals class InstructionHandle {
      * (byte) positions and offsets by calling this function.
      *
      * @param offset additional offset caused by preceding (variable length) instructions
-     * @param max_offset the maximum offset that may be caused by these instructions
+     * @param maxOffset the maximum offset that may be caused by these instructions
      * @return additional offset caused by possible change of this instruction's length
      */
-    protected @NonNegative int updatePosition(final @NonNegative int offset, final @NonNegative int max_offset) {
+    protected @NonNegative int updatePosition(final @NonNegative int offset, final @NonNegative int maxOffset) {
         i_position += offset;
         return 0;
     }

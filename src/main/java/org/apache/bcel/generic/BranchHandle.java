@@ -13,7 +13,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 package org.apache.bcel.generic;
 
@@ -88,8 +87,8 @@ public final class BranchHandle extends InstructionHandle {
     }
 
     @Override
-    protected @NonNegative int updatePosition(final @NonNegative int offset, final @NonNegative int max_offset) {
-        final int x = bi.updatePosition(offset, max_offset);
+    protected @NonNegative int updatePosition(final @NonNegative int offset, final @NonNegative int maxOffset) {
+        final int x = bi.updatePosition(offset, maxOffset);
         super.setPosition(bi.getPosition());
         return x;
     }
@@ -97,7 +96,7 @@ public final class BranchHandle extends InstructionHandle {
     /**
      * Update target of instruction.
      */
-    public void updateTarget(final InstructionHandle old_ih, final InstructionHandle new_ih) {
-        bi.updateTarget(old_ih, new_ih);
+    public void updateTarget(final InstructionHandle oldIh, final InstructionHandle newIh) {
+        bi.updateTarget(oldIh, newIh);
     }
 }
