@@ -21,13 +21,14 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.apache.bcel.Const;
+import org.apache.bcel.util.Args;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
- * This class is derived from <em>Attribute</em> and declares this class as `synthetic', i.e., it needs special
+ * This class is derived from <em>Attribute</em> and declares this class as 'synthetic', i.e., it needs special
  * handling. The JVM specification states "A class member that does not appear in the source code must be marked using a
  * Synthetic attribute." It may appear in the ClassFile attribute table, a field_info table or a method_info table. This
  * class is intended to be instantiated from the <em>Attribute.readAttribute()</em> method.
@@ -46,7 +47,7 @@ public final class Synthetic extends Attribute {
      * @param constantPool The constant pool this attribute is associated with.
      */
     public Synthetic(final @NonNegative int nameIndex, final @NonNegative int length, final byte[] bytes, final ConstantPool constantPool) {
-        super(Const.ATTR_SYNTHETIC, nameIndex, length, constantPool);
+        super(Const.ATTR_SYNTHETIC, nameIndex, Args.require0(length, "Synthetic attribute length"), constantPool);
         this.bytes = bytes;
     }
 
@@ -71,6 +72,8 @@ public final class Synthetic extends Attribute {
     /**
      * Initialize from another object. Note that both objects use the same references (shallow copy). Use copy() for a
      * physical copy.
+     *
+     * @param c Source to copy.
      */
     public Synthetic(final Synthetic c) {
         this(c.getNameIndex(), c.getLength(), c.getBytes(), c.getConstantPool());

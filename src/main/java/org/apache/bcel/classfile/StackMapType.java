@@ -36,6 +36,8 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"signedness"})
 public final class StackMapType implements Cloneable {
 
+    public static final StackMapType[] EMPTY_ARRAY = {}; // must be public because BCELifier code generator writes calls to it
+
     private byte type;
     private @NonNegative int index; // Index to CONSTANT_Class or offset
     private ConstantPool constantPool;
@@ -45,10 +47,7 @@ public final class StackMapType implements Cloneable {
      * @param index index to constant pool, or byte code offset
      */
     public StackMapType(final byte type, final @NonNegative int index, final ConstantPool constantPool) {
-        if (type < Const.ITEM_Bogus || type > Const.ITEM_NewObject) {
-            throw new IllegalArgumentException("Illegal type for StackMapType: " + type);
-        }
-        this.type = type;
+        this.type = checkType(type);
         this.index = index;
         this.constantPool = constantPool;
     }
@@ -62,9 +61,16 @@ public final class StackMapType implements Cloneable {
     StackMapType(final DataInput file, final ConstantPool constantPool) throws IOException {
         this(file.readByte(), -1, constantPool);
         if (hasIndex()) {
-            this.index = file.readShort();
+            this.index = file.readUnsignedShort();
         }
         this.constantPool = constantPool;
+    }
+
+    private byte checkType(final byte type) {
+        if (type < Const.ITEM_Bogus || type > Const.ITEM_NewObject) {
+            throw new ClassFormatException("Illegal type for StackMapType: " + type);
+        }
+        return type;
     }
 
     /**
@@ -142,15 +148,12 @@ public final class StackMapType implements Cloneable {
         this.constantPool = constantPool;
     }
 
-    public void setIndex(final @NonNegative int t) {
-        index = t;
+    public void setIndex(final @NonNegative int index) {
+        this.index = index;
     }
 
-    public void setType(final byte t) {
-        if (t < Const.ITEM_Bogus || t > Const.ITEM_NewObject) {
-            throw new IllegalArgumentException("Illegal type for StackMapType: " + t);
-        }
-        type = t;
+    public void setType(final byte type) {
+        this.type = checkType(type);
     }
 
     /**

@@ -140,7 +140,7 @@ public class Class2HTML implements Constants {
         final int index = type.indexOf('['); // Type is an array?
         String baseType = type;
         if (index > -1) {
-            baseType = type.substring(0, index); // Tack of the `['
+            baseType = type.substring(0, index); // Tack of the '['
         }
         // test for basic type
         if (basicTypes.contains(baseType)) {
@@ -182,6 +182,7 @@ public class Class2HTML implements Constants {
      *
      * @param javaClass The class to write
      * @param dir The directory to put the files in
+     * @throws IOException Thrown when an I/O exception of some sort has occurred.
      */
     public Class2HTML(final JavaClass javaClass, final String dir) throws IOException {
         this(javaClass, dir, StandardCharsets.UTF_8);
@@ -193,7 +194,7 @@ public class Class2HTML implements Constants {
         this.dir = dir;
         className = javaClass.getClassName(); // Remember full name
         constantPool = javaClass.getConstantPool();
-        // Get package name by tacking off everything after the last `.'
+        // Get package name by tacking off everything after the last '.'
         final int index = className.lastIndexOf('.');
         if (index > -1) {
             classPackage = className.substring(0, index);

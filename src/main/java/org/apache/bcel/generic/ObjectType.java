@@ -34,6 +34,10 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 public class ObjectType extends ReferenceType {
 
     /**
+     * Constructs a new instance.
+     *
+     * @param className fully qualified class name, e.g. java.lang.String
+     * @return a new instance.
      * @since 6.0
      */
     public static ObjectType getInstance(final @BinaryName String className) {
@@ -43,6 +47,8 @@ public class ObjectType extends ReferenceType {
     private final @BinaryName String className; // Class name of type
 
     /**
+     * Constructs a new instance.
+     *
      * @param className fully qualified class name, e.g. java.lang.String
      */
     // The argument can be either @BinaryName or @InternalForm.  There is no Signature Checker
@@ -50,7 +56,7 @@ public class ObjectType extends ReferenceType {
     @SuppressWarnings("signature") // string manipulation
     public ObjectType(final @BinaryName String className) {
         // second argument to super is a @FieldDescriptor
-        super(Const.T_REFERENCE, "L" + className.replace('.', '/') + ";");
+        super(Const.T_REFERENCE, "L" + Utility.packageToPath(className) + ";");
         // This has an effect only if the argument is @InternalForm, not @BinaryName.
         this.className = Utility.pathToPackage(className);
     }
@@ -80,6 +86,7 @@ public class ObjectType extends ReferenceType {
     /**
      * @return name of referenced class
      */
+    @Override
     @Pure
     public @BinaryName String getClassName() {
         return className;
@@ -95,7 +102,6 @@ public class ObjectType extends ReferenceType {
 
     /**
      * If "this" doesn't reference a class, it references an interface or a non-existant entity.
-     *
      * @deprecated (since 6.0) this method returns an inaccurate result if the class or interface referenced cannot be
      *             found: use referencesClassExact() instead
      */

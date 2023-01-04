@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import org.apache.bcel.Const;
+import org.apache.bcel.util.Args;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
@@ -32,6 +33,15 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * <a href="http://java.sun.com/j2me/"> Java 2 Micro Edition</a> (J2ME). This attribute is used by the
  * <a href="http://java.sun.com/products/cldc/">KVM</a> and contained within the Code attribute of a method. See CLDC
  * specification �5.3.1.2
+ *
+ * <pre>
+ * StackMapTable_attribute {
+ *   u2              attribute_name_index;
+ *   u4              attribute_length;
+ *   u2              number_of_entries;
+ *   stack_map_frame entries[number_of_entries];
+ * }
+ * </pre>
  *
  * @see Code
  * @see StackMapEntry
@@ -47,16 +57,16 @@ public final class StackMap extends Attribute {
      *
      * @param nameIndex Index of name
      * @param length Content length in bytes
-     * @param input Input stream
+     * @param dataInput Input stream
      * @param constantPool Array of constants
      * @throws IOException if an I/O error occurs.
      */
-    StackMap(final @NonNegative int nameIndex, final @NonNegative int length, final DataInput input, final ConstantPool constantPool) throws IOException {
+    StackMap(final @NonNegative int nameIndex, final @NonNegative int length, final DataInput dataInput, final ConstantPool constantPool) throws IOException {
         this(nameIndex, length, (StackMapEntry[]) null, constantPool);
-        final int mapLength = input.readUnsignedShort();
+        final int mapLength = dataInput.readUnsignedShort();
         table = new StackMapEntry[mapLength];
         for (int i = 0; i < mapLength; i++) {
-            table[i] = new StackMapEntry(input, constantPool);
+            table[i] = new StackMapEntry(dataInput, constantPool);
         }
     }
 
@@ -69,9 +79,10 @@ public final class StackMap extends Attribute {
      *
      * @param constantPool Array of constants
      */
-    public StackMap(final @NonNegative int nameIndex, final @NonNegative int length, final StackMapEntry[] map, final ConstantPool constantPool) {
+    public StackMap(final @NonNegative int nameIndex, final @NonNegative int length, final StackMapEntry[] table, final ConstantPool constantPool) {
         super(Const.ATTR_STACK_MAP, nameIndex, length, constantPool);
-        this.table = map;
+        this.table = table != null ? table : StackMapEntry.EMPTY_ARRAY;
+        Args.requireU2(this.table.length, "table.length");
     }
 
     /**
@@ -114,7 +125,7 @@ public final class StackMap extends Attribute {
 
     @Pure
     public @NonNegative int getMapLength() {
-        return table == null ? 0 : table.length;
+        return table.length;
     }
 
     /**
@@ -129,9 +140,9 @@ public final class StackMap extends Attribute {
      * @param table Array of stack map entries
      */
     public void setStackMap(final StackMapEntry[] table) {
-        this.table = table;
+        this.table = table != null ? table : StackMapEntry.EMPTY_ARRAY;
         int len = 2; // Length of 'number_of_entries' field prior to the array of stack maps
-        for (final StackMapEntry element : table) {
+        for (final StackMapEntry element : this.table) {
             len += element.getMapEntrySize();
         }
         setLength(len);

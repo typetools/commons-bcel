@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 
 import org.apache.bcel.Const;
+import org.apache.bcel.util.Args;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
@@ -73,7 +74,8 @@ public final class LineNumberTable extends Attribute implements Iterable<LineNum
      */
     public LineNumberTable(final @NonNegative int nameIndex, final @NonNegative int length, final LineNumber[] lineNumberTable, final ConstantPool constantPool) {
         super(Const.ATTR_LINE_NUMBER_TABLE, nameIndex, length, constantPool);
-        this.lineNumberTable = lineNumberTable;
+        this.lineNumberTable = lineNumberTable != null ? lineNumberTable : LineNumber.EMPTY_ARRAY;
+        Args.requireU2(this.lineNumberTable.length, "lineNumberTable.length");
     }
 
     /*

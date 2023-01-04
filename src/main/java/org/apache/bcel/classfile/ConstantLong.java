@@ -35,6 +35,8 @@ public final class ConstantLong extends Constant implements ConstantObject {
 
     /**
      * Initialize from another object.
+     *
+     * @param c Source to copy.
      */
     public ConstantLong(final ConstantLong c) {
         this(c.getBytes());

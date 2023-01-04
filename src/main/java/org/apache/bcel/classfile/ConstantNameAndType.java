@@ -40,6 +40,8 @@ public final class ConstantNameAndType extends Constant {
 
     /**
      * Initialize from another object.
+     *
+     * @param c Source to copy.
      */
     public ConstantNameAndType(final ConstantNameAndType c) {
         this(c.getNameIndex(), c.getSignatureIndex());

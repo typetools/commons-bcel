@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import org.apache.bcel.Const;
+import org.apache.bcel.util.Args;
 import org.apache.commons.lang3.ArrayUtils;
 
 import org.checkerframework.checker.index.qual.NonNegative;
@@ -67,11 +68,14 @@ public final class ModulePackages extends Attribute {
     public ModulePackages(final @NonNegative int nameIndex, final @NonNegative int length, final int[] packageIndexTable, final ConstantPool constantPool) {
         super(Const.ATTR_MODULE_PACKAGES, nameIndex, length, constantPool);
         this.packageIndexTable = packageIndexTable != null ? packageIndexTable : ArrayUtils.EMPTY_INT_ARRAY;
+        Args.requireU2(this.packageIndexTable.length, "packageIndexTable.length");
     }
 
     /**
      * Initialize from another object. Note that both objects use the same references (shallow copy). Use copy() for a
      * physical copy.
+     *
+     * @param c Source to copy.
      */
     public ModulePackages(final ModulePackages c) {
         this(c.getNameIndex(), c.getLength(), c.getPackageIndexTable(), c.getConstantPool());

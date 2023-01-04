@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.JavaClass;
+import org.apache.bcel.classfile.Utility;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
@@ -78,12 +79,12 @@ public class ClassLoaderRepository implements Repository {
      */
     @Override
     public JavaClass loadClass(final String className) throws ClassNotFoundException {
-        final String classFile = className.replace('.', '/');
+        final String classFile = Utility.packageToPath(className);
         JavaClass RC = findClass(className);
         if (RC != null) {
             return RC;
         }
-        try (InputStream is = loader.getResourceAsStream(classFile + ".class")) {
+        try (InputStream is = loader.getResourceAsStream(classFile + JavaClass.EXTENSION)) {
             if (is == null) {
                 throw new ClassNotFoundException(className + " not found.");
             }

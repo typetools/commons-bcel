@@ -54,10 +54,7 @@ public class MemorySensitiveClassPathRepository extends AbstractClassPathReposit
     @Override
     public @Nullable JavaClass findClass(final String className) {
         final SoftReference<JavaClass> ref = loadedClasses.get(className);
-        if (ref == null) {
-            return null;
-        }
-        return ref.get();
+        return ref == null ? null : ref.get();
     }
 
     /**

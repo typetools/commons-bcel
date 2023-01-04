@@ -28,7 +28,7 @@ import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
- * Represents the default value of a annotation for a method info
+ * Represents the default value of a annotation for a method info.
  *
  * @since 6.0
  */

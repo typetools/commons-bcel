@@ -57,6 +57,13 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 public class JavaClass extends AccessFlags implements Cloneable, Node, Comparable<JavaClass> {
 
     /**
+     * The standard class file extension.
+     *
+     * @since 6.7.0
+     */
+    public static final String EXTENSION = ".class";
+
+    /**
      * Empty array.
      *
      * @since 6.6.0
@@ -84,7 +91,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     };
 
     /*
-     * Print debug information depending on `JavaClass.debug'
+     * Print debug information depending on 'JavaClass.debug'
      */
     static void Debug(final String str) {
         if (debug) {
@@ -218,8 +225,8 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
             }
         }
         /*
-         * According to the specification the following entries must be of type `ConstantClass' but we check that anyway via the
-         * `ConstPool.getConstant' method.
+         * According to the specification the following entries must be of type 'ConstantClass' but we check that anyway via the
+         * 'ConstPool.getConstant' method.
          */
         className = constantPool.getConstantString(classNameIndex, Const.CONSTANT_Class);
         className = Utility.compactClassName(className, false);
@@ -400,6 +407,8 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
 
     /**
      * Get all interfaces implemented by this JavaClass (transitively).
+     *
+     * @throws ClassNotFoundException if any of the class's superclasses or interfaces can't be found.
      */
     public JavaClass[] getAllInterfaces() throws ClassNotFoundException {
         final ClassQueue queue = new ClassQueue();
@@ -514,6 +523,8 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
 
     /**
      * Get interfaces directly implemented by this JavaClass.
+     *
+     * @throws ClassNotFoundException if any of the class's interfaces can't be found.
      */
     public JavaClass[] getInterfaces() throws ClassNotFoundException {
         final String[] interfaces = getInterfaceNames();
@@ -587,11 +598,27 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     }
 
     /**
-     * @return absolute path to file where this class was read from
+     * @return file name where this class was read from
      */
     @Pure
     public String getSourceFileName() {
         return sourceFileName;
+    }
+
+    /**
+     * Gets the source file path including the package path.
+     *
+     * @return path to original source file of parsed class, relative to original source directory.
+     * @since 6.7.0
+     */
+    public String getSourceFilePath() {
+        final StringBuilder outFileName = new StringBuilder();
+        if (!packageName.isEmpty()) {
+            outFileName.append(Utility.packageToPath(packageName));
+            outFileName.append('/');
+        }
+        outFileName.append(sourceFileName);
+        return outFileName.toString();
     }
 
     /**

@@ -71,7 +71,7 @@ public final class PerformanceTest {
         final NanoTimer mserTime = new NanoTimer();
         final NanoTimer serTime = new NanoTimer();
 
-        System.out.println("parsing " + lib);
+        System.out.println("Parsing " + lib);
 
         total.start();
         try (JarFile jar = new JarFile(lib)) {
@@ -79,7 +79,7 @@ public final class PerformanceTest {
 
             while (en.hasMoreElements()) {
                 final JarEntry e = (JarEntry) en.nextElement();
-                if (e.getName().endsWith(".class")) {
+                if (e.getName().endsWith(JavaClass.EXTENSION)) {
                     byte[] bytes;
                     try (InputStream in = jar.getInputStream(e)) {
                         bytes = read(in);

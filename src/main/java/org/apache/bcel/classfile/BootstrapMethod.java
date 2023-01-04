@@ -47,6 +47,8 @@ public class BootstrapMethod implements Cloneable {
 
     /**
      * Initialize from another object.
+     *
+     * @param c Source to copy.
      */
     public BootstrapMethod(final BootstrapMethod c) {
         this(c.getBootstrapMethodRef(), c.getBootstrapArguments());

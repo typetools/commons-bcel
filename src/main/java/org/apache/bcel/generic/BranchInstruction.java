@@ -156,7 +156,7 @@ public abstract @UsesObjectEquals class BranchInstruction extends Instruction im
 
     /**
      * @param target branch target
-     * @return the offset to `target' relative to this instruction
+     * @return the offset to 'target' relative to this instruction
      */
     protected int getTargetOffset(final InstructionHandle target) {
         if (target == null) {
@@ -247,7 +247,7 @@ public abstract @UsesObjectEquals class BranchInstruction extends Instruction im
 
     /**
      * Called by InstructionList.setPositions when setting the position for every instruction. In the presence of variable
-     * length instructions `setPositions' performs multiple passes over the instruction list to calculate the correct (byte)
+     * length instructions 'setPositions' performs multiple passes over the instruction list to calculate the correct (byte)
      * positions and offsets by calling this function.
      *
      * @param offset additional offset caused by preceding (variable length) instructions

@@ -21,6 +21,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.apache.bcel.Const;
+import org.apache.bcel.util.Args;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -41,6 +42,8 @@ public final class Deprecated extends Attribute {
     /**
      * Initialize from another object. Note that both objects use the same references (shallow copy). Use clone() for a
      * physical copy.
+     *
+     * @param c Source to copy.
      */
     public Deprecated(final Deprecated c) {
         this(c.getNameIndex(), c.getLength(), c.getBytes(), c.getConstantPool());
@@ -53,7 +56,7 @@ public final class Deprecated extends Attribute {
      * @param constantPool Array of constants
      */
     public Deprecated(final @NonNegative int nameIndex, final @NonNegative int length, final byte @Nullable [] bytes, final ConstantPool constantPool) {
-        super(Const.ATTR_DEPRECATED, nameIndex, length, constantPool);
+        super(Const.ATTR_DEPRECATED, nameIndex, Args.require0(length, "Deprecated attribute length"), constantPool);
         this.bytes = bytes;
     }
 

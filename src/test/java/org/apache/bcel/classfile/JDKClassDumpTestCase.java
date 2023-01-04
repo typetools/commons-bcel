@@ -17,19 +17,22 @@
 
 package org.apache.bcel.classfile;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import org.apache.bcel.generic.JavaHome;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Test that dump() methods work on the JDK classes
@@ -52,17 +55,16 @@ public class JDKClassDumpTestCase {
         }
     }
 
-
     @SuppressWarnings("builder")  // test code
-    private void testJar(final File file) throws Exception {
-        System.out.println("parsing " + file);
-        try (JarFile jar = new JarFile(file)) {
+    private void testJar(final Path path) throws Exception {
+        try (JarFile jar = new JarFile(path.toFile())) {
+            System.out.println("Parsing " + jar.getName());
             final Enumeration<JarEntry> en = jar.entries();
             while (en.hasMoreElements()) {
                 final JarEntry e = en.nextElement();
                 final String name = e.getName();
-                if (name.endsWith(".class")) {
-                    // System.out.println("parsing " + name);
+                if (name.endsWith(JavaClass.EXTENSION)) {
+                    // System.out.println("Parsing " + name);
                     try (InputStream inputStream1 = jar.getInputStream(e); InputStream inputStream2 = jar.getInputStream(e);) {
                         compare(new ClassParser(inputStream1, name).parse(), inputStream2, name);
                     }
@@ -71,19 +73,14 @@ public class JDKClassDumpTestCase {
         }
     }
 
-    @Test
-    public void testPerformance() throws Exception {
-        final File javaLib = new File(System.getProperty("java.home") + "/lib");
-        javaLib.listFiles(file -> {
-            if (file.getName().endsWith(".jar")) {
-                try {
-                    testJar(file);
-                } catch (final Exception e) {
-                    fail(e.getMessage());
-                }
-            }
-            return false;
-        });
+    @ParameterizedTest
+    @MethodSource("org.apache.bcel.generic.JavaHome#streamJarPath")
+    public void testPerformance(final Path path) throws Exception {
+        assertDoesNotThrow(() -> testJar(path));
     }
 
+    @Test
+    public void testPerformanceJmod() throws Exception {
+        JavaHome.streamModulePath().forEach(path -> assertDoesNotThrow(() -> testJar(path)));
+    }
 }

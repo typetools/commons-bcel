@@ -32,11 +32,13 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"signedness"})
 public class RuntimeInvisibleAnnotations extends Annotations {
+
     /**
      * @param nameIndex Index pointing to the name <em>Code</em>
      * @param length Content length in bytes
      * @param input Input stream
      * @param constantPool Array of constants
+     * @throws IOException Thrown when an I/O exception of some sort has occurred.
      */
     public RuntimeInvisibleAnnotations(final @NonNegative int nameIndex, final @NonNegative int length, final DataInput input, final ConstantPool constantPool) throws IOException {
         super(Const.ATTR_RUNTIME_INVISIBLE_ANNOTATIONS, nameIndex, length, input, constantPool, false);

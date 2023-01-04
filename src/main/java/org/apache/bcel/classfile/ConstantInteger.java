@@ -35,6 +35,8 @@ public final class ConstantInteger extends Constant implements ConstantObject {
 
     /**
      * Initialize from another object.
+     *
+     * @param c Source to copy.
      */
     public ConstantInteger(final ConstantInteger c) {
         this(c.getBytes());

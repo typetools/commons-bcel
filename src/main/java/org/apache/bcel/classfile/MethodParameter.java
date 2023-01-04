@@ -36,7 +36,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @since 6.0
  */
 @AnnotatedFor({"signedness"})
-public class MethodParameter implements Cloneable {
+public class MethodParameter implements Cloneable, Node {
 
     /** Index of the CONSTANT_Utf8_info structure in the constant_pool table representing the name of the parameter */
     private @NonNegative int nameIndex;
@@ -59,6 +59,7 @@ public class MethodParameter implements Cloneable {
         accessFlags = input.readUnsignedShort();
     }
 
+    @Override
     public void accept(final Visitor v) {
         v.visitMethodParameter(this);
     }

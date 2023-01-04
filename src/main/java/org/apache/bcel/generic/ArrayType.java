@@ -21,6 +21,7 @@ import org.apache.bcel.Const;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signature.qual.ClassGetName;
+import org.checkerframework.checker.signature.qual.FieldDescriptor;
 import org.checkerframework.dataflow.qual.Pure;
 
 /**
@@ -35,6 +36,7 @@ public final class ArrayType extends ReferenceType {
      * Convenience constructor for array type, e.g. int[]
      *
      * @param type array type, e.g. T_INT
+     * @param dimensions array dimensions
      */
     public ArrayType(final byte type, final @NonNegative int dimensions) {
         this(BasicType.getType(type), dimensions);
@@ -44,6 +46,7 @@ public final class ArrayType extends ReferenceType {
      * Convenience constructor for reference array type, e.g. Object[]
      *
      * @param className complete name of class (java.lang.String, e.g.)
+     * @param dimensions array dimensions
      */
     public ArrayType(final @ClassGetName String className, final @NonNegative int dimensions) {
         this(ObjectType.getInstance(className), dimensions);
@@ -53,6 +56,7 @@ public final class ArrayType extends ReferenceType {
      * Constructor for array of given type
      *
      * @param type type of array (may be an array itself)
+     * @param dimensions array dimensions
      */
     @SuppressWarnings("signature") // string concatenation
     public ArrayType(final Type type, final @NonNegative int dimensions) {
@@ -100,6 +104,17 @@ public final class ArrayType extends ReferenceType {
     @Pure
     public Type getBasicType() {
         return basicType;
+    }
+
+    /**
+     * Gets the name of referenced class.
+     *
+     * @return name of referenced class.
+     * @since 6.7.0
+     */
+    @Override
+    public @FieldDescriptor String getClassName() {
+        return signature;
     }
 
     /**

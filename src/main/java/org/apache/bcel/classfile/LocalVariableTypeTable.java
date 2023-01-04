@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 
 import org.apache.bcel.Const;
+import org.apache.bcel.util.Args;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -80,7 +81,8 @@ public class LocalVariableTypeTable extends Attribute implements Iterable<LocalV
 
     public LocalVariableTypeTable(final @NonNegative int nameIndex, final @NonNegative int length, final LocalVariable[] localVariableTable, final ConstantPool constantPool) {
         super(Const.ATTR_LOCAL_VARIABLE_TYPE_TABLE, nameIndex, length, constantPool);
-        this.localVariableTypeTable = localVariableTable;
+        this.localVariableTypeTable = localVariableTypeTable != null ? localVariableTypeTable : LocalVariable.EMPTY_ARRAY;
+        Args.requireU2(this.localVariableTypeTable.length, "localVariableTypeTable.length");
     }
 
     public LocalVariableTypeTable(final LocalVariableTypeTable c) {

@@ -16,7 +16,6 @@
  */
 package org.apache.bcel.util;
 
-import org.checkerframework.checker.calledmethods.qual.EnsuresCalledMethods;
 import java.io.Closeable;
 import java.io.DataInputStream;
 import java.io.File;
@@ -37,9 +36,14 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.bcel.classfile.JavaClass;
+import org.apache.bcel.classfile.Utility;
+
+import org.checkerframework.checker.calledmethods.qual.EnsuresCalledMethods;
 import org.checkerframework.checker.mustcall.qual.Owning;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
@@ -264,7 +268,7 @@ public class ClassPath implements Closeable {
 
         @Override
         protected String toEntryName(final String name, final String suffix) {
-            return packageToFolder(name) + suffix;
+            return Utility.packageToPath(name) + suffix;
         }
 
     }
@@ -285,7 +289,7 @@ public class ClassPath implements Closeable {
 
         @Override
         @Nullable ClassFile getClassFile(final String name, final String suffix) {
-            final Path resolved = modulePath.resolve(packageToFolder(name) + suffix);
+            final Path resolved = modulePath.resolve(Utility.packageToPath(name) + suffix);
             if (Files.exists(resolved)) {
                 return new ClassFile() {
 
@@ -430,7 +434,7 @@ public class ClassPath implements Closeable {
 
         @Override
         protected String toEntryName(final String name, final String suffix) {
-            return "classes/" + packageToFolder(name) + suffix;
+            return "classes/" + Utility.packageToPath(name) + suffix;
         }
 
     }
@@ -442,7 +446,7 @@ public class ClassPath implements Closeable {
 
     private static final FilenameFilter MODULES_FILTER = (dir, name) -> {
         name = name.toLowerCase(Locale.ENGLISH);
-        return name.endsWith(".jmod");
+        return name.endsWith(org.apache.bcel.classfile.Module.EXTENSION);
     };
 
     @SuppressWarnings("builder:required.method.not.called")  // static field, never closed
@@ -505,14 +509,7 @@ public class ClassPath implements Closeable {
             }
         }
 
-        final StringBuilder buf = new StringBuilder();
-        String separator = "";
-        for (final String path : list) {
-            buf.append(separator);
-            separator = File.pathSeparator;
-            buf.append(path);
-        }
-        return buf.toString().intern();
+        return list.stream().collect(Collectors.joining(File.pathSeparator));
     }
 
     private static void getPathComponents(final String path, final List<String> list) {
@@ -528,15 +525,11 @@ public class ClassPath implements Closeable {
         }
     }
 
-    static String packageToFolder(final String name) {
-        return name.replace('.', '/');
-    }
+    private final String classPathString;
 
-    private final String classPath;
+    private final @Nullable ClassPath parent;
 
-    private ClassPath parent;
-
-    private final @Owning AbstractPathEntry[] paths;
+    private final @Owning List<AbstractPathEntry> paths;
 
     /**
      * Search for classes in CLASSPATH.
@@ -548,34 +541,25 @@ public class ClassPath implements Closeable {
         this(getClassPath());
     }
 
-    public ClassPath(final ClassPath parent, final String classPath) {
-        this(classPath);
-        this.parent = parent;
-    }
-
-    /**
-     * Search for classes in given path.
-     *
-     * @param classPath
-     */
     @SuppressWarnings("builder:required.method.not.called") // list of @Owning elements
-    public ClassPath(final String classPath) {
-        this.classPath = classPath;
-        final List<AbstractPathEntry> list = new ArrayList<>();
-        for (final StringTokenizer tokenizer = new StringTokenizer(classPath, File.pathSeparator); tokenizer.hasMoreTokens();) {
+    public ClassPath(final @Nullable ClassPath parent, final String classPathString) {
+        this.parent = parent;
+        this.classPathString = Objects.requireNonNull(classPathString, "classPathString");
+        this.paths = new ArrayList<>();
+        for (final StringTokenizer tokenizer = new StringTokenizer(classPathString, File.pathSeparator); tokenizer.hasMoreTokens();) {
             final String path = tokenizer.nextToken();
             if (!path.isEmpty()) {
                 final File file = new File(path);
                 try {
                     if (file.exists()) {
                         if (file.isDirectory()) {
-                            list.add(new Dir(path));
-                        } else if (path.endsWith(".jmod")) {
-                            list.add(new Module(new ZipFile(file)));
+                            paths.add(new Dir(path));
+                        } else if (path.endsWith(org.apache.bcel.classfile.Module.EXTENSION)) {
+                            paths.add(new Module(new ZipFile(file)));
                         } else if (path.endsWith(ModularRuntimeImage.MODULES_PATH)) {
-                            list.add(new JrtModules(ModularRuntimeImage.MODULES_PATH));
+                            paths.add(new JrtModules(ModularRuntimeImage.MODULES_PATH));
                         } else {
-                            list.add(new Jar(new ZipFile(file)));
+                            paths.add(new Jar(new ZipFile(file)));
                         }
                     }
                 } catch (final IOException e) {
@@ -585,27 +569,37 @@ public class ClassPath implements Closeable {
                 }
             }
         }
-        paths = new AbstractPathEntry[list.size()];
-        list.toArray(paths);
+    }
+
+    /**
+     * Search for classes in given path.
+     *
+     * @param classPath
+     */
+    public ClassPath(final String classPath) {
+        this(null, classPath);
     }
 
     @Override
     public void close() throws IOException {
-        if (paths != null) {
             for (final AbstractPathEntry path : paths) {
                 path.close();
             }
         }
 
-    }
-
     @Override
-    public boolean equals(final @Nullable Object o) {
-        if (o instanceof ClassPath) {
-            final ClassPath cp = (ClassPath) o;
-            return classPath.equals(cp.toString());
+    public boolean equals(final @Nullable Object obj) {
+        if (this == obj) {
+            return true;
         }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
         return false;
+    }
+        final ClassPath other = (ClassPath) obj;
+        return Objects.equals(classPathString, other.classPathString);
     }
 
     /**
@@ -614,7 +608,7 @@ public class ClassPath implements Closeable {
      * @throws IOException if an I/O error occurs.
      */
     public byte[] getBytes(final String name) throws IOException {
-        return getBytes(name, ".class");
+        return getBytes(name, JavaClass.EXTENSION);
     }
 
     /**
@@ -646,7 +640,7 @@ public class ClassPath implements Closeable {
      * @throws IOException if an I/O error occurs.
      */
     public @Nullable ClassFile getClassFile(final String name) throws IOException {
-        return getClassFile(name, ".class");
+        return getClassFile(name, JavaClass.EXTENSION);
     }
 
     /**
@@ -673,6 +667,7 @@ public class ClassPath implements Closeable {
         throw new IOException("Couldn't find: " + name + suffix);
     }
 
+    @SuppressWarnings("builder:required.method.not.called") // list of @Owning elements
     private @Nullable ClassFile getClassFileInternal(final String name, final String suffix) {
         for (final AbstractPathEntry path : paths) {
             final ClassFile cf = path.getClassFile(name, suffix);
@@ -684,16 +679,23 @@ public class ClassPath implements Closeable {
     }
 
     /**
+     * Gets an InputStream.
+     * <p>
+     * The caller is responsible for closing the InputStream.
+     * </p>
      * @param name fully qualified class name, e.g. java.lang.String
      * @return input stream for class
      * @throws IOException if an I/O error occurs.
      */
     public InputStream getInputStream(final String name) throws IOException {
-        return getInputStream(packageToFolder(name), ".class");
+        return getInputStream(Utility.packageToPath(name), JavaClass.EXTENSION);
     }
 
     /**
-     * Return stream for class or resource on CLASSPATH.
+     * Gets an InputStream for a class or resource on the classpath.
+     * <p>
+     * The caller is responsible for closing the InputStream.
+     * </p>
      *
      * @param name fully qualified file name, e.g. java/lang/String
      * @param suffix file name ends with suff, e.g. .java
@@ -701,14 +703,16 @@ public class ClassPath implements Closeable {
      * @throws IOException if an I/O error occurs.
      */
     public InputStream getInputStream(final String name, final String suffix) throws IOException {
-        InputStream inputStream = null;
         try {
-            inputStream = getClass().getClassLoader().getResourceAsStream(name + suffix); // may return null
-        } catch (final Exception ignored) {
-            // ignored
-        }
+            final java.lang.ClassLoader classLoader = getClass().getClassLoader();
+            @SuppressWarnings("builder:required.method.not.called") // list of @Owning elements
+            final
+            InputStream inputStream = classLoader == null ? null : classLoader.getResourceAsStream(name + suffix);
         if (inputStream != null) {
             return inputStream;
+        }
+        } catch (final Exception ignored) {
+            // ignored
         }
         return getClassFile(name, suffix).getInputStream();
     }
@@ -743,6 +747,7 @@ public class ClassPath implements Closeable {
      * @return URL supplying the resource, or null if no resource with that name.
      * @since 6.0
      */
+    @SuppressWarnings("builder:required.method.not.called") // list of @Owning elements
     public @Nullable URL getResource(final String name) {
         for (final AbstractPathEntry path : paths) {
             URL url;
@@ -758,6 +763,7 @@ public class ClassPath implements Closeable {
      * @return InputStream supplying the resource, or null if no resource with that name.
      * @since 6.0
      */
+    @SuppressWarnings("builder:required.method.not.called") // list of @Owning elements
     public @Nullable InputStream getResourceAsStream(final String name) {
         for (final AbstractPathEntry path : paths) {
             InputStream is;
@@ -773,6 +779,7 @@ public class ClassPath implements Closeable {
      * @return An Enumeration of URLs supplying the resource, or an empty Enumeration if no resource with that name.
      * @since 6.0
      */
+    @SuppressWarnings("builder:required.method.not.called") // list of @Owning elements
     public Enumeration<URL> getResources(final String name) {
         final Vector<URL> results = new Vector<>();
         for (final AbstractPathEntry path : paths) {
@@ -786,10 +793,7 @@ public class ClassPath implements Closeable {
 
     @Override
     public int hashCode() {
-        if (parent != null) {
-            return classPath.hashCode() + parent.hashCode();
-        }
-        return classPath.hashCode();
+        return classPathString.hashCode();
     }
 
     /**
@@ -798,8 +802,8 @@ public class ClassPath implements Closeable {
     @Override
     public String toString() {
         if (parent != null) {
-            return parent + File.pathSeparator + classPath;
+            return parent + File.pathSeparator + classPathString;
         }
-        return classPath;
+        return classPathString;
     }
 }

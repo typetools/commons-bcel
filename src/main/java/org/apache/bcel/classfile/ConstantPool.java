@@ -199,7 +199,7 @@ public class ConstantPool implements Cloneable, Node, Iterable<Constant> {
     }
 
     /**
-     * Retrieves constant at `index' from constant pool and resolve it to a string representation.
+     * Retrieves constant at 'index' from constant pool and resolve it to a string representation.
      *
      * @param index of constant in constant pool
      * @param tag   expected type
@@ -290,7 +290,7 @@ public class ConstantPool implements Cloneable, Node, Iterable<Constant> {
     public <T extends Constant> T getConstant(final @NonNegative int index, final byte tag, final Class<T> castTo) throws ClassFormatException {
         final T c = getConstant(index);
         if (c.getTag() != tag) {
-            throw new ClassFormatException("Expected class `" + Const.getConstantName(tag) + "' at index " + index + " and got " + c);
+            throw new ClassFormatException("Expected class '" + Const.getConstantName(tag) + "' at index " + index + " and got " + c);
         }
         return c;
     }
@@ -308,8 +308,13 @@ public class ConstantPool implements Cloneable, Node, Iterable<Constant> {
      */
     public <T extends Constant> T getConstant(final @NonNegative int index, final Class<T> castTo) throws ClassFormatException {
         if (index >= constantPool.length || index < 0) {
-            throw new ClassFormatException("Invalid constant pool reference: " + index + ". Constant pool size is: " + constantPool.length);
+            throw new ClassFormatException("Invalid constant pool reference using index: " + index + ". Constant pool size is: " + constantPool.length);
         }
+        if (constantPool[index] != null && !castTo.isAssignableFrom(constantPool[index].getClass())) {
+            throw new ClassFormatException("Invalid constant pool reference at index: " + index +
+                    ". Expected " + castTo + " but was " + constantPool[index].getClass());
+        }
+        // Previous check ensures this won't throw a ClassCastException
         final T c = castTo.cast(constantPool[index]);
         if (c == null
             // the 0th element is always null
@@ -344,8 +349,8 @@ public class ConstantPool implements Cloneable, Node, Iterable<Constant> {
     }
 
     /**
-     * Gets string from constant pool and bypass the indirection of `ConstantClass' and `ConstantString' objects. I.e. these classes have an index field that
-     * points to another entry of the constant pool of type `ConstantUtf8' which contains the real data.
+     * Gets string from constant pool and bypass the indirection of 'ConstantClass' and 'ConstantString' objects. I.e. these classes have an index field that
+     * points to another entry of the constant pool of type 'ConstantUtf8' which contains the real data.
      *
      * @param index Index in constant pool
      * @param tag   Tag of expected constant, either ConstantClass or ConstantString
@@ -376,7 +381,6 @@ public class ConstantPool implements Cloneable, Node, Iterable<Constant> {
             break;
         case Const.CONSTANT_Utf8:
             return getConstantUtf8(index).getBytes();
-        // fallthrough
         default:
             throw new IllegalArgumentException("getConstantString called with illegal tag " + tag);
         }

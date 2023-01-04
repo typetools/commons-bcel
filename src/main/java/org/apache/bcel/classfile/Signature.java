@@ -21,8 +21,10 @@ import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 import org.apache.bcel.Const;
+import org.apache.bcel.util.Args;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
@@ -178,13 +180,17 @@ public final class Signature extends Attribute {
      * @param constantPool Array of constants
      */
     public Signature(final @NonNegative int nameIndex, final @NonNegative int length, final @NonNegative int signatureIndex, final ConstantPool constantPool) {
-        super(Const.ATTR_SIGNATURE, nameIndex, length, constantPool);
+        super(Const.ATTR_SIGNATURE, nameIndex, Args.require(length, 2, "Signature length attribute"), constantPool);
         this.signatureIndex = signatureIndex;
+        // validate:
+        Objects.requireNonNull(constantPool.getConstantUtf8(signatureIndex), "constantPool.getConstantUtf8(signatureIndex)");
     }
 
     /**
      * Initialize from another object. Note that both objects use the same references (shallow copy). Use clone() for a
      * physical copy.
+     *
+     * @param c Source to copy.
      */
     public Signature(final Signature c) {
         this(c.getNameIndex(), c.getLength(), c.getSignatureIndex(), c.getConstantPool());
@@ -249,7 +255,6 @@ public final class Signature extends Attribute {
      */
     @Override
     public String toString() {
-        final String s = getSignature();
-        return "Signature: " + s;
+        return "Signature: " + getSignature();
     }
 }
