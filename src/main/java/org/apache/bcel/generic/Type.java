@@ -96,7 +96,7 @@ public abstract class Type {
         final List<Type> vec = new ArrayList<>();
         int index;
         try {
-            // Skip any type arguments to read argument declarations between `(' and `)'
+            // Skip any type arguments to read argument declarations between '(' and ')'
             index = signature.indexOf('(') + 1;
             if (index <= 0) {
                 throw new ClassFormatException("Invalid method signature: " + signature);
@@ -118,7 +118,7 @@ public abstract class Type {
         @NonNegative int res = 0;
         int index;
         try {
-            // Skip any type arguments to read argument declarations between `(' and `)'
+            // Skip any type arguments to read argument declarations between '(' and ')'
             index = signature.indexOf('(') + 1;
             if (index <= 0) {
                 throw new ClassFormatException("Invalid method signature: " + signature);
@@ -163,7 +163,7 @@ public abstract class Type {
     // Argument is a @FieldDescriptor, possibly following a close-paren ")"
     public static Type getReturnType(final String signature) {
         try {
-            // Read return type after `)'; also works if there is no `)'
+            // Read return type after ')'
             final int index = signature.lastIndexOf(')') + 1;
             return getType(signature.substring(index));
         } catch (final StringIndexOutOfBoundsException e) { // Should never occur
@@ -246,7 +246,7 @@ public abstract class Type {
     // TODO: getType(Class) calls "getType(cl.getName())" for arrays, which passes a
     // @ClassGetName such as "[Ljava.lang.String;" rather than a
     // @FieldDescriptor as documented in this method's Javadoc.
-    public static @NonNull Type getType(final @ClassGetName String signature) throws StringIndexOutOfBoundsException {
+    public static @NonNull Type getType(final @FieldDescriptor String signature) throws StringIndexOutOfBoundsException {
         final byte type = Utility.typeOfSignature(signature);
         if (type <= Const.T_VOID) {
             // corrected concurrent private static field acess
@@ -257,7 +257,7 @@ public abstract class Type {
             // Utility.typeSignatureToString understands how to parse generic types.
             // TODO: either "java/lang/String" or "java.lang.String" might flow here.
             final String parsedSignature = Utility.typeSignatureToString(signature, false);
-            wrap(CONSUMED_CHARS, parsedSignature.length() + 2); // "Lblabla;" `L' and `;' are removed
+            wrap(CONSUMED_CHARS, parsedSignature.length() + 2); // "Lblabla;" 'L' and `;' are removed
             @SuppressWarnings("signature") // string manipulation; known to be reference type
             @BinaryName String className = Utility.pathToPackage(parsedSignature);
             return ObjectType.getInstance(className);
@@ -302,8 +302,7 @@ public abstract class Type {
             final int consumed = consumed(getTypeSize(signature.substring(dim)));
             return encode(1, dim + consumed);
         }
-        // type == T_REFERENCE
-        final int index = signature.indexOf(';'); // Look for closing `;'
+        final int index = signature.indexOf(';'); // Look for closing ';'
         if (index < 0) {
             throw new ClassFormatException("Invalid signature: " + signature);
         }
@@ -345,9 +344,9 @@ public abstract class Type {
     //  * LONG_Upper: the string is "Long_Upper"
     protected @FieldDescriptor String signature; // signature for the type TODO should be private
 
-    protected Type(final byte t, final @FieldDescriptor String s) {
-        type = t;
-        signature = s;
+    protected Type(final byte type, final @FieldDescriptor String signature) {
+        this.type = type;
+        this.signature = signature;
     }
 
     /**
@@ -360,6 +359,10 @@ public abstract class Type {
             return type == t.type && signature.equals(t.signature);
         }
         return false;
+    }
+
+    public @BinaryName String getClassName() {
+        return toString();
     }
 
     /**
@@ -425,7 +428,7 @@ public abstract class Type {
     }
 
     /**
-     * @return Type string, e.g. `int[]'
+     * @return Type string, e.g. 'int[]'
      */
     @Override
     // TODO: result must be one of fully-qualified name, binary name, internal form, Class.getSimpleName

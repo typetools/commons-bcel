@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 
 import org.apache.bcel.Const;
+import org.apache.bcel.util.Args;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -49,6 +50,8 @@ public final class InnerClasses extends Attribute implements Iterable<InnerClass
     /**
      * Initialize from another object. Note that both objects use the same references (shallow copy). Use clone() for a
      * physical copy.
+     *
+     * @param c Source to copy.
      */
     public InnerClasses(final InnerClasses c) {
         this(c.getNameIndex(), c.getLength(), c.getInnerClasses(), c.getConstantPool());
@@ -81,6 +84,7 @@ public final class InnerClasses extends Attribute implements Iterable<InnerClass
     public InnerClasses(final @NonNegative int nameIndex, final @NonNegative int length, final InnerClass @Nullable [] innerClasses, final ConstantPool constantPool) {
         super(Const.ATTR_INNER_CLASSES, nameIndex, length, constantPool);
         this.innerClasses = innerClasses != null ? innerClasses : EMPTY_INNER_CLASSE_ARRAY;
+        Args.requireU2(this.innerClasses.length, "innerClasses.length");
     }
 
     /**

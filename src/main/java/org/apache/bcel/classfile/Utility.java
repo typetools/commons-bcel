@@ -143,8 +143,8 @@ public abstract class Utility {
     private static final ThreadLocal<Integer> CONSUMER_CHARS = ThreadLocal.withInitial(() -> Integer.valueOf(0));
 
     /*
-     * The `WIDE' instruction is used in the byte code to allow 16-bit wide indices for local variables. This opcode
-     * precedes an `ILOAD', e.g.. The opcode immediately following takes an extra byte which is combined with the following
+     * The 'WIDE' instruction is used in the byte code to allow 16-bit wide indices for local variables. This opcode
+     * precedes an 'ILOAD', e.g.. The opcode immediately following takes an extra byte which is combined with the following
      * byte to form a 16-bit value.
      */
     private static boolean wide;
@@ -178,7 +178,7 @@ public abstract class Utility {
     }
 
     /**
-     * Convert bit field of flags into string such as `static final'.
+     * Convert bit field of flags into string such as 'static final'.
      *
      * @param accessFlags Access flags
      * @return String representation of flags
@@ -188,10 +188,10 @@ public abstract class Utility {
     }
 
     /**
-     * Convert bit field of flags into string such as `static final'.
+     * Convert bit field of flags into string such as 'static final'.
      *
-     * Special case: Classes compiled with new compilers and with the `ACC_SUPER' flag would be said to be "synchronized".
-     * This is because SUN used the same value for the flags `ACC_SUPER' and `ACC_SYNCHRONIZED'.
+     * Special case: Classes compiled with new compilers and with the 'ACC_SUPER' flag would be said to be "synchronized".
+     * This is because SUN used the same value for the flags 'ACC_SUPER' and 'ACC_SYNCHRONIZED'.
      *
      * @param accessFlags Access flags
      * @param forClass access flags are for class qualifiers ?
@@ -204,8 +204,8 @@ public abstract class Utility {
             p = pow2(i);
             if ((accessFlags & p) != 0) {
                 /*
-                 * Special case: Classes compiled with new compilers and with the `ACC_SUPER' flag would be said to be "synchronized".
-                 * This is because SUN used the same value for the flags `ACC_SUPER' and `ACC_SYNCHRONIZED'.
+                 * Special case: Classes compiled with new compilers and with the 'ACC_SUPER' flag would be said to be "synchronized".
+                 * This is because SUN used the same value for the flags 'ACC_SUPER' and 'ACC_SYNCHRONIZED'.
                  */
                 if (forClass && (p == Const.ACC_SUPER || p == Const.ACC_INTERFACE)) {
                     continue;
@@ -233,7 +233,7 @@ public abstract class Utility {
     }
 
     /**
-     * @return `flag' with bit `i' set to 0
+     * @return 'flag' with bit 'i' set to 0
      */
     public static int clearBit(final int flag, final int i) {
         final int bit = pow2(i);
@@ -245,12 +245,12 @@ public abstract class Utility {
     }
 
     /**
-     * Disassemble a byte array of JVM byte codes starting from code line `index' and return the disassembled string
-     * representation. Decode only `num' opcodes (including their operands), use -1 if you want to decompile everything.
+     * Disassemble a byte array of JVM byte codes starting from code line 'index' and return the disassembled string
+     * representation. Decode only 'num' opcodes (including their operands), use -1 if you want to decompile everything.
      *
      * @param code byte code array
      * @param constantPool Array of constants
-     * @param index offset in `code' array <EM>(number of opcodes, not bytes!)</EM>
+     * @param index offset in 'code' array <EM>(number of opcodes, not bytes!)</EM>
      * @param length number of opcodes to decompile, -1 for all
      * @param verbose be verbose, e.g. print constant pool index
      * @return String representation of byte codes
@@ -575,25 +575,12 @@ public abstract class Utility {
      */
     public static @BinaryName String compactClassName(@InternalForm String strIn, final String prefix, final boolean chopit) {
         final int len = prefix.length();
-        @BinaryName String str = pathToPackage(strIn); // Is `/' on all systems, even DOS
-        // If string starts with `prefix' and contains no further dots
+        @BinaryName String str = pathToPackage(strIn); // Is '/' on all systems, even DOS
+        // If string starts with 'prefix' and contains no further dots
         if (chopit && str.startsWith(prefix) && str.substring(len).indexOf('.') == -1) {
             str = str.substring(len);
         }
         return str;
-    }
-
-    /**
-     * Converts a path to a package name.
-     *
-     * @param str the source path.
-     * @return a package name.
-     * @since 6.6.0
-     */
-    // The argument should be in @InternalForm; howver, due to some lack of rigor, it may be a @BinaryName as well.
-    public static @BinaryName String pathToPackage(final String str) {
-        // his has an effect only if the argument is @InternalForm, not @BinaryName.
-        return str.replace('/', '.');
     }
 
     /**
@@ -724,21 +711,8 @@ public abstract class Utility {
         return caw.toString();
     }
 
-    static boolean equals(final byte[] a, final byte[] b) {
-        int size;
-        if ((size = a.length) != b.length) {
-            return false;
-        }
-        for (int i = 0; i < size; i++) {
-            if (a[i] != b[i]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     /**
-     * Fillup char with up to length characters with char `fill' and justify it left or right.
+     * Fillup char with up to length characters with char 'fill' and justify it left or right.
      *
      * @param str string to format
      * @param length length of desired string
@@ -754,6 +728,19 @@ public abstract class Utility {
             return str + new String(buf);
         }
         return new String(buf) + str;
+    }
+
+    /**
+     * Return a string for an integer justified left or right and filled up with 'fill' characters if necessary.
+     *
+     * @param i integer to format
+     * @param length length of desired string
+     * @param leftJustify format left or right
+     * @param fill fill character
+     * @return formatted int
+     */
+    public static String format(final int i, final int length, final boolean leftJustify, final char fill) {
+        return fillup(Integer.toString(i), length, leftJustify, fill);
     }
 
     /**
@@ -779,19 +766,6 @@ public abstract class Utility {
      *      to typeSignatureToString. Also note, that if you only wish to parse the first item in a longer signature string,
      *      you should call typeSignatureToString directly.
      */
-
-    /**
-     * Return a string for an integer justified left or right and filled up with `fill' characters if necessary.
-     *
-     * @param i integer to format
-     * @param length length of desired string
-     * @param leftJustify format left or right
-     * @param fill fill character
-     * @return formatted int
-     */
-    public static String format(final int i, final int length, final boolean leftJustify, final char fill) {
-        return fillup(Integer.toString(i), length, leftJustify, fill);
-    }
 
     /**
      * Parse Java type such as "char", or "java.lang.String[]" and return the signature in byte code format, e.g. "C" or
@@ -847,7 +821,7 @@ public abstract class Utility {
             }
         }
         if (!found) {
-            buf.append('L').append(type.replace('.', '/')).append(';');
+            buf.append('L').append(packageToPath(type)).append(';');
         }
         return buf.toString();
     }
@@ -862,7 +836,7 @@ public abstract class Utility {
     }
 
     /**
-     * @return true, if bit `i' in `flag' is set
+     * @return true, if bit 'i' in 'flag' is set
      */
     public static boolean isSet(final int flag, final int i) {
         return (flag & pow2(i)) != 0;
@@ -891,7 +865,7 @@ public abstract class Utility {
         final List<String> vec = new ArrayList<>();
         int index;
         try {
-            // Skip any type arguments to read argument declarations between `(' and `)'
+            // Skip any type arguments to read argument declarations between '(' and ')'
             index = signature.indexOf('(') + 1;
             if (index <= 0) {
                 throw new ClassFormatException("Invalid method signature: " + signature);
@@ -930,7 +904,7 @@ public abstract class Utility {
         int index;
         String type;
         try {
-            // Read return type after `)'
+            // Read return type after ')'
             index = signature.lastIndexOf(')') + 1;
             if (index <= 0) {
                 throw new ClassFormatException("Invalid method signature: " + signature);
@@ -968,8 +942,8 @@ public abstract class Utility {
     }
 
     /**
-     * This method converts a method signature string into a Java type declaration like `void main(String[])' and throws a
-     * `ClassFormatException' when the parsed type is invalid.
+     * This method converts a method signature string into a Java type declaration like 'void main(String[])' and throws a
+     * 'ClassFormatException' when the parsed type is invalid.
      *
      * @param signature Method signature
      * @param name Method name
@@ -986,7 +960,7 @@ public abstract class Utility {
         int index;
         int varIndex = access.contains("static") ? 0 : 1;
         try {
-            // Skip any type arguments to read argument declarations between `(' and `)'
+            // Skip any type arguments to read argument declarations between '(' and ')'
             index = signature.indexOf('(') + 1;
             if (index <= 0) {
                 throw new ClassFormatException("Invalid method signature: " + signature);
@@ -1012,7 +986,7 @@ public abstract class Utility {
                 index += unwrap(CONSUMER_CHARS); // update position
             }
             index++; // update position
-            // Read return type after `)'
+            // Read return type after ')'
             type = typeSignatureToString(signature.substring(index), chopit);
         } catch (final StringIndexOutOfBoundsException e) { // Should never occur
             throw new ClassFormatException("Invalid method signature: " + signature, e);
@@ -1050,6 +1024,30 @@ public abstract class Utility {
         str = getSignature(ret);
         buf.append(")").append(str);
         return buf.toString();
+    }
+
+    /**
+     * Converts '.'s to '/'s.
+     *
+     * @param name Source
+     * @return converted value
+     * @since 6.7.0
+     */
+    public static String packageToPath(final String name) {
+        return name.replace('.', '/');
+    }
+
+    /**
+     * Converts a path to a package name.
+     *
+     * @param str the source path.
+     * @return a package name.
+     * @since 6.6.0
+     */
+    // The argument should be in @InternalForm; however, due to some lack of rigor, it may be a @BinaryName as well.
+    public static @BinaryName String pathToPackage(final String str) {
+        // This has an effect only if the argument is @InternalForm, not @BinaryName.
+        return str.replace('/', '.');
     }
 
     private static int pow2(final int n) {
@@ -1108,14 +1106,14 @@ public abstract class Utility {
         int index;
         int oldIndex;
         try {
-            if (str.contains(old)) { // `old' found in str
+            if (str.contains(old)) { // 'old' found in str
                 final StringBuilder buf = new StringBuilder();
                 oldIndex = 0; // String start offset
                 // While we have something to replace
                 while ((index = str.indexOf(old, oldIndex)) != -1) {
                     buf.append(str, oldIndex, index); // append prefix
                     buf.append(new_); // append replacement
-                    oldIndex = index + old.length(); // Skip `old'.length chars
+                    oldIndex = index + old.length(); // Skip 'old'.length chars
                 }
                 buf.append(str.substring(oldIndex)); // append rest of string
                 str = buf.toString();
@@ -1140,7 +1138,7 @@ public abstract class Utility {
     }
 
     /**
-     * @return `flag' with bit `i' set to 1
+     * @return 'flag' with bit 'i' set to 1
      */
     public static int setBit(final int flag, final int i) {
         return flag | pow2(i);
@@ -1395,8 +1393,8 @@ public abstract class Utility {
 
     /**
      *
-     * This method converts a type signature string into a Java type declaration such as `String[]' and throws a
-     * `ClassFormatException' when the parsed type is invalid.
+     * This method converts a type signature string into a Java type declaration such as 'String[]' and throws a
+     * 'ClassFormatException' when the parsed type is invalid.
      *
      * @param signature type signature
      * @param chopit flag that determines whether chopping is executed or not
@@ -1409,7 +1407,7 @@ public abstract class Utility {
     // TODO: result can contain generic type parameters, so it isn't a type in the Signature Checker.
     public static String typeSignatureToString(final @FieldDescriptor String signature, final boolean chopit) throws ClassFormatException {
         // corrected concurrent private static field acess
-        wrap(CONSUMER_CHARS, 1); // This is the default, read just one char like `B'
+        wrap(CONSUMER_CHARS, 1); // This is the default, read just one char like 'B'
         try {
             switch (signature.charAt(0)) {
             case 'B':
@@ -1425,12 +1423,12 @@ public abstract class Utility {
             case 'J':
                 return "long";
             case 'T': { // TypeVariableSignature
-                final int index = signature.indexOf(';'); // Look for closing `;'
+                final int index = signature.indexOf(';'); // Look for closing ';'
                 if (index < 0) {
                     throw new ClassFormatException("Invalid type variable signature: " + signature);
                 }
                 // corrected concurrent private static field acess
-                wrap(CONSUMER_CHARS, index + 1); // "Tblabla;" `T' and `;' are removed
+                wrap(CONSUMER_CHARS, index + 1); // "Tblabla;" 'T' and ';' are removed
                 return compactClassName(signature.substring(1, index), chopit);
             }
             case 'L': { // Full class name
@@ -1445,7 +1443,7 @@ public abstract class Utility {
                         throw new ClassFormatException("Invalid signature: " + signature);
                     }
                 }
-                final int index = signature.indexOf(';', fromIndex); // Look for closing `;'
+                final int index = signature.indexOf(';', fromIndex); // Look for closing ';'
                 if (index < 0) {
                     throw new ClassFormatException("Invalid signature: " + signature);
                 }
@@ -1454,7 +1452,7 @@ public abstract class Utility {
                 final int bracketIndex = signature.substring(0, index).indexOf('<');
                 if (bracketIndex < 0) {
                     // just a class identifier
-                    wrap(CONSUMER_CHARS, index + 1); // "Lblabla;" `L' and `;' are removed
+                    wrap(CONSUMER_CHARS, index + 1); // "Lblabla;" 'L' and ';' are removed
                     return compactClassName(signature.substring(1, index), chopit);
                 }
                 // but make sure we are not looking past the end of the current item
@@ -1464,7 +1462,7 @@ public abstract class Utility {
                 }
                 if (fromIndex < bracketIndex) {
                     // just a class identifier
-                    wrap(CONSUMER_CHARS, fromIndex + 1); // "Lblabla;" `L' and `;' are removed
+                    wrap(CONSUMER_CHARS, fromIndex + 1); // "Lblabla;" 'L' and ';' are removed
                     return compactClassName(signature.substring(1, fromIndex), chopit);
                 }
 
@@ -1553,7 +1551,7 @@ public abstract class Utility {
                     brackets.append("[]");
                 }
                 consumedChars = n; // Remember value
-                // The rest of the string denotes a `<field_type>'
+                // The rest of the string denotes a '<field_type>'
                 type = typeSignatureToString(signature.substring(n), chopit);
                 // corrected concurrent private static field acess
                 // Utility.consumed_chars += consumed_chars; is replaced by:
@@ -1564,7 +1562,7 @@ public abstract class Utility {
             case 'V':
                 return "void";
             default:
-                throw new ClassFormatException("Invalid signature: `" + signature + "'");
+                throw new ClassFormatException("Invalid signature: '" + signature + "'");
             }
         } catch (final StringIndexOutOfBoundsException e) { // Should never occur
             throw new ClassFormatException("Invalid signature: " + signature, e);

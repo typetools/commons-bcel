@@ -38,6 +38,8 @@ public final class ConstantInvokeDynamic extends ConstantCP {
 
     /**
      * Initialize from another object.
+     *
+     * @param c Source to copy.
      */
     public ConstantInvokeDynamic(final ConstantInvokeDynamic c) {
         this(c.getBootstrapMethodAttrIndex(), c.getNameAndTypeIndex());
@@ -50,7 +52,7 @@ public final class ConstantInvokeDynamic extends ConstantCP {
      * @throws IOException if an I/O error occurs.
      */
     ConstantInvokeDynamic(final DataInput file) throws IOException {
-        this(file.readShort(), file.readShort());
+        this(file.readUnsignedShort(), file.readUnsignedShort());
     }
 
     public ConstantInvokeDynamic(final @NonNegative int bootstrapMethodAttrIndex, final @NonNegative int nameAndTypeIndex) {

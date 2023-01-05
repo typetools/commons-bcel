@@ -36,7 +36,7 @@ public class EnumElementValue extends ElementValue {
     public EnumElementValue(final int type, final @NonNegative int typeIdx, final @NonNegative int valueIdx, final ConstantPool cpool) {
         super(type, cpool);
         if (type != ENUM_CONSTANT) {
-            throw new IllegalArgumentException("Only element values of type enum can be built with this ctor - type specified: " + type);
+            throw new ClassFormatException("Only element values of type enum can be built with this ctor - type specified: " + type);
         }
         this.typeIdx = typeIdx;
         this.valueIdx = valueIdx;

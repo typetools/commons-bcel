@@ -26,6 +26,8 @@ import org.checkerframework.checker.signedness.qual.Unsigned;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
+import org.apache.bcel.util.Args;
+
 /**
  * This class represents a (PC offset, line number) pair, i.e., a line number in the source that corresponds to a
  * relative address in the byte code. This is used for debugging purposes.
@@ -35,11 +37,13 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"signedness"})
 public final class LineNumber implements Cloneable, Node {
 
+    static final LineNumber[] EMPTY_ARRAY = {};
+
     /** Program Counter (PC) corresponds to line */
-    private @Unsigned short startPc;
+    private @NonNegative int startPc;
 
     /** number in source file */
-    private @Unsigned short lineNumber;
+    private @NonNegative int lineNumber;
 
     /**
      * Construct object from file stream.
@@ -55,9 +59,9 @@ public final class LineNumber implements Cloneable, Node {
      * @param startPc Program Counter (PC) corresponds to
      * @param lineNumber line number in source file
      */
-    public LineNumber(final @Unsigned int startPc, final @Unsigned int lineNumber) {
-        this.startPc = (short) startPc;
-        this.lineNumber = (short) lineNumber;
+    public LineNumber(final @NonNegative int startPc, final @NonNegative int lineNumber) {
+        this.startPc = Args.requireU2(startPc, "startPc");
+        this.lineNumber = Args.requireU2(lineNumber, "lineNumber");
     }
 
     /**

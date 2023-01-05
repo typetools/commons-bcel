@@ -22,6 +22,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.apache.bcel.Const;
+import org.apache.bcel.util.Args;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
@@ -60,12 +61,14 @@ public final class ModuleMainClass extends Attribute {
      */
     public ModuleMainClass(final @NonNegative int nameIndex, final @NonNegative int length, final int mainClassIndex, final ConstantPool constantPool) {
         super(Const.ATTR_NEST_MEMBERS, nameIndex, length, constantPool);
-        this.mainClassIndex = mainClassIndex;
+        this.mainClassIndex = Args.requireU2(mainClassIndex, "mainClassIndex");
     }
 
     /**
      * Initialize from another object. Note that both objects use the same references (shallow copy). Use copy() for a
      * physical copy.
+     *
+     * @param c Source to copy.
      */
     public ModuleMainClass(final ModuleMainClass c) {
         this(c.getNameIndex(), c.getLength(), c.getHostClassIndex(), c.getConstantPool());

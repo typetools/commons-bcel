@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import org.apache.bcel.Const;
+import org.apache.bcel.util.Args;
 import org.apache.commons.lang3.ArrayUtils;
 
 import org.checkerframework.checker.index.qual.NonNegative;
@@ -35,6 +36,14 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * Specification, Second Edition defines this attribute using the name <em>Exceptions</em> (which is inconsistent with
  * the other classes).
  *
+ * <pre>
+ * Exceptions_attribute {
+ *   u2 attribute_name_index;
+ *   u4 attribute_length;
+ *   u2 number_of_exceptions;
+ *   u2 exception_index_table[number_of_exceptions];
+ * }
+ * </pre>
  * @see Code
  */
 @AnnotatedFor({"signedness"})
@@ -45,6 +54,8 @@ public final class ExceptionTable extends Attribute {
     /**
      * Initialize from another object. Note that both objects use the same references (shallow copy). Use copy() for a
      * physical copy.
+     *
+     * @param c Source to copy.
      */
     public ExceptionTable(final ExceptionTable c) {
         this(c.getNameIndex(), c.getLength(), c.getExceptionIndexTable(), c.getConstantPool());
@@ -77,6 +88,7 @@ public final class ExceptionTable extends Attribute {
     public ExceptionTable(final @NonNegative int nameIndex, final @NonNegative int length, final int[] exceptionIndexTable, final ConstantPool constantPool) {
         super(Const.ATTR_EXCEPTIONS, nameIndex, length, constantPool);
         this.exceptionIndexTable = exceptionIndexTable != null ? exceptionIndexTable : ArrayUtils.EMPTY_INT_ARRAY;
+        Args.requireU2(this.exceptionIndexTable.length, "exceptionIndexTable.length");
     }
 
     /**

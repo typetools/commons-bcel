@@ -17,7 +17,7 @@
 package org.apache.bcel.generic;
 
 /**
- * This interface contains shareable instruction objects.
+ * Contains shareable instruction objects.
  * <p>
  * In order to save memory you can use some instructions multiply, since they have an immutable state and are directly
  * derived from Instruction. I.e. they have no instance fields that could be changed. Since some of these instructions
@@ -29,11 +29,14 @@ package org.apache.bcel.generic;
  * il.append(Instruction.ICONST_0);
  * </p>
  *
- * @deprecated (since 6.0) Do not use. Use InstructionConst instead.
+ * @deprecated (since 6.0) Do not use. Use {@link InstructionConst} instead.
  */
 @Deprecated
 public interface InstructionConstants {
 
+    /**
+     * Deprecated, consider private and ignore.
+     */
     class Clinit {}
 
     /*
@@ -53,7 +56,7 @@ public interface InstructionConstants {
     Instruction FCONST_0 = InstructionConst.FCONST_0;
     Instruction FCONST_1 = InstructionConst.FCONST_1;
     Instruction FCONST_2 = InstructionConst.FCONST_2;
-    Instruction DCONST_0 = InstructionConst.FCONST_2;
+    Instruction DCONST_0 = InstructionConst.DCONST_0;
     Instruction DCONST_1 = InstructionConst.DCONST_1;
     ArrayInstruction IALOAD = InstructionConst.IALOAD;
     ArrayInstruction LALOAD = InstructionConst.LALOAD;
@@ -152,7 +155,7 @@ public interface InstructionConstants {
      * values, e.g. call setIndex().
      */
     LocalVariableInstruction THIS = InstructionConst.THIS;
-    LocalVariableInstruction ALOAD_0 = THIS;
+    LocalVariableInstruction ALOAD_0 = InstructionConst.ALOAD_0;
     LocalVariableInstruction ALOAD_1 = InstructionConst.ALOAD_1;
     LocalVariableInstruction ALOAD_2 = InstructionConst.ALOAD_2;
     LocalVariableInstruction ILOAD_0 = InstructionConst.ILOAD_0;

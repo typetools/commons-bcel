@@ -80,34 +80,6 @@ public class InstConstraintVisitor extends EmptyVisitor {
     public InstConstraintVisitor() {
     }
 
-    /***************************************************************/
-    /* MISC */
-    /***************************************************************/
-    /**
-     * Ensures the general preconditions of an instruction that accesses the stack. This method is here because BCEL has no
-     * such superinterface for the stack accessing instructions; and there are funny unexpected exceptions in the semantices
-     * of the superinterfaces and superclasses provided. E.g. SWAP is a StackConsumer, but DUP_X1 is not a StackProducer.
-     * Therefore, this method is called by all StackProducer, StackConsumer, and StackInstruction instances via their
-     * visitXXX() method. Unfortunately, as the superclasses and superinterfaces overlap, some instructions cause this
-     * method to be called two or three times. [TODO: Fix this.]
-     *
-     * @see #visitStackConsumer(StackConsumer o)
-     * @see #visitStackProducer(StackProducer o)
-     * @see #visitStackInstruction(StackInstruction o)
-     */
-    private void _visitStackAccessor(final Instruction o) {
-        final int consume = o.consumeStack(cpg); // Stack values are always consumed first; then produced.
-        if (consume > stack().slotsUsed()) {
-            constraintViolated(o, "Cannot consume " + consume + " stack slots: only " + stack().slotsUsed() + " slot(s) left on stack!\nStack:\n" + stack());
-        }
-
-        final int produce = o.produceStack(cpg) - o.consumeStack(cpg); // Stack values are always consumed first; then produced.
-        if (produce + stack().slotsUsed() > stack().maxStack()) {
-            constraintViolated(o, "Cannot produce " + produce + " stack slots: only " + (stack().maxStack() - stack().slotsUsed())
-                + " free stack slot(s) left.\nStack:\n" + stack());
-        }
-    }
-
     /**
      * Assures arrayref is of ArrayType or NULL; returns true if and only if arrayref is non-NULL.
      *
@@ -209,18 +181,18 @@ public class InstConstraintVisitor extends EmptyVisitor {
         return frame.getStack();
     }
 
-    /***************************************************************/
-    /* "generic"visitXXXX methods where XXXX is an interface */
-    /* therefore, we don't know the order of visiting; but we know */
-    /* these methods are called before the visitYYYY methods below */
-    /***************************************************************/
-
     /** Assures value is of type INT. */
     private void valueOfInt(final Instruction o, final Type value) {
         if (!value.equals(Type.INT)) {
             constraintViolated(o, "The 'value' is not of type int but of type " + value + ".");
         }
     }
+
+    /***************************************************************/
+    /* "generic"visitXXXX methods where XXXX is an interface */
+    /* therefore, we don't know the order of visiting; but we know */
+    /* these methods are called before the visitYYYY methods below */
+    /***************************************************************/
 
     /**
      * Ensures the specific preconditions of the said instruction.
@@ -379,10 +351,6 @@ public class InstConstraintVisitor extends EmptyVisitor {
         }
     }
 
-    /***************************************************************/
-    /* "special"visitXXXX methods for one type of instruction each */
-    /***************************************************************/
-
     /**
      * Ensures the specific preconditions of the said instruction.
      */
@@ -400,6 +368,10 @@ public class InstConstraintVisitor extends EmptyVisitor {
                 + ((ArrayType) arrayref).getElementType() + "'.");
         }
     }
+
+    /***************************************************************/
+    /* "special"visitXXXX methods for one type of instruction each */
+    /***************************************************************/
 
     /**
      * Ensures the specific preconditions of the said instruction.
@@ -968,29 +940,28 @@ public class InstConstraintVisitor extends EmptyVisitor {
         }
         final Type value = stack().peek();
         final Type t = Type.getType(f.getSignature());
-        Type shouldbe = t;
-        if (shouldbe == Type.BOOLEAN || shouldbe == Type.BYTE || shouldbe == Type.CHAR || shouldbe == Type.SHORT) {
-            shouldbe = Type.INT;
+        Type shouldBe = t;
+        if (shouldBe == Type.BOOLEAN || shouldBe == Type.BYTE || shouldBe == Type.CHAR || shouldBe == Type.SHORT) {
+            shouldBe = Type.INT;
         }
         if (t instanceof ReferenceType) {
-            ReferenceType rvalue = null;
             if (value instanceof ReferenceType) {
-                rvalue = (ReferenceType) value;
-                referenceTypeIsInitialized(o, rvalue);
+                ReferenceType rValue = (ReferenceType) value;
+                referenceTypeIsInitialized(o, rValue);
+                // TODO: This can possibly only be checked using Staerk-et-al's "set-of-object types", not
+                // using "wider cast object types" created during verification.
+                // Comment it out if you encounter problems. See also the analogon at visitPUTFIELD|visitPUTSTATIC.
+                if (!rValue.isAssignmentCompatibleWith(shouldBe)) {
+                    constraintViolated(o, "The stack top type '" + value + "' is not assignment compatible with '" + shouldBe + "'.");
+                }
             } else {
                 constraintViolated(o, "The stack top type '" + value + "' is not of a reference type as expected.");
             }
-            // TODO: This can possibly only be checked using Staerk-et-al's "set-of-object types", not
-            // using "wider cast object types" created during verification.
-            // Comment it out if you encounter problems. See also the analogon at visitPUTFIELD|visitPUTSTATIC.
-            if (!rvalue.isAssignmentCompatibleWith(shouldbe)) {
-                constraintViolated(o, "The stack top type '" + value + "' is not assignment compatible with '" + shouldbe + "'.");
-            }
         } else {
             @SuppressWarnings("interning") // Type is interned if not of reference type
-            boolean bad = (shouldbe != value);
+            boolean bad = (shouldBe != value);
             if (bad) {
-                constraintViolated(o, "The stack top type '" + value + "' is not of type '" + shouldbe + "' as expected.");
+                constraintViolated(o, "The stack top type '" + value + "' is not of type '" + shouldBe + "' as expected.");
             }
         }
         return f;
@@ -2654,12 +2625,40 @@ public class InstConstraintVisitor extends EmptyVisitor {
         // nothing to do here. Generic visitXXX() methods did the trick before.
     }
 
+    /***************************************************************/
+    /* MISC */
+    /***************************************************************/
+    /**
+     * Ensures the general preconditions of an instruction that accesses the stack. This method is here because BCEL has no
+     * such superinterface for the stack accessing instructions; and there are funny unexpected exceptions in the semantices
+     * of the superinterfaces and superclasses provided. E.g. SWAP is a StackConsumer, but DUP_X1 is not a StackProducer.
+     * Therefore, this method is called by all StackProducer, StackConsumer, and StackInstruction instances via their
+     * visitXXX() method. Unfortunately, as the superclasses and superinterfaces overlap, some instructions cause this
+     * method to be called two or three times. [TODO: Fix this.]
+     *
+     * @see #visitStackConsumer(StackConsumer o)
+     * @see #visitStackProducer(StackProducer o)
+     * @see #visitStackInstruction(StackInstruction o)
+     */
+    private void visitStackAccessor(final Instruction o) {
+        final int consume = o.consumeStack(cpg); // Stack values are always consumed first; then produced.
+        if (consume > stack().slotsUsed()) {
+            constraintViolated(o, "Cannot consume " + consume + " stack slots: only " + stack().slotsUsed() + " slot(s) left on stack!\nStack:\n" + stack());
+        }
+
+        final int produce = o.produceStack(cpg) - o.consumeStack(cpg); // Stack values are always consumed first; then produced.
+        if (produce + stack().slotsUsed() > stack().maxStack()) {
+            constraintViolated(o, "Cannot produce " + produce + " stack slots: only " + (stack().maxStack() - stack().slotsUsed())
+                + " free stack slot(s) left.\nStack:\n" + stack());
+        }
+    }
+
     /**
      * Ensures the general preconditions of a StackConsumer instance.
      */
     @Override
     public void visitStackConsumer(final StackConsumer o) {
-        _visitStackAccessor((Instruction) o);
+        visitStackAccessor((Instruction) o);
     }
 
     /**
@@ -2667,7 +2666,7 @@ public class InstConstraintVisitor extends EmptyVisitor {
      */
     @Override
     public void visitStackInstruction(final StackInstruction o) {
-        _visitStackAccessor(o);
+        visitStackAccessor(o);
     }
 
     /**
@@ -2675,7 +2674,7 @@ public class InstConstraintVisitor extends EmptyVisitor {
      */
     @Override
     public void visitStackProducer(final StackProducer o) {
-        _visitStackAccessor((Instruction) o);
+        visitStackAccessor((Instruction) o);
     }
 
     /**

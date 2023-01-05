@@ -21,6 +21,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.apache.bcel.Const;
+import org.apache.bcel.util.Args;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -54,10 +55,10 @@ public class EnclosingMethod extends Attribute {
         this(nameIndex, len, input.readUnsignedShort(), input.readUnsignedShort(), cpool);
     }
 
-    private EnclosingMethod(final @NonNegative int nameIndex, final @NonNegative int len, final @NonNegative int classIdx, final @NonNegative int methodIdx, final ConstantPool cpool) {
-        super(Const.ATTR_ENCLOSING_METHOD, nameIndex, len, cpool);
-        classIndex = classIdx;
-        methodIndex = methodIdx;
+    private EnclosingMethod(final @NonNegative int nameIndex, final @NonNegative int len, final @NonNegative int classIndex, final @NonNegative int methodIndex, final ConstantPool cpool) {
+        super(Const.ATTR_ENCLOSING_METHOD, nameIndex, Args.require(len, 4, "EnclosingMethod attribute length"), cpool);
+        this.classIndex = Args.requireU2(classIndex, 0, cpool.getLength(), "EnclosingMethod class index");
+        this.methodIndex = Args.requireU2(methodIndex, "EnclosingMethod method index");
     }
 
     @Override

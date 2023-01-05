@@ -38,6 +38,13 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"signedness"})
 public final class Module extends Attribute {
 
+    /**
+     * The module file name extension.
+     *
+     * @since 6.7.0
+     */
+    public static final String EXTENSION = ".jmod";
+
     private final @NonNegative int moduleNameIndex;
     private final int moduleFlags;
     private final @NonNegative int moduleVersionIndex;

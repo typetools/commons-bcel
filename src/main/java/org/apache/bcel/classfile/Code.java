@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import org.apache.bcel.Const;
+import org.apache.bcel.util.Args;
 import org.apache.commons.lang3.ArrayUtils;
 
 import org.checkerframework.checker.index.qual.NonNegative;
@@ -37,6 +38,25 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * This attribute has attributes itself, namely <em>LineNumberTable</em> which is used for debugging purposes and
  * <em>LocalVariableTable</em> which contains information about the local variables.
  *
+ * <pre>
+ * Code_attribute {
+ *   u2 attribute_name_index;
+ *   u4 attribute_length;
+ *   u2 max_stack;
+ *   u2 max_locals;
+ *   u4 code_length;
+ *   u1 code[code_length];
+ *   u2 exception_table_length;
+ *   {
+ *     u2 start_pc;
+ *     u2 end_pc;
+ *     u2 handler_pc;
+ *     u2 catch_type;
+ *   } exception_table[exception_table_length];
+ *   u2 attributes_count;
+ *   attribute_info attributes[attributes_count];
+ * }
+ * </pre>
  * @see Attribute
  * @see CodeException
  * @see LineNumberTable
@@ -54,9 +74,12 @@ public final class Code extends Attribute {
     /**
      * Initialize from another object. Note that both objects use the same references (shallow copy). Use copy() for a
      * physical copy.
+     *
+     * @param code The source Code.
      */
-    public Code(final Code c) {
-        this(c.getNameIndex(), c.getLength(), c.getMaxStack(), c.getMaxLocals(), c.getCode(), c.getExceptionTable(), c.getAttributes(), c.getConstantPool());
+    public Code(final Code code) {
+        this(code.getNameIndex(), code.getLength(), code.getMaxStack(), code.getMaxLocals(), code.getCode(), code.getExceptionTable(), code.getAttributes(),
+                code.getConstantPool());
     }
 
     /**
@@ -68,7 +91,7 @@ public final class Code extends Attribute {
     Code(final @NonNegative int nameIndex, final @NonNegative int length, final DataInput file, final ConstantPool constantPool) throws IOException {
         // Initialize with some default values which will be overwritten later
         this(nameIndex, length, file.readUnsignedShort(), file.readUnsignedShort(), (byte[]) null, (CodeException[]) null, (Attribute[]) null, constantPool);
-        final int codeLength = file.readInt();
+        final int codeLength = Args.requireU4(file.readInt(), 1, "Code length attribute");
         code = new byte[codeLength]; // Read byte code
         file.readFully(code);
         /*
@@ -81,7 +104,7 @@ public final class Code extends Attribute {
             exceptionTable[i] = new CodeException(file);
         }
         /*
-         * Read all attributes, currently `LineNumberTable' and `LocalVariableTable'
+         * Read all attributes, currently 'LineNumberTable' and 'LocalVariableTable'
          */
         final int attributesCount = file.readUnsignedShort();
         attributes = new Attribute[attributesCount];
@@ -108,10 +131,11 @@ public final class Code extends Attribute {
     public Code(final @NonNegative int nameIndex, final @NonNegative int length, final @NonNegative int maxStack, final @NonNegative int maxLocals, final byte @Nullable [] code, final CodeException @Nullable [] exceptionTable,
         final Attribute @Nullable [] attributes, final ConstantPool constantPool) {
         super(Const.ATTR_CODE, nameIndex, length, constantPool);
-        this.maxStack = maxStack;
-        this.maxLocals = maxLocals;
+        this.maxStack = Args.requireU2(maxStack, "maxStack");
+        this.maxLocals = Args.requireU2(maxLocals, "maxLocals");
         this.code = code != null ? code : ArrayUtils.EMPTY_BYTE_ARRAY;
         this.exceptionTable = exceptionTable != null ? exceptionTable : CodeException.EMPTY_CODE_EXCEPTION_ARRAY;
+        Args.requireU2(this.exceptionTable.length, "exceptionTable.length");
         this.attributes = attributes != null ? attributes : EMPTY_ARRAY;
         super.setLength(calculateLength()); // Adjust length
     }
@@ -305,6 +329,9 @@ public final class Code extends Attribute {
     }
 
     /**
+     * Converts this object to a String.
+     *
+     * @param verbose Provides verbose output when true.
      * @return String representation of code chunk.
      */
     public String toString(final boolean verbose) {

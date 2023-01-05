@@ -21,6 +21,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.apache.bcel.Const;
+import org.apache.bcel.util.Args;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
@@ -61,13 +62,15 @@ public final class SourceFile extends Attribute {
      *        in many cases, the JVM.
      */
     public SourceFile(final @NonNegative int nameIndex, final @NonNegative int length, final @NonNegative int sourceFileIndex, final ConstantPool constantPool) {
-        super(Const.ATTR_SOURCE_FILE, nameIndex, length, constantPool);
-        this.sourceFileIndex = sourceFileIndex;
+        super(Const.ATTR_SOURCE_FILE, nameIndex, Args.require(length, 2, "SourceFile length attribute"), constantPool);
+        this.sourceFileIndex = Args.requireU2(sourceFileIndex, 0, constantPool.getLength(), "SourceFile source file index");
     }
 
     /**
      * Initialize from another object. Note that both objects use the same references (shallow copy). Use clone() for a
      * physical copy.
+     *
+     * @param c Source to copy.
      */
     public SourceFile(final SourceFile c) {
         this(c.getNameIndex(), c.getLength(), c.getSourceFileIndex(), c.getConstantPool());

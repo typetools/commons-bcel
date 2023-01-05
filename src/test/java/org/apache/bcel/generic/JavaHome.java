@@ -31,19 +31,37 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiPredicate;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.stream.Stream;
 
+import org.apache.bcel.classfile.JavaClass;
+import org.apache.bcel.classfile.Module;
+import org.apache.bcel.classfile.Utility;
 import org.apache.bcel.util.ModularRuntimeImage;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 
 import com.sun.jna.platform.win32.Advapi32Util;
 
+/**
+ * Used from {@code @MethodSource} for tests.
+ */
 public class JavaHome {
 
     private static final String EXTRA_JAVA_HOMES = "ExtraJavaHomes";
 
+    /** A folder containing Java homes, for example, on Windows "C:/Program Files/Eclipse Adoptium/" */
     private static final String EXTRA_JAVA_ROOT = "ExtraJavaRoot";
+
+    /** The default home for Java installs on Windows for Eclipse Adoptium. */
+    private static final String ADOPTIUM_WINDOWS = "C:/Program Files/Eclipse Adoptium/";
+
+    /** The default home for Java installs on Windows for Eclipse Oracle. */
+    private static final String ORACLE_WINDOWS = "C:/Program Files/Java/";
+
+    private static final String EXTRA_JAVA_ROOT_DEFAULT = ADOPTIUM_WINDOWS + File.pathSeparator + ORACLE_WINDOWS;
+
     private static final String KEY_JDK = "SOFTWARE\\JavaSoft\\Java Development Kit";
     private static final String KEY_JDK_9 = "SOFTWARE\\JavaSoft\\JDK";
     private static final String KEY_JRE = "SOFTWARE\\JavaSoft\\Java Runtime Environment";
@@ -53,7 +71,7 @@ public class JavaHome {
             final FileVisitOption... options) {
         try {
             // TODO Replace with Apache Commons IO UncheckedFiles later.
-            return Files.find(start, maxDepth, matcher, options);
+            return Files.exists(start) ? Files.find(start, maxDepth, matcher, options) : Stream.empty();
         } catch (final IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -70,12 +88,49 @@ public class JavaHome {
         return Stream.empty();
     }
 
-    private static Stream<String> streamFromCustomKey(final String key) {
-        return streamPropertyAndEnvVarValues(key).flatMap(s -> find(Paths.get(s), 1, (p, a) -> Files.isDirectory(p)).map(Path::toString));
+    private static Stream<String> streamFromCustomKey(final String key, final String defaultValue) {
+        return streamPropertyAndEnvVarValues(key, defaultValue).flatMap(s -> find(Paths.get(s), 1, (p, a) -> Files.isDirectory(p)).map(Path::toString));
     }
 
     private static Stream<String> streamFromCustomKeys() {
-        return Stream.concat(streamPropertyAndEnvVarValues(EXTRA_JAVA_HOMES), streamFromCustomKey(EXTRA_JAVA_ROOT));
+        final String defaultRoot = SystemUtils.IS_OS_WINDOWS ? EXTRA_JAVA_ROOT_DEFAULT : null;
+        return Stream.concat(streamPropertyAndEnvVarValues(EXTRA_JAVA_HOMES, null), streamFromCustomKey(EXTRA_JAVA_ROOT, defaultRoot));
+    }
+
+    /**
+     * Used from {@code @MethodSource} for tests.
+     *
+     * @return a stream of JarFile.
+     */
+    public static Stream<JarEntry> streamJarEntry() {
+        return streamJavaHome().flatMap(JavaHome::streamJarEntryByExt);
+    }
+
+    /**
+     * Used from {@code @MethodSource} for tests.
+     *
+     * @return a stream of JarFile.
+     */
+    public static Stream<JarEntry> streamJarEntryClass() {
+        return streamJavaHome().flatMap(JavaHome::streamJarEntryByExtClass);
+    }
+
+    /**
+     * Used from {@code @MethodSource} for tests.
+     *
+     * @return a stream of JarFile.
+     */
+    public static Stream<String> streamJarEntryClassName() {
+        return streamJavaHome().flatMap(JavaHome::streamJarEntryByExtClassName);
+    }
+
+    /**
+     * Used from {@code @MethodSource} for tests.
+     *
+     * @return a stream of JarFile.
+     */
+    public static Stream<JarFile> streamJarFile() {
+        return streamJavaHome().flatMap(JavaHome::streamJarFileByExt);
     }
 
     /**
@@ -83,8 +138,8 @@ public class JavaHome {
      *
      * @return a stream of Java jar paths.
      */
-    public static Stream<Path> streamJarPaths() {
-        return streamJavaHomes().flatMap(JavaHome::streamJars);
+    public static Stream<Path> streamJarPath() {
+        return streamJavaHome().flatMap(JavaHome::streamJarPathByExt);
     }
 
     /**
@@ -92,9 +147,15 @@ public class JavaHome {
      *
      * @return a stream of Java homes.
      */
-    public static Stream<JavaHome> streamJavaHomes() {
+    public static Stream<JavaHome> streamJavaHome() {
         return streamJavaHomeString().map(JavaHome::from);
     }
+
+    /**
+     * Used from {@code @MethodSource} for tests.
+     *
+     * @return a stream of Java homes.
+     */
     public static Stream<String> streamJavaHomeString() {
         final Stream<String> streamW = SystemUtils.IS_OS_WINDOWS ? streamWindowsStrings() : Stream.empty();
         final Stream<String> streamK = Stream.concat(streamW, streamFromCustomKeys());
@@ -102,14 +163,13 @@ public class JavaHome {
         return Stream.concat(streamK, streamJ);
     }
 
-
     /**
      * Used from {@code @MethodSource} for tests.
      *
      * @return a stream of Java jar paths.
      */
-    public static Stream<ModularRuntimeImage> streamModularRuntimeImages() {
-        return streamJavaHomes().map(JavaHome::getModularRuntimeImage);
+    public static Stream<ModularRuntimeImage> streamModularRuntimeImage() {
+        return streamJavaHome().map(JavaHome::getModularRuntimeImage);
     }
 
     /**
@@ -117,12 +177,12 @@ public class JavaHome {
      *
      * @return a stream of Java jar paths.
      */
-    public static Stream<Path> streamModulePaths() {
-        return streamJavaHomes().flatMap(JavaHome::streamModules);
+    public static Stream<Path> streamModulePath() {
+        return streamJavaHome().flatMap(JavaHome::streamModuleByExt);
     }
 
-    private static Stream<String> streamPropertyAndEnvVarValues(final String key) {
-        return Stream.concat(toPathStringStream(System.getProperty(key)), toPathStringStream(System.getenv(key)));
+    private static Stream<String> streamPropertyAndEnvVarValues(final String key, final String defaultValue) {
+        return Stream.concat(toPathStringStream(System.getProperty(key, defaultValue)), toPathStringStream(System.getenv(key)));
     }
 
     private static Stream<String> streamWindowsJavaHomes(final String keyJavaHome, final String[] keys) {
@@ -140,7 +200,7 @@ public class JavaHome {
 
     private static Stream<String> streamWindowsStrings() {
         return Stream.concat(Stream.of(KEY_JRE, KEY_JRE_9, KEY_JDK, KEY_JDK_9).flatMap(JavaHome::streamAllWindowsJavaHomes),
-                streamPropertyAndEnvVarValues(EXTRA_JAVA_HOMES)).distinct();
+                streamPropertyAndEnvVarValues(EXTRA_JAVA_HOMES, null)).distinct();
     }
 
     private static Stream<String> toPathStringStream(final String path) {
@@ -150,7 +210,6 @@ public class JavaHome {
     private final Path path;
 
     private JavaHome(final Path path) {
-        super();
         this.path = Objects.requireNonNull(path, "path");
     }
 
@@ -174,12 +233,36 @@ public class JavaHome {
         return find(10, (p, a) -> p.toString().endsWith(suffix));
     }
 
-    private Stream<Path> streamJars() {
+    private Stream<JarEntry> streamJarEntryByExt() {
+        return streamJarFileByExt().flatMap(JarFile::stream);
+    }
+
+    private Stream<JarEntry> streamJarEntryByExtClass() {
+        return streamJarEntryByExt().filter(je -> je.getName().endsWith(JavaClass.EXTENSION));
+    }
+
+    private Stream<String> streamJarEntryByExtClassName() {
+        return streamJarEntryByExtClass().map(je -> Utility.pathToPackage(je.getName().substring(0, je.getName().indexOf(JavaClass.EXTENSION))));
+    }
+
+    private Stream<JarFile> streamJarFileByExt() {
+        return streamJarPathByExt().map(this::toJarFile);
+    }
+
+    private Stream<Path> streamJarPathByExt() {
         return streamEndsWith(".jar");
     }
 
-    private Stream<Path> streamModules() {
-        return streamEndsWith(".jmod");
+    private Stream<Path> streamModuleByExt() {
+        return streamEndsWith(Module.EXTENSION);
+    }
+
+    private JarFile toJarFile(final Path path) {
+        try {
+            return new JarFile(path.toFile());
+        } catch (final IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override

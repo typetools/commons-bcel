@@ -29,6 +29,7 @@ import org.apache.bcel.classfile.ConstantMethodref;
 import org.apache.bcel.classfile.ConstantNameAndType;
 import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.classfile.JavaClass;
+import org.apache.bcel.classfile.Utility;
 import org.apache.bcel.generic.ArrayType;
 import org.apache.bcel.generic.ObjectType;
 import org.apache.bcel.generic.Type;
@@ -90,7 +91,7 @@ public class TransitiveHull extends org.apache.bcel.classfile.EmptyVisitor {
     }
 
     private void add(String className) {
-        className = className.replace('/', '.');
+        className = Utility.pathToPackage(className);
 
         for (final String anIgnored : ignored) {
             if (Pattern.matches(anIgnored, className)) {

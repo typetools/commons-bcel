@@ -155,7 +155,7 @@ public class JdkGenericDumpTestCase {
             while (en.hasMoreElements()) {
                 final JarEntry jarEntry = en.nextElement();
                 final String name = jarEntry.getName();
-                if (name.endsWith(".class")) {
+                if (name.endsWith(JavaClass.EXTENSION)) {
                     // System.out.println("- " + name);
                     try (InputStream inputStream = jar.getInputStream(jarEntry)) {
                         final ClassParser classParser = new ClassParser(inputStream, name);
@@ -170,20 +170,20 @@ public class JdkGenericDumpTestCase {
     }
 
     @ParameterizedTest
-    @MethodSource("org.apache.bcel.generic.JavaHome#streamJarPaths")
+    @MethodSource("org.apache.bcel.generic.JavaHome#streamJarPath")
     public void testJdkJars(final Path jarPath) throws Exception {
         testJar(jarPath);
     }
 
     @ParameterizedTest
-    @MethodSource("org.apache.bcel.generic.JavaHome#streamModulePaths")
+    @MethodSource("org.apache.bcel.generic.JavaHome#streamModulePath")
     @DisabledOnJre(value = JRE.JAVA_8)
     public void testJdkModules(final Path jmodPath) throws Exception {
         testJar(jmodPath);
     }
 
     @ParameterizedTest
-    @MethodSource("org.apache.bcel.generic.JavaHome#streamJavaHomes")
+    @MethodSource("org.apache.bcel.generic.JavaHome#streamJavaHome")
     public void testJreModules(final JavaHome javaHome) throws Exception {
         assumeTrue(SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_9));
         try (final ModularRuntimeImage mri = javaHome.getModularRuntimeImage()) {

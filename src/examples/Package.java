@@ -33,6 +33,7 @@ import org.apache.bcel.classfile.ConstantClass;
 import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.classfile.ConstantUtf8;
 import org.apache.bcel.classfile.JavaClass;
+import org.apache.bcel.classfile.Utility;
 import org.apache.bcel.util.ClassPath;
 
 import org.checkerframework.checker.signature.qual.FieldDescriptor;
@@ -142,7 +143,7 @@ public class Package {
      * in allClasses
      */
     void addDependents(final JavaClass clazz) throws IOException {
-        final String name = clazz.getClassName().replace('.', '/');
+        final String name = Utility.packageToPath(clazz.getClassName());
         allClasses.put(name, clazz);
         final ConstantPool pool = clazz.getConstantPool();
         for (int i = 1; i < pool.getLength(); i++) {
@@ -176,11 +177,13 @@ public class Package {
                 continue;
             }
             String clName = arg;
-            if (clName.endsWith(".class")) {
-                clName = clName.substring(0, clName.length() - 6);
+            if (clName.endsWith(JavaClass.EXTENSION)) {
+                clName = clName.substring(0, clName.length() - JavaClass.EXTENSION.length());
             }
-            clName = clName.replace('.', '/');
-            clazz = new ClassParser(classPath.getInputStream(clName), clName).parse();
+            clName = Utility.packageToPath(clName);
+            try (final InputStream inputStream = classPath.getInputStream(clName)) {
+                clazz = new ClassParser(inputStream, clName).parse();
+            }
             // here we create the root set of classes to process
             addDependents(clazz);
             System.out.println("Packaging for class: " + clName);
@@ -199,8 +202,8 @@ public class Package {
             final String name = dependents.firstKey();
             final String from = dependents.remove(name);
             if (allClasses.get(name) == null) {
-                try (final InputStream is = classPath.getInputStream(name)) {
-                    clazz = new ClassParser(is, name).parse();
+                try (final InputStream inputStream = classPath.getInputStream(name)) {
+                    clazz = new ClassParser(inputStream, name).parse();
                     addDependents(clazz);
                 } catch (final IOException e) {
                     // System.err.println("Error, class not found " + name );
@@ -219,7 +222,7 @@ public class Package {
             int written = 0;
             for (final String name : allClasses.keySet()) { // add entries for every class
                 final JavaClass claz = allClasses.get(name);
-                final ZipEntry zipEntry = new ZipEntry(name + ".class");
+                final ZipEntry zipEntry = new ZipEntry(name + JavaClass.EXTENSION);
                 final byte[] bytes = claz.getBytes();
                 final int length = bytes.length;
                 jarFile.putNextEntry(zipEntry);

@@ -38,10 +38,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"signedness"})
 public class InstructionFactory implements InstructionConstants {
 
-    private static final String APPEND = "append";
-
-    private static final String FQCN_STRING_BUFFER = "java.lang.StringBuffer";
-
     private static class MethodObject {
 
         final Type[] argTypes;
@@ -57,8 +53,12 @@ public class InstructionFactory implements InstructionConstants {
         }
     }
 
+    private static final String APPEND = "append";
+
+    private static final String FQCN_STRING_BUFFER = "java.lang.StringBuffer";
+
     // N.N. These must agree with the order of Constants.T_CHAR through T_LONG
-    private static final String[] shortNames = {"C", "F", "D", "B", "S", "I", "L" };
+    private static final String[] shortNames = {"C", "F", "D", "B", "S", "I", "L"};
 
     @SuppressWarnings("nullness") // indices 2 and 3 are never used
     private static final MethodObject[] appendMethodObjects = {
@@ -443,8 +443,9 @@ public class InstructionFactory implements InstructionConstants {
             throw new IllegalArgumentException("Invalid type " + type);
         }
     }
+
     /**
-     * Create reference to `this'
+     * Create reference to 'this'
      */
     public static Instruction createThis() {
         return new ALOAD(0);
@@ -713,11 +714,10 @@ public class InstructionFactory implements InstructionConstants {
      */
     public InstructionList createPrintln(final String s) {
         final InstructionList il = new InstructionList();
-        final @NonNegative int out = cp.addFieldref("java.lang.System", "out", "Ljava/io/PrintStream;");
-        final @NonNegative int println = cp.addMethodref("java.io.PrintStream", "println", "(Ljava/lang/String;)V");
-        il.append(new GETSTATIC(out));
+        il.append(createGetStatic("java.lang.System", "out", Type.getType("Ljava/io/PrintStream;")));
         il.append(new PUSH(cp, s));
-        il.append(new INVOKEVIRTUAL(println));
+        final MethodObject methodObject = new MethodObject("java.io.PrintStream", "println", Type.VOID, new Type[] { Type.getType("Ljava/lang/String;") });
+        il.append(createInvoke(methodObject, Const.INVOKEVIRTUAL));
         return il;
     }
 

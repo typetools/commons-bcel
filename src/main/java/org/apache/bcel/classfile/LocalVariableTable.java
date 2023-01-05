@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 
 import org.apache.bcel.Const;
+import org.apache.bcel.util.Args;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -61,19 +62,22 @@ public class LocalVariableTable extends Attribute implements Iterable<LocalVaria
     }
 
     /**
-     * @param nameIndex Index in constant pool to `LocalVariableTable'
+     * @param nameIndex Index in constant pool to 'LocalVariableTable'
      * @param length Content length in bytes
      * @param localVariableTable Table of local variables
      * @param constantPool Array of constants
      */
     public LocalVariableTable(final @NonNegative int nameIndex, final @NonNegative int length, final LocalVariable[] localVariableTable, final ConstantPool constantPool) {
         super(Const.ATTR_LOCAL_VARIABLE_TABLE, nameIndex, length, constantPool);
-        this.localVariableTable = localVariableTable;
+        this.localVariableTable = localVariableTable != null ? localVariableTable : LocalVariable.EMPTY_ARRAY;
+        Args.requireU2(this.localVariableTable.length, "localVariableTable.length");
     }
 
     /**
      * Initialize from another object. Note that both objects use the same references (shallow copy). Use copy() for a
      * physical copy.
+     *
+     * @param c Source to copy.
      */
     public LocalVariableTable(final LocalVariableTable c) {
         this(c.getNameIndex(), c.getLength(), c.getLocalVariableTable(), c.getConstantPool());

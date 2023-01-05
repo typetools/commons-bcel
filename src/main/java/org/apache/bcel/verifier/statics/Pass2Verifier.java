@@ -229,7 +229,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                 // This is highly unelegant due to usage of the Visitor pattern.
                 // TODO: rework it.
                 int methodNumber = -1;
-                final Method[] ms = Repository.lookupClass(myOwner.getClassName()).getMethods();
+                final Method[] ms = Repository.lookupClass(verifier.getClassName()).getMethods();
                 for (int mn = 0; mn < ms.length; mn++) {
                     @SuppressWarnings("interning") // TODO: not sure why this is OK
                     boolean found = (m == ms[mn]);
@@ -1154,7 +1154,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
             final Constant c = cp.getConstant(obj.getNameIndex());
             if (c instanceof ConstantUtf8) { // Ignore the case where it's not a ConstantUtf8 here, we'll find out later.
                 final String className = ((ConstantUtf8) c).getBytes();
-                if (className.startsWith(jc.getClassName().replace('.', '/') + "$")) {
+                if (className.startsWith(Utility.packageToPath(jc.getClassName()) + "$")) {
                     hasInnerClass = true;
                 }
             }
@@ -1256,15 +1256,15 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
      */
     private LocalVariablesInfo[] localVariablesInfos;
     /** The Verifier that created this. */
-    private final Verifier myOwner;
+    private final Verifier verifier;
 
     /**
      * Should only be instantiated by a Verifier.
      *
      * @see Verifier
      */
-    public Pass2Verifier(final Verifier owner) {
-        myOwner = owner;
+    public Pass2Verifier(final Verifier verifier) {
+        this.verifier = verifier;
     }
 
     /**
@@ -1278,7 +1278,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
             // Most of the consistency is handled internally by BCEL; here
             // we only have to verify if the indices of the constants point
             // to constants of the appropriate type and such.
-            final JavaClass jc = Repository.lookupClass(myOwner.getClassName());
+            final JavaClass jc = Repository.lookupClass(verifier.getClassName());
             new CPESSC_Visitor(jc); // constructor implicitly traverses jc
 
         } catch (final ClassNotFoundException e) {
@@ -1303,12 +1303,12 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
     @Override
     public VerificationResult do_verify() {
         try {
-            final VerificationResult vr1 = myOwner.doPass1();
+            final VerificationResult vr1 = verifier.doPass1();
             if (vr1.equals(VerificationResult.VR_OK)) {
 
                 // For every method, we could have information about the local variables out of LocalVariableTable attributes of
                 // the Code attributes.
-                localVariablesInfos = new LocalVariablesInfo[Repository.lookupClass(myOwner.getClassName()).getMethods().length];
+                localVariablesInfos = new LocalVariablesInfo[Repository.lookupClass(verifier.getClassName()).getMethods().length];
 
                 VerificationResult vr = VerificationResult.VR_OK; // default.
                 try {
@@ -1341,7 +1341,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
     private void everyClassHasAnAccessibleSuperclass() {
         try {
             final Set<String> hs = new HashSet<>(); // save class names to detect circular inheritance
-            JavaClass jc = Repository.lookupClass(myOwner.getClassName());
+            JavaClass jc = Repository.lookupClass(verifier.getClassName());
             @NonNegative int supidx = 1; // dummy non zero value; will be replaced
 
             while (supidx != 0) {
@@ -1390,7 +1390,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
      */
     private void fieldAndMethodRefsAreValid() {
         try {
-            final JavaClass jc = Repository.lookupClass(myOwner.getClassName());
+            final JavaClass jc = Repository.lookupClass(verifier.getClassName());
             final DescendingVisitor v = new DescendingVisitor(jc, new FAMRAV_Visitor(jc));
             v.visit();
 
@@ -1412,7 +1412,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
     private void finalMethodsAreNotOverridden() {
         try {
             final Map<String, String> map = new HashMap<>();
-            JavaClass jc = Repository.lookupClass(myOwner.getClassName());
+            JavaClass jc = Repository.lookupClass(verifier.getClassName());
 
             @NonNegative int supidx = 1; // dummy non zero value; will be replaced
             while (supidx != 0) {
@@ -1422,8 +1422,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                 for (final Method method : methods) {
                     final String nameAndSig = method.getName() + method.getSignature();
 
-                    if (map.containsKey(nameAndSig)) {
-                        if (method.isFinal()) {
+                    if (map.containsKey(nameAndSig) && method.isFinal()) {
                             if (!method.isPrivate()) {
                                 throw new ClassConstraintException("Method '" + nameAndSig + "' in class '" + map.get(nameAndSig)
                                     + "' overrides the final (not-overridable) definition in class '" + jc.getClassName() + "'.");
@@ -1435,9 +1434,6 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                         } else if (!method.isStatic()) { // static methods don't inherit
                             map.put(nameAndSig, jc.getClassName());
                         }
-                    } else if (!method.isStatic()) { // static methods don't inherit
-                        map.put(nameAndSig, jc.getClassName());
-                    }
                 }
 
                 jc = Repository.lookupClass(jc.getSuperclassName());

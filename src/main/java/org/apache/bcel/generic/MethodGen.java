@@ -55,11 +55,11 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Template class for building up a method. This is done by defining exception handlers, adding thrown exceptions, local
- * variables and attributes, whereas the `LocalVariableTable' and `LineNumberTable' attributes will be set automatically
+ * variables and attributes, whereas the 'LocalVariableTable' and 'LineNumberTable' attributes will be set automatically
  * for the code. Use stripAttributes() if you don't like this.
  *
- * While generating code it may be necessary to insert NOP operations. You can use the `removeNOPs' method to get rid
- * off them. The resulting method object can be obtained via the `getMethod()' method.
+ * While generating code it may be necessary to insert NOP operations. You can use the 'removeNOPs' method to get rid
+ * off them. The resulting method object can be obtained via the 'getMethod()' method.
  *
  * @see InstructionList
  * @see Method
@@ -247,8 +247,8 @@ public class MethodGen extends FieldGenOrMethodGen {
     private List<MethodObserver> observers;
 
     /**
-     * Declare method. If the method is non-static the constructor automatically declares a local variable `$this' in slot
-     * 0. The actual code is contained in the `il' parameter, which may further manipulated by the user. But they must take
+     * Declare method. If the method is non-static the constructor automatically declares a local variable '$this' in slot
+     * 0. The actual code is contained in the 'il' parameter, which may further manipulated by the user. But they must take
      * care not to remove any instruction (handles) that are still referenced from this object.
      *
      * For example one may not add a local variable and later remove the instructions it refers to without causing havoc. It
@@ -280,9 +280,9 @@ public class MethodGen extends FieldGenOrMethodGen {
             start = il.getStart();
             // end == null => live to end of method
             /*
-             * Add local variables, namely the implicit `this' and the arguments
+             * Add local variables, namely the implicit 'this' and the arguments
              */
-            if (!isStatic() && className != null) { // Instance method -> `this' is local var 0
+            if (!isStatic() && className != null) { // Instance method -> 'this' is local var 0
                 addLocalVariable("this", ObjectType.getInstance(className), start, end);
             }
         }
@@ -695,7 +695,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
     /**
-     * @return code exceptions for `Code' attribute
+     * @return code exceptions for 'Code' attribute
      */
     private CodeException[] getCodeExceptions() {
         final @NonNegative int size = exceptionList.size();
@@ -719,7 +719,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
     /**
-     * @return `Exceptions' attribute of all the exceptions thrown by this method.
+     * @return 'Exceptions' attribute of all the exceptions thrown by this method.
      */
     private ExceptionTable getExceptionTable(final ConstantPoolGen cp) {
         final @NonNegative int size = throwsList.size();
@@ -741,7 +741,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
     /**
-     * @return `LineNumberTable' attribute of all the local variables of this method.
+     * @return 'LineNumberTable' attribute of all the local variables of this method.
      */
     public LineNumberTable getLineNumberTable(final ConstantPoolGen cp) {
         final @NonNegative int size = lineNumberList.size();
@@ -775,7 +775,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
     /**
-     * @return `LocalVariableTable' attribute of all the local variables of this method.
+     * @return 'LocalVariableTable' attribute of all the local variables of this method.
      */
     public LocalVariableTable getLocalVariableTable(final ConstantPoolGen cp) {
         final LocalVariableGen[] lg = getLocalVariables();
@@ -786,7 +786,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
     /**
-     * @return `LocalVariableTypeTable' attribute of this method.
+     * @return 'LocalVariableTypeTable' attribute of this method.
      */
     @Pure
     public LocalVariableTypeTable getLocalVariableTypeTable() {
@@ -817,7 +817,7 @@ public class MethodGen extends FieldGenOrMethodGen {
         /*
          * Also updates positions of instructions, i.e., their indices
          */
-        byte[] byteCode = il != null ? il.getByteCode() : null;
+        final byte[] byteCode = il != null ? il.getByteCode() : null;
         LineNumberTable lnt = null;
         LocalVariableTable lvt = null;
         /*
@@ -868,7 +868,7 @@ public class MethodGen extends FieldGenOrMethodGen {
         ExceptionTable et = null;
         if (!throwsList.isEmpty()) {
             addAttribute(et = getExceptionTable(cp));
-            // Add `Exceptions' if there are "throws" clauses
+            // Add 'Exceptions' if there are "throws" clauses
         }
         final Method m = new Method(super.getAccessFlags(), nameIndex, signatureIndex, getAttributes(), cp.getConstantPool());
         // Undo effects of adding attributes
@@ -1137,7 +1137,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
     /**
-     * Return string representation close to declaration format, `public static void main(String[]) throws IOException',
+     * Return string representation close to declaration format, 'public static void main(String[]) throws IOException',
      * e.g.
      *
      * @return String representation of the method.
