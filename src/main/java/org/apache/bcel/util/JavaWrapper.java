@@ -54,7 +54,7 @@ public class JavaWrapper {
             throw new IllegalStateException("The property 'bcel.classloader' must be defined");
         }
         try {
-            return (java.lang.ClassLoader) Class.forName(s).newInstance();
+            return (java.lang.ClassLoader) Class.forName(s).getConstructor().newInstance();
         } catch (final Exception e) {
             throw new IllegalStateException(e.toString(), e);
         }

@@ -199,7 +199,7 @@ public abstract @UsesObjectEquals class BranchInstruction extends Instruction im
     }
 
     /**
-     * Set branch target
+     * Sets branch target
      *
      * @param target branch target
      */

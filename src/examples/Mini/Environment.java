@@ -50,7 +50,7 @@ public class Environment implements Cloneable {
     private final int size; // The table is an array of
     private final Vector<EnvEntry>[] table; // Vectors
 
-    private int elements = 0;
+    private int elements;
 
     public Environment() {
         this(SIZE);
@@ -112,7 +112,7 @@ public class Environment implements Cloneable {
     }
 
     /**
-     * Get entry from hash table.
+     * Gets entry from hash table.
      */
     public @Nullable EnvEntry get(final String key) {
         int hash;

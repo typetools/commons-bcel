@@ -60,7 +60,7 @@ public final class ClassParser {
     private Field[] fields; // class fields, i.e., its variables
     private Method[] methods; // methods defined in the class
     private Attribute[] attributes; // attributes defined in the class
-    private final boolean isZip; // Loaded from zip file
+    private final boolean isZip; // Loaded from ZIP file
 
     /**
      * Parses class from the given stream.
@@ -94,7 +94,7 @@ public final class ClassParser {
     /**
      * Parses class from given .class file in a ZIP-archive
      *
-     * @param zipFile zip file name
+     * @param zipFile ZIP file name
      * @param fileName file name
      */
     public ClassParser(final String zipFile, final String fileName) {
@@ -107,7 +107,7 @@ public final class ClassParser {
     /**
      * Parses the given Java class file and return an object that represents the contained data, i.e., constants, methods,
      * fields and commands. A <em>ClassFormatException</em> is raised, if the file is not a valid .class file. (This does
-     * not include verification of the byte code as it is performed by the java interpreter).
+     * not include verification of the byte code as it is performed by the Java interpreter).
      *
      * @return Class object representing the parsed class file
      * @throws IOException if an I/O error occurs.

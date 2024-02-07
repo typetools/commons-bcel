@@ -89,6 +89,7 @@ public class ConstantPool implements Cloneable, Node, Iterable<Constant> {
         constantPool = new Constant[constantPoolCount];
         /*
          * constantPool[0] is unused by the compiler and may be used freely by the implementation.
+         * constantPool[0] is currently unused by the implementation.
          */
         for (int i = 1; i < constantPoolCount; i++) {
             constantPool[i] = Constant.readConstant(input);
@@ -289,7 +290,7 @@ public class ConstantPool implements Cloneable, Node, Iterable<Constant> {
      */
     public <T extends Constant> T getConstant(final @NonNegative int index, final byte tag, final Class<T> castTo) throws ClassFormatException {
         final T c = getConstant(index);
-        if (c.getTag() != tag) {
+        if (c == null || c.getTag() != tag) {
             throw new ClassFormatException("Expected class '" + Const.getConstantName(tag) + "' at index " + index + " and got " + c);
         }
         return c;
@@ -307,23 +308,25 @@ public class ConstantPool implements Cloneable, Node, Iterable<Constant> {
      * @since 6.6.0
      */
     public <T extends Constant> T getConstant(final @NonNegative int index, final Class<T> castTo) throws ClassFormatException {
-        if (index >= constantPool.length || index < 0) {
+        if (index >= constantPool.length || index < 1) {
             throw new ClassFormatException("Invalid constant pool reference using index: " + index + ". Constant pool size is: " + constantPool.length);
         }
         if (constantPool[index] != null && !castTo.isAssignableFrom(constantPool[index].getClass())) {
             throw new ClassFormatException("Invalid constant pool reference at index: " + index +
                     ". Expected " + castTo + " but was " + constantPool[index].getClass());
         }
-        // Previous check ensures this won't throw a ClassCastException
-        final T c = castTo.cast(constantPool[index]);
-        if (c == null
-            // the 0th element is always null
-            && index != 0) {
+        if (index > 1) {
             final Constant prev = constantPool[index - 1];
-            if (prev == null || prev.getTag() != Const.CONSTANT_Double && prev.getTag() != Const.CONSTANT_Long) {
-                throw new ClassFormatException("Constant pool at index " + index + " is null.");
+            if (prev != null && (prev.getTag() == Const.CONSTANT_Double || prev.getTag() == Const.CONSTANT_Long)) {
+                throw new ClassFormatException("Constant pool at index " + index + " is invalid. The index is unused due to the preceeding "
+                        + Const.getConstantName(prev.getTag()) + ".");
             }
         }
+        // Previous check ensures this won't throw a ClassCastException
+        final T c = castTo.cast(constantPool[index]);
+        if (c == null) {
+                throw new ClassFormatException("Constant pool at index " + index + " is null.");
+            }
         return c;
     }
 

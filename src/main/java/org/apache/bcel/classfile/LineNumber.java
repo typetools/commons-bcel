@@ -42,11 +42,11 @@ public final class LineNumber implements Cloneable, Node {
     /** Program Counter (PC) corresponds to line */
     private @NonNegative int startPc;
 
-    /** number in source file */
+    /** Number in source file */
     private @NonNegative int lineNumber;
 
     /**
-     * Construct object from file stream.
+     * Constructs object from file stream.
      *
      * @param file Input stream
      * @throws IOException if an I/O Exception occurs in readUnsignedShort

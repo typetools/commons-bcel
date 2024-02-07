@@ -45,7 +45,7 @@ public final class ArrayType extends ReferenceType {
     /**
      * Convenience constructor for reference array type, e.g. Object[]
      *
-     * @param className complete name of class (java.lang.String, e.g.)
+     * @param className complete name of class ({@link String}, for example)
      * @param dimensions array dimensions
      */
     public ArrayType(final @ClassGetName String className, final @NonNegative int dimensions) {
@@ -83,7 +83,7 @@ public final class ArrayType extends ReferenceType {
             buf.append('[');
         }
         buf.append(basicType.getSignature());
-        super.setSignature(buf.toString());
+        this.signature = buf.toString();
     }
 
     /**

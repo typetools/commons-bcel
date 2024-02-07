@@ -74,19 +74,17 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     public static final byte FILE = 2;
     public static final byte ZIP = 3;
     private static final boolean debug = Boolean.getBoolean("JavaClass.debug"); // Debugging on/off
-    private static BCELComparator bcelComparator = new BCELComparator() {
+
+    private static BCELComparator<JavaClass> bcelComparator = new BCELComparator<JavaClass>() {
 
         @Override
-        public boolean equals(final Object o1, final Object o2) {
-            final JavaClass THIS = (JavaClass) o1;
-            final JavaClass THAT = (JavaClass) o2;
-            return Objects.equals(THIS.getClassName(), THAT.getClassName());
+        public boolean equals(final JavaClass a, final JavaClass b) {
+            return a == b || a != null && b != null && Objects.equals(a.getClassName(), b.getClassName());
         }
 
         @Override
-        public int hashCode(final Object o) {
-            final JavaClass THIS = (JavaClass) o;
-            return THIS.getClassName().hashCode();
+        public int hashCode(final JavaClass o) {
+            return o != null ? Objects.hashCode(o.getClassName()) : 0;
         }
     };
 
@@ -100,10 +98,10 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     }
 
     /**
-     * @return Comparison strategy object
+     * @return Comparison strategy object.
      */
     @Pure
-    public static BCELComparator getComparator() {
+    public static BCELComparator<JavaClass> getComparator() {
         return bcelComparator;
     }
 
@@ -117,9 +115,9 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     }
 
     /**
-     * @param comparator Comparison strategy object
+     * @param comparator Comparison strategy object.
      */
-    public static void setComparator(final BCELComparator comparator) {
+    public static void setComparator(final BCELComparator<JavaClass> comparator) {
         bcelComparator = comparator;
     }
 
@@ -402,11 +400,51 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
      */
     @Override
     public boolean equals(final @Nullable Object obj) {
-        return bcelComparator.equals(this, obj);
+        return obj instanceof JavaClass && bcelComparator.equals(this, (JavaClass) obj);
     }
 
     /**
-     * Get all interfaces implemented by this JavaClass (transitively).
+     * Finds a visible field by name and type in this class and its super classes.
+     * @param fieldName the field name to find
+     * @param fieldType the field type to find
+     * @return field matching given name and type, null if field is not found or not accessible from this class.
+     * @throws ClassNotFoundException
+     * @since 6.8.0
+     */
+    public Field findField(final String fieldName, final Type fieldType) throws ClassNotFoundException {
+        for (final Field field : fields) {
+            if (field.getName().equals(fieldName)) {
+                final Type fType = Type.getType(field.getSignature());
+                /*
+                 * TODO: Check if assignment compatibility is sufficient. What does Sun do?
+                 */
+                if (fType.equals(fieldType)) {
+                    return field;
+                }
+            }
+        }
+
+        final JavaClass superclass = getSuperClass();
+        if (superclass != null && !"java.lang.Object".equals(superclass.getClassName())) {
+            final Field f = superclass.findField(fieldName, fieldType);
+            if (f != null && (f.isPublic() || f.isProtected() || !f.isPrivate() && packageName.equals(superclass.getPackageName()))) {
+                return f;
+            }
+        }
+        final JavaClass[] implementedInterfaces = getInterfaces();
+        if (implementedInterfaces != null) {
+            for (final JavaClass implementedInterface : implementedInterfaces) {
+                final Field f = implementedInterface.findField(fieldName, fieldType);
+                if (f != null) {
+                    return f;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets all interfaces implemented by this JavaClass (transitively).
      *
      * @throws ClassNotFoundException if any of the class's superclasses or interfaces can't be found.
      */
@@ -522,7 +560,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     }
 
     /**
-     * Get interfaces directly implemented by this JavaClass.
+     * Gets interfaces directly implemented by this JavaClass.
      *
      * @throws ClassNotFoundException if any of the class's interfaces can't be found.
      */
@@ -622,7 +660,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     }
 
     /**
-     * @return the superclass for this JavaClass object, or null if this is java.lang.Object
+     * @return the superclass for this JavaClass object, or null if this is {@link Object}
      * @throws ClassNotFoundException if the superclass can't be found
      */
     public @Nullable JavaClass getSuperClass() throws ClassNotFoundException {
@@ -646,8 +684,8 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     }
 
     /**
-     * returns the super class name of this class. In the case that this class is java.lang.Object, it will return itself
-     * (java.lang.Object). This is probably incorrect but isn't fixed at this time to not break existing clients.
+     * returns the super class name of this class. In the case that this class is {@link Object}, it will return itself
+     * ({@link Object}). This is probably incorrect but isn't fixed at this time to not break existing clients.
      *
      * @return Superclass name.
      */
@@ -775,7 +813,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     }
 
     /**
-     * Set File name of class, aka SourceFile attribute value
+     * Sets File name of class, aka SourceFile attribute value
      */
     public void setFileName(final String fileName) {
         this.fileName = fileName;
@@ -824,7 +862,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     }
 
     /**
-     * Set absolute path to file this class was read from.
+     * Sets absolute path to file this class was read from.
      */
     public void setSourceFileName(final String sourceFileName) {
         this.sourceFileName = sourceFileName;

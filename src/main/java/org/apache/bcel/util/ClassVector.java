@@ -34,8 +34,9 @@ import org.checkerframework.checker.index.qual.NonNegative;
 public class ClassVector implements Serializable {
 
     private static final long serialVersionUID = 5600397075672780806L;
+
     @Deprecated
-    protected List<JavaClass> vec = new ArrayList<>();
+    protected transient List<JavaClass> vec = new ArrayList<>();
 
     public void addElement(final JavaClass clazz) {
         vec.add(clazz);
@@ -43,6 +44,11 @@ public class ClassVector implements Serializable {
 
     public JavaClass elementAt(final @NonNegative int index) {
         return vec.get(index);
+    }
+
+    @SuppressWarnings("unused") // SE_TRANSIENT_FIELD_NOT_RESTORED
+    private void readObjectNoData() {
+        vec = new ArrayList<>();
     }
 
     public void removeElementAt(final @NonNegative int index) {

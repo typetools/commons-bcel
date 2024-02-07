@@ -55,7 +55,7 @@ public class BootstrapMethod implements Cloneable {
     }
 
     /**
-     * Construct object from input stream.
+     * Constructs object from input stream.
      *
      * @param input Input stream
      * @throws IOException if an I/O error occurs.

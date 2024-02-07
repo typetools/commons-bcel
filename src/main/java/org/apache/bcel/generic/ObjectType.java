@@ -28,7 +28,7 @@ import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
- * Denotes reference such as java.lang.String.
+ * Denotes reference such as {@link String}.
  */
 @AnnotatedFor({"signature"})
 public class ObjectType extends ReferenceType {
@@ -49,7 +49,7 @@ public class ObjectType extends ReferenceType {
     /**
      * Constructs a new instance.
      *
-     * @param className fully qualified class name, e.g. java.lang.String
+     * @param className fully qualified class name, e.g. {@link String}
      */
     // The argument can be either @BinaryName or @InternalForm.  There is no Signature Checker
     // annotation for that.  Use @BinaryName since the documentation is closest to that.

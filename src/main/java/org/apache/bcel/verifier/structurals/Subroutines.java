@@ -68,7 +68,7 @@ public class Subroutines {
     /**
      * This inner class implements the Subroutine interface.
      */
-    private @UsesObjectEquals class SubroutineImpl implements Subroutine {
+    private final @UsesObjectEquals class SubroutineImpl implements Subroutine {
         /**
          * UNSET, a symbol for an uninitialized localVariable field. This is used for the "top-level" Subroutine; i.e. no
          * subroutine.
@@ -402,7 +402,7 @@ public class Subroutines {
     // CHECKSTYLE:ON
 
     /**
-     * Constructor.
+     * Constructs a new instance.
      *
      * @param mg A MethodGen object representing method to create the Subroutine objects of. Assumes that JustIce strict
      *        checks are needed.
@@ -412,7 +412,7 @@ public class Subroutines {
     }
 
     /**
-     * Constructor.
+     * Constructs a new instance.
      *
      * @param mg A MethodGen object representing method to create the Subroutine objects of.
      * @param enableJustIceCheck whether to enable additional JustIce checks

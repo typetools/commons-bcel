@@ -108,19 +108,16 @@ public class MethodGen extends FieldGenOrMethodGen {
         }
     }
 
-    private static BCELComparator bcelComparator = new BCELComparator() {
+    private static BCELComparator<FieldGenOrMethodGen> bcelComparator = new BCELComparator<FieldGenOrMethodGen>() {
 
         @Override
-        public boolean equals(final Object o1, final Object o2) {
-            final FieldGenOrMethodGen THIS = (FieldGenOrMethodGen) o1;
-            final FieldGenOrMethodGen THAT = (FieldGenOrMethodGen) o2;
-            return Objects.equals(THIS.getName(), THAT.getName()) && Objects.equals(THIS.getSignature(), THAT.getSignature());
+        public boolean equals(final FieldGenOrMethodGen a, final FieldGenOrMethodGen b) {
+            return a == b || a != null && b != null && Objects.equals(a.getName(), b.getName()) && Objects.equals(a.getSignature(), b.getSignature());
         }
 
         @Override
-        public int hashCode(final Object o) {
-            final FieldGenOrMethodGen THIS = (FieldGenOrMethodGen) o;
-            return THIS.getSignature().hashCode() ^ THIS.getName().hashCode();
+        public int hashCode(final FieldGenOrMethodGen o) {
+            return o != null ? Objects.hash(o.getSignature(), o.getName()) : 0;
         }
     };
 
@@ -133,10 +130,10 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
     /**
-     * @return Comparison strategy object
+     * @return Comparison strategy object.
      */
     @Pure
-    public static BCELComparator getComparator() {
+    public static BCELComparator<FieldGenOrMethodGen> getComparator() {
         return bcelComparator;
     }
 
@@ -213,9 +210,9 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
     /**
-     * @param comparator Comparison strategy object
+     * @param comparator Comparison strategy object.
      */
-    public static void setComparator(final BCELComparator comparator) {
+    public static void setComparator(final BCELComparator<FieldGenOrMethodGen> comparator) {
         bcelComparator = comparator;
     }
 
@@ -643,7 +640,7 @@ public class MethodGen extends FieldGenOrMethodGen {
      */
     @Override
     public boolean equals(final @Nullable Object obj) {
-        return bcelComparator.equals(this, obj);
+        return obj instanceof FieldGenOrMethodGen && bcelComparator.equals(this, (FieldGenOrMethodGen) obj);
     }
 
     // J5TODO: Should paramAnnotations be an array of arrays? Rather than an array of lists, this
@@ -804,7 +801,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
     /**
-     * Get method object. Never forget to call setMaxStack() or setMaxStack(max), respectively, before calling this method
+     * Gets method object. Never forget to call setMaxStack() or setMaxStack(max), respectively, before calling this method
      * (the same applies for max locals).
      *
      * @return method object
@@ -1101,7 +1098,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
     /**
-     * Set maximum number of local variables.
+     * Sets maximum number of local variables.
      */
     public void setMaxLocals(final @NonNegative int m) {
         maxLocals = m;
@@ -1119,7 +1116,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
     /**
-     * Set maximum stack size for this method.
+     * Sets maximum stack size for this method.
      */
     public void setMaxStack(final @NonNegative int m) { // TODO could be package-protected?
         maxStack = m;

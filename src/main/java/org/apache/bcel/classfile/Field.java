@@ -43,19 +43,16 @@ public final class Field extends FieldOrMethod {
      */
     public static final Field[] EMPTY_ARRAY = {};
 
-    private static BCELComparator bcelComparator = new BCELComparator() {
+    private static BCELComparator<Field> bcelComparator = new BCELComparator<Field>() {
 
         @Override
-        public boolean equals(final Object o1, final Object o2) {
-            final Field THIS = (Field) o1;
-            final Field THAT = (Field) o2;
-            return Objects.equals(THIS.getName(), THAT.getName()) && Objects.equals(THIS.getSignature(), THAT.getSignature());
+        public boolean equals(final Field a, final Field b) {
+            return a == b || a != null && b != null && Objects.equals(a.getName(), b.getName()) && Objects.equals(a.getSignature(), b.getSignature());
         }
 
         @Override
-        public int hashCode(final Object o) {
-            final Field THIS = (Field) o;
-            return THIS.getSignature().hashCode() ^ THIS.getName().hashCode();
+        public int hashCode(final Field o) {
+            return o != null ? Objects.hash(o.getSignature(), o.getName()) : 0;
         }
     };
 
@@ -65,24 +62,24 @@ public final class Field extends FieldOrMethod {
     static final Field[] EMPTY_FIELD_ARRAY = {};
 
     /**
-     * @return Comparison strategy object
+     * @return Comparison strategy object.
      */
     @Pure
-    public static BCELComparator getComparator() {
+    public static BCELComparator<Field> getComparator() {
         return bcelComparator;
     }
 
     /**
-     * @param comparator Comparison strategy object
+     * @param comparator Comparison strategy object.
      */
-    public static void setComparator(final BCELComparator comparator) {
+    public static void setComparator(final BCELComparator<Field> comparator) {
         bcelComparator = comparator;
     }
 
     /**
-     * Construct object from file stream.
+     * Constructs object from file stream.
      *
-     * @param file Input stream
+     * @param file Input stream.
      */
     Field(final DataInput file, final ConstantPool constantPool) throws IOException, ClassFormatException {
         super(file, constantPool);
@@ -136,7 +133,7 @@ public final class Field extends FieldOrMethod {
     @Override
     @SuppressWarnings("nullness") // BCEL bug: equals() crashes when passed null
     public boolean equals(final @Nullable Object obj) {
-        return bcelComparator.equals(this, obj);
+        return obj instanceof Field && bcelComparator.equals(this, (Field) obj);
     }
 
     /**
@@ -153,10 +150,12 @@ public final class Field extends FieldOrMethod {
     }
 
     /**
+     * See https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.2.2
+     *
      * @return type of field
      */
     public Type getType() {
-        return Type.getReturnType(getSignature());
+        return Type.getType(getSignature());
     }
 
     /**

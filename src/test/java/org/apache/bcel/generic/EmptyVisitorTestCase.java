@@ -17,15 +17,18 @@
 package org.apache.bcel.generic;
 
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import org.apache.bcel.classfile.Code;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.classfile.Method;
 import org.apache.bcel.util.SyntheticRepository;
+import org.apache.commons.lang3.JavaVersion;
+import org.apache.commons.lang3.SystemUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-class EmptyVisitorTestCase {
+final class EmptyVisitorTestCase {
 
     /*
      * https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-6.html#jvms-6.2
@@ -56,6 +59,8 @@ class EmptyVisitorTestCase {
     // @formatter:on
     })
     public void test(final String className) throws ClassNotFoundException {
+        // "java.io.Bits" is not in Java 21.
+        assumeFalse(SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_21) && className.equals("java.io.Bits"));
         final JavaClass javaClass = SyntheticRepository.getInstance().loadClass(className);
         for (final Method method : javaClass.getMethods()) {
             final Code code = method.getCode();
