@@ -47,7 +47,7 @@ public final class Field extends FieldOrMethod {
 
         @Override
         public boolean equals(final Field a, final Field b) {
-            return a == b || a != null && b != null && Objects.equals(a.getName(), b.getName()) && Objects.equals(a.getSignature(), b.getSignature());
+            return a.equals(b) || a != null && b != null && Objects.equals(a.getName(), b.getName()) && Objects.equals(a.getSignature(), b.getSignature());
         }
 
         @Override

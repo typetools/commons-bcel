@@ -55,7 +55,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
 
         @Override
         public boolean equals(final ClassGen a, final ClassGen b) {
-            return a == b || a != null && b != null && Objects.equals(a.getClassName(), b.getClassName());
+            return a.equals(b) || a != null && b != null && Objects.equals(a.getClassName(), b.getClassName());
         }
 
         @Override

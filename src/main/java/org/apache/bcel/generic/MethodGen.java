@@ -112,7 +112,7 @@ public class MethodGen extends FieldGenOrMethodGen {
 
         @Override
         public boolean equals(final FieldGenOrMethodGen a, final FieldGenOrMethodGen b) {
-            return a == b || a != null && b != null && Objects.equals(a.getName(), b.getName()) && Objects.equals(a.getSignature(), b.getSignature());
+            return a.equals(b) || a != null && b != null && Objects.equals(a.getName(), b.getName()) && Objects.equals(a.getSignature(), b.getSignature());
         }
 
         @Override

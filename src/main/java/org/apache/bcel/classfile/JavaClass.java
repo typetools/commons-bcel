@@ -79,7 +79,7 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
 
         @Override
         public boolean equals(final JavaClass a, final JavaClass b) {
-            return a == b || a != null && b != null && Objects.equals(a.getClassName(), b.getClassName());
+            return a.equals(b) || a != null && b != null && Objects.equals(a.getClassName(), b.getClassName());
         }
 
         @Override

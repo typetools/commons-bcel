@@ -37,7 +37,7 @@ public abstract class Constant implements Cloneable, Node {
 
         @Override
         public boolean equals(final Constant a, final Constant b) {
-            return a == b || a != null && b != null && Objects.equals(a.toString(), b.toString());
+            return a.equals(b) || a != null && b != null && Objects.equals(a.toString(), b.toString());
         }
 
         @Override

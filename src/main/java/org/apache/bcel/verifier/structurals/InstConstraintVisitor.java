@@ -1777,7 +1777,7 @@ public class InstConstraintVisitor extends EmptyVisitor {
 
             final String theClass = o.getClassName(cpg);
 
-            if (objref != GENERIC_ARRAY && !Repository.instanceOf(objRefClassName, theClass)) {
+            if (!objref.equals(GENERIC_ARRAY) && !Repository.instanceOf(objRefClassName, theClass)) {
                 constraintViolated(o, "The 'objref' item '" + objref + "' does not implement '" + theClass + "' as expected.");
             }
         } catch (final ClassNotFoundException e) {
