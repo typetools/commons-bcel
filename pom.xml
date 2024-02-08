@@ -459,8 +459,8 @@
       <id>succeedingTypecheckers</id>
       <properties>
         <annotationProcessor1>org.checkerframework.checker.interning.InterningChecker</annotationProcessor1>
-        <annotationProcessor2>org.checkerframework.common.util.report.DoNothingProcessor</annotationProcessor2>
-        <annotationProcessor3>org.checkerframework.common.util.report.DoNothingProcessor</annotationProcessor3>
+        <annotationProcessor2>org.checkerframework.common.util.debug.DoNothingProcessor</annotationProcessor2>
+        <annotationProcessor3>org.checkerframework.common.util.debug.DoNothingProcessor</annotationProcessor3>
         <annotationProcessor4>org.checkerframework.checker.signedness.SignednessChecker</annotationProcessor4>
         <annotationProcessor5>org.checkerframework.checker.resourceleak.ResourceLeakChecker</annotationProcessor5>
         <compilerArgument1></compilerArgument1> <!-- Keep type-checking errors as errors. -->
