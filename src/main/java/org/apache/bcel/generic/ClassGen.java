@@ -54,8 +54,9 @@ public class ClassGen extends AccessFlags implements Cloneable {
     private static BCELComparator<ClassGen> bcelComparator = new BCELComparator<ClassGen>() {
 
         @Override
+        @SuppressWarnings("interning:not.interned") // we want to do a reference comparison
         public boolean equals(final ClassGen a, final ClassGen b) {
-            return a.equals(b) || a != null && b != null && Objects.equals(a.getClassName(), b.getClassName());
+            return a == b || a != null && b != null && Objects.equals(a.getClassName(), b.getClassName());
         }
 
         @Override

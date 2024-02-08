@@ -36,8 +36,9 @@ public abstract class Constant implements Cloneable, Node {
     private static BCELComparator<Constant> bcelComparator = new BCELComparator<Constant>() {
 
         @Override
+        @SuppressWarnings("interning:not.interned") // we want to do a reference comparison
         public boolean equals(final Constant a, final Constant b) {
-            return a.equals(b) || a != null && b != null && Objects.equals(a.toString(), b.toString());
+            return a == b || a != null && b != null && Objects.equals(a.toString(), b.toString());
         }
 
         @Override

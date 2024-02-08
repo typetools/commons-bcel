@@ -45,8 +45,9 @@ public final class Method extends FieldOrMethod {
     private static BCELComparator<Method> bcelComparator = new BCELComparator<Method>() {
 
         @Override
+        @SuppressWarnings("interning:not.interned") // we want to do a reference comparison
         public boolean equals(final Method a, final Method b) {
-            return a.equals(b) || a != null && b != null && Objects.equals(a.getName(), b.getName()) && Objects.equals(a.getSignature(), b.getSignature());
+            return a == b || a != null && b != null && Objects.equals(a.getName(), b.getName()) && Objects.equals(a.getSignature(), b.getSignature());
         }
 
         @Override

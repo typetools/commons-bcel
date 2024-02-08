@@ -78,8 +78,9 @@ public class JavaClass extends AccessFlags implements Cloneable, Node, Comparabl
     private static BCELComparator<JavaClass> bcelComparator = new BCELComparator<JavaClass>() {
 
         @Override
+        @SuppressWarnings("interning:not.interned") // we want to do a reference comparison
         public boolean equals(final JavaClass a, final JavaClass b) {
-            return a.equals(b) || a != null && b != null && Objects.equals(a.getClassName(), b.getClassName());
+            return a == b || a != null && b != null && Objects.equals(a.getClassName(), b.getClassName());
         }
 
         @Override

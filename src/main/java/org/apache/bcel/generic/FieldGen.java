@@ -49,8 +49,9 @@ public class FieldGen extends FieldGenOrMethodGen {
     private static BCELComparator<FieldGen> bcelComparator = new BCELComparator<FieldGen>() {
 
         @Override
+        @SuppressWarnings("interning:not.interned") // we want to do a reference comparison
         public boolean equals(final FieldGen a, final FieldGen b) {
-            return a.equals(b) || a != null && b != null && Objects.equals(a.getName(), b.getName()) && Objects.equals(a.getSignature(), b.getSignature());
+            return a == b || a != null && b != null && Objects.equals(a.getName(), b.getName()) && Objects.equals(a.getSignature(), b.getSignature());
         }
 
         @Override
