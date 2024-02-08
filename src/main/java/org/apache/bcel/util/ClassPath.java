@@ -44,6 +44,7 @@ import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.classfile.Utility;
 
 import org.checkerframework.checker.calledmethods.qual.EnsuresCalledMethods;
+import org.checkerframework.checker.mustcall.qual.MustCall;
 import org.checkerframework.checker.mustcall.qual.Owning;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
@@ -62,6 +63,7 @@ public class ClassPath implements Closeable {
         abstract InputStream getResourceAsStream(String name);
     }
 
+    @MustCall("close")
     private abstract static class AbstractZip extends AbstractPathEntry {
 
         private final ZipFile zipFile;
@@ -361,25 +363,35 @@ public class ClassPath implements Closeable {
         private final @Owning ModularRuntimeImage modularRuntimeImage;
         private final @Owning JrtModule[] modules;
 
+        @SuppressWarnings("mustcall:type.argument")  // mustcall doesn't support arrays yet
         public JrtModules(final String path) throws IOException {
             this.modularRuntimeImage = new ModularRuntimeImage();
-            this.modules = modularRuntimeImage.list(path).stream().map(JrtModule::new).toArray(JrtModule[]::new);
+            try {
+                this.modules = modularRuntimeImage.list(path).stream().map(JrtModule::new).toArray(JrtModule[]::new);
+            } finally {
+                if (modularRuntimeImage != null) {
+                    modularRuntimeImage.close();
+                }
+            }
         }
 
         @Override
         @SuppressWarnings({"builder:contracts.postcondition", // Called on each *element* of `modules`
-                        "builder:destructor.exceptional.postcondition" // might not close everything
+                        "builder:contracts.exceptional.postcondition" // might not close everything
                         })
         @EnsuresCalledMethods(value = {"modules", "modularRuntimeImage"}, methods = "close")
         public void close() throws IOException {
-            if (modules != null) {
-                // don't use a for each loop to avoid creating an iterator for the GC to collect.
-                for (final JrtModule module : modules) {
-                    module.close();
+            try {
+                if (modules != null) {
+                    // don't use a for each loop to avoid creating an iterator for the GC to collect.
+                    for (final JrtModule module : modules) {
+                        module.close();
+                    }
                 }
-            }
-            if (modularRuntimeImage != null) {
-                modularRuntimeImage.close();
+            } finally {
+                if (modularRuntimeImage != null) {
+                    modularRuntimeImage.close();
+                }
             }
         }
 
@@ -529,6 +541,7 @@ public class ClassPath implements Closeable {
 
     private final @Nullable ClassPath parent;
 
+    @SuppressWarnings("mustcall:type.argument")
     private final @Owning List<AbstractPathEntry> paths;
 
     /**
