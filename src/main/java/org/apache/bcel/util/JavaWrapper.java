@@ -22,6 +22,7 @@ import java.lang.reflect.Modifier;
 import org.apache.commons.lang3.StringUtils;
 
 import org.checkerframework.checker.signature.qual.BinaryName;
+import org.checkerframework.checker.signature.qual.ClassGetName;
 
 /**
  * Java interpreter replacement, i.e., wrapper that uses its own ClassLoader to modify/generate classes as they're
@@ -45,11 +46,10 @@ import org.checkerframework.checker.signature.qual.BinaryName;
  */
 public class JavaWrapper {
 
-    @SuppressWarnings({"signature", // if bcel.classloader isn't a @ClassGetName, error is thrown
-                    "mustcall:return" // reflection
-                    })
+    @SuppressWarnings("nullness:argument") // it is legal to pass null to isEmpty
     private static java.lang.ClassLoader getClassLoader() {
-        final String s = System.getProperty("bcel.classloader");
+        @SuppressWarnings("signature:assignment") // we assume system property is legal className
+        final @ClassGetName String s = System.getProperty("bcel.classloader");
         if (StringUtils.isEmpty(s)) {
             throw new IllegalStateException("The property 'bcel.classloader' must be defined");
         }
@@ -71,7 +71,8 @@ public class JavaWrapper {
             System.out.println("Missing class name.");
             return;
         }
-        final String className = argv[0];
+        @SuppressWarnings("signature:assignment") // we assume user passes legal argument for className
+        final @BinaryName String className = argv[0];
         final String[] newArgv = new String[argv.length - 1];
         System.arraycopy(argv, 1, newArgv, 0, newArgv.length);
         new JavaWrapper().runMain(className, newArgv);
@@ -112,7 +113,8 @@ public class JavaWrapper {
             return;
         }
         try {
-            method.invoke(null, (Object[]) argv);
+            @SuppressWarnings("nullness:argument") // method is static, therefore first arg can be null (we ignore result)
+            Object result = method.invoke(null, (Object[]) argv);
         } catch (final Exception ex) {
             ex.printStackTrace();
         }
