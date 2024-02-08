@@ -87,7 +87,6 @@ public abstract class Utility {
         @Override
         public int read(final char[] cbuf, final int off, final int len) throws IOException {
             for (int i = 0; i < len; i++) {
-                @SuppressWarnings("signedness:cast.unsafe") // result of read() is range x'00' to x'ff'
                 char temp = (char)read();
                 cbuf[off + i] = temp;
             }

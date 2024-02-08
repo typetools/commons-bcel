@@ -530,7 +530,6 @@ public class InstructionFactory implements InstructionConstants {
             } catch (final Exception e) {
                 throw new IllegalArgumentException("Could not find instruction: " + name, e);
             }
-            @SuppressWarnings("mustcall:assignment") // reflection
             @MustCall Instruction result = i;
             return result;
         }

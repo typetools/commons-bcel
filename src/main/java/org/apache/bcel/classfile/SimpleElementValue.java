@@ -83,7 +83,6 @@ public class SimpleElementValue extends ElementValue {
         return (byte) super.getConstantPool().getConstantInteger(getIndex()).getBytes();
     }
 
-    @SuppressWarnings("signedness:cast.unsafe") // code tests for type char before cast
     @Pure
     public char getValueChar() {
         if (super.getType() != PRIMITIVE_CHAR) {
@@ -172,7 +171,6 @@ public class SimpleElementValue extends ElementValue {
             return Integer.toString(b.getBytes());
         case PRIMITIVE_CHAR:
             final ConstantInteger ch = cpool.getConstantInteger(getIndex());
-            @SuppressWarnings("signedness:cast.unsafe") // code tests for type char before cast
             final char chChar = (char) ch.getBytes();
             return String.valueOf(chChar);
         case PRIMITIVE_BOOLEAN:

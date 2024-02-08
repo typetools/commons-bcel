@@ -105,7 +105,6 @@ public final class Signature extends Attribute {
         }
     }
 
-    @SuppressWarnings("signedness:cast.unsafe") // read() in range -1 to 255; we test for eof(-1)
     private static void matchIdent(final MyByteArrayInputStream in, final StringBuilder buf) {
         int ch;
         if ((ch = in.read()) == -1) {

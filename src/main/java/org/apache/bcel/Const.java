@@ -549,7 +549,6 @@ public final class Const {
      *
      * @see #ACC_PUBLIC
      */
-  @SuppressWarnings("value:cast.unsafe") // should only be used to mask or test flags
   public static final @Unsigned short ACC_MANDATED     = (short) 0x8000;
 
     /**
@@ -557,7 +556,6 @@ public final class Const {
      *
      * @see #ACC_PUBLIC
      */
-  @SuppressWarnings("value:cast.unsafe") // should only be used to mask or test flags
   public static final @Unsigned short ACC_MODULE       = (short) 0x8000;
 
     /**

@@ -259,7 +259,6 @@ public class ConstantPool implements Cloneable, Node, Iterable<Constant> {
      * @see Constant
      * @throws ClassFormatException if index is invalid
      */
-    @SuppressWarnings("signedness:return")
     public <T extends Constant> T getConstant(final @NonNegative int index) throws ClassFormatException {
         return (T) getConstant(index, Constant.class);
     }
@@ -273,7 +272,6 @@ public class ConstantPool implements Cloneable, Node, Iterable<Constant> {
      * @see Constant
      * @throws ClassFormatException if constant type does not match tag
      */
-    @SuppressWarnings("signedness:return")
     public <T extends Constant> T getConstant(final @NonNegative int index, final byte tag) throws ClassFormatException {
         return (T) getConstant(index, tag, Constant.class);
     }
