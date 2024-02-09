@@ -298,7 +298,7 @@ public abstract class Select extends BranchInstruction implements VariableLength
     }
 
     /**
-     * Set branch target for 'i'th case
+     * Sets branch target for 'i'th case
      */
     public void setTarget(final @NonNegative int i, final InstructionHandle target) { // TODO could be package-protected?
         notifyTarget(targets[i], target, this);
@@ -324,7 +324,11 @@ public abstract class Select extends BranchInstruction implements VariableLength
             for (int i = 0; i < match_length; i++) {
                 String s = "null";
                 if (targets[i] != null) {
+                    if (targets[i].getInstruction().equals(this)) {
+                        s = "<points to itself>";
+                    } else {
                     s = targets[i].getInstruction().toString();
+                }
                 }
                 buf.append("(").append(match[i]).append(", ").append(s).append(" = {").append(indices[i]).append("})");
             }

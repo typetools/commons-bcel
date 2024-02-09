@@ -39,7 +39,9 @@ and commit
 The <action> type attribute can be add,update,fix,remove.
 -->
 
-<document>
+<document xmlns="http://maven.apache.org/changes/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <properties>
     <title>Apache Commons BCEL Release Notes</title>
     <author email="dev@commons.apache.org">Apache Commons developers</author>
@@ -62,6 +64,59 @@ The <action> type attribute can be add,update,fix,remove.
    -->
 
   <body>
+    <release version="6.8.1" date="2024-01-07" description="Maintenance and bug fix release.">
+      <!-- FIX  -->
+      <action                  type="fix" dev="ggregory" due-to="Gary Gregory">Replace internal use of StringBuffer with StringBuilder.</action>
+      <action issue="BCEL-370" type="fix" dev="ggregory" due-to="Gary Gregory">CONSTANT_Dynamic is not handled in LDC #254.</action>
+      <action                  type="fix" dev="ggregory" due-to="Gary Gregory">BCELComparator now uses generics.</action>
+      <action                  type="fix" dev="ggregory" due-to="Gary Gregory">Avoid NullPointerException in ClassGen.BCELComparator#equals() and ClassGen.BCELComparator#hashCode().</action>
+      <action                  type="fix" dev="ggregory" due-to="Gary Gregory">Avoid NullPointerException in Constant.BCELComparator#equals() and Constant.BCELComparator#hashCode().</action>
+      <action                  type="fix" dev="ggregory" due-to="Gary Gregory">Avoid NullPointerException in Field.BCELComparator#equals() and Field.BCELComparator#hashCode().</action>
+      <action                  type="fix" dev="ggregory" due-to="Gary Gregory">Avoid NullPointerException in FieldGen.BCELComparator#equals() and FieldGen.BCELComparator#hashCode().</action>
+      <action                  type="fix" dev="ggregory" due-to="Gary Gregory">Avoid NullPointerException in JavaClass.BCELComparator#equals() and JavaClass.BCELComparator#hashCode().</action>
+      <action                  type="fix" dev="ggregory" due-to="Gary Gregory">Avoid NullPointerException in Method.BCELComparator#equals() and Method.BCELComparator#hashCode().</action>
+      <action                  type="fix" dev="ggregory" due-to="Gary Gregory">Avoid NullPointerException in MethodGen.BCELComparator#equals() and MethodGen.BCELComparator#hashCode().</action>
+      <!-- UPDATE -->
+      <action                  type="update" dev="ggregory" due-to="Dependabot">Bump GitHub various actions for CI builds.</action>
+      <action                  type="update" dev="ggregory" due-to="Dependabot">Bump jna.version from 5.13.0 to 5.14.0 #250.</action>
+      <action                  type="update" dev="ggregory" due-to="Dependabot">Bump org.jetbrains.kotlin:kotlin-stdlib from 1.9.21 to 1.9.22 #252.</action>
+      <action                  type="update" dev="ggregory" due-to="Dependabot">Bump org.apache.commons:commons-exec from 1.3 to 1.4.0 #255.</action>
+    </release>
+    <release version="6.8.0" date="2023-12-03" description="Maintenance and bug fix release.">
+      <!-- ADD -->
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Add and use InvalidMethodSignatureException extending ClassFormatException.</action>
+      <action                  type="add" dev="ggregory" due-to="nbauma109">Increase code coverage in Class2HTMLTestCase with new test input Java4Example #186.</action>
+      <action                  type="add" dev="ggregory" due-to="nbauma109">Add verifier tests on some opcodes #180.</action>
+      <action                  type="add" dev="ggregory" due-to="nbauma109">Added signature test cases for class/method, and bad signatures #182.</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Add Const.MAJOR_20.</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Add Const.MINOR_20.</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Add Const.MAJOR_21.</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Add Const.MINOR_21.</action>
+      <action                  type="add" dev="ggregory" due-to="nbauma109, Gary Gregory, Mark Roberts">[Bcelifier] stackmap support to pass JDK verifier #177.</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Fix SpotBugs [ERROR] Class org.apache.bcel.util.ClassVector defines non-transient non-serializable instance field vec [org.apache.bcel.util.ClassVector] In ClassVector.java SE_BAD_FIELD.</action>
+      <action                  type="add" dev="ggregory" due-to="Gary Gregory">Fix SpotBugs [ERROR] Switch statement found in org.apache.bcel.util.BCELFactory.visitAllocationInstruction(AllocationInstruction) where one case falls through to the next case [org.apache.bcel.util.BCELFactory, org.apache.bcel.util.BCELFactory] At BCELFactory.java:[lines 188-191]Another occurrence at BCELFactory.java:[lines 192-196] SF_SWITCH_FALLTHROUGH.</action>      
+      <!-- FIX -->
+      <action                  type="fix" dev="markt" due-to="OSS-Fuzz">When parsing an class with an invalid constant reference, ensure ClassParser.parse() throws ClassFormatException, not NullPointerException.</action>
+      <action                  type="fix" dev="markt" due-to="OSS-Fuzz">Ensure that references to a constant pool entry with index zero trigger a ClassFormatException, not a NullPointerException.</action>
+      <action                  type="fix" dev="markt" due-to="OSS-Fuzz">Ensure that references to the unused constant pool entry after a long/double entry triggers a ClassFormatException, not a NullPointerException.</action>
+      <action                  type="fix" dev="markt" due-to="nbauma109">Test and coverage of InstructionFactory #190.</action>
+      <action                  type="fix" dev="ggregory" due-to="nbauma109">Verifier: test and coverage for SWAP instruction #188.</action>
+      <action                  type="fix" dev="ggregory" due-to="Jason Copenhaver, Gary Gregory">Exception parsing Kotlin class with 'fun `method name with () in it`()' #205.</action>
+      <action                  type="fix" dev="ggregory" due-to="nbauma109, Gary Gregory">Fix null pointers in AnnotationEntry #213.</action>
+      <action                  type="fix" dev="ggregory" due-to="nbauma109">Field not found, search field in both super class and implemented interfaces (5x duplicated code to find field by name and type is refactored to a new method and now supports package-private) #181.</action>
+      <action issue="BCEL-366" type="fix" dev="ggregory" due-to="Slawomir Jaranowski">Use alternative name for broken classes under test #220.</action>
+      <action issue="BCEL-367" type="fix" dev="ggregory" due-to="Katherine Hough, Gary Gregory">Fixes java.lang.IndexOutOfBoundsException for ATHROW on empty stack #223.</action>
+      <action issue="BCEL-368" type="fix" dev="ggregory" due-to="Katherine Hough, Gary Gregory">Fixes java.lang.StackOverflowError in Select#toString(boolean) #229.</action>
+      <action                  type="fix" dev="ggregory" due-to="nbauma109, Judit Knoll, Gary Gregory">Fix for type.getType(...) use on non-signature type names #221.</action>
+      <action                  type="fix" dev="ggregory" due-to="Gary Gregory">Fix EmptyVisitorTestCase on Java 21.</action>
+      <!-- UPDATE -->
+      <action                  type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump commons-parent from 54 to 65 #189, #198, #222.</action>
+      <action                  type="update" dev="ggregory" due-to="Dependabot">Bump jna.version from 5.12.1 to 5.13.0 #203.</action>
+      <action                  type="update" dev="ggregory" due-to="Dependabot">Bump kotlin-stdlib from 1.8.10 to 1.9.21 #217, #219, #227, #231, #235, #245, #247.</action>
+      <action                  type="update" dev="ggregory" due-to="Dependabot">Bump commons-io from 2.11.0 to 2.15.1.</action>
+      <action                  type="update" dev="ggregory" due-to="Gary Gregory">Bump commons-lang3 from 3.12.0 to 3.14.0.</action>
+      <action                  type="update" dev="ggregory" due-to="Gary Gregory">Bump org.codehaus.mojo:exec-maven-plugin from 3.1.0 to 3.1.1 #246.</action>
+    </release>
     <release version="6.7.0" date="2022-11-28" description="Maintenance and bug fix release.">
       <!-- ADD -->
       <action                  type="add" dev="ggregory" due-to="Gary Gregory">Add org.apache.bcel.classfile.ClassFormatException.ClassFormatException(Throwable).</action>
@@ -122,16 +177,16 @@ The <action> type attribute can be add,update,fix,remove.
       <action                  type="update" dev="ggregory" due-to="Gary Gregory">Bump japicmp from 0.16.0 to 0.17.1.</action>
     </release>
     <release version="6.6.1" date="2022-10-29" description="Maintenance and bug fix release.">
-       <!-- FIX -->
+      <!-- FIX -->
       <action                  type="fix" dev="ggregory" due-to="Kengo TODA, Gary Gregory">Keep ConstantPool.getConstant(int) backward compatible with 6.5.0 #157.</action>
-       <!-- UPDATE -->
-      <action                  type="update" dev="ggregory" due-to="Dependabot">Bump actions/setup-java from 3.5.1 to 3.6.0 #159.</action>
+      <!-- UPDATE -->
+      <action                  type="update" dev="ggregory" due-to="Dependabot">Bump actions/setup-java from 3.5.1 to 3.7.0 #159, #179.</action>
       <action                  type="update" dev="ggregory" due-to="Gary Gregory">Bump spotbugs from 4.7.2 to 4.7.3.</action>
       <action                  type="update" dev="ggregory" due-to="Gary Gregory">Bump spotbugs-maven-plugub from 4.7.2.1 to 4.7.2.2.</action>
       <action                  type="update" dev="ggregory" due-to="Gary Gregory">Bump pmd from 6.50.0 to 6.51.0.</action>
     </release>
     <release version="6.6.0" date="2022-10-08" description="Minor feature and bug fix release.">
-       <!-- FIX -->
+      <!-- FIX -->
       <action                  type="fix" dev="ggregory" due-to="Mark Roberts, Gary Gregory">Improve test case coverage; fix Utility.encode bug #46.</action>
       <action issue="BCEL-342" type="fix" dev="ggregory" due-to="Allon Murienik, Gary Gregory">Migrate test suite to JUnit Jupiter #68.</action>
       <action issue="BCEL-343" type="fix" dev="ggregory" due-to="Allon Murienik, Gary Gregory">JUnit Assertion improvement #69.</action>
@@ -203,7 +258,7 @@ The <action> type attribute can be add,update,fix,remove.
       <action                  type="update" dev="ggregory" due-to="Dependabot">Bump jna.version from 5.6.0 to 5.12.1 #84, #102, #109, #120, #131.</action>
       <action                  type="update" dev="ggregory" due-to="Dependabot">Bump jmh.version from 1.19 to 1.35 #92, #100, #122.</action>
       <action                  type="update" dev="ggregory" due-to="Gary Gregory">Bump maven-javadoc-plugin from 3.2.0 to 3.4.1.</action>
-      <action                  type="update" dev="ggregory" due-to="Gary Gregory">Bump Bump maven-bundle-plugin from 5.1.1 to 5.1.8.</action>
+      <action                  type="update" dev="ggregory" due-to="Gary Gregory">Bump maven-bundle-plugin from 5.1.1 to 5.1.8.</action>
       <action                  type="update" dev="ggregory" due-to="Dependabot">Bump taglist-maven-plugin from 2.4 to 3.0.0 #114.</action>
       <action                  type="update" dev="ggregory" due-to="Gary Gregory, Dependabot">Bump spotbugs-maven-plugin from 4.5.3.0 to 4.7.2.1 #128, #132, #136, #144, #155.</action>
       <action                  type="update" dev="ggregory" due-to="Gary Gregory">Bump spotbugs from 4.5.3 to 4.7.1.</action>

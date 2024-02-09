@@ -167,8 +167,8 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                 }
 
                 if (!(carrier.predecessor() instanceof Method)) {
-                    addMessage(
-                        "Code attribute '" + tostring(obj) + "' is not declared in a method_info structure but in '" + carrier.predecessor() + "'. Ignored.");
+                    addMessage("Code attribute '" + tostring(obj) + "' is not declared in a method_info structure but in '" + carrier.predecessor()
+                            + "'. Ignored.");
                     return;
                 }
                 final Method m = (Method) carrier.predecessor(); // we can assume this method was visited before;
@@ -278,8 +278,8 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
 
                         final String lvtname = ((ConstantUtf8) cp.getConstant(lvt.getNameIndex())).getBytes();
                         if (!lvtname.equals("LocalVariableTable")) {
-                            throw new ClassConstraintException(
-                                "The LocalVariableTable attribute '" + tostring(lvt) + "' is not correctly named 'LocalVariableTable' but '" + lvtname + "'.");
+                            throw new ClassConstraintException("The LocalVariableTable attribute '" + tostring(lvt)
+                                    + "' is not correctly named 'LocalVariableTable' but '" + lvtname + "'.");
                         }
 
                         // In JustIce, the check for correct offsets into the code array is delayed to Pass 3a.
@@ -302,9 +302,9 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                             }
                             final @NonNegative int localindex = localvariable.getIndex();
                             if ((t == Type.LONG || t == Type.DOUBLE ? localindex + 1 : localindex) >= obj.getMaxLocals()) {
-                                throw new ClassConstraintException(
-                                    "LocalVariableTable attribute '" + tostring(lvt) + "' references a LocalVariable '" + tostring(localvariable)
-                                        + "' with an index that exceeds the surrounding Code attribute's max_locals value of '" + obj.getMaxLocals() + "'.");
+                                throw new ClassConstraintException("LocalVariableTable attribute '" + tostring(lvt) + "' references a LocalVariable '"
+                                        + tostring(localvariable) + "' with an index that exceeds the surrounding Code attribute's max_locals value of '"
+                                        + obj.getMaxLocals() + "'.");
                             }
 
                             try {
@@ -1127,7 +1127,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
      * called "XXX". JustIce cannot repair this; please note that existing verifiers at this time even fail to detect
      * missing InnerClasses attributes in pass 2.
      */
-    private static class InnerClassDetector extends EmptyVisitor {
+    private static final class InnerClassDetector extends EmptyVisitor {
         private boolean hasInnerClass;
         private final JavaClass jc;
         private final ConstantPool cp;
@@ -1331,7 +1331,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
 
     /**
      * Ensures that every class has a super class and that <B>final</B> classes are not subclassed. This means, the class
-     * this Pass2Verifier operates on has proper super classes (transitively) up to java.lang.Object. The reason for really
+     * this Pass2Verifier operates on has proper super classes (transitively) up to {@link Object}. The reason for really
      * loading (and Pass1-verifying) all of those classes here is that we need them in Pass2 anyway to verify no final
      * methods are overridden (that could be declared anywhere in the ancestor hierarchy).
      *

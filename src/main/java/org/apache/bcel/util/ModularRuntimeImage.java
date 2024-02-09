@@ -36,6 +36,7 @@ import java.util.Map;
 
 import org.checkerframework.checker.calledmethods.qual.EnsuresCalledMethods;
 import org.checkerframework.checker.mustcall.qual.Owning;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 
 /**
@@ -48,13 +49,12 @@ public class ModularRuntimeImage implements Closeable {
     static final String MODULES_PATH = File.separator + "modules";
     static final String PACKAGES_PATH = File.separator + "packages";
 
-    private final @Owning URLClassLoader classLoader;
+    private final @Owning @Nullable URLClassLoader classLoader;
     private final @Owning FileSystem fileSystem;
 
     /**
      * Constructs a default instance.
      */
-    @SuppressWarnings("resource") // See #close()
     public ModularRuntimeImage() {
         this(null, FileSystems.getFileSystem(URI.create("jrt:/")));
     }
@@ -71,16 +71,22 @@ public class ModularRuntimeImage implements Closeable {
         final Path jrePath = Paths.get(javaHome);
         final Path jrtFsPath = jrePath.resolve("lib").resolve("jrt-fs.jar");
         this.classLoader = URLClassLoader.newInstance(new URL[] {jrtFsPath.toUri().toURL()});
-        this.fileSystem = FileSystems.newFileSystem(URI.create("jrt:/"), emptyMap, classLoader);
+        try {
+            this.fileSystem = FileSystems.newFileSystem(URI.create("jrt:/"), emptyMap, classLoader);
+        } finally {
+            if (classLoader != null) {
+                classLoader.close();
+            }
+        }
     }
 
-    private ModularRuntimeImage(final URLClassLoader cl, final FileSystem fs) {
+    private ModularRuntimeImage(final @Nullable URLClassLoader cl, final FileSystem fs) {
         this.classLoader = cl;
         this.fileSystem = fs;
     }
 
-    @SuppressWarnings("builder:contracts.postcondition")  // I think it's satisfied.  Checker bug?
     @Override
+    @SuppressWarnings("builder:contracts.postcondition") // some non-null fileSytems cannot be closed
     @EnsuresCalledMethods(value={"classLoader", "fileSystem"}, methods="close")
     public void close() throws IOException {
         try {

@@ -517,7 +517,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
     }
 
     /**
-     * Get instruction handle for instruction at byte code position pos. This only works properly, if the list is freshly
+     * Gets instruction handle for instruction at byte code position pos. This only works properly, if the list is freshly
      * initialized from a byte array or setPositions() has been called before this method.
      *
      * @param pos byte code position to search for
@@ -612,7 +612,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
     }
 
     /**
-     * Get positions (offsets) of all instructions in the list. This relies on that the list has been freshly created from
+     * Gets positions (offsets) of all instructions in the list. This relies on that the list has been freshly created from
      * an byte code array, or that setPositions() has been called. Otherwise this may be inaccurate.
      *
      * @return array containing all instruction's offset in byte code
@@ -1130,7 +1130,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
             ih.setPosition(index);
             pos[count++] = index;
             /*
-             * Get an estimate about how many additional bytes may be added, because BranchInstructions may have variable length
+             * Gets an estimate about how many additional bytes may be added, because BranchInstructions may have variable length
              * depending on the target offset (short vs. int) or alignment issues (TABLESWITCH and LOOKUPSWITCH).
              */
             switch (i.getOpcode()) {
@@ -1141,6 +1141,9 @@ public class InstructionList implements Iterable<InstructionHandle> {
             case Const.TABLESWITCH:
             case Const.LOOKUPSWITCH:
                 maxAdditionalBytes += 3;
+                break;
+            default:
+                // TODO should this be an error?
                 break;
             }
             index += i.getLength();
@@ -1162,8 +1165,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
             pos[count++] = index;
             index += i.getLength();
         }
-        bytePositions = new int[count]; // Trim to proper size
-        System.arraycopy(pos, 0, bytePositions, 0, count);
+        bytePositions = Arrays.copyOfRange(pos, 0, count); // Trim to proper size
     }
 
     /**

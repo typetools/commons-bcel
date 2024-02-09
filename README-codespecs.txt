@@ -11,10 +11,12 @@ To build this project
 ---------------------
 
 ```
-mvn verify
+mvn -B clean verify
 ```
 
-The `.jar` file is found at, for example, `target/bcel-6.2.0.1.jar`.
+(You may need to add -Drat.skip=true if you have local untracked files.)
+
+The `.jar` file will be found in the target subdirectory at, for example, `target/bcel-6.8.1.jar`.
 
 
 To update to a newer version of the upstream library

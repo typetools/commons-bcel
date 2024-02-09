@@ -72,7 +72,7 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
     }
 
     /**
-     * Construct object from file stream.
+     * Constructs object from file stream.
      *
      * @param file Input stream
      * @throws IOException if an I/O error occurs.
@@ -88,7 +88,7 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
     }
 
     /**
-     * Construct object from file stream.
+     * Constructs object from file stream.
      *
      * @param file Input stream
      * @throws IOException if an I/O error occurs.
@@ -137,7 +137,7 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
             Arrays.setAll(c.attributes, i -> attributes[i].copy(constantPool));
             return c;
         } catch (final CloneNotSupportedException e) {
-            throw new IllegalStateException(e);
+            throw new UnsupportedOperationException(e);
         }
     }
 
@@ -225,7 +225,7 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
     }
 
     /**
-     * @return String representation of object's type signature (java style)
+     * @return String representation of object's type signature (Java style)
      */
     public final String getSignature() {
         return constant_pool.getConstantUtf8(signature_index).getBytes();

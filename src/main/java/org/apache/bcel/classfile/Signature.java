@@ -105,7 +105,6 @@ public final class Signature extends Attribute {
         }
     }
 
-    @SuppressWarnings("signedness:cast.unsafe") // read() in range -1 to 255; we test for eof(-1)
     private static void matchIdent(final MyByteArrayInputStream in, final StringBuilder buf) {
         int ch;
         if ((ch = in.read()) == -1) {
@@ -161,7 +160,7 @@ public final class Signature extends Attribute {
     private @NonNegative int signatureIndex;
 
     /**
-     * Construct object from file stream.
+     * Constructs object from file stream.
      *
      * @param nameIndex Index in constant pool to CONSTANT_Utf8
      * @param length Content length in bytes

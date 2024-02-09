@@ -23,7 +23,9 @@ import java.util.Objects;
 
 import org.apache.bcel.Const;
 import org.apache.bcel.classfile.ClassFormatException;
+import org.apache.bcel.classfile.InvalidMethodSignatureException;
 import org.apache.bcel.classfile.Utility;
+import org.apache.commons.lang3.StringUtils;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.interning.qual.InternedDistinct;
@@ -36,7 +38,7 @@ import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
- * Abstract super class for all possible java types, namely basic types such as int, object types like String and array
+ * Abstract super class for all possible Java types, namely basic types such as int, object types like String and array
  * types, e.g. int[]
  */
 @SuppressWarnings("interning")  // sets constants
@@ -99,15 +101,15 @@ public abstract class Type {
             // Skip any type arguments to read argument declarations between '(' and ')'
             index = signature.indexOf('(') + 1;
             if (index <= 0) {
-                throw new ClassFormatException("Invalid method signature: " + signature);
+                throw new InvalidMethodSignatureException(signature);
             }
             while (signature.charAt(index) != ')') {
                 vec.add(getType(signature.substring(index)));
-                // corrected concurrent private static field acess
+                // corrected concurrent private static field access
                 index += unwrap(CONSUMED_CHARS); // update position
             }
         } catch (final StringIndexOutOfBoundsException e) { // Should never occur
-            throw new ClassFormatException("Invalid method signature: " + signature, e);
+            throw new InvalidMethodSignatureException(signature, e);
         }
         final Type[] types = new Type[vec.size()];
         vec.toArray(types);
@@ -121,7 +123,7 @@ public abstract class Type {
             // Skip any type arguments to read argument declarations between '(' and ')'
             index = signature.indexOf('(') + 1;
             if (index <= 0) {
-                throw new ClassFormatException("Invalid method signature: " + signature);
+                throw new InvalidMethodSignatureException(signature);
             }
             while (signature.charAt(index) != ')') {
                 final int coded = getTypeSize(signature.substring(index));
@@ -129,7 +131,7 @@ public abstract class Type {
                 index += consumed(coded);
             }
         } catch (final StringIndexOutOfBoundsException e) { // Should never occur
-            throw new ClassFormatException("Invalid method signature: " + signature, e);
+            throw new InvalidMethodSignatureException(signature, e);
         }
         return res;
     }
@@ -167,7 +169,7 @@ public abstract class Type {
             final int index = signature.lastIndexOf(')') + 1;
             return getType(signature.substring(index));
         } catch (final StringIndexOutOfBoundsException e) { // Should never occur
-            throw new ClassFormatException("Invalid method signature: " + signature, e);
+            throw new InvalidMethodSignatureException(signature, e);
         }
     }
 
@@ -188,7 +190,7 @@ public abstract class Type {
     }
 
     /**
-     * Convert runtime java.lang.Class to BCEL Type object.
+     * Convert runtime {@link Class} to BCEL Type object.
      *
      * @param cls Java class
      * @return corresponding Type object
@@ -196,7 +198,7 @@ public abstract class Type {
     public static Type getType(final Class<?> cls) {
         Objects.requireNonNull(cls, "cls");
         /*
-         * That's an amzingly easy case, because getName() returns the signature. That's what we would have liked anyway.
+         * That's an amazingly easy case, because getName() returns the signature. That's what we would have liked anyway.
          */
         if (cls.isArray()) {
             return getType(cls.getName());
@@ -249,7 +251,7 @@ public abstract class Type {
     public static @NonNull Type getType(final @FieldDescriptor String signature) throws StringIndexOutOfBoundsException {
         final byte type = Utility.typeOfSignature(signature);
         if (type <= Const.T_VOID) {
-            // corrected concurrent private static field acess
+            // corrected concurrent private static field access
             wrap(CONSUMED_CHARS, 1);
             return BasicType.getType(type);
         }
@@ -269,7 +271,7 @@ public abstract class Type {
         // Recurse, but just once, if the signature is ok
         @SuppressWarnings("signature") // string manipulation: strip off array brackets and make recursive call
         final Type t = getType(signature.substring(dim));
-        // corrected concurrent private static field acess
+        // corrected concurrent private static field access
         // consumed_chars += dim; // update counter - is replaced by
         final int temp = unwrap(CONSUMED_CHARS) + dim;
         wrap(CONSUMED_CHARS, temp);
@@ -277,7 +279,7 @@ public abstract class Type {
     }
 
     /**
-     * Convert runtime java.lang.Class[] to BCEL Type objects.
+     * Convert runtime {@code java.lang.Class[]} to BCEL Type objects.
      *
      * @param classes an array of runtime class objects
      * @return array of corresponding Type objects
@@ -307,6 +309,24 @@ public abstract class Type {
             throw new ClassFormatException("Invalid signature: " + signature);
         }
         return encode(1, index + 1);
+    }
+
+    static String internalTypeNameToSignature(final String internalTypeName) {
+        if (StringUtils.isEmpty(internalTypeName) || StringUtils.equalsAny(internalTypeName, Const.SHORT_TYPE_NAMES)) {
+            return internalTypeName;
+        }
+        switch (internalTypeName.charAt(0)) {
+            case '[':
+                return internalTypeName;
+            case 'L':
+            case 'T':
+                if (internalTypeName.charAt(internalTypeName.length() - 1) == ';') {
+                    return internalTypeName;
+                }
+                return 'L' + internalTypeName + ';';
+            default:
+                return 'L' + internalTypeName + ';';
+        }
     }
 
     static @NonNegative int size(final int coded) {
@@ -417,14 +437,6 @@ public abstract class Type {
             return Type.INT;
         }
         return this;
-    }
-
-    /*
-     * Currently only used by the ArrayType constructor. The signature has a complicated dependency on other parameter so
-     * it's tricky to do it in a call to the super ctor.
-     */
-    void setSignature(final @FieldDescriptor String signature) {
-        this.signature = signature;
     }
 
     /**

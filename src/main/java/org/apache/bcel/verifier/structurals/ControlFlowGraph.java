@@ -46,10 +46,10 @@ public class ControlFlowGraph {
     /**
      * Objects of this class represent a node in a ControlFlowGraph. These nodes are instructions, not basic blocks.
      */
-    private class InstructionContextImpl implements InstructionContext {
+    private final class InstructionContextImpl implements InstructionContext {
 
         /**
-         * The TAG field is here for external temporary flagging, such as graph colouring.
+         * The TAG field is here for external temporary flagging, such as graph coloring.
          *
          * @see #getTag()
          * @see #setTag(int)
@@ -262,9 +262,6 @@ public class ControlFlowGraph {
             return org.getClone();
         }
 
-        /*
-         * Fulfils the contract of InstructionContext.getInstruction().
-         */
         @Override
         @Pure
         public InstructionHandle getInstruction() {
@@ -291,13 +288,11 @@ public class ControlFlowGraph {
             return org.getClone();
         }
 
-        /* Satisfies InstructionContext.getSuccessors(). */
         @Override
         public InstructionContext[] getSuccessors() {
             return contextsOf(_getSuccessors());
         }
 
-        /* Satisfies InstructionContext.getTag(). */
         @Override
         @Pure
         public int getTag() {

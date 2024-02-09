@@ -33,27 +33,25 @@ import org.checkerframework.dataflow.qual.Pure;
  */
 public abstract class Constant implements Cloneable, Node {
 
-    private static BCELComparator bcelComparator = new BCELComparator() {
+    private static BCELComparator<Constant> bcelComparator = new BCELComparator<Constant>() {
 
         @Override
-        public boolean equals(final Object o1, final Object o2) {
-            final Constant THIS = (Constant) o1;
-            final Constant THAT = (Constant) o2;
-            return Objects.equals(THIS.toString(), THAT.toString());
+        @SuppressWarnings("interning:not.interned") // we want to do a reference comparison
+        public boolean equals(final Constant a, final Constant b) {
+            return a == b || a != null && b != null && Objects.equals(a.toString(), b.toString());
         }
 
         @Override
-        public int hashCode(final Object o) {
-            final Constant THIS = (Constant) o;
-            return THIS.toString().hashCode();
+        public int hashCode(final Constant o) {
+            return o != null ? Objects.hashCode(o.toString()) : 0;
         }
     };
 
     /**
-     * @return Comparison strategy object
+     * @return Comparison strategy object.
      */
     @Pure
-    public static BCELComparator getComparator() {
+    public static BCELComparator<Constant> getComparator() {
         return bcelComparator;
     }
 
@@ -111,7 +109,7 @@ public abstract class Constant implements Cloneable, Node {
     /**
      * @param comparator Comparison strategy object
      */
-    public static void setComparator(final BCELComparator comparator) {
+    public static void setComparator(final BCELComparator<Constant> comparator) {
         bcelComparator = comparator;
     }
 
@@ -146,7 +144,7 @@ public abstract class Constant implements Cloneable, Node {
         try {
             return super.clone();
         } catch (final CloneNotSupportedException e) {
-            throw new Error("Clone Not Supported"); // never happens
+            throw new UnsupportedOperationException("Clone Not Supported", e); // never happens
         }
     }
 
@@ -173,7 +171,7 @@ public abstract class Constant implements Cloneable, Node {
      */
     @Override
     public boolean equals(final @Nullable Object obj) {
-        return bcelComparator.equals(this, obj);
+        return obj instanceof Constant && bcelComparator.equals(this, (Constant) obj);
     }
 
     /**

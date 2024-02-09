@@ -44,26 +44,24 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 import org.checkerframework.dataflow.qual.Pure;
 
 /**
- * Template class for building up a java class. May be initialized with an existing java class (file).
+ * Template class for building up a java class. May be initialized with an existing Java class (file).
  *
  * @see JavaClass
  */
 @AnnotatedFor({"nullness","signature","signedness"})
 public class ClassGen extends AccessFlags implements Cloneable {
 
-    private static BCELComparator bcelComparator = new BCELComparator() {
+    private static BCELComparator<ClassGen> bcelComparator = new BCELComparator<ClassGen>() {
 
         @Override
-        public boolean equals(final Object o1, final Object o2) {
-            final ClassGen THIS = (ClassGen) o1;
-            final ClassGen THAT = (ClassGen) o2;
-            return Objects.equals(THIS.getClassName(), THAT.getClassName());
+        @SuppressWarnings("interning:not.interned") // we want to do a reference comparison
+        public boolean equals(final ClassGen a, final ClassGen b) {
+            return a == b || a != null && b != null && Objects.equals(a.getClassName(), b.getClassName());
         }
 
         @Override
-        public int hashCode(final Object o) {
-            final ClassGen THIS = (ClassGen) o;
-            return THIS.getClassName().hashCode();
+        public int hashCode(final ClassGen o) {
+            return o != null ? Objects.hashCode(o.getClassName()) : 0;
         }
     };
 
@@ -71,14 +69,14 @@ public class ClassGen extends AccessFlags implements Cloneable {
      * @return Comparison strategy object
      */
     @Pure
-    public static BCELComparator getComparator() {
+    public static BCELComparator<ClassGen> getComparator() {
         return bcelComparator;
     }
 
     /**
      * @param comparator Comparison strategy object
      */
-    public static void setComparator(final BCELComparator comparator) {
+    public static void setComparator(final BCELComparator<ClassGen> comparator) {
         bcelComparator = comparator;
     }
 
@@ -247,7 +245,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
         try {
             return super.clone();
         } catch (final CloneNotSupportedException e) {
-            throw new Error("Clone Not Supported"); // never happens
+            throw new UnsupportedOperationException("Clone Not Supported", e); // never happens
         }
     }
 
@@ -287,7 +285,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
      */
     @Override
     public boolean equals(final @Nullable Object obj) {
-        return bcelComparator.equals(this, obj);
+        return obj instanceof ClassGen && bcelComparator.equals(this, (ClassGen) obj);
     }
 
     // J5TODO: Should we make calling unpackAnnotations() lazy and put it in here?
@@ -493,7 +491,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
     }
 
     /**
-     * Set major version number of class file, default value is 45 (JDK 1.1)
+     * Sets major version number of class file, default value is 45 (JDK 1.1)
      *
      * @param major major version number
      */
@@ -511,7 +509,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
     }
 
     /**
-     * Set minor version number of class file, default value is 3 (JDK 1.1)
+     * Sets minor version number of class file, default value is 3 (JDK 1.1)
      *
      * @param minor minor version number
      */

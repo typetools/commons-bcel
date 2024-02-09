@@ -44,6 +44,7 @@ import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.classfile.Utility;
 
 import org.checkerframework.checker.calledmethods.qual.EnsuresCalledMethods;
+import org.checkerframework.checker.mustcall.qual.MustCall;
 import org.checkerframework.checker.mustcall.qual.Owning;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
@@ -62,6 +63,7 @@ public class ClassPath implements Closeable {
         abstract InputStream getResourceAsStream(String name);
     }
 
+    @MustCall("close")
     private abstract static class AbstractZip extends AbstractPathEntry {
 
         private final ZipFile zipFile;
@@ -151,7 +153,7 @@ public class ClassPath implements Closeable {
 
         /**
          * @return base path of found class, i.e. class is contained relative to that path, which may either denote a directory,
-         *         or zip file
+         *         or ZIP file
          */
         String getBase();
 
@@ -177,7 +179,7 @@ public class ClassPath implements Closeable {
         long getTime();
     }
 
-    private static class Dir extends AbstractPathEntry {
+    private static final class Dir extends AbstractPathEntry {
 
         private final String dir;
 
@@ -260,7 +262,7 @@ public class ClassPath implements Closeable {
         }
     }
 
-    private static class Jar extends AbstractZip {
+    private static final class Jar extends AbstractZip {
 
         Jar(final ZipFile zip) {
             super(zip);
@@ -273,7 +275,7 @@ public class ClassPath implements Closeable {
 
     }
 
-    private static class JrtModule extends AbstractPathEntry {
+    private static final class JrtModule extends AbstractPathEntry {
 
         private final Path modulePath;
 
@@ -356,30 +358,40 @@ public class ClassPath implements Closeable {
 
     }
 
-    private static class JrtModules extends AbstractPathEntry {
+    private static final class JrtModules extends AbstractPathEntry {
 
         private final @Owning ModularRuntimeImage modularRuntimeImage;
         private final @Owning JrtModule[] modules;
 
+        @SuppressWarnings("mustcall:type.argument")  // mustcall doesn't support arrays yet
         public JrtModules(final String path) throws IOException {
             this.modularRuntimeImage = new ModularRuntimeImage();
-            this.modules = modularRuntimeImage.list(path).stream().map(JrtModule::new).toArray(JrtModule[]::new);
+            try {
+                this.modules = modularRuntimeImage.list(path).stream().map(JrtModule::new).toArray(JrtModule[]::new);
+            } finally {
+                if (modularRuntimeImage != null) {
+                    modularRuntimeImage.close();
+                }
+            }
         }
 
         @Override
         @SuppressWarnings({"builder:contracts.postcondition", // Called on each *element* of `modules`
-                        "builder:destructor.exceptional.postcondition" // might not close everything
+                        "builder:contracts.exceptional.postcondition" // might not close everything
                         })
         @EnsuresCalledMethods(value = {"modules", "modularRuntimeImage"}, methods = "close")
         public void close() throws IOException {
-            if (modules != null) {
-                // don't use a for each loop to avoid creating an iterator for the GC to collect.
-                for (final JrtModule module : modules) {
-                    module.close();
+            try {
+                if (modules != null) {
+                    // don't use a for each loop to avoid creating an iterator for the GC to collect.
+                    for (final JrtModule module : modules) {
+                        module.close();
+                    }
                 }
-            }
-            if (modularRuntimeImage != null) {
-                modularRuntimeImage.close();
+            } finally {
+                if (modularRuntimeImage != null) {
+                    modularRuntimeImage.close();
+                }
             }
         }
 
@@ -426,7 +438,7 @@ public class ClassPath implements Closeable {
 
     }
 
-    private static class Module extends AbstractZip {
+    private static final class Module extends AbstractZip {
 
         Module(final ZipFile zip) {
             super(zip);
@@ -529,6 +541,7 @@ public class ClassPath implements Closeable {
 
     private final @Nullable ClassPath parent;
 
+    @SuppressWarnings("mustcall:type.argument")
     private final @Owning List<AbstractPathEntry> paths;
 
     /**
@@ -646,7 +659,7 @@ public class ClassPath implements Closeable {
     /**
      * @param name fully qualified file name, e.g. java/lang/String
      * @param suffix file name ends with suff, e.g. .java
-     * @return class file for the java class
+     * @return class file for the Java class
      * @throws IOException if an I/O error occurs.
      */
     public @Nullable ClassFile getClassFile(final String name, final String suffix) throws IOException {
