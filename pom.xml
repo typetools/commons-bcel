@@ -117,7 +117,7 @@
         <configuration>
           <excludes>
             <exclude>README-typetools.txt</exclude>
-            <exclude>TAGS</exclude>
+            <exclude>**/TAGS</exclude>
             <exclude>cfMavenCentral.xml</exclude>
             <exclude>src/test/resources/**</exclude>
             <exclude>docs/*.bib</exclude>

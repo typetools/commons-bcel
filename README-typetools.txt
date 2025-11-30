@@ -4,6 +4,8 @@ This is a version of BCEL that is annotated with type annotations for the Checke
 To build this project
 ---------------------
 
+Use a Java 8 JDK.
+
 ```
 mvn -B -Dmaven.test.skip=true package
 ```

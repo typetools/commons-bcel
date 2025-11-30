@@ -25,6 +25,7 @@ import org.apache.bcel.classfile.AccessFlags;
 import org.apache.bcel.classfile.Attribute;
 
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+import org.checkerframework.checker.signature.qual.Identifier;
 import org.checkerframework.dataflow.qual.Pure;
 
 /**
@@ -116,7 +117,7 @@ public abstract class FieldGenOrMethodGen extends AccessFlags implements NamedAn
      */
     @Override
     @Pure
-    public String getName() {
+    public @Identifier String getName() {
         return name;
     }
 
@@ -164,7 +165,7 @@ public abstract class FieldGenOrMethodGen extends AccessFlags implements NamedAn
     }
 
     @Override
-    public void setName(final String name) { // TODO could be package-protected?
+    public void setName(final @Identifier String name) { // TODO could be package-protected?
         this.name = name;
     }
 

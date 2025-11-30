@@ -16,15 +16,16 @@
  */
 package org.apache.bcel.classfile;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.signature.qual.Identifier;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
-
-import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.dataflow.qual.Pure;
-import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Abstract super class for fields and methods.
@@ -212,7 +213,7 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
     /**
      * @return Name of object, i.e., method name or field name
      */
-    public final String getName() {
+    public final @Identifier String getName() {
         return constant_pool.getConstantUtf8(name_index).getBytes();
     }
 
