@@ -65,7 +65,7 @@ If you need to release a new version of BCEL between upstream releases (for
 example, because of a bug fix or because of added annotations), use the
 version number policy explained at section "Version numbers for annotated
 libraries" in
-https://rawgit.com/typetools/checker-framework/master/docs/developer/developer-manual.html#annotated-library-version-numbers
+https://checkerframework.org/manual/developer-manual.html#annotated-library-version-numbers
 .
 
 
