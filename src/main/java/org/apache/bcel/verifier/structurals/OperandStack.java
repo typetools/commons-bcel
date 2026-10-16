@@ -52,7 +52,7 @@ public class OperandStack implements Cloneable {
      */
     public OperandStack(final @NonNegative int maxStack, final ObjectType obj) {
         this.maxStack = maxStack;
-        this.push(obj);
+        push(obj);
     }
 
     /**
@@ -93,7 +93,7 @@ public class OperandStack implements Cloneable {
      * @see #clone()
      */
     public OperandStack getClone() {
-        return (OperandStack) this.clone();
+        return (OperandStack) clone();
     }
 
     /**

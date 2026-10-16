@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.stream.Streams;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -37,10 +38,10 @@ public class AnnotationEntry implements Node {
 
     public static final AnnotationEntry[] EMPTY_ARRAY = {};
 
-    public static AnnotationEntry[] createAnnotationEntries(final Attribute[] attrs) {
+    public static AnnotationEntry[] createAnnotationEntries(final Attribute[] attributes) {
         // Find attributes that contain annotation data
-        return Stream.of(attrs).filter(Annotations.class::isInstance).flatMap(e -> Stream.of(((Annotations) e).getAnnotationEntries()))
-            .toArray(AnnotationEntry[]::new);
+        return Streams.of(attributes).filter(Annotations.class::isInstance).flatMap(e -> Stream.of(((Annotations) e).getAnnotationEntries()))
+                .toArray(AnnotationEntry[]::new);
     }
 
     /**
@@ -126,7 +127,9 @@ public class AnnotationEntry implements Node {
      */
     public ElementValuePair[] getElementValuePairs() {
         // TODO return List
-        return elementValuePairs.toArray(new ElementValuePair[elementValuePairs.size()]);
+        // UNDONE typetools change:
+        // return elementValuePairs.toArray(new ElementValuePair[elementValuePairs.size()]);
+        return elementValuePairs.toArray(ElementValuePair.EMPTY_ARRAY);
     }
 
     /**

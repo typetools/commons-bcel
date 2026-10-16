@@ -30,8 +30,8 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * This class represents a stack map attribute used for preverification of Java classes for the
- * <a href="http://java.sun.com/j2me/"> Java 2 Micro Edition</a> (J2ME). This attribute is used by the
- * <a href="http://java.sun.com/products/cldc/">KVM</a> and contained within the Code attribute of a method. See CLDC
+ * <a href="https://java.sun.com/j2me/"> Java 2 Micro Edition</a> (J2ME). This attribute is used by the
+ * <a href="https://java.sun.com/products/cldc/">KVM</a> and contained within the Code attribute of a method. See CLDC
  * specification �5.3.1.2
  *
  * <pre>

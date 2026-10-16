@@ -60,9 +60,9 @@ public class ConstantPoolTestCase extends AbstractTestCase {
             final ConstantPool pool = c.getConstantPool();
             for (int i = 1; i < pool.getLength(); i++) {
                 try {
-                final Constant constant = pool.getConstant(i);
-                if (constant instanceof ConstantDouble) {
-                    assertEquals(classWithDoubleConstantPoolItem.d, ((ConstantDouble) constant).getBytes());
+                    final Constant constant = pool.getConstant(i);
+                    if (constant instanceof ConstantDouble) {
+                        assertEquals(classWithDoubleConstantPoolItem.d, ((ConstantDouble) constant).getBytes());
                         // Next constant pool entry will be invalid so skip it
                         i++;
                     }
@@ -86,9 +86,9 @@ public class ConstantPoolTestCase extends AbstractTestCase {
             final ConstantPool pool = c.getConstantPool();
             for (int i = 1; i < pool.getLength(); i++) {
                 try {
-                final Constant constant = pool.getConstant(i);
-                if (constant instanceof ConstantLong) {
-                    assertEquals(classWithLongConstantPoolItem.l, ((ConstantLong) constant).getBytes());
+                    final Constant constant = pool.getConstant(i);
+                    if (constant instanceof ConstantLong) {
+                        assertEquals(classWithLongConstantPoolItem.l, ((ConstantLong) constant).getBytes());
                         // Next constant pool entry will be invalid so skip it
                         i++;
                     }
@@ -96,7 +96,7 @@ public class ConstantPoolTestCase extends AbstractTestCase {
                     t.printStackTrace();
                     fail();
                 }
-                }
+            }
         }
     }
 

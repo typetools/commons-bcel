@@ -7,8 +7,10 @@ To build this project
 Use a Java 8 JDK.
 
 ```
-mvn -B -Dmaven.test.skip=true package
+mvn -B -Dmoditect.skip=true clean verify
 ```
+
+(You may need to add -Drat.skip=true if you have local untracked files.)
 
 There will be pluggable type-checking errors, because only the signatures, not
 the bodies, of methods are annotated.
@@ -31,7 +33,7 @@ At https://github.com/apache/commons-bcel/tags ,
 find the tag corresponding to a public release.
 
 Update the following line in this file, so that others know the current status:
-BCEL version 6.4.1 is tag rel/commons-bcel-6.4.1
+BCEL version 6.10.0 is tag rel/commons-bcel-6.10.0
 
 Pull in that tag:
 ```

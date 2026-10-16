@@ -89,7 +89,7 @@ public class Class2HTML implements Constants {
                 if (argv[i].equals("-d")) { // Specify target directory, default '.'
                     dir = argv[++i];
                     if (!dir.endsWith("" + sep)) {
-                        dir = dir + sep;
+                        dir += sep;
                     }
                     final File store = new File(dir);
                     if (!store.isDirectory()) {

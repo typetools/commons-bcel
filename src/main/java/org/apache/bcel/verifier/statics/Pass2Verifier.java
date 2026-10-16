@@ -220,7 +220,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                         if (e != t) {
                             throw new ClassConstraintException(
                                 "Code attribute '" + tostring(obj) + "' (method '" + m + "') has an exception_table entry '" + tostring(element)
-                                    + "' that references '" + cname + "' as an Exception but it is not a subclass of '" + t.getClassName() + "'.");
+                                + "' that references '" + cname + "' as an Exception but it is not a subclass of '" + t.getClassName() + "'.");
                         }
                     }
                 }
@@ -261,7 +261,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                     if (!(att instanceof LineNumberTable) && !(att instanceof LocalVariableTable)) {
                         addMessage("Attribute '" + tostring(att) + "' as an attribute of Code attribute '" + tostring(obj) + "' (method '" + m
                             + "') is unknown and will therefore be ignored.");
-                    } else {// LineNumberTable or LocalVariableTable
+                    } else { // LineNumberTable or LocalVariableTable
                         addMessage("Attribute '" + tostring(att) + "' as an attribute of Code attribute '" + tostring(obj) + "' (method '" + m
                             + "') will effectively be ignored and is only useful for debuggers and such.");
                     }
@@ -279,7 +279,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                         final String lvtname = ((ConstantUtf8) cp.getConstant(lvt.getNameIndex())).getBytes();
                         if (!lvtname.equals("LocalVariableTable")) {
                             throw new ClassConstraintException("The LocalVariableTable attribute '" + tostring(lvt)
-                                    + "' is not correctly named 'LocalVariableTable' but '" + lvtname + "'.");
+                                + "' is not correctly named 'LocalVariableTable' but '" + lvtname + "'.");
                         }
 
                         // In JustIce, the check for correct offsets into the code array is delayed to Pass 3a.
@@ -303,8 +303,8 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                             final @NonNegative int localindex = localvariable.getIndex();
                             if ((t == Type.LONG || t == Type.DOUBLE ? localindex + 1 : localindex) >= obj.getMaxLocals()) {
                                 throw new ClassConstraintException("LocalVariableTable attribute '" + tostring(lvt) + "' references a LocalVariable '"
-                                        + tostring(localvariable) + "' with an index that exceeds the surrounding Code attribute's max_locals value of '"
-                                        + obj.getMaxLocals() + "'.");
+                                    + tostring(localvariable) + "' with an index that exceeds the surrounding Code attribute's max_locals value of '"
+                                    + obj.getMaxLocals() + "'.");
                             }
 
                             try {
@@ -329,7 +329,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                 throw new AssertionViolatedException("Missing class: " + e, e);
             }
 
-        }// visitCode(Code) END
+        } // visitCode(Code) END
 
         @Override
         public void visitCodeException(final CodeException obj) {
@@ -448,7 +448,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
         // field_info-structure-ATTRIBUTES (vmspec2 4.5, 4.7) //
         ////////////////////////////////////////////////////////
         @Override
-        public void visitConstantValue(final ConstantValue obj) {// vmspec2 4.7.2
+        public void visitConstantValue(final ConstantValue obj) { // vmspec2 4.7.2
             // Despite its name, this really is an Attribute,
             // not a constant!
             checkIndex(obj, obj.getNameIndex(), CONST_Utf8);
@@ -491,7 +491,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
         }
 
         @Override
-        public void visitDeprecated(final Deprecated obj) {// vmspec2 4.7.10
+        public void visitDeprecated(final Deprecated obj) { // vmspec2 4.7.10
             checkIndex(obj, obj.getNameIndex(), CONST_Utf8);
 
             final String name = ((ConstantUtf8) cp.getConstant(obj.getNameIndex())).getBytes();
@@ -501,7 +501,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
         }
 
         @Override
-        public void visitExceptionTable(final ExceptionTable obj) {// vmspec2 4.7.4
+        public void visitExceptionTable(final ExceptionTable obj) { // vmspec2 4.7.4
             try {
                 // incorrectly named, it's the Exceptions attribute (vmspec2 4.7.4)
                 checkIndex(obj, obj.getNameIndex(), CONST_Utf8);
@@ -652,7 +652,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
         }
 
         @Override
-        public void visitInnerClasses(final InnerClasses innerClasses) {// vmspec2 4.7.5
+        public void visitInnerClasses(final InnerClasses innerClasses) { // vmspec2 4.7.5
 
             // exactly one InnerClasses attr per ClassFile if some inner class is refernced: see visitJavaClass()
 
@@ -675,7 +675,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                     checkIndex(innerClasses, innernameIdx, CONST_Utf8);
                 }
                 int acc = ic.getInnerAccessFlags();
-                acc = acc & ~(Const.ACC_PUBLIC | Const.ACC_PRIVATE | Const.ACC_PROTECTED | Const.ACC_STATIC | Const.ACC_FINAL | Const.ACC_INTERFACE |
+                acc &= ~(Const.ACC_PUBLIC | Const.ACC_PRIVATE | Const.ACC_PROTECTED | Const.ACC_STATIC | Const.ACC_FINAL | Const.ACC_INTERFACE |
                     Const.ACC_ABSTRACT);
                 if (acc != 0) {
                     addMessage("Unknown access flag for inner class '" + tostring(ic) + "' set (InnerClasses attribute '" + tostring(innerClasses) + "').");
@@ -753,7 +753,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
         // code_attribute-structure-ATTRIBUTES (vmspec2 4.7.3, 4.7) //
         //////////////////////////////////////////////////////////////
         @Override
-        public void visitLineNumberTable(final LineNumberTable obj) {// vmspec2 4.7.8
+        public void visitLineNumberTable(final LineNumberTable obj) { // vmspec2 4.7.8
             checkIndex(obj, obj.getNameIndex(), CONST_Utf8);
 
             final String name = ((ConstantUtf8) cp.getConstant(obj.getNameIndex())).getBytes();
@@ -762,7 +762,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                     "The LineNumberTable attribute '" + tostring(obj) + "' is not correctly named 'LineNumberTable' but '" + name + "'.");
             }
 
-            // In JustIce,this check is delayed to Pass 3a.
+            // In JustIce, this check is delayed to Pass 3a.
             // LineNumber[] linenumbers = obj.getLineNumberTable();
             // ...validity check...
 
@@ -780,8 +780,8 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
         }
 
         @Override
-        public void visitLocalVariableTable(final LocalVariableTable obj) {// vmspec2 4.7.9
-            // In JustIce,this check is partially delayed to Pass 3a.
+        public void visitLocalVariableTable(final LocalVariableTable obj) { // vmspec2 4.7.9
+            // In JustIce, this check is partially delayed to Pass 3a.
             // The other part can be found in the visitCode(Code) method.
         }
 
@@ -892,7 +892,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                     throw new ClassConstraintException("Instance initialization method '" + tostring(obj) + "' must not have"
                             + " any of the ACC_STATIC, ACC_FINAL, ACC_SYNCHRONIZED, ACC_NATIVE, ACC_ABSTRACT modifiers set.");
                 }
-            } else if (!name.equals(Const.STATIC_INITIALIZER_NAME)) {// vmspec2, p.116, 2nd paragraph
+            } else if (!name.equals(Const.STATIC_INITIALIZER_NAME)) { // vmspec2, p.116, 2nd paragraph
                 if (jc.getMajor() >= Const.MAJOR_1_8) {
                     if (obj.isPublic() == obj.isPrivate()) {
                         throw new ClassConstraintException(
@@ -960,7 +960,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
         // ClassFile-structure-ATTRIBUTES (vmspec2 4.1, 4.7) //
         ///////////////////////////////////////////////////////
         @Override
-        public void visitSourceFile(final SourceFile obj) {// vmspec2 4.7.7
+        public void visitSourceFile(final SourceFile obj) { // vmspec2 4.7.7
 
             // zero or one SourceFile attr per ClassFile: see visitJavaClass()
 
@@ -985,7 +985,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
         }
 
         @Override
-        public void visitSynthetic(final Synthetic obj) {// vmspec2 4.7.6
+        public void visitSynthetic(final Synthetic obj) { // vmspec2 4.7.6
             checkIndex(obj, obj.getNameIndex(), CONST_Utf8);
             final String name = ((ConstantUtf8) cp.getConstant(obj.getNameIndex())).getBytes();
             if (!name.equals("Synthetic")) {
@@ -997,7 +997,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
         // MISC-structure-ATTRIBUTES (vmspec2 4.7.1, 4.7) //
         ////////////////////////////////////////////////////
         @Override
-        public void visitUnknown(final Unknown obj) {// vmspec2 4.7.1
+        public void visitUnknown(final Unknown obj) { // vmspec2 4.7.1
             // Represents an unknown attribute.
             checkIndex(obj, obj.getNameIndex(), CONST_Utf8);
 
@@ -1423,17 +1423,17 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
                     final String nameAndSig = method.getName() + method.getSignature();
 
                     if (map.containsKey(nameAndSig) && method.isFinal()) {
-                            if (!method.isPrivate()) {
-                                throw new ClassConstraintException("Method '" + nameAndSig + "' in class '" + map.get(nameAndSig)
-                                    + "' overrides the final (not-overridable) definition in class '" + jc.getClassName() + "'.");
-                            }
-                            addMessage("Method '" + nameAndSig + "' in class '" + map.get(nameAndSig)
-                                + "' overrides the final (not-overridable) definition in class '" + jc.getClassName()
-                                + "'. This is okay, as the original definition was private; however this constraint leverage"
-                                + " was introduced by JLS 8.4.6 (not vmspec2) and the behavior of the Sun verifiers.");
-                        } else if (!method.isStatic()) { // static methods don't inherit
-                            map.put(nameAndSig, jc.getClassName());
+                        if (!method.isPrivate()) {
+                            throw new ClassConstraintException("Method '" + nameAndSig + "' in class '" + map.get(nameAndSig)
+                                + "' overrides the final (not-overridable) definition in class '" + jc.getClassName() + "'.");
                         }
+                        addMessage("Method '" + nameAndSig + "' in class '" + map.get(nameAndSig)
+                            + "' overrides the final (not-overridable) definition in class '" + jc.getClassName()
+                            + "'. This is okay, as the original definition was private; however this constraint leverage"
+                            + " was introduced by JLS 8.4.6 (not vmspec2) and the behavior of the Sun verifiers.");
+                    } else if (!method.isStatic()) { // static methods don't inherit
+                        map.put(nameAndSig, jc.getClassName());
+                    }
                 }
 
                 jc = Repository.lookupClass(jc.getSuperclassName());
@@ -1455,7 +1455,7 @@ public final class Pass2Verifier extends PassVerifier implements Constants {
      * Leave that to JustIce.
      */
     public @Nullable LocalVariablesInfo getLocalVariablesInfo(final int methodNr) {
-        if (this.verify() != VerificationResult.VR_OK) {
+        if (verify() != VerificationResult.VR_OK) {
             return null; // It's cached, don't worry.
         }
         if (methodNr < 0 || methodNr >= localVariablesInfos.length) {

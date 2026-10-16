@@ -37,7 +37,7 @@ public abstract class FieldGenOrMethodGen extends AccessFlags implements NamedAn
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
      */
     @Deprecated
-    protected String name;
+    protected @Identifier String name;
 
     /**
      * @deprecated (since 6.0) will be made private; do not access directly, use getter/setter
@@ -66,8 +66,10 @@ public abstract class FieldGenOrMethodGen extends AccessFlags implements NamedAn
         super(accessFlags);
     }
 
-    protected void addAll(final Attribute[] attrs) {
-        Collections.addAll(attributeList, attrs);
+    protected void addAll(final Attribute[] attributes) {
+        if (attributes != null) {
+            Collections.addAll(attributeList, attributes);
+        }
     }
 
     /**
@@ -165,7 +167,7 @@ public abstract class FieldGenOrMethodGen extends AccessFlags implements NamedAn
     }
 
     @Override
-    public void setName(final @Identifier String name) { // TODO could be package-protected?
+    public void setName(final String name) { // TODO could be package-protected?
         this.name = name;
     }
 

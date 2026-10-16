@@ -33,7 +33,7 @@ public abstract class AbstractVerifierTestCase {
     public void afterEach() {
         AbstractTestCase.clear();
     }
-    
+
     /**
      * Asserts that the verification of the given class is OK. If it isn't it throws an AssertionFailedError with the given
      * message.

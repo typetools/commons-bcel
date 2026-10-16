@@ -25,6 +25,9 @@ import java.util.stream.Stream;
 import org.apache.bcel.Const;
 
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -49,10 +52,10 @@ public abstract class Annotations extends Attribute implements Iterable<Annotati
      * @param constantPool     Array of constants
      * @param isRuntimeVisible whether this Annotation visible at runtime
      */
-    public Annotations(final byte annotationType, final @NonNegative int nameIndex, final @NonNegative int length, final AnnotationEntry[] annotationTable,
+    public Annotations(final byte annotationType, final @NonNegative int nameIndex, final @NonNegative int length, final AnnotationEntry @Nullable [] annotationTable,
             final ConstantPool constantPool, final boolean isRuntimeVisible) {
         super(annotationType, nameIndex, length, constantPool);
-        this.annotationTable = annotationTable;
+        setAnnotationTable(annotationTable);
         this.isRuntimeVisible = isRuntimeVisible;
     }
 
@@ -90,6 +93,7 @@ public abstract class Annotations extends Attribute implements Iterable<Annotati
     }
 
     @Override
+    @SuppressWarnings("nullness:return") // stub inherited from upstream; all concrete subclasses override copy()
     public Attribute copy(final ConstantPool constantPool) {
         // TODO Auto-generated method stub
         return null;
@@ -129,8 +133,9 @@ public abstract class Annotations extends Attribute implements Iterable<Annotati
      *
      * @param annotationTable the entries to set in this annotation
      */
-    public final void setAnnotationTable(final AnnotationEntry[] annotationTable) {
-        this.annotationTable = annotationTable;
+    @EnsuresNonNull("this.annotationTable")
+    public final void setAnnotationTable(@UnderInitialization Annotations this, final AnnotationEntry @Nullable [] annotationTable) {
+        this.annotationTable = annotationTable != null ? annotationTable : AnnotationEntry.EMPTY_ARRAY;
     }
 
     /**
@@ -152,9 +157,6 @@ public abstract class Annotations extends Attribute implements Iterable<Annotati
     }
 
     protected void writeAnnotations(final DataOutputStream dos) throws IOException {
-        if (annotationTable == null) {
-            return;
-        }
         dos.writeShort(annotationTable.length);
         for (final AnnotationEntry element : annotationTable) {
             element.dump(dos);

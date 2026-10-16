@@ -34,9 +34,13 @@ import org.checkerframework.checker.index.qual.NonNegative;
  */
 public final class ModuleExports implements Cloneable, Node {
 
+    private static String getToModuleNameAtIndex(final ConstantPool constantPool, final int index) {
+        return constantPool.getConstantString(index, Const.CONSTANT_Module);
+    }
     private final @NonNegative int exportsIndex; // points to CONSTANT_Package_info
     private final int exportsFlags;
     private final @NonNegative int exportsToCount;
+
     private final int[] exportsToIndex; // points to CONSTANT_Module_info
 
     /**
@@ -66,8 +70,6 @@ public final class ModuleExports implements Cloneable, Node {
         v.visitModuleExports(this);
     }
 
-    // TODO add more getters and setters?
-
     /**
      * @return deep copy of this object
      */
@@ -96,6 +98,39 @@ public final class ModuleExports implements Cloneable, Node {
     }
 
     /**
+     * Gets the flags for this ModuleExports.
+     * @return the exportsFlags
+     * @since 6.10.0
+     */
+    public int getExportsFlags() {
+        return exportsFlags;
+    }
+
+    /**
+     * Gets the exported package name.
+     * @param constantPool the constant pool from the ClassFile
+     * @return the exported package name
+     * @since 6.10.0
+     */
+    public String getPackageName(final ConstantPool constantPool) {
+        return constantPool.constantToString(exportsIndex, Const.CONSTANT_Package);
+    }
+
+    /**
+     * Gets an array of module names for this ModuleExports.
+     * @param constantPool Array of constants usually obtained from the ClassFile object
+     * @return array of module names following 'exports to'
+     * @since 6.10.0
+     */
+    public String[] getToModuleNames(final ConstantPool constantPool) {
+        final String[] toModuleNames = new String[exportsToCount];
+        for (int i = 0; i < exportsToCount; i++) {
+            toModuleNames[i] = getToModuleNameAtIndex(constantPool, exportsToIndex[i]);
+        }
+        return toModuleNames;
+    }
+
+    /**
      * @return String representation
      */
     @Override
@@ -108,13 +143,13 @@ public final class ModuleExports implements Cloneable, Node {
      */
     public String toString(final ConstantPool constantPool) {
         final StringBuilder buf = new StringBuilder();
-        final String packageName = constantPool.constantToString(exportsIndex, Const.CONSTANT_Package);
-        buf.append(Utility.compactClassName(packageName, false));
+        final String packageName = getPackageName(constantPool);
+        buf.append(packageName);
         buf.append(", ").append(String.format("%04x", exportsFlags));
         buf.append(", to(").append(exportsToCount).append("):\n");
         for (final int index : exportsToIndex) {
-            final String moduleName = constantPool.getConstantString(index, Const.CONSTANT_Module);
-            buf.append("      ").append(Utility.compactClassName(moduleName, false)).append("\n");
+            final String moduleName = getToModuleNameAtIndex(constantPool, index);
+            buf.append("      ").append(moduleName).append("\n");
         }
         return buf.substring(0, buf.length() - 1); // remove the last newline
     }

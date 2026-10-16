@@ -23,8 +23,12 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import org.apache.bcel.Const;
+import org.apache.commons.lang3.ArrayUtils;
 
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.initialization.qual.UnknownInitialization;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -38,6 +42,8 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"signedness"})
 public class BootstrapMethod implements Cloneable {
+
+    static final BootstrapMethod[] EMPTY_ARRAY = {};
 
     /** Index of the CONSTANT_MethodHandle_info structure in the constant_pool table */
     private @NonNegative int bootstrapMethodRef;
@@ -77,9 +83,9 @@ public class BootstrapMethod implements Cloneable {
      * @param bootstrapMethodRef int index into constant_pool of CONSTANT_MethodHandle
      * @param bootstrapArguments int[] indices into constant_pool of CONSTANT_[type]_info
      */
-    public BootstrapMethod(final @NonNegative int bootstrapMethodRef, final int[] bootstrapArguments) {
+    public BootstrapMethod(final @NonNegative int bootstrapMethodRef, final int @Nullable [] bootstrapArguments) {
         this.bootstrapMethodRef = bootstrapMethodRef;
-        this.bootstrapArguments = bootstrapArguments;
+        setBootstrapArguments(bootstrapArguments);
     }
 
     /**
@@ -89,7 +95,7 @@ public class BootstrapMethod implements Cloneable {
     public BootstrapMethod copy() {
         try {
             return (BootstrapMethod) clone();
-        } catch (final CloneNotSupportedException e) {
+        } catch (final CloneNotSupportedException ignore) {
             // TODO should this throw?
         }
         return null;
@@ -135,8 +141,10 @@ public class BootstrapMethod implements Cloneable {
     /**
      * @param bootstrapArguments int[] indices into constant_pool of CONSTANT_[type]_info
      */
-    public void setBootstrapArguments(final int[] bootstrapArguments) {
-        this.bootstrapArguments = bootstrapArguments;
+    @EnsuresNonNull("this.bootstrapArguments")
+    @SuppressWarnings("nullness:argument") // ArrayUtils.nullToEmpty accepts null; commons-lang3 is unannotated
+    public final void setBootstrapArguments(@UnknownInitialization BootstrapMethod this, final int @Nullable [] bootstrapArguments) {
+        this.bootstrapArguments = ArrayUtils.nullToEmpty(bootstrapArguments);
     }
 
     /**

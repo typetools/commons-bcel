@@ -32,7 +32,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * This class represents the method info structure, i.e., the representation for a method in the class. See JVM
  * specification for details. A method has access flags, a name, a signature and a number of attributes.
  */
-@AnnotatedFor({"nullness","signedness"})
+@AnnotatedFor({"nullness", "signedness"})
 public final class Method extends FieldOrMethod {
 
     /**
@@ -55,11 +55,6 @@ public final class Method extends FieldOrMethod {
             return o != null ? Objects.hash(o.getSignature(), o.getName()) : 0;
         }
     };
-
-    /**
-     * Empty array.
-     */
-    static final Method[] EMPTY_METHOD_ARRAY = {};
 
     /**
      * @return Comparison strategy object.
@@ -184,6 +179,18 @@ public final class Method extends FieldOrMethod {
      * @return LineNumberTable of code attribute if any, i.e. the call is forwarded to the Code atribute.
      */
     @Pure
+    public @Nullable LineNumberTable getLineNumberTable() {
+        final Code code = getCode();
+        if (code == null) {
+            return null;
+        }
+        return code.getLineNumberTable();
+    }
+
+    /**
+     * @return LocalVariableTable of code attribute if any, i.e. the call is forwarded to the Code attribute.
+     */
+    @Pure
     public @Nullable LocalVariableTable getLocalVariableTable() {
         final Code code = getCode();
         if (code == null) {
@@ -193,15 +200,16 @@ public final class Method extends FieldOrMethod {
     }
 
     /**
-     * @return LocalVariableTable of code attribute if any, i.e. the call is forwarded to the Code atribute.
+     * Gets the local variable type table attribute {@link LocalVariableTypeTable}.
+     * @return LocalVariableTypeTable of code attribute if any, i.e. the call is forwarded to the Code attribute.
+     * @since 6.10.0
      */
-    @Pure
-    public @Nullable LineNumberTable getLineNumberTable() {
+    public @Nullable LocalVariableTypeTable getLocalVariableTypeTable() {
         final Code code = getCode();
         if (code == null) {
             return null;
         }
-        return code.getLineNumberTable();
+        return code.getLocalVariableTypeTable();
     }
 
     /**
@@ -224,7 +232,7 @@ public final class Method extends FieldOrMethod {
     }
 
     /**
-     * Return value as defined by given BCELComparator strategy. By default return the hashcode of the method's name XOR
+     * Return value as defined by given BCELComparator strategy. By default return the hash code of the method's name XOR
      * signature.
      *
      * @see Object#hashCode()

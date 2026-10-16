@@ -26,7 +26,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
- * represents an annotation that is represented in the class file and is provided to the JVM.
+ * An annotation that is represented in the class file and is provided to the JVM.
  *
  * @since 6.0
  */
@@ -34,6 +34,8 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 public class RuntimeVisibleAnnotations extends Annotations {
 
     /**
+     * Constructs a new instance.
+     *
      * @param nameIndex Index pointing to the name <em>Code</em>
      * @param length Content length in bytes
      * @param input Input stream
@@ -45,7 +47,9 @@ public class RuntimeVisibleAnnotations extends Annotations {
     }
 
     /**
-     * @return deep copy of this attribute
+     * Creates a deep copy of this attribute.
+     *
+     * @return deep copy of this attribute.
      */
     @Override
     public Attribute copy(final ConstantPool constantPool) {

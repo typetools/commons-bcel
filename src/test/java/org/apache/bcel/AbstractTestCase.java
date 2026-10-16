@@ -70,9 +70,9 @@ public abstract class AbstractTestCase {
 
     public SyntheticRepository createRepos(final String cpentry) {
         return Uncheck.get(() -> {
-        try (ClassPath cp = new ClassPath("target" + File.separator + "testdata" + File.separator + cpentry + File.separator)) {
-            return SyntheticRepository.getInstance(cp);
-        }
+            try (ClassPath cp = new ClassPath("target" + File.separator + "testdata" + File.separator + cpentry + File.separator)) {
+                return SyntheticRepository.getInstance(cp);
+            }
         });
     }
 

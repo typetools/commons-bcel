@@ -86,7 +86,7 @@ public abstract class AccessFlags {
     public final void isAbstract(final boolean flag) {
         setFlag(Const.ACC_ABSTRACT, flag);
     }
-    
+
     /**
      * Tests whether the annotation bit is on.
      *
@@ -203,7 +203,7 @@ public abstract class AccessFlags {
     public final boolean isProtected(@UnknownInitialization(AccessFlags.class) AccessFlags this) {
         return test(Const.ACC_PROTECTED);
     }
-    
+
     /**
      * Sets the protected bit.
      *
@@ -221,7 +221,7 @@ public abstract class AccessFlags {
     public final boolean isPublic(@UnknownInitialization(AccessFlags.class) AccessFlags this) {
         return test(Const.ACC_PUBLIC);
     }
-    
+
     /**
      * Sets the public bit.
      *

@@ -33,6 +33,8 @@ import org.checkerframework.dataflow.qual.Pure;
  */
 public abstract class Constant implements Cloneable, Node {
 
+    static final Constant[] EMPTY_ARRAY = {};
+
     private static BCELComparator<Constant> bcelComparator = new BCELComparator<Constant>() {
 
         @Override
@@ -183,7 +185,7 @@ public abstract class Constant implements Cloneable, Node {
     }
 
     /**
-     * Returns value as defined by given BCELComparator strategy. By default return the hashcode of the result of
+     * Returns value as defined by given BCELComparator strategy. By default return the hash code of the result of
      * toString().
      *
      * @see Object#hashCode()

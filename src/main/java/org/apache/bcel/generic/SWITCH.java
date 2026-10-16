@@ -104,23 +104,23 @@ public final class SWITCH implements CompoundInstruction {
             sort(0, matchLength - 1, matchClone, targetsClone);
             if (matchIsOrdered(matchClone, matchLength, maxGap)) {
                 final int maxSize = matchLength + matchLength * maxGap;
-        final int[] mVec = new int[maxSize];
-        final InstructionHandle[] tVec = new InstructionHandle[maxSize];
-        @NonNegative int count = 1;
-        mVec[0] = match[0];
-        tVec[0] = targets[0];
-        for (int i = 1; i < matchLength; i++) {
-            final int prev = match[i - 1];
-            final int gap = match[i] - prev;
-            for (int j = 1; j < gap; j++) {
-                mVec[count] = prev + j;
-                tVec[count] = target;
-                count++;
-            }
-            mVec[count] = match[i];
-            tVec[count] = targets[i];
-            count++;
-        }
+                final int[] mVec = new int[maxSize];
+                final InstructionHandle[] tVec = new InstructionHandle[maxSize];
+                @NonNegative int count = 1;
+                mVec[0] = match[0];
+                tVec[0] = targets[0];
+                for (int i = 1; i < matchLength; i++) {
+                    final int prev = match[i - 1];
+                    final int gap = match[i] - prev;
+                    for (int j = 1; j < gap; j++) {
+                        mVec[count] = prev + j;
+                        tVec[count] = target;
+                        count++;
+                    }
+                    mVec[count] = match[i];
+                    tVec[count] = targets[i];
+                    count++;
+                }
                 instruction = new TABLESWITCH(Arrays.copyOf(mVec, count), Arrays.copyOf(tVec, count), target);
             } else {
                 instruction = new LOOKUPSWITCH(matchClone, targetsClone, target);

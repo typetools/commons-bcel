@@ -29,7 +29,6 @@ import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
 
 import org.apache.bcel.Repository;
 import org.apache.bcel.classfile.JavaClass;
@@ -52,16 +51,16 @@ public class VerifyDialog extends JDialog {
         @Override
         @SuppressWarnings("interning") // machine-generated GUI code
         public void actionPerformed(final ActionEvent e) {
-            if (e.getSource() == VerifyDialog.this.getPass1Button()) {
+            if (e.getSource() == getPass1Button()) {
                 connEtoC1(e);
             }
-            if (e.getSource() == VerifyDialog.this.getPass2Button()) {
+            if (e.getSource() == getPass2Button()) {
                 connEtoC2(e);
             }
-            if (e.getSource() == VerifyDialog.this.getPass3Button()) {
+            if (e.getSource() == getPass3Button()) {
                 connEtoC3(e);
             }
-            if (e.getSource() == VerifyDialog.this.getFlushButton()) {
+            if (e.getSource() == getFlushButton()) {
                 connEtoC4(e);
             }
         }
@@ -198,7 +197,7 @@ public class VerifyDialog extends JDialog {
         try {
             // user code begin {1}
             // user code end
-            this.pass1Button_ActionPerformed(arg1);
+            pass1Button_ActionPerformed(arg1);
             // user code begin {2}
             // user code end
         } catch (final Throwable ivjExc) {
@@ -213,7 +212,7 @@ public class VerifyDialog extends JDialog {
         try {
             // user code begin {1}
             // user code end
-            this.pass2Button_ActionPerformed(arg1);
+            pass2Button_ActionPerformed(arg1);
             // user code begin {2}
             // user code end
         } catch (final Throwable ivjExc) {
@@ -228,7 +227,7 @@ public class VerifyDialog extends JDialog {
         try {
             // user code begin {1}
             // user code end
-            this.pass4Button_ActionPerformed(arg1);
+            pass4Button_ActionPerformed(arg1);
             // user code begin {2}
             // user code end
         } catch (final Throwable ivjExc) {
@@ -243,7 +242,7 @@ public class VerifyDialog extends JDialog {
         try {
             // user code begin {1}
             // user code end
-            this.flushButton_ActionPerformed(arg1);
+            flushButton_ActionPerformed(arg1);
             // user code begin {2}
             // user code end
         } catch (final Throwable ivjExc) {
@@ -465,7 +464,7 @@ public class VerifyDialog extends JDialog {
             // user code begin {1}
             // user code end
             setName("VerifyDialog");
-            setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             setSize(430, 280);
             setVisible(true);
             setModal(true);

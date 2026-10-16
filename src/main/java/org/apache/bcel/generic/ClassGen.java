@@ -48,7 +48,7 @@ import org.checkerframework.dataflow.qual.Pure;
  *
  * @see JavaClass
  */
-@AnnotatedFor({"nullness","signature","signedness"})
+@AnnotatedFor({"nullness", "signature", "signedness"})
 public class ClassGen extends AccessFlags implements Cloneable {
 
     private static BCELComparator<ClassGen> bcelComparator = new BCELComparator<ClassGen>() {
@@ -104,7 +104,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
     private @Nullable List<ClassObserver> observers;
 
     /**
-     * Initialize with existing class.
+     * Constructs a new instance from an existing class.
      *
      * @param clazz JavaClass object (e.g. read from file)
      */
@@ -121,15 +121,26 @@ public class ClassGen extends AccessFlags implements Cloneable {
         final Attribute[] attributes = clazz.getAttributes();
         // J5TODO: Could make unpacking lazy, done on first reference
         final AnnotationEntryGen[] annotations = unpackAnnotations(attributes);
-        Collections.addAll(interfaceList, clazz.getInterfaceNames());
-        for (final Attribute attribute : attributes) {
-            if (!(attribute instanceof Annotations)) {
-                addAttribute(attribute);
+        final String[] interfaceNames = clazz.getInterfaceNames();
+        if (interfaceNames != null) {
+            Collections.addAll(interfaceList, interfaceNames);
+        }
+        if (attributes != null) {
+            for (final Attribute attribute : attributes) {
+                if (!(attribute instanceof Annotations)) {
+                    addAttribute(attribute);
+                }
             }
         }
         Collections.addAll(annotationList, annotations);
-        Collections.addAll(methodList, clazz.getMethods());
-        Collections.addAll(fieldList, clazz.getFields());
+        final Method[] methods = clazz.getMethods();
+        if (methods != null) {
+            Collections.addAll(methodList, methods);
+        }
+        final Field[] fields = clazz.getFields();
+        if (fields != null) {
+            Collections.addAll(fieldList, fields);
+        }
     }
 
     /**
@@ -391,7 +402,7 @@ public class ClassGen extends AccessFlags implements Cloneable {
     }
 
     /**
-     * Return value as defined by given BCELComparator strategy. By default return the hashcode of the class name.
+     * Return value as defined by given BCELComparator strategy. By default return the hash code of the class name.
      *
      * @see Object#hashCode()
      */
@@ -505,7 +516,9 @@ public class ClassGen extends AccessFlags implements Cloneable {
 
     public void setMethods(final Method[] methods) {
         methodList.clear();
-        Collections.addAll(methodList, methods);
+        if (methods != null) {
+            Collections.addAll(methodList, methods);
+        }
     }
 
     /**
@@ -529,17 +542,19 @@ public class ClassGen extends AccessFlags implements Cloneable {
     }
 
     /**
-     * Look for attributes representing annotations and unpack them.
+     * Unpacks attributes representing annotations.
      */
-    private AnnotationEntryGen[] unpackAnnotations(final Attribute[] attrs) {
+    private AnnotationEntryGen[] unpackAnnotations(final Attribute[] attributes) {
         final List<AnnotationEntryGen> annotationGenObjs = new ArrayList<>();
-        for (final Attribute attr : attrs) {
-            if (attr instanceof RuntimeVisibleAnnotations) {
-                final RuntimeVisibleAnnotations rva = (RuntimeVisibleAnnotations) attr;
-                rva.forEach(a -> annotationGenObjs.add(new AnnotationEntryGen(a, getConstantPool(), false)));
-            } else if (attr instanceof RuntimeInvisibleAnnotations) {
-                final RuntimeInvisibleAnnotations ria = (RuntimeInvisibleAnnotations) attr;
-                ria.forEach(a -> annotationGenObjs.add(new AnnotationEntryGen(a, getConstantPool(), false)));
+        if (attributes != null) {
+            for (final Attribute attr : attributes) {
+                if (attr instanceof RuntimeVisibleAnnotations) {
+                    final RuntimeVisibleAnnotations rva = (RuntimeVisibleAnnotations) attr;
+                    rva.forEach(a -> annotationGenObjs.add(new AnnotationEntryGen(a, getConstantPool(), false)));
+                } else if (attr instanceof RuntimeInvisibleAnnotations) {
+                    final RuntimeInvisibleAnnotations ria = (RuntimeInvisibleAnnotations) attr;
+                    ria.forEach(a -> annotationGenObjs.add(new AnnotationEntryGen(a, getConstantPool(), false)));
+                }
             }
         }
         return annotationGenObjs.toArray(AnnotationEntryGen.EMPTY_ARRAY);

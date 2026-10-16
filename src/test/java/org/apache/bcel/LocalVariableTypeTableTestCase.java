@@ -16,11 +16,15 @@
  */
 package org.apache.bcel;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.bcel.classfile.JavaClass;
+import org.apache.bcel.classfile.LocalVariableTypeTable;
 import org.apache.bcel.classfile.Method;
 import org.apache.bcel.generic.ACONST_NULL;
 import org.apache.bcel.generic.ALOAD;
@@ -126,6 +130,22 @@ public class LocalVariableTypeTableTestCase extends AbstractTestCase {
         }
 
         return createPrintln(methodGen.getConstantPool(), instruction);
+    }
+
+    @Test
+    public void testGetLocalVariableTypeTable() throws ClassNotFoundException, NoSuchMethodException, SecurityException {
+        final JavaClass testJavaClass = getTestJavaClass("org/apache/commons/lang3/function/TriFunction");
+        final String expectedToString = "LocalVariableTypes(startPc = 0, length = 17, index = 0:org.apache.commons.lang3.function.TriFunction<T, U, V, R> this)";
+        for (final Method method : testJavaClass.getMethods()) {
+            if ("lambda$andThen$0".equals(method.getName())) {
+                final LocalVariableTypeTable localVariableTypeTable = method.getLocalVariableTypeTable();
+                assertEquals(expectedToString, localVariableTypeTable.toString());
+            }
+            if ("apply".equals(method.getName())) {
+                assertNull(method.getLocalVariableTypeTable());
+            }
+        }
+        assertNull(Repository.lookupClass(Object.class).getMethod(Object.class.getMethod("toString")).getLocalVariableTypeTable());
     }
 
     @Test

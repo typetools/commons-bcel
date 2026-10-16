@@ -232,7 +232,6 @@ public final class StackMapEntry implements Node, Cloneable {
 
     /**
      * Calculate stack map entry size
-     *
      */
     @NonNegative int getMapEntrySize() {
         if (frameType >= Const.SAME_FRAME && frameType <= Const.SAME_FRAME_MAX) {

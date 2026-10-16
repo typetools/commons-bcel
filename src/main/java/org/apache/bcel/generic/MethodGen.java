@@ -24,6 +24,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 import org.apache.bcel.Const;
 import org.apache.bcel.classfile.AnnotationEntry;
@@ -44,6 +45,7 @@ import org.apache.bcel.classfile.RuntimeVisibleParameterAnnotations;
 import org.apache.bcel.classfile.Utility;
 import org.apache.bcel.util.BCELComparator;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.stream.Streams;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.SameLen;
@@ -901,7 +903,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
     /**
-     * Return value as defined by given BCELComparator strategy. By default return the hashcode of the method's name XOR
+     * Return value as defined by given BCELComparator strategy. By default return the hash code of the method's name XOR
      * signature.
      *
      * @see Object#hashCode()
@@ -912,11 +914,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
     private List<AnnotationEntryGen> makeMutableVersion(final AnnotationEntry[] mutableArray) {
-        final List<AnnotationEntryGen> result = new ArrayList<>();
-        for (final AnnotationEntry element : mutableArray) {
-            result.add(new AnnotationEntryGen(element, getConstantPool(), false));
-        }
-        return result;
+        return Streams.of(mutableArray).map(ae -> new AnnotationEntryGen(ae, getConstantPool(), false)).collect(Collectors.toList());
     }
 
     /**
@@ -1042,10 +1040,8 @@ public class MethodGen extends FieldGenOrMethodGen {
      *
      * @since 6.5.0
      */
-    public void removeRuntimeAttributes(final Attribute[] attrs) {
-        for (final Attribute attr : attrs) {
-            removeAttribute(attr);
-        }
+    public void removeRuntimeAttributes(final Attribute[] attributes) {
+        Streams.of(attributes).forEach(this::removeAttribute);
     }
 
     public void setArgumentName(final @NonNegative int i, final String name) {
@@ -1053,7 +1049,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
     public void setArgumentNames(final String[] argNames) {
-        this.argNames = argNames;
+        this.argNames = ArrayUtils.nullToEmpty(argNames);
     }
 
     public void setArgumentType(final @NonNegative int i, final Type type) {
@@ -1061,7 +1057,7 @@ public class MethodGen extends FieldGenOrMethodGen {
     }
 
     public void setArgumentTypes(final Type[] argTypes) {
-        this.argTypes = argTypes;
+        this.argTypes = argTypes != null ? argTypes : Type.NO_ARGS;
     }
 
     public void setClassName(final @BinaryName String className) { // TODO could be package-protected?
@@ -1078,10 +1074,8 @@ public class MethodGen extends FieldGenOrMethodGen {
     public void setMaxLocals() { // TODO could be package-protected? (some tests would need repackaging)
         if (il != null) {
             @NonNegative int max = isStatic() ? 0 : 1;
-            if (argTypes != null) {
-                for (final Type argType : argTypes) {
-                    max += argType.getSize();
-                }
+            for (final Type argType : argTypes) {
+                max += argType.getSize();
             }
             for (InstructionHandle ih = il.getStart(); ih != null; ih = ih.getNext()) {
                 final Instruction ins = ih.getInstruction();

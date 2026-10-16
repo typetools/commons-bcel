@@ -37,6 +37,7 @@ import java.util.zip.GZIPOutputStream;
 
 import org.apache.bcel.Const;
 import org.apache.bcel.util.ByteSequence;
+import org.apache.commons.lang3.ArrayFill;
 import org.apache.commons.lang3.ArrayUtils;
 
 import org.checkerframework.checker.index.qual.NonNegative;
@@ -87,7 +88,7 @@ public abstract class Utility {
         @Override
         public int read(final char[] cbuf, final int off, final int len) throws IOException {
             for (int i = 0; i < len; i++) {
-                char temp = (char)read();
+                char temp = (char) read();
                 cbuf[off + i] = temp;
             }
             return len;
@@ -723,8 +724,7 @@ public abstract class Utility {
      */
     public static String fillup(final String str, final int length, final boolean leftJustify, final char fill) {
         final int len = length - str.length();
-        final char[] buf = new char[Math.max(len, 0)];
-        Arrays.fill(buf, fill);
+        final char[] buf = ArrayFill.fill(new char[Math.max(len, 0)], fill);
         if (leftJustify) {
             return str + new String(buf);
         }
@@ -1188,7 +1188,7 @@ public abstract class Utility {
             type = typeParams + typeSignaturesToString(signature.substring(index), chopit, ')');
             index += unwrap(CONSUMER_CHARS); // update position
             // add return type
-            type = type + typeSignatureToString(signature.substring(index), chopit);
+            type += typeSignatureToString(signature.substring(index), chopit);
             index += unwrap(CONSUMER_CHARS); // update position
             // ignore any throws information in the signature
             return type;
@@ -1488,8 +1488,8 @@ public abstract class Utility {
                 } else {
                     type.append(typeSignatureToString(signature.substring(consumedChars), chopit));
                     // update our consumed count by the number of characters the for type argument
-                    consumedChars = unwrap(Utility.CONSUMER_CHARS) + consumedChars;
-                    wrap(Utility.CONSUMER_CHARS, consumedChars);
+                    consumedChars = unwrap(CONSUMER_CHARS) + consumedChars;
+                    wrap(CONSUMER_CHARS, consumedChars);
                 }
 
                 // are there more TypeArguments?
@@ -1509,8 +1509,8 @@ public abstract class Utility {
                     } else {
                         type.append(typeSignatureToString(signature.substring(consumedChars), chopit));
                         // update our consumed count by the number of characters the for type argument
-                        consumedChars = unwrap(Utility.CONSUMER_CHARS) + consumedChars;
-                        wrap(Utility.CONSUMER_CHARS, consumedChars);
+                        consumedChars = unwrap(CONSUMER_CHARS) + consumedChars;
+                        wrap(CONSUMER_CHARS, consumedChars);
                     }
                 }
 
@@ -1527,14 +1527,14 @@ public abstract class Utility {
                     // update our consumed count by the number of characters the for type argument
                     // note that this count includes the "L" we added, but that is ok
                     // as it accounts for the "." we didn't consume
-                    consumedChars = unwrap(Utility.CONSUMER_CHARS) + consumedChars;
-                    wrap(Utility.CONSUMER_CHARS, consumedChars);
+                    consumedChars = unwrap(CONSUMER_CHARS) + consumedChars;
+                    wrap(CONSUMER_CHARS, consumedChars);
                     return type.toString();
                 }
                 if (signature.charAt(consumedChars) != ';') {
                     throw new ClassFormatException("Invalid signature: " + signature);
                 }
-                wrap(Utility.CONSUMER_CHARS, consumedChars + 1); // remove final ";"
+                wrap(CONSUMER_CHARS, consumedChars + 1); // remove final ";"
                 return type.toString();
             }
             case 'S':
@@ -1555,9 +1555,9 @@ public abstract class Utility {
                 // The rest of the string denotes a '<field_type>'
                 type = typeSignatureToString(signature.substring(n), chopit);
                 // corrected concurrent private static field acess
-                // Utility.consumed_chars += consumed_chars; is replaced by:
-                final int temp = unwrap(Utility.CONSUMER_CHARS) + consumedChars;
-                wrap(Utility.CONSUMER_CHARS, temp);
+                // consumed_chars += consumed_chars; is replaced by:
+                final int temp = unwrap(CONSUMER_CHARS) + consumedChars;
+                wrap(CONSUMER_CHARS, temp);
                 return type + brackets.toString();
             }
             case 'V':

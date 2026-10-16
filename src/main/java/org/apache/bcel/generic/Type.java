@@ -175,7 +175,7 @@ public abstract class Type {
 
     static @NonNegative int getReturnTypeSize(final String signature) {
         final int index = signature.lastIndexOf(')') + 1;
-        return Type.size(getTypeSize(signature.substring(index)));
+        return size(getTypeSize(signature.substring(index)));
     }
 
     public static String getSignature(final java.lang.reflect.Method meth) {
@@ -259,7 +259,7 @@ public abstract class Type {
             // Utility.typeSignatureToString understands how to parse generic types.
             // TODO: either "java/lang/String" or "java.lang.String" might flow here.
             final String parsedSignature = Utility.typeSignatureToString(signature, false);
-            wrap(CONSUMED_CHARS, parsedSignature.length() + 2); // "Lblabla;" 'L' and `;' are removed
+            wrap(CONSUMED_CHARS, parsedSignature.length() + 2); // "Lblabla;" 'L' and ';' are removed
             @SuppressWarnings("signature") // string manipulation; known to be reference type
             @BinaryName String className = Utility.pathToPackage(parsedSignature);
             return ObjectType.getInstance(className);
@@ -418,7 +418,7 @@ public abstract class Type {
     }
 
     /**
-     * @return hashcode of Type
+     * @return hash code of Type
      */
     @Override
     public int hashCode() {
@@ -426,15 +426,15 @@ public abstract class Type {
     }
 
     /**
-     * boolean, short and char variable are considered as int in the stack or local variable area. Returns {@link Type#INT}
-     * for {@link Type#BOOLEAN}, {@link Type#SHORT} or {@link Type#CHAR}, otherwise returns the given type.
+     * boolean, short and char variable are considered as int in the stack or local variable area. Returns {@link #INT}
+     * for {@link #BOOLEAN}, {@link #SHORT} or {@link #CHAR}, otherwise returns the given type.
      *
      * @since 6.0
      */
     @SuppressWarnings("interned") // primitive types are interned
     public Type normalizeForStackOrLocal() {
-        if (this == Type.BOOLEAN || this == Type.BYTE || this == Type.SHORT || this == Type.CHAR) {
-            return Type.INT;
+        if (this == BOOLEAN || this == BYTE || this == SHORT || this == CHAR) {
+            return INT;
         }
         return this;
     }
@@ -446,6 +446,6 @@ public abstract class Type {
     // TODO: result must be one of fully-qualified name, binary name, internal form, Class.getSimpleName
     // TODO: looks like a bug, because signatureToString is called
     public @BinaryName String toString() {
-        return this.equals(Type.NULL) || type >= Const.T_UNKNOWN ? signature : Utility.signatureToString(signature, false);
+        return equals(NULL) || type >= Const.T_UNKNOWN ? signature : Utility.signatureToString(signature, false);
     }
 }

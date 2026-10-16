@@ -26,6 +26,9 @@ import java.util.stream.Stream;
 import org.apache.bcel.Const;
 
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.initialization.qual.UnknownInitialization;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -56,9 +59,9 @@ public class BootstrapMethods extends Attribute implements Iterable<BootstrapMet
      * @param bootstrapMethods array of bootstrap methods
      * @param constantPool Array of constants
      */
-    public BootstrapMethods(final @NonNegative int nameIndex, final @NonNegative int length, final BootstrapMethod[] bootstrapMethods, final ConstantPool constantPool) {
+    public BootstrapMethods(final @NonNegative int nameIndex, final @NonNegative int length, final BootstrapMethod @Nullable [] bootstrapMethods, final ConstantPool constantPool) {
         super(Const.ATTR_BOOTSTRAP_METHODS, nameIndex, length, constantPool);
-        this.bootstrapMethods = bootstrapMethods;
+        setBootstrapMethods(bootstrapMethods);
     }
 
     /**
@@ -134,8 +137,9 @@ public class BootstrapMethods extends Attribute implements Iterable<BootstrapMet
     /**
      * @param bootstrapMethods the array of bootstrap methods
      */
-    public final void setBootstrapMethods(final BootstrapMethod[] bootstrapMethods) {
-        this.bootstrapMethods = bootstrapMethods;
+    @EnsuresNonNull("this.bootstrapMethods")
+    public final void setBootstrapMethods(@UnknownInitialization BootstrapMethods this, final BootstrapMethod @Nullable [] bootstrapMethods) {
+        this.bootstrapMethods = bootstrapMethods != null ? bootstrapMethods : BootstrapMethod.EMPTY_ARRAY;
     }
 
     /**

@@ -29,13 +29,23 @@ jobs:
         java: [ 8, 11, 17, 21 ]
         
     steps:
-    - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+    - name: Prepare git
+      run: git config --global core.autocrlf false
+    - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      with:
+        persist-credentials: false
+    - uses: actions/cache@v4.2.4
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
     - name: Set up JDK ${{ matrix.java }}
-      uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93 # v4.0.0
+      uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4.2.1
       with:
         distribution: 'temurin'
         java-version: ${{ matrix.java }}
     - name: compile with passing checkers
-      run: mvn -V apache-rat:check -PsucceedingTypecheckers compile --file pom.xml -Dmoditect.skip=true
+      run: mvn --errors --show-version --batch-mode --no-transfer-progress -PsucceedingTypecheckers compile -Dmoditect.skip=true
     - name: Build with Maven
-      run: mvn -V apache-rat:check clean package --file pom.xml -Dmoditect.skip=true
+      run: mvn --errors --show-version --batch-mode --no-transfer-progress clean package -Dmoditect.skip=true

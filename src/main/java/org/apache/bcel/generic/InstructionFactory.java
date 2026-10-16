@@ -651,8 +651,10 @@ public class InstructionFactory implements InstructionConstants {
         @NonNegative int index;
         @NonNegative int nargs = 0;
         final String signature = Type.getMethodSignature(retType, argTypes);
-        for (final Type argType : argTypes) {
-            nargs += argType.getSize();
+        if (argTypes != null) {
+            for (final Type argType : argTypes) {
+                nargs += argType.getSize();
+            }
         }
         if (useInterface) {
             index = cp.addInterfaceMethodref(className, name, signature);

@@ -91,7 +91,7 @@ public abstract class Select extends BranchInstruction implements VariableLength
      */
     @SuppressWarnings("nullness") // target is temporarily set to null
     Select(final short opcode, final int[] match, final InstructionHandle[] targets, final InstructionHandle defaultTarget) {
-        // don't set default target before instuction is built
+        // don't set default target before instruction is built
         super(opcode, null);
         this.match = match;
         this.targets = targets;
@@ -327,8 +327,8 @@ public abstract class Select extends BranchInstruction implements VariableLength
                     if (targets[i].getInstruction().equals(this)) {
                         s = "<points to itself>";
                     } else {
-                    s = targets[i].getInstruction().toString();
-                }
+                        s = targets[i].getInstruction().toString();
+                    }
                 }
                 buf.append("(").append(match[i]).append(", ").append(s).append(" = {").append(indices[i]).append("})");
             }

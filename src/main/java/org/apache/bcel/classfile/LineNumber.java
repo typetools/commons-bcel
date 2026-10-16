@@ -21,8 +21,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.signedness.qual.SignedPositive;
-import org.checkerframework.checker.signedness.qual.Unsigned;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -121,7 +119,7 @@ public final class LineNumber implements Cloneable, Node {
      */
     @Pure
     public @NonNegative int getStartPC() {
-        return  startPc & 0xffff;
+        return startPc & 0xffff;
     }
 
     /**
