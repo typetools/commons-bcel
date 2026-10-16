@@ -17,6 +17,8 @@
 package org.apache.bcel.generic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -89,6 +91,8 @@ public class GeneratingAnnotatedClassesTestCase extends AbstractTestCase {
                 assertSimpleElementValue(annos[0]);
             }
         }
+        assertNotNull(method.getAttribute(Const.ATTR_RUNTIME_VISIBLE_PARAMETER_ANNOTATIONS));
+        assertNull(method.getAttribute(Const.ATTR_RUNTIME_INVISIBLE_PARAMETER_ANNOTATIONS));
     }
 
     private void assertSimpleElementValue(final AnnotationEntry anno) {
@@ -291,8 +295,7 @@ public class GeneratingAnnotatedClassesTestCase extends AbstractTestCase {
         final ObjectType t = new ObjectType("SimpleAnnotation");
         final List<ElementValuePairGen> elements = new ArrayList<>();
         elements.add(nvGen);
-        final AnnotationEntryGen a = new AnnotationEntryGen(t, elements, false, cp);
-        return a;
+        return new AnnotationEntryGen(t, elements, false, cp);
     }
 
     public AnnotationEntryGen createSimpleVisibleAnnotation(final ConstantPoolGen cp) {
@@ -301,8 +304,7 @@ public class GeneratingAnnotatedClassesTestCase extends AbstractTestCase {
         final ObjectType t = new ObjectType("SimpleAnnotation");
         final List<ElementValuePairGen> elements = new ArrayList<>();
         elements.add(nvGen);
-        final AnnotationEntryGen a = new AnnotationEntryGen(t, elements, true, cp);
-        return a;
+        return new AnnotationEntryGen(t, elements, true, cp);
     }
 
     private void dumpClass(final ClassGen cg, final String fname) {

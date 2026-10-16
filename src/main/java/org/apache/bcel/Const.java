@@ -21,7 +21,6 @@ import java.util.Collections;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.signature.qual.FieldDescriptor;
-import org.checkerframework.checker.signature.qual.FullyQualifiedName;
 import org.checkerframework.checker.signature.qual.DotSeparatedIdentifiers;
 import org.checkerframework.checker.signedness.qual.Unsigned;
 import org.checkerframework.dataflow.qual.Pure;
@@ -302,6 +301,30 @@ public final class Const {
     public static final short MINOR_21 = 0;
 
     /**
+     * Minor version number of class files for Java 22: {@value}.
+     *
+     * @see #MAJOR_22
+     * @since 6.10.0
+     */
+    public static final short MINOR_22 = 0;
+
+    /**
+     * Minor version number of class files for Java 23: {@value}.
+     *
+     * @see #MAJOR_23
+     * @since 6.10.0
+     */
+    public static final short MINOR_23 = 0;
+
+    /**
+     * Minor version number of class files for Java 24: {@value}.
+     *
+     * @see #MAJOR_24
+     * @since 6.10.0
+     */
+    public static final short MINOR_24 = 0;
+
+    /**
      * Major version number of class files for Java 14: {@value}.
      *
      * @see #MINOR_14
@@ -364,6 +387,30 @@ public final class Const {
      * @since 6.8.0
      */
     public static final short MAJOR_21 = 65;
+
+    /**
+     * Major version number of class files for Java 22: {@value}.
+     *
+     * @see #MINOR_22
+     * @since 6.10.0
+     */
+    public static final short MAJOR_22 = 66;
+
+    /**
+     * Major version number of class files for Java 23: {@value}.
+     *
+     * @see #MINOR_23
+     * @since 6.10.0
+     */
+    public static final short MAJOR_23 = 67;
+
+    /**
+     * Major version number of class files for Java 24: {@value}.
+     *
+     * @see #MINOR_24
+     * @since 6.10.0
+     */
+    public static final short MAJOR_24 = 68;
 
     /**
      * Default major version number. Class file is for Java 1.1: {@value}.
@@ -549,14 +596,14 @@ public final class Const {
      *
      * @see #ACC_PUBLIC
      */
-  public static final @Unsigned short ACC_MANDATED     = (short) 0x8000;
+    public static final @Unsigned short ACC_MANDATED = (short) 0x8000;
 
     /**
      * One of the access flags for classes: {@value}.
      *
      * @see #ACC_PUBLIC
      */
-  public static final @Unsigned short ACC_MODULE       = (short) 0x8000;
+    public static final @Unsigned short ACC_MODULE = (short) 0x8000;
 
     /**
      * One of the access flags for fields, methods, or classes: {@value}.
@@ -3082,12 +3129,13 @@ public final class Const {
     public static final byte ATTR_MODULE_MAIN_CLASS = 24;
     public static final byte ATTR_NEST_HOST = 25;
     public static final byte ATTR_NEST_MEMBERS = 26;
+    public static final byte ATTR_RECORD = 27;
 
-    public static final short KNOWN_ATTRIBUTES = 27; // count of attributes
+    public static final short KNOWN_ATTRIBUTES = 28; // count of attributes
     private static final String[] ATTRIBUTE_NAMES = {"SourceFile", "ConstantValue", "Code", "Exceptions", "LineNumberTable", "LocalVariableTable",
         "InnerClasses", "Synthetic", "Deprecated", "PMGClass", "Signature", "StackMap", "RuntimeVisibleAnnotations", "RuntimeInvisibleAnnotations",
         "RuntimeVisibleParameterAnnotations", "RuntimeInvisibleParameterAnnotations", "AnnotationDefault", "LocalVariableTypeTable", "EnclosingMethod",
-        "StackMapTable", "BootstrapMethods", "MethodParameters", "Module", "ModulePackages", "ModuleMainClass", "NestHost", "NestMembers"};
+        "StackMapTable", "BootstrapMethods", "MethodParameters", "Module", "ModulePackages", "ModuleMainClass", "NestHost", "NestMembers", "Record"};
     /**
      * Constants used in the StackMap attribute.
      */

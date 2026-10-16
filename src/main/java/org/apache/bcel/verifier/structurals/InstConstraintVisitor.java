@@ -1048,9 +1048,9 @@ public class InstConstraintVisitor extends EmptyVisitor {
 
             final JavaClass jc = Repository.lookupClass(getObjectType(o).getClassName());
             final Field f = jc.findField(fieldName, o.getType(cpg));
-                if (f == null) {
-                    throw new AssertionViolatedException("Field '" + fieldName + "' not found in " + jc.getClassName());
-                }
+            if (f == null) {
+                throw new AssertionViolatedException("Field '" + fieldName + "' not found in " + jc.getClassName());
+            }
 
             if (f.isProtected()) {
                 final ObjectType classtype = getObjectType(o);
@@ -2126,7 +2126,7 @@ public class InstConstraintVisitor extends EmptyVisitor {
     @Override
     public void visitLoadClass(final LoadClass o) {
         final ObjectType t = o.getLoadClassType(cpg);
-        if (t != null) {// null means "no class is loaded"
+        if (t != null) { // null means "no class is loaded"
             final Verifier v = VerifierFactory.getVerifier(t.getClassName());
             final VerificationResult vr = v.doPass2();
             if (vr.getStatus() != VerificationResult.VERIFIED_OK) {
@@ -2647,7 +2647,7 @@ public class InstConstraintVisitor extends EmptyVisitor {
         }
 
         if (!(o instanceof ASTORE)) {
-            if (!(stack().peek() == o.getType(cpg))) {// the other xSTORE types are singletons in BCEL.
+            if (!(stack().peek() == o.getType(cpg))) { // the other xSTORE types are singletons in BCEL.
                 constraintViolated(o,
                     "Stack top type and STOREing Instruction type mismatch: Stack top: '" + stack().peek() + "'; Instruction type: '" + o.getType(cpg) + "'.");
             }

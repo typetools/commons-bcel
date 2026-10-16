@@ -232,7 +232,7 @@ public final class Pass3bVerifier extends PassVerifier {
                     final ArrayList<InstructionContext> newchainClone = (ArrayList<InstructionContext>) newchain.clone();
                     icq.add(theSuccessor, newchainClone);
                 }
-            } else {// "not a ret"
+            } else { // "not a ret"
 
                 // Normal successors. Add them to the queue of successors.
                 final InstructionContext[] succs = u.getSuccessors();
@@ -260,7 +260,7 @@ public final class Pass3bVerifier extends PassVerifier {
                 // by using an empty chain for the exception handlers.
                 // if (v.execute(new Frame(u.getOutFrame(oldchain).getLocals(),
                 // new OperandStack (u.getOutFrame().getStack().maxStack(),
-                // (exc_hds[s].getExceptionType()==null? Type.THROWABLE : exc_hds[s].getExceptionType())) ), newchain), icv, ev) {
+                // (exc_hds[s].getExceptionType() == null ? Type.THROWABLE : exc_hds[s].getExceptionType())) ), newchain), icv, ev) {
                 // icq.add(v, (ArrayList) newchain.clone());
                 if (v.execute(new Frame(u.getOutFrame(oldchain).getLocals(), new OperandStack(u.getOutFrame(oldchain).getStack().maxStack(),
                     excHd.getExceptionType() == null ? Type.THROWABLE : excHd.getExceptionType())), new ArrayList<>(), icv, ev)) {
@@ -280,14 +280,14 @@ public final class Pass3bVerifier extends PassVerifier {
                 final LocalVariables lvs = f.getLocals();
                 for (int i = 0; i < lvs.maxLocals(); i++) {
                     if (lvs.get(i) instanceof UninitializedObjectType) {
-                        this.addMessage("Warning: ReturnInstruction '" + ic + "' may leave method with an uninitialized object in the local variables array '"
+                        addMessage("Warning: ReturnInstruction '" + ic + "' may leave method with an uninitialized object in the local variables array '"
                             + lvs + "'.");
                     }
                 }
                 final OperandStack os = f.getStack();
                 for (int i = 0; i < os.size(); i++) {
                     if (os.peek(i) instanceof UninitializedObjectType) {
-                        this.addMessage(
+                        addMessage(
                             "Warning: ReturnInstruction '" + ic + "' may leave method with an uninitialized object on the operand stack '" + os + "'.");
                     }
                 }

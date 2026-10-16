@@ -122,7 +122,7 @@ public @UsesObjectEquals class InstructionHandle {
         if (targeters == null) {
             targeters = new HashSet<>();
         }
-        // if(!targeters.contains(t))
+        // if (!targeters.contains(t))
         targeters.add(t);
     }
 
@@ -233,7 +233,7 @@ public @UsesObjectEquals class InstructionHandle {
         if (i == null) {
             throw new ClassGenException("Assigning null to handle");
         }
-        if (this.getClass() != BranchHandle.class && (i instanceof BranchInstruction)) {
+        if (this.getClass() != BranchHandle.class && i instanceof BranchInstruction) {
             throw new ClassGenException("Assigning branch instruction " + i + " to plain handle");
         }
         if (instruction != null) {

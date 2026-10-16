@@ -95,7 +95,7 @@ public final class Code extends Attribute {
         code = new byte[codeLength]; // Read byte code
         file.readFully(code);
         /*
-         * Read exception table that contains all regions where an exception handler is active, i.e., a try { ... } catch()
+         * Read exception table that contains all regions where an exception handler is active, i.e., a try { ... } catch ()
          * block.
          */
         final int exceptionTableLength = file.readUnsignedShort();
@@ -109,7 +109,7 @@ public final class Code extends Attribute {
         final int attributesCount = file.readUnsignedShort();
         attributes = new Attribute[attributesCount];
         for (int i = 0; i < attributesCount; i++) {
-            attributes[i] = Attribute.readAttribute(file, constantPool);
+            attributes[i] = readAttribute(file, constantPool);
         }
         /*
          * Adjust length, because of setAttributes in this(), s.b. length is incorrect, because it didn't take the internal
@@ -133,8 +133,8 @@ public final class Code extends Attribute {
         super(Const.ATTR_CODE, nameIndex, length, constantPool);
         this.maxStack = Args.requireU2(maxStack, "maxStack");
         this.maxLocals = Args.requireU2(maxLocals, "maxLocals");
-        this.code = code != null ? code : ArrayUtils.EMPTY_BYTE_ARRAY;
-        this.exceptionTable = exceptionTable != null ? exceptionTable : CodeException.EMPTY_CODE_EXCEPTION_ARRAY;
+        this.code = ArrayUtils.nullToEmpty(code);
+        this.exceptionTable = ArrayUtils.nullToEmpty(exceptionTable, CodeException[].class);
         Args.requireU2(this.exceptionTable.length, "exceptionTable.length");
         this.attributes = attributes != null ? attributes : EMPTY_ARRAY;
         super.setLength(calculateLength()); // Adjust length
@@ -267,6 +267,20 @@ public final class Code extends Attribute {
     }
 
     /**
+     * Gets the local variable type table attribute {@link LocalVariableTypeTable}.
+     * @return LocalVariableTypeTable of Code, if it has one, null otherwise.
+     * @since 6.10.0
+     */
+    public @Nullable LocalVariableTypeTable getLocalVariableTypeTable() {
+        for (final Attribute attribute : attributes) {
+            if (attribute instanceof LocalVariableTypeTable) {
+                return (LocalVariableTypeTable) attribute;
+            }
+        }
+        return null;
+    }
+
+    /**
      * @return Number of local variables.
      */
     @Pure
@@ -287,7 +301,7 @@ public final class Code extends Attribute {
      * @return StackMap of Code, if it has one, else null.
      * @since 6.8.0
      */
-    public StackMap getStackMap() {
+    public @Nullable StackMap getStackMap() {
         for (final Attribute attribute : attributes) {
             if (attribute instanceof StackMap) {
                 return (StackMap) attribute;
@@ -308,7 +322,7 @@ public final class Code extends Attribute {
      * @param code byte code
      */
     public void setCode(final byte[] code) {
-        this.code = code != null ? code : ArrayUtils.EMPTY_BYTE_ARRAY;
+        this.code = ArrayUtils.nullToEmpty(code);
         super.setLength(calculateLength()); // Adjust length
     }
 
@@ -316,7 +330,7 @@ public final class Code extends Attribute {
      * @param exceptionTable exception table
      */
     public void setExceptionTable(final CodeException[] exceptionTable) {
-        this.exceptionTable = exceptionTable != null ? exceptionTable : CodeException.EMPTY_CODE_EXCEPTION_ARRAY;
+        this.exceptionTable = exceptionTable != null ? exceptionTable : CodeException.EMPTY_ARRAY;
         super.setLength(calculateLength()); // Adjust length
     }
 

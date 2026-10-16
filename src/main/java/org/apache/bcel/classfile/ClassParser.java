@@ -16,11 +16,6 @@
  */
 package org.apache.bcel.classfile;
 
-import org.checkerframework.checker.calledmethods.qual.EnsuresCalledMethods;
-import org.checkerframework.checker.mustcall.qual.InheritableMustCall;
-import org.checkerframework.checker.mustcall.qual.MustCall;
-import org.checkerframework.checker.mustcall.qual.Owning;
-
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
@@ -32,6 +27,7 @@ import java.util.zip.ZipFile;
 import org.apache.bcel.Const;
 
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.mustcall.qual.InheritableMustCall;
 
 /**
  * Wrapper class that parses a given Java .class file. The method <a href ="#parse">parse</a> returns a
@@ -39,7 +35,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
  * appropriate exception is propagated back to the caller.
  *
  * The structure and the names comply, except for a few conveniences, exactly with the
- * <a href="http://docs.oracle.com/javase/specs/"> JVM specification 1.0</a>. See this paper for further details about
+ * <a href="https://docs.oracle.com/javase/specs/"> JVM specification 1.0</a>. See this paper for further details about
  * the structure of a bytecode file.
  */
 @InheritableMustCall("parse")
@@ -113,7 +109,7 @@ public final class ClassParser {
      * @throws IOException if an I/O error occurs.
      * @throws ClassFormatException if a class is malformed or cannot be interpreted as a class file
      */
-    @SuppressWarnings({"builder:contracts.postcondition",  
+    @SuppressWarnings({"builder:contracts.postcondition",
                     "builder:required.method.not.called"}
         // ownership of fields depends on variable `fileOwned`
         )
@@ -159,11 +155,11 @@ public final class ClassParser {
             // for (int i=0; i < u.length; i++)
             // System.err.println("WARNING: " + u[i]);
             // Everything should have been read now
-            // if(file.available() > 0) {
+            // if (file.available() > 0) {
             // int bytes = file.available();
             // byte[] buf = new byte[bytes];
             // file.read(buf);
-            // if(!(isZip && (buf.length == 1))) {
+            // if (!(isZip && (buf.length == 1))) {
             // System.err.println("WARNING: Trailing garbage at end of " + fileName);
             // System.err.println(bytes + " extra bytes: " + Utility.toHexString(buf));
             // }

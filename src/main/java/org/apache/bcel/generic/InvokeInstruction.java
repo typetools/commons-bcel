@@ -16,11 +16,6 @@
  */
 package org.apache.bcel.generic;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.signature.qual.ClassGetName;
-import org.checkerframework.checker.signature.qual.Identifier;
-import org.checkerframework.framework.qual.AnnotatedFor;
-
 import java.util.StringTokenizer;
 
 import org.apache.bcel.Const;
@@ -28,6 +23,11 @@ import org.apache.bcel.classfile.Constant;
 import org.apache.bcel.classfile.ConstantCP;
 import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.classfile.Utility;
+
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.signature.qual.ClassGetName;
+import org.checkerframework.checker.signature.qual.Identifier;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Super class for the INVOKExxx family of instructions.

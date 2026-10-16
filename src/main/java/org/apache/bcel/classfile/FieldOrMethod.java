@@ -16,16 +16,17 @@
  */
 package org.apache.bcel.classfile;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.signature.qual.Identifier;
-import org.checkerframework.dataflow.qual.Pure;
-import org.checkerframework.framework.qual.AnnotatedFor;
-
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signature.qual.Identifier;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Abstract super class for fields and methods.
@@ -153,10 +154,8 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
         file.writeShort(name_index);
         file.writeShort(signature_index);
         file.writeShort(attributes_count);
-        if (attributes != null) {
-            for (final Attribute attribute : attributes) {
-                attribute.dump(file);
-            }
+        for (final Attribute attribute : attributes) {
+            attribute.dump(file);
         }
     }
 
@@ -171,6 +170,22 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
         }
 
         return annotationEntries;
+    }
+
+    /**
+     * Gets attribute for given tag.
+     * @return Attribute for given tag, null if not found.
+     * Refer to {@link org.apache.bcel.Const#ATTR_UNKNOWN} constants named ATTR_* for possible values.
+     * @since 6.10.0
+     */
+    @SuppressWarnings("unchecked")
+    public @Nullable final <T extends Attribute> T getAttribute(final byte tag) {
+        for (final Attribute attribute : getAttributes()) {
+            if (attribute.getTag() == tag) {
+                return (T) attribute;
+            }
+        }
+        return null;
     }
 
     /**
@@ -244,8 +259,8 @@ public abstract class FieldOrMethod extends AccessFlags implements Cloneable, No
      * @param attributes Collection of object attributes.
      */
     public final void setAttributes(final Attribute[] attributes) {
-        this.attributes = attributes;
-        this.attributes_count = attributes != null ? attributes.length : 0; // init deprecated field
+        this.attributes = attributes != null ? attributes : Attribute.EMPTY_ARRAY;
+        this.attributes_count = this.attributes.length; // init deprecated field
     }
 
     /**

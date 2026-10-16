@@ -28,7 +28,6 @@ import org.apache.bcel.util.Args;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.signedness.qual.SignedPositive;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -46,7 +45,7 @@ public final class LineNumberTable extends Attribute implements Iterable<LineNum
     private LineNumber[] lineNumberTable; // Table of line/numbers pairs
 
     /**
-     * Constructs object from input stream.
+     * Constructs a new instance from a data input stream.
      *
      * @param nameIndex Index of name
      * @param length Content length in bytes
@@ -63,13 +62,12 @@ public final class LineNumberTable extends Attribute implements Iterable<LineNum
         }
     }
 
-    /*
+    /**
+     * Constructs a new instance.
+     *
      * @param nameIndex Index of name
-     *
      * @param length Content length in bytes
-     *
      * @param lineNumberTable Table of line/numbers pairs
-     *
      * @param constantPool Array of constants
      */
     public LineNumberTable(final @NonNegative int nameIndex, final @NonNegative int length, final LineNumber[] lineNumberTable, final ConstantPool constantPool) {
@@ -78,9 +76,11 @@ public final class LineNumberTable extends Attribute implements Iterable<LineNum
         Args.requireU2(this.lineNumberTable.length, "lineNumberTable.length");
     }
 
-    /*
-     * Initialize from another object. Note that both objects use the same references (shallow copy). Use copy() for a
-     * physical copy.
+    /**
+     * Constructs a new instance from another.
+     * <p>
+     * Note that both objects use the same references (shallow copy). Use copy() for a physical copy.
+     * </p>
      */
     public LineNumberTable(final LineNumberTable c) {
         this(c.getNameIndex(), c.getLength(), c.getLineNumberTable(), c.getConstantPool());
@@ -182,7 +182,7 @@ public final class LineNumberTable extends Attribute implements Iterable<LineNum
 
     @Pure
     public @NonNegative int getTableLength() {
-        return lineNumberTable == null ? 0 : lineNumberTable.length;
+        return lineNumberTable.length;
     }
 
     @Override
@@ -194,7 +194,7 @@ public final class LineNumberTable extends Attribute implements Iterable<LineNum
      * @param lineNumberTable the line number entries for this table
      */
     public void setLineNumberTable(final LineNumber[] lineNumberTable) {
-        this.lineNumberTable = lineNumberTable;
+        this.lineNumberTable = lineNumberTable != null ? lineNumberTable : LineNumber.EMPTY_ARRAY;
     }
 
     /**

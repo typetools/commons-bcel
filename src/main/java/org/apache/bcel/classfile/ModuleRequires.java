@@ -61,8 +61,6 @@ public final class ModuleRequires implements Cloneable, Node {
         v.visitModuleRequires(this);
     }
 
-    // TODO add more getters and setters?
-
     /**
      * @return deep copy of this object
      */
@@ -88,6 +86,35 @@ public final class ModuleRequires implements Cloneable, Node {
     }
 
     /**
+     * Gets the module name from the constant pool.
+     * @param constantPool Array of constants usually obtained from the ClassFile object
+     * @return module name
+     * @since 6.10.0
+     */
+    public String getModuleName(final ConstantPool constantPool) {
+        return constantPool.constantToString(requiresIndex, Const.CONSTANT_Module);
+    }
+
+    /**
+     * Gets the flags for this ModuleRequires.
+     * @return the requiresFlags
+     * @since 6.10.0
+     */
+    public int getRequiresFlags() {
+        return requiresFlags;
+    }
+
+    /**
+     * Gets the required version from the constant pool.
+     * @param constantPool Array of constants usually obtained from the ClassFile object
+     * @return required version, "0" if version index is 0.
+     * @since 6.10.0
+     */
+    public String getVersion(final ConstantPool constantPool) {
+        return requiresVersionIndex == 0 ? "0" : constantPool.getConstantString(requiresVersionIndex, Const.CONSTANT_Utf8);
+    }
+
+    /**
      * @return String representation
      */
     @Override
@@ -100,10 +127,10 @@ public final class ModuleRequires implements Cloneable, Node {
      */
     public String toString(final ConstantPool constantPool) {
         final StringBuilder buf = new StringBuilder();
-        final String moduleName = constantPool.constantToString(requiresIndex, Const.CONSTANT_Module);
-        buf.append(Utility.compactClassName(moduleName, false));
+        final String moduleName = getModuleName(constantPool);
+        buf.append(moduleName);
         buf.append(", ").append(String.format("%04x", requiresFlags));
-        final String version = requiresVersionIndex == 0 ? "0" : constantPool.getConstantString(requiresVersionIndex, Const.CONSTANT_Utf8);
+        final String version = getVersion(constantPool);
         buf.append(", ").append(version);
         return buf.toString();
     }

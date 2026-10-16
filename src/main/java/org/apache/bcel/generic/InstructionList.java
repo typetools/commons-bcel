@@ -31,6 +31,7 @@ import org.apache.bcel.Const;
 import org.apache.bcel.classfile.Constant;
 import org.apache.bcel.util.ByteSequence;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.stream.Streams;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -63,24 +64,26 @@ public class InstructionList implements Iterable<InstructionHandle> {
      * @return target position's instruction handle if available
      */
     public static @Nullable InstructionHandle findHandle(final InstructionHandle[] ihs, final int[] pos, final @NonNegative int count, final @NonNegative int target) {
-        @NonNegative int l = 0;
-        @NonNegative int r = count - 1;
-        /*
-         * Do a binary search since the pos array is orderd.
-         */
-        do {
-            // count <= 65536 so arithmetic shift same as logical shift and no checker warning
-            final int i = l + r >> 1;
-            final int j = pos[i];
-            if (j == target) {
-                return ihs[i];
-            }
-            if (target < j) {
-                r = i - 1;
-            } else {
-                l = i + 1;
-            }
-        } while (l <= r);
+        if (ihs != null && pos != null) {
+            @NonNegative int l = 0;
+            @NonNegative int r = count - 1;
+            /*
+             * Do a binary search since the pos array is orderd.
+             */
+            do {
+                // count <= 65536 so arithmetic shift same as logical shift and no checker warning
+                final int i = l + r >> 1;
+                final int j = pos[i];
+                if (j == target) {
+                    return ihs[i];
+                }
+                if (target < j) {
+                    r = i - 1;
+                } else {
+                    l = i + 1;
+                }
+            } while (l <= r);
+        }
         return null;
     }
 
@@ -969,7 +972,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
      * @see MethodGen
      */
     public void redirectExceptionHandlers(final CodeExceptionGen[] exceptions, final InstructionHandle oldTarget, final InstructionHandle newTarget) {
-        for (final CodeExceptionGen exception : exceptions) {
+        Streams.of(exceptions).forEach(exception -> {
             if (exception.getStartPC() == oldTarget) {
                 exception.setStartPC(newTarget);
             }
@@ -979,7 +982,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
             if (exception.getHandlerPC() == oldTarget) {
                 exception.setHandlerPC(newTarget);
             }
-        }
+        });
     }
 
     /**
@@ -991,16 +994,14 @@ public class InstructionList implements Iterable<InstructionHandle> {
      * @see MethodGen
      */
     public void redirectLocalVariables(final LocalVariableGen[] lg, final InstructionHandle oldTarget, final InstructionHandle newTarget) {
-        for (final LocalVariableGen element : lg) {
-            final InstructionHandle start = element.getStart();
-            final InstructionHandle end = element.getEnd();
-            if (start == oldTarget) {
+        Streams.of(lg).forEach(element -> {
+            if (element.getStart() == oldTarget) {
                 element.setStart(newTarget);
             }
-            if (end == oldTarget) {
+            if (element.getEnd() == oldTarget) {
                 element.setEnd(newTarget);
             }
-        }
+        });
     }
 
     /**
@@ -1149,7 +1150,7 @@ public class InstructionList implements Iterable<InstructionHandle> {
             index += i.getLength();
         }
         /*
-         * Pass 2: Expand the variable-length (Branch)Instructions depending on the target offset (short or int) and ensure that
+         * Pass 2: Expand the variable-length (Branch) Instructions depending on the target offset (short or int) and ensure that
          * branch targets are within this list.
          */
         for (InstructionHandle ih = start; ih != null; ih = ih.getNext()) {

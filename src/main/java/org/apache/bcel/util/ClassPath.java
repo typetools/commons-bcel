@@ -42,6 +42,7 @@ import java.util.zip.ZipFile;
 
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.classfile.Utility;
+import org.apache.commons.lang3.SystemProperties;
 
 import org.checkerframework.checker.calledmethods.qual.EnsuresCalledMethods;
 import org.checkerframework.checker.mustcall.qual.MustCall;
@@ -363,7 +364,9 @@ public class ClassPath implements Closeable {
         private final @Owning ModularRuntimeImage modularRuntimeImage;
         private final @Owning JrtModule[] modules;
 
-        @SuppressWarnings("mustcall:type.argument")  // mustcall doesn't support arrays yet
+        @SuppressWarnings({"mustcall:type.argument",              // mustcall doesn't support arrays yet
+                           "mustcall:type.arguments.not.inferred" // Stream.toArray; JrtModules.close() closes all
+                          })
         public JrtModules(final String path) throws IOException {
             this.modularRuntimeImage = new ModularRuntimeImage();
             try {
@@ -489,14 +492,14 @@ public class ClassPath implements Closeable {
      */
     // @since 6.0 no longer final
     public static String getClassPath() {
-        final String classPathProp = System.getProperty("java.class.path");
+        final String classPathProp = SystemProperties.getJavaClassPath();
         final String bootClassPathProp = System.getProperty("sun.boot.class.path");
-        final String extDirs = System.getProperty("java.ext.dirs");
+        final String extDirs = SystemProperties.getJavaExtDirs();
         // System.out.println("java.version = " + System.getProperty("java.version"));
         // System.out.println("java.class.path = " + classPathProp);
         // System.out.println("sun.boot.class.path=" + bootClassPathProp);
         // System.out.println("java.ext.dirs=" + extDirs);
-        final String javaHome = System.getProperty("java.home");
+        final String javaHome = SystemProperties.getJavaHome();
         final List<String> list = new ArrayList<>();
 
         // Starting in JRE 9, .class files are in the modules directory. Add them to the path.
@@ -554,7 +557,9 @@ public class ClassPath implements Closeable {
         this(getClassPath());
     }
 
-    @SuppressWarnings("builder:required.method.not.called") // list of @Owning elements
+    @SuppressWarnings({"resourceleak:required.method.not.called", // list of @Owning elements
+                       "mustcall:type.arguments.not.inferred" // collection of resources; ClassPath.close() closes all
+                      })
     public ClassPath(final @Nullable ClassPath parent, final String classPathString) {
         this.parent = parent;
         this.classPathString = Objects.requireNonNull(classPathString, "classPathString");
@@ -595,10 +600,10 @@ public class ClassPath implements Closeable {
 
     @Override
     public void close() throws IOException {
-            for (final AbstractPathEntry path : paths) {
-                path.close();
-            }
+        for (final AbstractPathEntry path : paths) {
+            path.close();
         }
+    }
 
     @Override
     public boolean equals(final @Nullable Object obj) {
@@ -609,8 +614,8 @@ public class ClassPath implements Closeable {
             return false;
         }
         if (getClass() != obj.getClass()) {
-        return false;
-    }
+            return false;
+        }
         final ClassPath other = (ClassPath) obj;
         return Objects.equals(classPathString, other.classPathString);
     }
@@ -710,7 +715,7 @@ public class ClassPath implements Closeable {
      * The caller is responsible for closing the InputStream.
      * </p>
      *
-     * @param name fully qualified file name, e.g. java/lang/String
+     * @param name   fully qualified file name, e.g. java/lang/String
      * @param suffix file name ends with suff, e.g. .java
      * @return input stream for file on class path
      * @throws IOException if an I/O error occurs.
@@ -718,12 +723,11 @@ public class ClassPath implements Closeable {
     public InputStream getInputStream(final String name, final String suffix) throws IOException {
         try {
             final java.lang.ClassLoader classLoader = getClass().getClassLoader();
-            @SuppressWarnings("builder:required.method.not.called") // list of @Owning elements
             final
             InputStream inputStream = classLoader == null ? null : classLoader.getResourceAsStream(name + suffix);
-        if (inputStream != null) {
-            return inputStream;
-        }
+            if (inputStream != null) {
+                return inputStream;
+            }
         } catch (final Exception ignored) {
             // ignored
         }

@@ -25,6 +25,8 @@ import java.util.Iterator;
 import org.apache.bcel.Const;
 
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.initialization.qual.UnknownInitialization;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -37,7 +39,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @see Constant
  * @see org.apache.bcel.generic.ConstantPoolGen
  */
-@AnnotatedFor({"nullness","signedness"})
+@AnnotatedFor({"nullness", "signedness"})
 public class ConstantPool implements Cloneable, Node, Iterable<Constant> {
 
     private static String escape(final String str) {
@@ -73,8 +75,8 @@ public class ConstantPool implements Cloneable, Node, Iterable<Constant> {
     /**
      * @param constantPool Array of constants
      */
-    public ConstantPool(final Constant[] constantPool) {
-        this.constantPool = constantPool;
+    public ConstantPool(final Constant @Nullable [] constantPool) {
+        setConstantPool(constantPool);
     }
 
     /**
@@ -323,8 +325,8 @@ public class ConstantPool implements Cloneable, Node, Iterable<Constant> {
         // Previous check ensures this won't throw a ClassCastException
         final T c = castTo.cast(constantPool[index]);
         if (c == null) {
-                throw new ClassFormatException("Constant pool at index " + index + " is null.");
-            }
+            throw new ClassFormatException("Constant pool at index " + index + " is null.");
+        }
         return c;
     }
 
@@ -406,7 +408,7 @@ public class ConstantPool implements Cloneable, Node, Iterable<Constant> {
      */
     @Pure
     public int getLength() {
-        return constantPool == null ? 0 : constantPool.length;
+        return constantPool.length;
     }
 
     @Override
@@ -424,8 +426,9 @@ public class ConstantPool implements Cloneable, Node, Iterable<Constant> {
     /**
      * @param constantPool
      */
-    public void setConstantPool(final Constant[] constantPool) {
-        this.constantPool = constantPool;
+    @EnsuresNonNull("this.constantPool")
+    public final void setConstantPool(@UnknownInitialization ConstantPool this, final Constant @Nullable [] constantPool) {
+        this.constantPool = constantPool != null ? constantPool : Constant.EMPTY_ARRAY;
     }
 
     /**

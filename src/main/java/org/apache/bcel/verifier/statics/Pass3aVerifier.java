@@ -328,9 +328,9 @@ public final class Pass3aVerifier extends PassVerifier {
 
                 final JavaClass jc = Repository.lookupClass(getObjectType(o).getClassName());
                 final Field f = jc.findField(fieldName, o.getType(constantPoolGen));
-                    if (f == null) {
-                        constraintViolated(o, "Referenced field '" + fieldName + "' does not exist in class '" + jc.getClassName() + "'.");
-                    }
+                if (f == null) {
+                    constraintViolated(o, "Referenced field '" + fieldName + "' does not exist in class '" + jc.getClassName() + "'.");
+                }
             } catch (final ClassNotFoundException e) {
                 // FIXME: maybe not the best way to handle this
                 throw new AssertionViolatedException("Missing class: " + e, e);
@@ -703,7 +703,7 @@ public final class Pass3aVerifier extends PassVerifier {
         @Override
         public void visitLoadClass(final LoadClass loadClass) {
             final ObjectType t = loadClass.getLoadClassType(constantPoolGen);
-            if (t != null) {// null means "no class is loaded"
+            if (t != null) { // null means "no class is loaded"
                 final Verifier v = VerifierFactory.getVerifier(t.getClassName());
                 final VerificationResult vr = v.doPass1();
                 if (vr.getStatus() != VerificationResult.VERIFIED_OK) {
@@ -1047,8 +1047,7 @@ public final class Pass3aVerifier extends PassVerifier {
                 try {
                     delayedPass2Checks();
                 } catch (final ClassConstraintException | ClassFormatException cce) {
-                    vr = new VerificationResult(VerificationResult.VERIFIED_REJECTED, cce.getMessage());
-                    return vr;
+                    return new VerificationResult(VerificationResult.VERIFIED_REJECTED, cce.getMessage());
                 }
                 try {
                     pass3StaticInstructionChecks();
@@ -1087,7 +1086,7 @@ public final class Pass3aVerifier extends PassVerifier {
         // array in vmspec2), together with pass 1 (reading code_length bytes and
         // interpreting them as code[]). So this must not be checked again here.
 
-        if (code.getCode().length >= Const.MAX_CODE_SIZE) {// length must be LESS than the max
+        if (code.getCode().length >= Const.MAX_CODE_SIZE) { // length must be LESS than the max
             throw new StaticCodeInstructionConstraintException(
                 "Code array in code attribute '" + tostring(code) + "' too big: must be smaller than " + Const.MAX_CODE_SIZE + "65536 bytes.");
         }

@@ -460,22 +460,22 @@ public class ConstantPoolModuleToStringTestCase {
     }
 
     private static void test(final InputStream inputStream) throws IOException {
-            final ClassParser classParser = new ClassParser(inputStream, "module-info.class");
-            final JavaClass javaClass = classParser.parse();
+        final ClassParser classParser = new ClassParser(inputStream, "module-info.class");
+        final JavaClass javaClass = classParser.parse();
         testJavaClass(javaClass);
     }
 
     private static void testJavaClass(final JavaClass javaClass) {
-            final ConstantPool constantPool = javaClass.getConstantPool();
-            final ToStringVisitor visitor = new ToStringVisitor(constantPool);
-            final DescendingVisitor descendingVisitor = new DescendingVisitor(javaClass, visitor);
-            try {
-                javaClass.accept(descendingVisitor);
+        final ConstantPool constantPool = javaClass.getConstantPool();
+        final ToStringVisitor visitor = new ToStringVisitor(constantPool);
+        final DescendingVisitor descendingVisitor = new DescendingVisitor(javaClass, visitor);
+        try {
+            javaClass.accept(descendingVisitor);
             assertNotNull(visitor.toString());
-            } catch (Exception | Error e) {
-                fail(visitor.toString(), e);
-            }
+        } catch (Exception | Error e) {
+            fail(visitor.toString(), e);
         }
+    }
 
     @Test
     public void test() throws Exception {
@@ -506,7 +506,8 @@ public class ConstantPoolModuleToStringTestCase {
     @ValueSource(strings = {
     // @formatter:off
         "java.lang.CharSequence$1CharIterator",                 // contains attribute EnclosingMethod
-        "org.apache.commons.lang3.function.TriFunction",        // contains attributes BootstrapMethods, InnerClasses, LineNumberTable, LocalVariableTable, LocalVariableTypeTable, RuntimeVisibleAnnotations, Signature, SourceFile
+        "org.apache.commons.lang3.function.TriFunction",        // contains attributes BootstrapMethods, InnerClasses, LineNumberTable, LocalVariableTable,
+                                                                // LocalVariableTypeTable, RuntimeVisibleAnnotations, Signature, SourceFile
         "org.apache.commons.lang3.math.NumberUtils",            // contains attribute ConstantFloat, ConstantDouble
         "org.apache.bcel.Const",                                // contains attributes MethodParameters
         "java.io.StringBufferInputStream",                      // contains attributes Deprecated, StackMap

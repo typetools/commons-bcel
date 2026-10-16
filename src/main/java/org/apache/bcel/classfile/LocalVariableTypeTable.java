@@ -66,14 +66,14 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"signedness"})
 public class LocalVariableTypeTable extends Attribute implements Iterable<LocalVariable> {
 
+    private static final LocalVariable[] EMPTY_ARRAY = {};
+
     private LocalVariable[] localVariableTypeTable; // variables
 
     LocalVariableTypeTable(final @NonNegative int nameIdx, final @NonNegative int len, final DataInput input, final ConstantPool cpool) throws IOException {
         this(nameIdx, len, (LocalVariable[]) null, cpool);
-
         final int localVariableTypeTableLength = input.readUnsignedShort();
         localVariableTypeTable = new LocalVariable[localVariableTypeTableLength];
-
         for (int i = 0; i < localVariableTypeTableLength; i++) {
             localVariableTypeTable[i] = new LocalVariable(input, cpool);
         }
@@ -100,7 +100,6 @@ public class LocalVariableTypeTable extends Attribute implements Iterable<LocalV
     @Override
     public Attribute copy(final ConstantPool constantPool) {
         final LocalVariableTypeTable c = (LocalVariableTypeTable) clone();
-
         c.localVariableTypeTable = new LocalVariable[localVariableTypeTable.length];
         Arrays.setAll(c.localVariableTypeTable, i -> localVariableTypeTable[i].copy());
         c.setConstantPool(constantPool);
@@ -123,7 +122,6 @@ public class LocalVariableTypeTable extends Attribute implements Iterable<LocalV
                 return variable;
             }
         }
-
         return null;
     }
 
@@ -143,7 +141,7 @@ public class LocalVariableTypeTable extends Attribute implements Iterable<LocalV
     }
 
     public final void setLocalVariableTable(final LocalVariable[] localVariableTable) {
-        this.localVariableTypeTable = localVariableTable;
+        this.localVariableTypeTable = localVariableTable != null ? localVariableTable : EMPTY_ARRAY;
     }
 
     /**
@@ -152,15 +150,12 @@ public class LocalVariableTypeTable extends Attribute implements Iterable<LocalV
     @Override
     public final String toString() {
         final StringBuilder buf = new StringBuilder();
-
         for (int i = 0; i < localVariableTypeTable.length; i++) {
             buf.append(localVariableTypeTable[i].toStringShared(true));
-
             if (i < localVariableTypeTable.length - 1) {
                 buf.append('\n');
             }
         }
-
         return buf.toString();
     }
 }

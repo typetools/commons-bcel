@@ -18,12 +18,15 @@
 package org.apache.bcel.generic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.apache.bcel.AbstractTestCase;
+import org.apache.bcel.Const;
 import org.apache.bcel.classfile.AnnotationEntry;
 import org.apache.bcel.classfile.ElementValuePair;
 import org.apache.bcel.classfile.Field;
@@ -40,6 +43,8 @@ public class FieldAnnotationsTestCase extends AbstractTestCase {
             final AnnotationEntry[] fieldAnnotationEntrys = f.getAnnotationEntries();
             if (f.getName().equals(fieldname)) {
                 checkAnnotationEntry(fieldAnnotationEntrys[0], AnnotationEntryName, AnnotationEntryElementName, AnnotationEntryElementValue);
+                assertNotNull(f.getAttribute(Const.ATTR_RUNTIME_VISIBLE_ANNOTATIONS));
+                assertNull(f.getAttribute(Const.ATTR_RUNTIME_INVISIBLE_ANNOTATIONS));
             }
         }
     }
